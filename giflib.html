@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title>   </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<h1 id="giflib">giflib</h1>
+<p>giflib ffi binding</p>
+<p>v1.0 | <a href="http://code.google.com/p/lua-files/source/browse/giflib.lua">binding</a> | <a href="http://code.google.com/p/lua-files/source/browse/giflib_h.lua">header</a> | <a href="http://code.google.com/p/lua-files/source/browse/giflib_demo.lua">demo</a> | giflib 5.0 | LuaJIT 2</p>
+<h2 id="local-giflib-requiregiflib"><code>local giflib = require'giflib'</code></h2>
+<p>Lightweight ffi binding of the antique <a href="http://sourceforge.net/projects/giflib/">GIFLIB</a>.</p>
+<h2 id="giflib.loadt---gif"><code>giflib.load(t) -&gt; gif</code></h2>
+<p>Read and decode a GIF image.</p>
+<ul>
+<li><code>t</code> is a table specifying where to read the data from and other loading options:
+<ul>
+<li><code>path</code>: read data from a file given its filename</li>
+<li><code>string:</code> read data from a string</li>
+<li><code>cdata</code>, <code>size</code>: read data from a buffer of size <code>N</code></li>
+<li><code>fileno</code>: read data from a low level file descriptor as returned by <code>C open()</code></li>
+<li><code>opaque</code>: if <code>true</code>, prevents converting the gif transparent color to transparent black.</li>
+</ul></li>
+</ul>
+<p>The returned <code>gif</code> object is a table with the fields:</p>
+<ul>
+<li><code>w</code>, <code>h</code>: the gif dimensions.</li>
+<li><code>frames = {image1, ...}</code>: the list of gif frames, in order, where each frame is an image object with the fields:
+<ul>
+<li><code>format</code>, <code>stride</code>, <code>data</code>, <code>size</code>, <code>w</code>, <code>h</code>: image format, dimensions and pixel data.</li>
+<li>the frames are always in top-down <code>rgba8</code> format (that is 32bit RGBA); use [bitmap] to convert them to other formats.</li>
+<li><code>delay_ms</code>: gif frame delay in milliseconds, for animated gifs.</li>
+<li><code>x</code>, <code>y</code>: frame position relative to the top-left corner of the virtual canvas into which to paint the frame<br /> (in theory, gif frames can have different sizes and different positions than (0,0) but this feature is almost never used).</li>
+</ul></li>
+</ul>
+<hr />
+<p>See also: [imagefile].</p>
+			</section>
+		</div>
+
+	</body>
+</html>

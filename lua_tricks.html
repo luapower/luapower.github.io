@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> tricks   - Lua &amp; LuaJIT tricks and idioms </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> tricks </h1>
+							<h2> Lua &amp; LuaJIT tricks and idioms </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<h3 id="quick-lua-cheat-sheet">Quick Lua cheat sheet</h3>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><em>logic</em></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>not a == not b</code></td>
+<td align="left">both or none</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>numbers</em></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">math.min(math.max(x, min), max)</td>
+<td align="left">clamp x</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>x ~= x</code></td>
+<td align="left">number is NaN</td>
+</tr>
+<tr class="even">
+<td align="left"><code>1/0</code></td>
+<td align="left">inf</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>-1/0</code></td>
+<td align="left">-inf</td>
+</tr>
+<tr class="even">
+<td align="left"><code>math.huge == math.huge-1</code></td>
+<td align="left">check if inf is available (Lua numbers are floats) without dividing by zero</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>x % 1</code></td>
+<td align="left">fractional part (always positive)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>x % 1 ##  0</code></td>
+<td align="left">number is integer; but better use <code>math.floor(x)  x</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>x - x % 1</code></td>
+<td align="left">integer part; but better use <code>math.floor(x)</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>x - x % 0.01</code></td>
+<td align="left">x floored to two decimal digits</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>x - x % n</code></td>
+<td align="left">closest to <code>x</code> smaller than <code>x</code> multiple of <code>n</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>math.modf(x)</code></td>
+<td align="left">integer part and fractional part</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>math.floor(x+.5)</code></td>
+<td align="left">round</td>
+</tr>
+<tr class="even">
+<td align="left"><code>x &gt;= 0 and 1 or -1</code></td>
+<td align="left">sign</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>y0 + (x-x0) * ((y1-y0) / (x1 - x0))</code></td>
+<td align="left">linear interpolation</td>
+</tr>
+<tr class="even">
+<td align="left"><code>math.fmod(angle, 2*math.pi)</code></td>
+<td align="left">normalize an angle</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>tables</em></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>next(t) == nil</code></td>
+<td align="left">table is empty</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>strings</em></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>s:match'^something'</code></td>
+<td align="left">starts with</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>s:match'something$'</code></td>
+<td align="left">ends with</td>
+</tr>
+<tr class="even">
+<td align="left"><code>s:match'[&quot;\'](.-)%1'</code></td>
+<td align="left">match pairs of single or double quotes</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>i/o</em></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>f:read(4096, '*l')</code></td>
+<td align="left">read lines efficiently</td>
+</tr>
+</tbody>
+</table>
+<h3 id="luajit-tricks">LuaJIT tricks</h3>
+<p>Pointer to number conversion that turns into a no-op when compiled:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="fu">tonumber</span><span class="ot">(</span><span class="kw">ffi</span><span class="ot">.</span>cast<span class="ot">(</span><span class="st">&#39;intptr_t&#39;</span><span class="ot">,</span> <span class="kw">ffi</span><span class="ot">.</span>cast<span class="ot">(</span><span class="st">&#39;void *&#39;</span><span class="ot">,</span> <span class="kw">ptr</span><span class="ot">)))</span></code></pre>
+<p>Switching endianness of a 64bit integer (to use in conjunction with <code>ffi.abi'le'</code> and <code>ffi.abi'be'</code>):</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">p</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>cast<span class="ot">(</span><span class="st">&#39;uint32*&#39;</span><span class="ot">,</span> <span class="kw">int64_buffer</span><span class="ot">)</span>
+<span class="kw">p</span><span class="ot">[</span><span class="dv">0</span><span class="ot">],</span> <span class="kw">p</span><span class="ot">[</span><span class="dv">1</span><span class="ot">]</span> <span class="ot">=</span> <span class="kw">bit</span><span class="ot">.</span>bswap<span class="ot">(</span><span class="kw">p</span><span class="ot">[</span><span class="dv">1</span><span class="ot">]),</span> <span class="kw">bit</span><span class="ot">.</span>bswap<span class="ot">(</span><span class="kw">p</span><span class="ot">[</span><span class="dv">0</span><span class="ot">])</span></code></pre>
+<h3 id="assumptions-about-luajit">Assumptions about LuaJIT</h3>
+<ul>
+<li>LuaJIT hoists table accesses with constant keys (so module functions) out of loops, so no point caching those in locals.</li>
+<li>LuaJIT hoists constant branches out of loops so it's ok to specialize loop kernels with if/else or and/or inside the loops.</li>
+<li>LuaJIT inlines functions (except when using <code>...</code> and <code>select()</code> with non-constant indices), so specializing loop kernels with function composition is ok.</li>
+<li>multiplications and additions can be cheaper than a memory access, so no point caching results in out-of-loop locals.</li>
+<li>there's no difference between using if/else and using and/or expressions - they generate the same pipeline-trashing branch code.</li>
+<li>divisions are 4x slower than multiplications, so when dividing by a constant, it helps turning <code>x / c</code> into <code>x * (1 / c)</code> since the constant expression is folded -- LuaJIT seems to do this already for power-of-2 constants where the semantics are equivalent (are they? need reference).</li>
+<li>the <code>%</code> operator is slow (it's implemented in terms of <code>math.floor()</code> and division) and really kills hot loops; <code>math.fmod()</code> is even slower; I don't have a solution for this (except for <code>x % 2^n</code> which can be made with bit ops).</li>
+</ul>
+<p>The above are assumptions I use throughout my code, so if any of them are wrong, please correct me.</p>
+<hr />
+<p><em>See also</em>: <a href="api_design.html">API Design Notes</a></p>
+			</section>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> lanes   - Lua lanes </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> lanes </h1>
+							<h2> Lua lanes </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/lanes" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/lanes/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/lanes/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>lanes 3.6.2 | Lua 5.1 | Lua 5.2 | LuaJIT 2</p>
+<ul>
+<li>lanes is now hosted on <a href="http://github.com/LuaLanes/lanes">github</a> - ignore the official website.</li>
+<li>the default value of <code>protect_allocator</code> was changed to <code>true</code> in <code>lanes.lua</code> - LuaJIT2 crashes without that.</li>
+<li>you can read the up-to-date documentation <a href="http://lua-files.googlecode.com/hg/csrc/lanes/docs/index.html">here</a> until lanes will have it online.</li>
+<li>to use ffi inside lanes you have to require the ffi module inside the lane, since the ffi module cannot be transferred as an upvalue to your lane (you will get an error about &quot;destination transfer database&quot;).
+<ul>
+<li>this also means that <em>other modules</em> that depend on ffi cannot be upvalues and must be required explicitly inside the lane or luajit will crash.</li>
+</ul></li>
+</ul>
+			</section>
+		</div>
+
+	</body>
+</html>

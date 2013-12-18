@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> utf8   - utf8 basics </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> utf8 </h1>
+							<h2> utf8 basics </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/utf8" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/utf8/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/utf8/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v0.91a | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+<h2 id="local-utf8-requireutf8"><code>local utf8 = require'utf8'</code></h2>
+<p>Low-level module for working with UTF-8 encoded strings. Byte indices are i's, char indices are ci's, and &quot;char&quot; means unicode codepoint. Invalid characters are counted as 1-byte chars so they don't get lost. Validate/sanitize beforehand as needed.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>utf8.byte_indices(s) -&gt; iterator&lt;i, valid&gt;</code></td>
+<td align="left">iterate the chars in a string, returning the byte index followed by a valid flag<sup><a href="#fn1" class="footnoteRef" id="fnref1">1</a></sup>, for each char.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>utf8.byte_indices_reverse(s) -&gt; iterator&lt;i&gt;</code></td>
+<td align="left">iterate the chars in a string in reverse, returning the byte index of each char.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>utf8.next(s, last_i) -&gt; i, isvalid | nil</code></td>
+<td align="left">byte index of the next char after the char at byte index i, followed by a valid flag<code>***</code>. nil if out of range.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>utf8.prev(s, i) -&gt; prev_i</code></td>
+<td align="left">byte index of the prev. char before the char at byte index i, or nil if i is out of range.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>utf8.byte_index(s, target_ci) -&gt; i</code></td>
+<td align="left">byte index given char index. nil if the index is out of range.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>utf8.char_index(s, target_i) -&gt; ci</code></td>
+<td align="left">char index given byte index. nil if the index is out of range.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>utf8.len(s) -&gt; len</code></td>
+<td align="left">number of chars in string</td>
+</tr>
+<tr class="even">
+<td align="left"><code>utf8.sub(s, start_ci[, end_ci]) -&gt; s</code></td>
+<td align="left">sub based on char indices (also, start_ci must be &gt;= 1 and end_ci, if given, can't be negative)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>utf8.contains(s, i, sub) -&gt; true|false</code></td>
+<td align="left">check if a string contains a substring at byte index i</td>
+</tr>
+<tr class="even">
+<td align="left"><code>utf8.count(s, sub) -&gt; n</code></td>
+<td align="left">count the number of occurences of a substring in a string</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>utf8.isvalid(s, i) -&gt; true|false</code></td>
+<td align="left">check if there's a valid utf8 codepoint at byte index i</td>
+</tr>
+<tr class="even">
+<td align="left"><code>utf8.valid_byte_indices(s) -&gt; iterator&lt;i&gt;</code></td>
+<td align="left">iterate valid chars, returning the byte index where each char starts.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>utf8.next_valid(s, last_i) -&gt; i | nil</code></td>
+<td align="left">byte index of the next valid utf8 char after the char at byte index i. nil if out of range. invalid chars are skipped.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>utf8.validate(s)</code></td>
+<td align="left">assert that a string only contains valid utf8 characters; raise an error if that's not the case</td>
+</tr>
+</tbody>
+</table>
+<h2 id="extending">Extending</h2>
+<p>At the heart of the module is the <code>utf8.next</code> function, which you can redefine for different semantics. In particular, you can reassign <code>utf8.next</code> to <code>utf8.next_valid</code> to change the behavior of the entire module to skip on invalid indices. Preferably you would not do that directly on the module table returned by <code>require</code>, but make a new module instead:</p>
+<p><code>my_utf8.lua</code>:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">glue</span> <span class="ot">=</span> require<span class="st">&#39;glue&#39;</span>
+<span class="kw">local</span> <span class="kw">utf8</span> <span class="ot">=</span> require<span class="st">&#39;utf8&#39;</span>
+<span class="kw">return</span> <span class="kw">glue</span><span class="ot">.</span>merge<span class="ot">({</span><span class="kw">utf8</span><span class="ot">.</span><span class="kw">next</span> <span class="ot">=</span> <span class="kw">utf8</span><span class="ot">.</span><span class="kw">next_valid</span><span class="ot">},</span> <span class="kw">utf8</span><span class="ot">)</span></code></pre>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>when iterating, validation only performed on the first byte. to fully validate that a utf8 codepoint is within the accepted range, use <code>utf8.isvalid()</code>.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+			</section>
+		</div>
+
+	</body>
+</html>

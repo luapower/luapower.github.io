@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> sha2   - SHA-256, SHA-384 and SHA-512 sum and digest </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> sha2 </h1>
+							<h2> SHA-256, SHA-384 and SHA-512 sum and digest </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/sha2" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/sha2/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/sha2/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.0 | sha2-1.0 | LuaJIT 2</p>
+<h2 id="local-sha2-requiresha2"><code>local sha2 = require'sha2'</code></h2>
+<p>A ffi binding of Aaron Gifford's <a href="http://www.aarongifford.com/computers/sha.html">SHA-2 implementation</a>.</p>
+<table>
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>sha2.sha256(s[, size]) -&gt; s</code><br /><code>sha2.sha256(cdata, size) -&gt; s</code><br /><code>sha2.sha384(s[, size]) -&gt; s</code><br /><code>sha2.sha384(cdata, size) -&gt; s</code><br /><code>sha2.sha512(s[, size]) -&gt; s</code><br /><code>sha2.sha512(cdata, size) -&gt; s</code></td>
+<td align="left">Compute the SHA-2 hash of a string or a cdata buffer. Return the binary representation of the hash. To get the hex representation, use <a href="glue.html#tohex">glue.tohex</a>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sha2.sha256_digest() -&gt; digest</code><br /><code>sha2.sha384_digest() -&gt; digest</code><br /><code>sha2.sha512_digest() -&gt; digest</code><br /><code>digest(s[, size])</code><br /><code>digest(cdata, size)</code><br /><code>digest() -&gt; s</code></td>
+<td align="left">Get a SHA-2 digest function that can consume multiple data chunks until called with no arguments when it returns the final SHA hash.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="building">Building</h2>
+<p>C sources and build scripts included. Binary also included.</p>
+<hr />
+<p><em>See also</em>: <a href="md5.html">md5</a>.</p>
+			</section>
+		</div>
+
+	</body>
+</html>

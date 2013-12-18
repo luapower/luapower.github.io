@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> libb64   - fast base64 encoding and decoding </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> libb64 </h1>
+							<h2> fast base64 encoding and decoding </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/libb64" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/libb64/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/libb64/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.0 | libb64 1.2 | LuaJIT 2</p>
+<h2 id="local-b64-requirelibb64"><code>local b64 = require'libb64'</code></h2>
+<p>FFI binding of <a href="http://libb64.sourceforge.net/">libb64</a>, a fast base64 encoder and decoder by Chris Venter.</p>
+<pre><code>b64.encode(s[, size]) -&gt; s
+b64.decode(s[, size]) -&gt; s
+b64.encode(cdata, size) -&gt; s
+b64.decode(cdata, size) -&gt; s</code></pre>
+<p>Encode/decode a string or cdata to a string.</p>
+<pre><code>b64.encode_tobuffer(s, [size], out_buf, out_size) -&gt; bytes_written
+b64.decode_tobuffer(s, [size], out_buf, out_size) -&gt; bytes_written
+b64.encode_tobuffer(cdata, size, out_buf, out_size) -&gt; bytes_written
+b64.decode_tobuffer(cdata, size, out_buf, out_size) -&gt; bytes_written</code></pre>
+<p>Encode/decode a string or cdata to a buffer.</p>
+<ul>
+<li>encoding needs a buffer of at least <code>size * 2 + 3</code> bytes</li>
+<li>decoding needs a buffer of at least <code>math.floor(size * 3 / 4)</code> bytes</li>
+</ul>
+<h2 id="todo">TODO</h2>
+<p>Stream-like interface similar to zlib's inflate/deflate.</p>
+			</section>
+		</div>
+
+	</body>
+</html>

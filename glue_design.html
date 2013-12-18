@@ -9,6 +9,12 @@
 		<title> glue   - how and why </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
 	</head>
 
 	<body>
@@ -35,13 +41,11 @@
 			</div>
 		</header>
 
-		<div class="tocparentdiv">
-			<div class="tocdiv">
-				<!--<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe> -->
-			</div>
-		</div>
-
 		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
 			<section id="main_content">
 			<p><a href="glue.html">back</a></p>
 <h2 id="scope">Scope</h2>
@@ -69,5 +73,5 @@
 			</section>
 		</div>
 
-		<script language="javascript" type="text/javascript">
-			
+	</body>
+</html>

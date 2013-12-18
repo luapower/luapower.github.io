@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title>   </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<h1 id="libpng">libpng</h1>
+<p>libpng ffi binding</p>
+<p><em><em>NOTE: work-in-progress (version 1.0 coming soon)</em></em></p>
+<p>v1.0 | <a href="http://code.google.com/p/lua-files/source/browse/libpng.lua">binding</a> | <a href="http://code.google.com/p/lua-files/source/browse/libpng_h.lua">header</a> | <a href="http://code.google.com/p/lua-files/source/browse/libpng_demo.lua">demo</a> | libpng 1.5.12 | LuaJIT 2</p>
+<h2 id="local-libpng-requirelibpng"><code>local libpng = require'libpng'</code></h2>
+<p>A ffi binding of the ubiquitous <a href="http://www.libpng.org/pub/png/libpng.html">libpng</a>.</p>
+<h2 id="libpng.loadt---image"><code>libpng.load(t) -&gt; image</code></h2>
+<p>Read and decode a PNG image.</p>
+<ul>
+<li><code>t</code> is a table specifying:
+<ul>
+<li>where to read the data from (one of the following):</li>
+<li><code>path</code>: read data from a file given its filename</li>
+<li><code>string</code>: read data from a string</li>
+<li><code>cdata</code>, <code>size</code>: read data from a buffer of specified size</li>
+<li><code>stream</code>: read data from an opened <code>FILE *</code> stream</li>
+<li><code>read</code>: read data from a reader function of form:
+<ul>
+<li><code>read(needed_size) -&gt; cdata, size | string | nil</code></li>
+<li><code>needed_size</code> is informative, the function can return however many bytes it wants, as long as it returns at least 1 byte.</li>
+</ul></li>
+<li>loading options:</li>
+<li><code>accept</code>: if present, it is a table specifying conversion options. libpng implements many of the pixel conversions itself, while other conversions are supported through [bmpconv bmpconv.convert_best()]. If no <code>accept</code> option is given, the image is returned in a normalize 8 bit per channel, top down, palette expanded, 'g', 'rgb', 'rgba' or 'ga' format.
+<ul>
+<li><code>[pixel_format] = true</code> - specify one or more accepted pixel formats (they are all implicitly 8 bit per channel since that is the only supported bit depth):</li>
+<li>'rgb', 'bgr', 'rgba', 'bgra', 'argb', 'abgr', 'g', 'ga', 'ag'.
+<ul>
+<li>if no pixel format is specified, resulted bit depth will not necessarily be 8 since no conversion will take place.</li>
+</ul></li>
+<li><code>[orientation] = true</code> - specify one or more accepted orientations:</li>
+<li>'top_down', 'bottom_up' (default is 'top_down')</li>
+<li><code>padded</code>: true/false (default is false) - specify that the row stride should be a multiple of 4</li>
+</ul></li>
+<li><code>header_only</code>: do not decompress the image; return only the image header fields.</li>
+<li><code>sparkle</code>: true/false (default is false) - alternative render mode for interlaced images.</li>
+<li>callbacks:</li>
+<li><code>warning</code>: a function to be called as <code>warning(msg)</code> on non-fatal errors.</li>
+<li><code>render_scan</code>: a function to be called as <code>render_scan(image, is_last_scan, scan_number)</code> for each pass of an interlaced PNG. It can be used to implement progressive display of images.
+<ul>
+<li>also called once for non-interlaced images.</li>
+<li>also called on error, as <code>render_scan(nil, true, scan_number, error)</code>, where <code>scan_number</code> is the scan number that was supposed to be rendering next and <code>error</code> the error message.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>For more info on decoding process and options, read the <a href="http://www.libpng.org/pub/png/libpng-1.2.5-manual.html">libpng documentation</a> (have coffee/ibuprofen ready).</p>
+<p>The returned image object is a table with the fields: * <code>pixel</code>, <code>orientation</code>, <code>stride</code>, <code>data</code>, <code>size</code>, <code>w</code>, <code>h</code>: image format and dimensions and pixel data. * <code>file.pixel</code>, <code>file.paletted</code>, <code>file.bit_depth</code>, <code>file.interlaced</code>, <code>file.w</code>, <code>file.h</code>: format of the original image before conversion.</p>
+<h2 id="help-needed">Help needed</h2>
+<ul>
+<li>encoding API</li>
+<li>jit is turned off because we can't call error() from a ffi callback called from C; and yet we must not return control to C on errors. is there a way around it?</li>
+<li>the read callback cannot yield since it is called from C code. this means coroutine-based socket schedulers are out, so much for progressive loading. is there a way around it?</li>
+</ul>
+<hr />
+<p>See also: [imagefile].</p>
+			</section>
+		</div>
+
+	</body>
+</html>

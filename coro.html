@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> coro   - Lua symmetric coroutines </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> coro </h1>
+							<h2> Lua symmetric coroutines </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/coro" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/coro/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/coro/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.0 | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+<h2 id="local-coro-requirecoro"><code>local coro = require'coro'</code></h2>
+<p>Symmetric coroutines are coroutines that allow you to transfer control to a specific coroutine, unlike Lua's standard coroutines which only allow you to suspend execution to the calling coroutine.</p>
+<p>This is the implementation from the paper <a href="http://www.inf.puc-rio.br/~roberto/docs/corosblp.pdf">Coroutines in Lua</a>. Changes from the paper: * threads created with <code>coro.create()</code> finish into the creator thread not main thread, unless otherwise specified. * added <code>coro.wrap()</code> similar to <code>coroutine.wrap()</code>.</p>
+<h2 id="coro.createf-return_thread---coro_thread"><code>coro.create(f[, return_thread]) -&gt; coro_thread</code></h2>
+<p>Create a symmetric coroutine, optionally specifying the thread which the coroutine should transfer control to when it finishes execution (defaults to <code>coro.current</code>.</p>
+<h2 id="coro.transfercoro_thread-send_val---recv_val"><code>coro.transfer(coro_thread[, send_val]) -&gt; recv_val</code></h2>
+<p>Transfer control to a symmetric coroutine, suspending execution. The target coroutine either hasn't started yet, or it is itself suspended in a call to <code>coro.transfer()</code>, in which case it resumes and receives <code>send_val</code> as the return value of the call. Likewise, the coroutine which transfers execution will stay suspended until <code>coro.transfer()</code> is called again with it as target.</p>
+<h2 id="coro.current---coro_thread"><code>coro.current -&gt; coro_thread</code></h2>
+<p>Currently running symmetric coroutine. Defaults to <code>coro.main</code>.</p>
+<h2 id="coro.main---coro_thread"><code>coro.main -&gt; coro_thread</code></h2>
+<p>The coroutine representing the main thread (the thread that calls <code>coro.transfer</code> for the first time).</p>
+<h2 id="coro.wrapf---f"><code>coro.wrap(f) -&gt; f</code></h2>
+<p>Similar to <code>coroutine.wrap</code> for symmetric coroutines. Useful for creating iterators in an environment of symmetric coroutines in which simply calling <code>coroutine.yield</code> is not an option:</p>
+<pre><code>local parent = coro.current
+local iter = coro.wrap(function()
+    local function yield(val)
+        coro.transfer(parent, val)
+    end
+    ...
+    yield(val)
+end)</code></pre>
+			</section>
+		</div>
+
+	</body>
+</html>

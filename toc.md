@@ -1,128 +1,100 @@
   * Basic tools
-    * [glue]
-      * _tables_
-        * [glue.index]
-        * [glue.keys]
-        * [glue.update]
-        * [glue.merge]
-        * [glue.sortedpairs]
-      * _lists_
-        * [glue.extend]
-        * [glue.append]
-        * [glue.shift]
-        * [glue.reverse]
-      * _strings_
-        * [glue.gsplit]
-        * [glue.trim]
-        * [glue.escape]
-        * [glue.tohex]
-        * [glue.fromhex]
-      * _iterators_
-        * [glue.collect]
-        * [glue.ipcall]
-      * _closures_
-        * [glue.pass]
-      * _metatables_
-        * [glue.inherit]
-      * _i/o_
-        * [glue.fileexists]
-        * [glue.readfile]
-        * [glue.writefile]
-      * _errors_
-        * [glue.assert]
-        * [glue.unprotect]
-        * [glue.pcall]
-        * [glue.fpcall, glue.fcall]
-      * _modules_
-        * [glue.autoload]
-    * [tuple]
-    * [coro]
-    * [pp]
-    * [oo]
-    * [vararg]
-    * [utf8]
-    * [dlist]
-    * [tricks]
+    * [glue](glue.html)
+    * [tuple](tuple.html)
+    * [coro](coro.html)
+    * [pp](pp.html)
+    * [oo](oo.html)
+    * [vararg](vararg.html)
+    * [utf8](utf8.html)
+    * [dlist](dlist.html)
+    * [tricks](lua_tricks.html)
   * Basic OS
-    * [lanes]
-    * [http://w3.impa.br/~diego/software/luasocket/reference.html luasocket]
-    * [http://keplerproject.github.com/luafilesystem/manual.html#reference lfs]
+    * [lanes](lanes.html)
+    * [luasocket]
+    * [lfs]
   * Hashing and compression
-    * [md5]
-    * [sha2]
-    * [hmac]
-    * [zlib]
-    * [minizip]
-    * [pmurhash]
-    * [murmurhash3]
-    * [crc32]
+    * [md5](md5.html)
+    * [sha2](sha2.html)
+    * [hmac](hmac.html)
+    * [zlib](zlib.html)
+    * [minizip](minizip.html)
+    * [pmurhash](pmurhash.html)
+    * [murmurhash3](murmurhash3.html)
+    * [crc32](crc32.html)
   * Internet formats
-    * [libb64]
-    * [expat]
-    * [genx]
+    * [libb64](libb64.html)
+    * [expat](expat.html)
+    * [genx](genx.html)
   * Databases
-    * [mysql]
-    * [fbclient]
-  * [winapi Windows API]
-    * [WinapiDesign tech. doc]
-    * [WinapiBinding dev. doc]
-    * [WinapiHistory history]
-    * [windesigner]
+    * [mysql](mysql.html)
+    * [fbclient](fbclient.html)
+  * Windows API
+    * [WinAPI](winapi.html)
+    * [tech. doc](winapi_design.html)
+    * [dev. doc](winapi_binding.html)
+    * [history](winapi_history.html)
+    * [windesigner](windesigner.html)
   * 2D Vector Graphics
-    * [path]
-      * [path_point]
-      * [path_line]
-      * [path_bezier2]
-      * [path_bezier3]
-      * [path_arc]
-      * [path_svgarc]
-      * [path_arc_3p]
-      * [path_shapes]
-      * [path_circle_3p]
-    * [affine2d]
-    * [clipper]
-    * [cairo]
-    * [openvg]
-    * [sg_cairo]
-    * [svg_parser]
+    * [path](path.html)
+      * [path_point](path_point.html)
+      * [path_line](path_line.html)
+      * [path_bezier2](path_bezier2.html)
+      * [path_bezier3](path_bezier3.html)
+      * [path_arc](path_arc.html)
+      * [path_svgarc](path_svgarc.html)
+      * [path_arc_3p](path_arc_3p.html)
+      * [path_shapes](path_shapes.html)
+      * [path_circle_3p](path_circle_3p.html)
+    * [affine2d](affine2d.html)
+    * [clipper](clipper.html)
+    * [cairo](cairo.html)
+    * [openvg](openvg.html)
+    * [sg_cairo](sg_cairo.html)
+    * [svg_parser](svg_parser.html)
   * Text Layouting & Rasterization
-    * [freetype]
-    * [harfbuzz]
-    * [libunibreak]
+    * [freetype](freetype.html)
+    * [harfbuzz](harfbuzz.html)
+    * [libunibreak](libunibreak.html)
   * 3D Graphics
-    * [opengl]
-    * [sg_gl]
-      * [sg_gl_mesh]
-      * [sg_gl_shape]
-      * [sg_gl_obj]
-      * [sg_gl_debug]
-    * [obj_parser]
-    * [obj_loader]
+    * [opengl](opengl.html)
+    * [sg_gl](sg_gl.html)
+      * [sg_gl_mesh](sg_gl_mesh.html)
+      * [sg_gl_shape](sg_gl_shape.html)
+      * [sg_gl_obj](sg_gl_obj.html)
+      * [sg_gl_debug](sg_gl_debug.html)
+    * [obj_parser](obj_parser.html)
+    * [obj_loader](obj_loader.html)
   * Raster Images
-    * [bitmap]
-    * [giflib]
-    * [libjpeg]
-    * [nanojpeg]
-    * [libpng]
-    * [libexif]
-    * [imagefile]
+    * [bitmap](bitmap.html)
+    * [giflib](giflib.html)
+    * [libjpeg](libjpeg.html)
+    * [nanojpeg](nanojpeg.html)
+    * [libpng](libpng.html)
+    * [libexif](libexif.html)
+    * [imagefile](imagefile.html)
   * GUI
-    * [cplayer]
-    * [codedit]
-    * [box2d]
+    * [cplayer](cplayer.html)
+    * [codedit](codedit.html)
+    * [box2d](box2d.html)
   * Colors
-    * [color]
+    * [color](color.html)
   * Animation
-    * [easing]
+    * [easing](easing.html)
   * Physics
-    * [chipmunk]
+    * [chipmunk](chipmunk.html)
   * Video
-    * [http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html libvlc]
+    * [libvlc]
   * General purpose math
-    * [eq2]
-    * [eq3]
+    * [eq2](eq2.html)
+    * [eq3](eq3.html)
   * Text proofing
-    * [hunspell]
+    * [hunspell](hunspell.html)
   * Prose
-    * [APIDesign API Design Notes]
-    * [GoodLibraries Good Libraries]
+    * [API Design Notes](api_design.html)
+    * [Good Libraries](good_libraries.html)
+
+
+[luasocket]: http://w3.impa.br/~diego/software/luasocket/reference.html
+[lfs]: http://keplerproject.github.com/luafilesystem/manual.html#reference
+[libvlc]: http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html
+

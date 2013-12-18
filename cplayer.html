@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title>   </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>procedural graphics player with immediate mode GUI toolkit</p>
+<p>v1.0 | <a href="http://code.google.com/p/lua-files/source/browse/cplayer.lua">code</a> | <a href="http://code.google.com/p/lua-files/source/browse/cplayer_demo.lua">demo</a> | LuaJIT 2 | Windows</p>
+<h2 id="local-player-requirecplayer"><code>local player = require'cplayer'</code></h2>
+<p>cplayer is a sandbox environment for making tests and demos of the various 2D libraries around here.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>single rendering event receiving a cairo context to draw the frame with</li>
+<li>simplified access to keyboard and mouse state</li>
+<li>a bunch of very easy to use immediate mode GUI widgets for making interactive demos</li>
+<li>user-selectable color themes</li>
+</ul>
+<h2 id="how-it-works">How it works</h2>
+<ol style="list-style-type: decimal">
+<li><p>You define the function <code>player:on_render(cr)</code> in which you draw your frame using the <code>cr</code> argument which is a [cairo] context. The function gets called continuously on a <code>1 ms</code> timer. The current framerate is displayed on the title bar.</p></li>
+<li><p>You call <code>player:play()</code> to display the player's main window and enter the Windows message loop. The function returns after the user has closed the window.</p></li>
+</ol>
+<p><em>Quick example:</em> <sub>~</sub>{.lua} local player = require'cplayer'</p>
+<p>function player:on_render(cr) --draw a red square cr:set_source_rgb(1, 0, 0) cr:rectangle(100, 100, 100, 100) cr:fill() end</p>
+<p>player:play() <sub>~</sub></p>
+<h3 id="mouse-state">Mouse state</h3>
+<table>
+<col width="45%" />
+<col width="55%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>self.mousex</code><br><code>self.mousey</code> <code>self.clicked</code> <code>self.rightclick</code> <code>self.doubleclicked</code> <code>self.lbutton</code> <code>self.rbutton</code> <code>self.wheel_delta</code> <code>self:hotbox(x, y, w, h) -&gt; true | false</code></td>
+<td align="right">mouse coordinates in device space<br>use <code>cr:device_to_user()</code> to translate them true if the left mouse button was clicked (one-shot) true if the right mouse button was clicked (one-shot) true if the left mouse button was double-clicked (one-shot) true if the left mouse button is down true if the right mouse button is down mouse wheel movement as number of scroll pages (one-shot) check if the mouse hovers a rectangle</td>
+</tr>
+<tr class="even">
+<td align="left">### Keyboard state</td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+<p><code>self.key</code> set if a key was pressed (one-shot); values are 'left', 'right', etc. (see source for complete list of key names; one-shot) <code>self.char</code> set if a key combination representing a unicode character was pressed (one-shot); value is the character in utf-8 <code>self.shift</code> true if shift key is pressed; only check it when <code>self.key</code> is set <code>self.ctrl</code> true if alt key is pressed; only check it when <code>self.key</code> is set <code>self.alt</code> true if control key is pressed; only check it when <code>self.key</code> is set <code>self:keypressed(keyname) -&gt; true | false</code> check if a key is pressed</p>
+<p><em>Note:</em> one-shot means that the value is only available for the current frame, then it is cleared. With very slow framerates, some mouse or key events could be lost (for simplicity, there's no event queue).</p>
+<h3 id="wall-clock">Wall clock</h3>
+<p>A wall clock in milliseconds is available as <code>self.clock</code>. Interpolating your animations over clock deltas will result in framerate-independent animations. Currently, it is used to blink the editbox caret.</p>
+<h3 id="mouse-cursor">Mouse cursor</h3>
+<ul>
+<li><code>self.cursor = &lt;name&gt;</code></li>
+</ul>
+<p>Changes the mouse pointer to one of the standard pointers: 'link', 'text', 'busy', etc. Look at the <code>cursors</code> table for the full list. The variable is not retained between frames, so it must be set every time to keep the mouse pointer changed otherwise the pointer will revert back to normal.</p>
+<h3 id="theme-aware-api">Theme-aware API</h3>
+<ul>
+<li><code>self:setcolor(color)</code></li>
+<li><code>self:fill(color)</code></li>
+<li><code>self:stroke(color[, line_width])</code></li>
+<li><code>self:fillstroke([fill_color], [stroke_color][, line_width])</code></li>
+</ul>
+<p>The color argument can be either a color name from the current theme, a hex color in <code>#rrggbb</code> or <code>#rrggbbaa</code> format, or a table of form <code>{r, g, b, a}</code> where each channel is in the <code>0..1</code> range. Look at <code>player.themes.*</code> tables for available themes and color names. To change the current theme just set <code>self.theme</code> to a different theme table. Controls also have a <code>theme</code> parameter.</p>
+<h3 id="drawing-helpers">Drawing helpers</h3>
+<ul>
+<li><code>self:dot(x, y, r, [fill_color], [stroke_color][, line_width])</code></li>
+<li><code>self:rect(x, y, w, h, [fill_color], [stroke_color][, line_width])</code></li>
+<li><code>self:circle(x, y, r, [fill_color], [stroke_color][, line_width])</code></li>
+<li><code>self:line(x1, y1, x2, y2, [stroke_color][, line_width])</code></li>
+<li><code>self:curve(x1, y1, x2, y2, x3, y3, x4, y4, [stroke_color][, line_width])</code></li>
+<li><code>self:text(text, font_size, color, halign, valign, x, y, w, h)</code></li>
+<li><code>self:text_path(text, font_size, halign, valign, x, y, w, h)</code>
+<ul>
+<li>halign = 'center', 'left', 'right'</li>
+<li>valign = 'middle', 'top', 'bottom'</li>
+</ul></li>
+</ul>
+<h3 id="gui-widgets">GUI widgets</h3>
+<p>The GUI Widgets are implemented in <code>cplayer/*.lua</code>. The modules are loaded automatically as needed. For the full list of available widgets and the module where each is implemented in, look for <code>autoload</code> in the code. The player demo should also include a usage example for each widget.</p>
+<p><em>Quick example:</em> <sub><del>{.lua} if self:button{id = 'ok', x = 100, y = 100, w = 100, h = 24, text = 'Okay'} then print'button pressed' end</del></sub></p>
+<h3 id="additional-windows">Additional windows</h3>
+<p>You can create and show additional windows from the main window with <code>self:window()</code>. Windows are not like other widget methods: each invocation of <code>self:window()</code> creates a new window on screen that doesn't close when the frame ends, but persists until the user closes it (I'll probably change that in the future and have a unique window per id and activate it when invoked and set <code>self.active</code> or something).</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">window</span> <span class="ot">=</span> <span class="kw">self</span>:window<span class="ot">{</span>
+   <span class="kw">w</span> <span class="ot">=</span> <span class="dv">500</span><span class="ot">,</span> <span class="kw">h</span> <span class="ot">=</span> <span class="dv">300</span><span class="ot">,</span> <span class="kw">title</span> <span class="ot">=</span> <span class="st">&#39;Ima window&#39;</span><span class="ot">,</span>
+   <span class="kw">on_render</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">cr</span><span class="ot">)</span>
+      <span class="ot">...</span>
+   <span class="kw">end</span><span class="ot">}</span></code></pre>
+			</section>
+		</div>
+
+	</body>
+</html>

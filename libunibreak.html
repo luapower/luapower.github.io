@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title>   </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<h1 id="libunibreak">libunibreak</h1>
+<p>libunibreak ffi binding (unicode line &amp; word breaking)</p>
+<p>v1.0 | <a href="http://code.google.com/p/lua-files/source/browse/libunibreak.lua">binding</a> | <a href="http://code.google.com/p/lua-files/source/browse/libunibreak_demo.lua">demo</a> |libunibreak 0.6.21 | LuaJIT 2</p>
+<h2 id="local-ub-requirelibunibreak"><code>local ub = require'libunibreak'</code></h2>
+<p>A ffi binding to <a href="http://vimgadgets.sourceforge.net/libunibreak/">libunibreak</a>, a C library implementing the <a href="http://www.unicode.org/reports/tr14/">unicode line breaking algorithm</a> and word breaking from <a href="http://www.unicode.org/reports/tr29/">unicode text segmentation</a>.</p>
+<h2 id="line-breaking">Line breaking</h2>
+<p><code>ub.linebreaks_utf8(s[,size[,lang]]) -&gt; line_breaks</code> get the line breaks <code>ub.linebreaks_utf16(s[,size[,lang]]) -&gt; line_breaks</code> get the line breaks <code>ub.linebreaks_utf32(s[,size[,lang]]) -&gt; line_breaks</code> get the line breaks</p>
+<p>The returned <code>line_breaks</code> is a 0-based array of flags, one for each byte of the input string:</p>
+<p>0 Break is mandatory. 1 Break is allowed. 2 No break is possible. 3 A UTF-8/16 sequence is unfinished.</p>
+<h2 id="word-breaking">Word breaking</h2>
+<p><code>ub.wordbreaks_utf8(s[,size[,lang]]) -&gt; word_breaks</code> get the word breaks <code>ub.wordbreaks_utf16(s[,size[,lang]]) -&gt; word_breaks</code> get the word breaks <code>ub.wordbreaks_utf32(s[,size[,lang]]) -&gt; word_breaks</code> get the word breaks</p>
+<p>The returned <code>word_breaks</code> is a 0-based array of flags, one for each byte of the input string:</p>
+<p>0 Break is allowed. 1 No break is allowed. 2 A UTF-8/16 sequence is unfinished.</p>
+<h2 id="unicode-helpers">Unicode helpers</h2>
+<p><code>ub.chars_utf8(s) -&gt; iter() -&gt; i, codepoint</code> codepoint iterator <code>ub.chars_utf16(s) -&gt; iter() -&gt; i, codepoint</code> codepoint iterator <code>ub.chars_utf32(s) -&gt; iter() -&gt; i, codepoint</code> codepoint iterator <code>ub.len_utf8(s[,size]) -&gt; len</code> number of codepoints in string <code>ub.len_utf16(s[,size]) -&gt; len</code> number of codepoints in string <code>ub.len_utf32(s[,size]) -&gt; len</code> number of codepoints in string</p>
+			</section>
+		</div>
+
+	</body>
+</html>

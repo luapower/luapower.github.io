@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> pp   - fast pretty-printing &amp; serialization </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> pp </h1>
+							<h2> fast pretty-printing &amp; serialization </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/pp" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/pp/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/pp/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v0.9b | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+<h2 id="local-pp-requirepp"><code>local pp = require'pp'</code></h2>
+<p>Fast, compact serialization producing portable Lua source code.</p>
+<p>Can serialize all Lua types except coroutines, userdata, cdata and C functions.</p>
+<p>Any type featuring the <code>__pwrite</code> metamethod can also be serialized.</p>
+<h3 id="output-characteristics">Output characteristics:</h3>
+<ul>
+<li><em>compact</em>: no spaces, dot notation for identifier keys, minimal quoting of strings, implicit keys for the array part of tables.</li>
+<li><em>portable</em> between LuaJIT 2, Lua 5.1, Lua 5.2: dot key notation only for ascii identifiers, numbers are in decimal.</li>
+<li><em>portable</em> between Windows, Linux, Mac: quoting of and protects binary integrity when opening in text mode.</li>
+<li><em>embeddable</em>: can be copy-pasted into Lua source code: quoting of  and protects binary integrity with code editors.</li>
+<li><em>human readable</em>: indentation (optional, configurable); array part printed separately with implicit keys.</li>
+<li><em>stream-based</em>: the string bits are written with a writer function to minimize the amount of string concatenation and memory footprint.</li>
+</ul>
+<h3 id="limitations">Limitations:</h3>
+<ul>
+<li>non-deterministic output: table keys are not sorted.</li>
+<li>recursive: stack-bound on depth.</li>
+<li>some fractions are not compact eg. the fraction 5/6 takes 19 bytes vs 8 bytes native.</li>
+<li>strings need escaping which could become noticeable with large strings featuring many newlines, tabs, zero bytes, apostrophes, backslashes or control characters.</li>
+<li>table references are dereferenced without warning thus object identity is not tracked and is not preserved.</li>
+<li>loading back the output with the Lua interpreter is not safe and can DoS Lua with infinite loops or infinite heap allocations, even when the loading environment itself is clean.</li>
+</ul>
+<h2 id="pp.ppv1..."><code>pp.pp(v1,...)</code></h2>
+<p>Pretty-print the arguments to standard output. Cycle detection and indentation are enabled and unserializable values get a comment in place.</p>
+<h2 id="pp.pwritevwriteindentparentsquoteonerror"><code>pp.pwrite(v,write[,indent][,parents][,quote][,onerror])</code></h2>
+<p>Pretty-print a value using a supplied write function that takes a string. The other arguments are: * <code>indent</code> - enable indentation eg. <code>'\t'</code> indents by one tab (default is compact output with no whitespace) * <code>parents</code> - enable cycle detection eg. <code>{}</code> * <code>quote</code> - change string quoting eg. <code>'&quot;'</code> (default is &quot;'&quot;) * <code>onerror</code> - enable error handling eg. <code>function(err_type, v, depth) error(err_type..': '..tostring(v)) end</code></p>
+<p>Note: wrapping to_sink into a coroutine with <code>coroutine.wrap</code> and passing <code>coroutine.yield</code> as the write function turns the serialization process into an iterator.</p>
+<h2 id="pp.fwritefilevindentparentsquoteonerror"><code>pp.fwrite(file,v[,indent][,parents][,quote][,onerror])</code></h2>
+<p>Pretty-print a value to a file.</p>
+<h2 id="pp.pformatvindentparentsquoteonerror---s"><code>pp.pformat(v[,indent][,parents][,quote][,onerror]) -&gt; s</code></h2>
+<p>Pretty-print a value to a string.</p>
+			</section>
+		</div>
+
+	</body>
+</html>

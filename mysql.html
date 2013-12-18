@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> mysql   - mysql ffi binding </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> mysql </h1>
+							<h2> mysql ffi binding </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/mysql" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/mysql/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/mysql/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.1.1 | mysql Connector/C 6.1 | LuaJIT 2</p>
+<h2 id="local-mysql-requiremysql"><code>local mysql = require'mysql'</code></h2>
+<p>A complete, lightweight ffi binding of the mysql client library.</p>
+<h2 id="summary">Summary</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong><a href="#connections">Connections</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>mysql.connect(host, [user], [pass], [db], [charset], [port]) -&gt; conn</code></td>
+<td align="left">connect to a mysql server</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mysql.connect(options_t) -&gt; conn</code></td>
+<td align="left">connect to a mysql server</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:close()</code></td>
+<td align="left">close the connection</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong><a href="#queries">Queries</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:query(s)</code></td>
+<td align="left">execute a query</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:escape(s) -&gt; s</code></td>
+<td align="left">escape an SQL string</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#fetching-results">Fetching results</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:store_result() -&gt; result</code></td>
+<td align="left">get a cursor for buffered read (<a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-store-result.html">manual</a>)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:use_result() -&gt; result</code></td>
+<td align="left">get a cursor for unbuffered read (<a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-use-result.html">manual</a>)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>result:fetch([mode[, row_t]]) -&gt; true, v1, v2, ... | row_t | nil</code></td>
+<td align="left">fetch the next row from the result</td>
+</tr>
+<tr class="even">
+<td align="left"><code>result:rows([mode[, row_t]]) -&gt; iterator() -&gt; row_num, val1, val2, ...</code></td>
+<td align="left">row iterator</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>result:rows([mode[, row_t]]) -&gt; iterator() -&gt; row_num, row_t</code></td>
+<td align="left">row iterator</td>
+</tr>
+<tr class="even">
+<td align="left"><code>result:free()</code></td>
+<td align="left">free the cursor</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>result:row_count() -&gt; n</code></td>
+<td align="left">number of rows</td>
+</tr>
+<tr class="even">
+<td align="left"><code>result:eof() -&gt; true | false</code></td>
+<td align="left">check if no more rows</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>result:seek(row_number)</code></td>
+<td align="left">seek to row number</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#query-info">Query info</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:field_count() -&gt; n</code></td>
+<td align="left">number of result fields in the executed query</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:affected_rows() -&gt; n</code></td>
+<td align="left">number of affected rows in the executed query</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:insert_id() -&gt; n</code></td>
+<td align="left">the id of the autoincrement column in the executed query</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:errno() -&gt; n</code></td>
+<td align="left">mysql error code (0 if no error) from the executed query</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:sqlstate() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:warning_count() -&gt; n</code></td>
+<td align="left">number of errors, warnings, and notes from executed query</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:info() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#field-info">Field info</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>result:field_count() -&gt; n</code></td>
+<td align="left">number of fields in the result</td>
+</tr>
+<tr class="even">
+<td align="left"><code>result:field_name(field_number) -&gt; s</code></td>
+<td align="left">field name given field index</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>result:field_type(field_number) -&gt; type, length, unsigned, decimals</code></td>
+<td align="left">field type given field index</td>
+</tr>
+<tr class="even">
+<td align="left"><code>result:field_info(field_number) -&gt; info_t</code></td>
+<td align="left">field info table</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>result:fields() -&gt; iterator() -&gt; i, info_t</code></td>
+<td align="left">field info iterator</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#result-bookmarks">Result bookmarks</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>result:tell() -&gt; bookmark</code></td>
+<td align="left">bookmark the current row for later seek</td>
+</tr>
+<tr class="even">
+<td align="left"><code>result:seek(bookmark)</code></td>
+<td align="left">seek to a row bookmark</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong><a href="#multiple-statement-queries">Multiple statement queries</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:next_result() -&gt; true | false</code></td>
+<td align="left">skip to the next result set (<a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-next-result.html">manual</a>)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:more_results() -&gt; true | false</code></td>
+<td align="left">are there more result sets?</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#prepared-statements">Prepared statements</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:prepare(query) -&gt; stmt</code></td>
+<td align="left">prepare a query for multiple executions</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:exec()</code></td>
+<td align="left">execute a prepared statement</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:store_result()</code></td>
+<td align="left">store all the resulted rows to the client</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:fetch() -&gt; true | false | true, 'truncated'</code></td>
+<td align="left">fetch the next row</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:free_result()</code></td>
+<td align="left">free the current result buffers</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:close()</code></td>
+<td align="left">close the statement</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:next_result()</code></td>
+<td align="left">skip to the next result set</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:row_count() -&gt; n</code></td>
+<td align="left">number of rows in the result, if the result was stored</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:affected_rows() -&gt; n</code></td>
+<td align="left">number of affected rows after execution</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:insert_id() -&gt; n</code></td>
+<td align="left">the id of the autoincrement column after execution</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:field_count() -&gt; n</code></td>
+<td align="left">number of fields in the result after execution</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:errno() -&gt; n</code></td>
+<td align="left">mysql error code, if any, from the executed statement</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:sqlstate() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:result_metadata() -&gt; result</code></td>
+<td align="left">get a result for accessing the field info</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:fields() -&gt; iterator() -&gt; i, info_t</code></td>
+<td align="left">iterate the result fields info</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:reset()</code></td>
+<td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-reset.html">manual</a></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:seek(row_number)</code></td>
+<td align="left">seek to row number</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:tell() -&gt; bookmark</code></td>
+<td align="left">get a bookmark in the current result</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:seek(bookmark)</code></td>
+<td align="left">seek to a row bookmark in the current result</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#prepared-statements-io">Prepared statements I/O</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:bind_params(type1, ... | types_t) -&gt; params</code></td>
+<td align="left">bind query parameters based on type definitions</td>
+</tr>
+<tr class="even">
+<td align="left"><code>params:set(i, number | int64_t | uint64_t | true | false)</code></td>
+<td align="left">set an integer, float or bit param</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>params:set(i, s[, size])</code></td>
+<td align="left">set a variable sized param</td>
+</tr>
+<tr class="even">
+<td align="left"><code>params:set(i, cdata, size)</code></td>
+<td align="left">set a variable sized param</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>params:set(i, {year=, month=, ...})</code></td>
+<td align="left">set a time/date param</td>
+</tr>
+<tr class="even">
+<td align="left"><code>params:set_date(i, [year], [month], [day], [hour], [min], [sec], [frac])</code></td>
+<td align="left">set a time/date param</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:write(param_number, data[, size])</code></td>
+<td align="left">send a long param in chunks</td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:bind_result([type1, ... | types_t | maxsize]) -&gt; fields</code></td>
+<td align="left">bind query result fields based on type definitions</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>fields:get(i) -&gt; value</code></td>
+<td align="left">get the current row value of a field</td>
+</tr>
+<tr class="even">
+<td align="left"><code>fields:get_datetime(i) -&gt; year, month, day, hour, min, sec, frac</code></td>
+<td align="left">get the value of a date/time field directly</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>fields:is_null(i) -&gt; true | false</code></td>
+<td align="left">is field null?</td>
+</tr>
+<tr class="even">
+<td align="left"><code>fields:is_truncated(i) -&gt; true | false</code></td>
+<td align="left">was field value truncated?</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong><a href="#prepared-statements-settings">Prepared statements settings</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:update_max_length() -&gt; true | false</code></td>
+<td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:set_update_max_length(true | false)</code></td>
+<td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:cursor_type() -&gt; mysql.C.MYSQL_CURSOR_TYPE_*</code></td>
+<td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:set_cursor_type('CURSOR_TYPE_...')</code></td>
+<td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:set_cursor_type(mysql.C.MYSQL_CURSOR_TYPE_...)</code></td>
+<td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>stmt:prefetch_rows() -&gt; n</code></td>
+<td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
+</tr>
+<tr class="even">
+<td align="left"><code>stmt:set_prefetch_rows(stmt, n)</code></td>
+<td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong><a href="#connection-info">Connection info</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:set_charset(charset)</code></td>
+<td align="left">change the current charset</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:select_db(dbname)</code></td>
+<td align="left">change the current database</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:change_user(user, [pass], [db])</code></td>
+<td align="left">change the current user (and database)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:set_multiple_statements(true | false)</code></td>
+<td align="left">enable/disable support for multiple statements</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:charset() -&gt; s</code></td>
+<td align="left">get current charset's name</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:charset_info() -&gt; info_t</code></td>
+<td align="left">get info about the current charset</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:ping() -&gt; true | false</code></td>
+<td align="left">check if the connection is still alive</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:thread_id() -&gt; id</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:stat() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:server_info() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:host_info() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:server_version() -&gt; n</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:proto_info() -&gt; n</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:ssl_cipher() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#transactions">Transactions</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:commit()</code></td>
+<td align="left">commit the current transaction</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:rollback()</code></td>
+<td align="left">rollback the current transaction</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:set_autocommit([true | false])</code></td>
+<td align="left">enable/disable autocommit on the current connection</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#reflection">Reflection</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:list_dbs([wildcard]) -&gt; result</code></td>
+<td align="left">return info about databases as a result object</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:list_tables([wildcard]) -&gt; result</code></td>
+<td align="left">return info about tables as a result object</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:list_processes() -&gt; result</code></td>
+<td align="left">return info about processes as a result object</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><a href="#remote-control">Remote control</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:kill(pid)</code></td>
+<td align="left">kill a connection based on process id</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:shutdown([level])</code></td>
+<td align="left">shutdown the server</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>conn:refresh(options)</code></td>
+<td align="left">flush tables or caches</td>
+</tr>
+<tr class="even">
+<td align="left"><code>conn:dump_debug_info()</code></td>
+<td align="left">dump debug info in the log file</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong><a href="#client-library-info">Client library info</a></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>mysql.thread_safe() -&gt; true | false</code></td>
+<td align="left">was the client library compiled as thread-safe?</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mysql.client_info() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>mysql.client_version() -&gt; n</code></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="features">Features:</h2>
+<ul>
+<li>covers all of the functionality provided by the mysql C API</li>
+<li>all data types are supported with options for conversion</li>
+<li>prepared statements, avoiding dynamic allocations and format conversions when fetching rows</li>
+<li>all C calls are checked for errors and Lua errors are raised</li>
+<li>all C objects are tied to Lua's garbage collector</li>
+<li>lightweight OOP-style API using only <code>ffi.metatype</code></li>
+<li>no external dependencies</li>
+</ul>
+<h2 id="example">Example:</h2>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> print_help<span class="ot">(</span><span class="kw">search</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">mysql</span> <span class="ot">=</span> require<span class="st">&#39;mysql&#39;</span>
+
+   <span class="kw">local</span> <span class="kw">conn</span> <span class="ot">=</span> <span class="kw">mysql</span><span class="ot">.</span>connect<span class="ot">(</span><span class="st">&#39;localhost&#39;</span><span class="ot">,</span> <span class="st">&#39;root&#39;</span><span class="ot">,</span> <span class="kw">nil</span><span class="ot">,</span> <span class="st">&#39;mysql&#39;</span><span class="ot">,</span> <span class="st">&#39;utf8&#39;</span><span class="ot">)</span>
+   <span class="kw">conn</span>:query<span class="ot">(</span><span class="st">&quot;select name, description, example from help_topic where name like &#39;&quot;</span> <span class="ot">..</span> <span class="kw">conn</span>:escape<span class="ot">(</span><span class="kw">search</span><span class="ot">)</span> <span class="ot">..</span> <span class="st">&quot;&#39;&quot;</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">result</span> <span class="ot">=</span> <span class="kw">conn</span>:store_result<span class="ot">()</span>
+
+   <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;Found:&#39;</span><span class="ot">)</span>
+   <span class="kw">for</span> <span class="kw">i</span><span class="ot">,</span><span class="kw">name</span> <span class="kw">in</span> <span class="kw">result</span>:rows<span class="ot">()</span> <span class="kw">do</span>
+      <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;  &#39;</span> <span class="ot">..</span> <span class="kw">name</span><span class="ot">)</span>
+   <span class="kw">end</span>
+
+   <span class="fu">print</span><span class="ot">()</span>
+   <span class="kw">for</span> <span class="kw">i</span><span class="ot">,</span> <span class="kw">name</span><span class="ot">,</span> <span class="kw">description</span><span class="ot">,</span> <span class="kw">example</span> <span class="kw">in</span> <span class="kw">result</span>:rows<span class="ot">()</span> <span class="kw">do</span>
+      <span class="fu">print</span><span class="ot">(</span><span class="kw">name</span><span class="ot">)</span>
+      print<span class="st">&#39;-------------------------------------------&#39;</span>
+      <span class="fu">print</span><span class="ot">(</span><span class="kw">description</span><span class="ot">)</span>
+      print<span class="st">&#39;Example:&#39;</span>
+      print<span class="st">&#39;-------------------------------------------&#39;</span>
+      <span class="fu">print</span><span class="ot">(</span><span class="kw">example</span><span class="ot">)</span>
+      <span class="fu">print</span><span class="ot">()</span>
+   <span class="kw">end</span>
+
+   <span class="kw">result</span>:free<span class="ot">()</span>
+   <span class="kw">conn</span>:<span class="fu">close</span><span class="ot">()</span>
+<span class="kw">end</span>
+
+print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
+<h1 id="connections">Connections</h1>
+<h2 id="mysql.connecthost-user-pass-db-charset-port---conn"><code>mysql.connect(host, [user], [pass], [db], [charset], [port]) -&gt; conn</code></h2>
+<h2 id="mysql.connectoptions_t---conn"><code>mysql.connect(options_t) -&gt; conn</code></h2>
+<p>Connect to a mysql server, optionally selecting a working database and charset.</p>
+<p>In the second form, <code>options_t</code> is a table that besides <code>host</code>, <code>user</code>, <code>pass</code>, <code>db</code>, <code>charset</code>, <code>port</code> can have the following fields: * <code>unix_socket</code>: specify a unix socket filename to connect to * <code>flags</code>: bit field corresponding to mysql <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-real-connect.html">client_flag</a> parameter * can be a table of form <code>{CLIENT_... = true | false, ...}</code>, or * a number of form <code>bit.bor(mysql.C.CLIENT_..., ...)</code> * <code>options</code>: a table of form <code>{MYSQL_OPT_... = value, ...}</code>, containing options per <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-options.html">mysql_options()</a> (values are properly converted from Lua types) * <code>attrs</code>: a table of form <code>{attr = value, ...}</code> containing attributes to be passed to the server per <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-options4.html">mysql_options4()</a> * <code>key</code>, <code>cert</code>, <code>ca</code>, <code>cpath</code>, <code>cipher</code>: parameters used to establish a <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-ssl-set.html">SSL connection</a></p>
+<h2 id="connclose"><code>conn:close()</code></h2>
+<p>Close a mysql connection freeing all associated resources (otherwise called when <code>conn</code> is garbage collected).</p>
+<h1 id="queries">Queries</h1>
+<h2 id="connquerys"><code>conn:query(s)</code></h2>
+<p>Execute a query. If the query string contains multiple statements, only the first statement is executed (see the section on multiple statements).</p>
+<h2 id="connescapes---s"><code>conn:escape(s) -&gt; s</code></h2>
+<p>Escape a value to be safely embedded in SQL queries. Assumes the current charset.</p>
+<h1 id="fetching-results">Fetching results</h1>
+<h2 id="connstore_result---result"><code>conn:store_result() -&gt; result</code></h2>
+<p>Fetch all the rows in the current result set from the server and return a result object to read them one by one.</p>
+<h2 id="connuse_result---result"><code>conn:use_result() -&gt; result</code></h2>
+<p>Return a result object that will fetch the rows in the current result set from the server on demand.</p>
+<h2 id="resultfetchmode-row_t---true-v1-v2-...-row_t-nil"><code>result:fetch([mode[, row_t]]) -&gt; true, v1, v2, ... | row_t | nil</code></h2>
+<p>Fetch and return the next row of values from the current result set. Returns nil if there are no more rows to fetch. * the <code>mode</code> arg can contain any combination of the following letters: * <code>&quot;n&quot;</code> - return values in a table with numeric indices as keys. * <code>&quot;a&quot;</code> - return values in a table with field names as keys. * <code>&quot;s&quot;</code> - do not convert numeric and time values to Lua types. * the <code>row_t</code> arg is an optional table to store the row values in, instead of creating a new one on each fetch. * options &quot;a&quot; and &quot;n&quot; can be combined to get a table with both numeric and field name indices. * if <code>mode</code> is missing or if neither &quot;a&quot; nor &quot;n&quot; is specified, the values are returned to the caller unpacked, after a first value that is always true, to make it easy to distinguish between a valid <code>NULL</code> value in the first column and eof. * in &quot;n&quot; mode, the result table may contain <code>nil</code> values so <code>#row_t</code> and <code>ipairs(row_t)</code> are out; instead iterate from 1 to <code>result:field_count()</code>. * in &quot;a&quot; mode, for fields with duplicate names only the last field will be present. * if <code>mode</code> does not specify <code>&quot;s&quot;</code>, the following conversions are applied on the returned values: * integer types are returned as Lua numbers, except bigint which is returned as an <code>int64_t</code> cdata (or <code>uint64</code> if unsigned). * date/time types are returned as tables in the usual <code>os.date&quot;*t&quot;</code> format (date fields are missing for time-only types and viceversa). * decimal/numeric types are returned as Lua strings. * bit types are returned as Lua numbers, and as <code>uint64_t</code> for bit types larger than 48 bits. * enum and set types are always returned as strings.</p>
+<h2 id="resultrowsmode-row_t---iterator---row_num-val1-val2-..."><code>result:rows([mode[, row_t]]) -&gt; iterator() -&gt; row_num, val1, val2, ...</code></h2>
+<h2 id="resultrowsmode-row_t---iterator---row_num-row_t"><code>result:rows([mode[, row_t]]) -&gt; iterator() -&gt; row_num, row_t</code></h2>
+<p>Convenience iterator for fetching (or refetching) all the rows from the current result set. The <code>mode</code> arg is the same as for <code>result:fetch()</code>, with the exception that in unpacked mode, the first <code>true</code> value is not present.</p>
+<h2 id="resultfree"><code>result:free()</code></h2>
+<p>Free the result buffer (otherwise called when <code>result</code> is garbage collected).</p>
+<h2 id="resultrow_count---n"><code>result:row_count() -&gt; n</code></h2>
+<p>Return the number of rows in the current result set . This value is only correct if <code>result:store_result()</code> was previously called or if all the rows were fetched, in other words if <code>result:eof()</code> is true.</p>
+<h2 id="resulteof---true-false"><code>result:eof() -&gt; true | false</code></h2>
+<p>Check if there are no more rows to fetch. If <code>result:store_result()</code> was previously called, then all rows were already fetched, so <code>result:eof()</code> always returns <code>true</code> in this case.</p>
+<h2 id="resultseekrow_number"><code>result:seek(row_number)</code></h2>
+<p>Seek back to a particular row number to refetch the rows from there.</p>
+<h1 id="query-info">Query info</h1>
+<h2 id="connfield_count---n"><code>conn:field_count() -&gt; n</code></h2>
+<h2 id="connaffected_rows---n"><code>conn:affected_rows() -&gt; n</code></h2>
+<h2 id="conninsert_id---n"><code>conn:insert_id() -&gt; n</code></h2>
+<h2 id="connerrno---n"><code>conn:errno() -&gt; n</code></h2>
+<h2 id="connsqlstate---s"><code>conn:sqlstate() -&gt; s</code></h2>
+<h2 id="connwarning_count---n"><code>conn:warning_count() -&gt; n</code></h2>
+<h2 id="conninfo---s"><code>conn:info() -&gt; s</code></h2>
+<p>Return various pieces of information about the previously executed query.</p>
+<h1 id="field-info">Field info</h1>
+<h2 id="resultfield_count---n"><code>result:field_count() -&gt; n</code></h2>
+<h2 id="resultfield_namefield_number---s"><code>result:field_name(field_number) -&gt; s</code></h2>
+<h2 id="resultfield_typefield_number---type-length-decimals-unsigned"><code>result:field_type(field_number) -&gt; type, length, decimals, unsigned</code></h2>
+<h2 id="resultfield_infofield_number---info_t"><code>result:field_info(field_number) -&gt; info_t</code></h2>
+<h2 id="resultfields---iterator---i-info_t"><code>result:fields() -&gt; iterator() -&gt; i, info_t</code></h2>
+<p>Return information about the fields (columns) in the current result set.</p>
+<h1 id="result-bookmarks">Result bookmarks</h1>
+<h2 id="resulttell---bookmark"><code>result:tell() -&gt; bookmark</code></h2>
+<p>Get a bookmark to the current row to be later seeked into with <code>seek()</code>.</p>
+<h2 id="resultseekbookmark"><code>result:seek(bookmark)</code></h2>
+<p>Seek to a previous saved row bookmark, or to a specific row number, fetching more rows as needed.</p>
+<h1 id="multiple-statement-queries">Multiple statement queries</h1>
+<h2 id="connnext_result---true-false"><code>conn:next_result() -&gt; true | false</code></h2>
+<p>Skip over to the next result set in a multiple statement query, and make that the current result set. Return true if there more result sets after this one.</p>
+<h2 id="connmore_results---true-false"><code>conn:more_results() -&gt; true | false</code></h2>
+<p>Check if there are more result sets after this one.</p>
+<h1 id="prepared-statements">Prepared statements</h1>
+<p>Prepared statements are a way to run queries and retrieve results more efficiently from the database, in particular: * parametrized queries allow sending query parameters in their native format, avoiding having to convert values into strings and escaping those strings. * running the same query multiple times with different parameters each time allows the server to reuse the parsed query and possibly the query plan between runs. * fetching the result rows in preallocated buffers avoids dynamic allocation on each row fetch.</p>
+<p>The flow for prepared statements is like this: * call <code>conn:prepare()</code> to prepare a query and get a statement object. * call <code>stmt:bind_params()</code> and <code>stmt:bind_result()</code> to get the buffer objects for setting params and getting row values. * run the query multiple times; each time: * call <code>params:set()</code> for each param to set param values. * call <code>stmt:exec()</code> to run the query. * fetch the resulting rows one by one; for each row: * call <code>stmt:fetch()</code> to get the next row (it returns false if it was the last row). * call <code>fields:get()</code> to read the values of the fetched row. * call <code>stmt:close()</code> to free the statement object and all the associated resources from the server and client.</p>
+<h2 id="connpreparequery---stmt-params"><code>conn:prepare(query) -&gt; stmt, params</code></h2>
+<p>Prepare a query for multiple execution and return a statement object.</p>
+<h2 id="stmtexec"><code>stmt:exec()</code></h2>
+<p>Execute a prepared statement.</p>
+<h2 id="stmtstore_result"><code>stmt:store_result()</code></h2>
+<p>Fetch all the rows in the current result set from the server, otherwise the rows are fetched on demand.</p>
+<h2 id="stmtfetch---true-false-true-truncated"><code>stmt:fetch() -&gt; true | false | true, 'truncated'</code></h2>
+<p>Fetch the next row from the current result set. Use a binding buffer (see prepared statements I/O section) to get the row values. If present, second value indicates that at least one of the rows were truncated because the receiving buffer was too small for it.</p>
+<h2 id="stmtfree_result"><code>stmt:free_result()</code></h2>
+<p>Free the current result and all associated resources (otherwise the result is closed when the statement is closed).</p>
+<h2 id="stmtclose"><code>stmt:close()</code></h2>
+<p>Close a prepared statement and free all associated resources (otherwise the statement is closed when garbage collected).</p>
+<h2 id="stmtnext_result"><code>stmt:next_result()</code></h2>
+<p>Skip over to the next result set in a multiple statement query.</p>
+<h2 id="stmtrow_count---n"><code>stmt:row_count() -&gt; n</code></h2>
+<h2 id="stmtaffected_rows---n"><code>stmt:affected_rows() -&gt; n</code></h2>
+<h2 id="stmtinsert_id---n"><code>stmt:insert_id() -&gt; n</code></h2>
+<h2 id="stmtfield_count---n"><code>stmt:field_count() -&gt; n</code></h2>
+<h2 id="stmterrno---n"><code>stmt:errno() -&gt; n</code></h2>
+<h2 id="stmtsqlstate---s"><code>stmt:sqlstate() -&gt; s</code></h2>
+<h2 id="stmtresult_metadata---result"><code>stmt:result_metadata() -&gt; result</code></h2>
+<h2 id="stmtfields---iterator---i-info_t"><code>stmt:fields() -&gt; iterator() -&gt; i, info_t</code></h2>
+<p>Return various pieces of information on the executed statement.</p>
+<h2 id="stmtreset"><code>stmt:reset()</code></h2>
+<p>See <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-reset.html">manual</a>.</p>
+<h2 id="stmtseekrow_number"><code>stmt:seek(row_number)</code></h2>
+<h2 id="stmttell---bookmark"><code>stmt:tell() -&gt; bookmark</code></h2>
+<h2 id="stmtseekbookmark"><code>stmt:seek(bookmark)</code></h2>
+<p>Seek into the current result set.</p>
+<h1 id="prepared-statements-io">Prepared statements I/O</h1>
+<h2 id="stmtbind_paramstype1-...-types_t---params"><code>stmt:bind_params(type1, ... | types_t) -&gt; params</code></h2>
+<p>Bind query parameters according to a list of type definitions (which can be given either packed or unpacked). Return a binding buffer object to be used for setting parameters.</p>
+<p>The types must be valid, fully specified SQL types, eg. * <code>smallint unsigned</code> specifies a 16bit unsigned integer * <code>bit(32)</code> specifies a 32bit bit field * <code>varchar(200)</code> specifies a 200 byte varchar.</p>
+<h2 id="paramsseti-number-int64_t-uint64_t-true-false"><code>params:set(i, number | int64_t | uint64_t | true | false)</code></h2>
+<h2 id="paramsseti-s-size"><code>params:set(i, s[, size])</code></h2>
+<h2 id="paramsseti-cdata-size"><code>params:set(i, cdata, size)</code></h2>
+<h2 id="paramsseti-year-month-..."><code>params:set(i, {year=, month=, ...})</code></h2>
+<h2 id="paramsset_datei-year-month-day-hour-min-sec-frac"><code>params:set_date(i, [year], [month], [day], [hour], [min], [sec], [frac])</code></h2>
+<p>Set a parameter value. * the first form is for setting integers and bit fields. * the second and third forms are for setting variable-sized fields and decimal/numeric fields. * the last forms are for setting date/time/datetime/timestamp fields. * the null type cannot be set (raises an error if attempted).</p>
+<h2 id="stmtwriteparam_number-data-size"><code>stmt:write(param_number, data[, size])</code></h2>
+<p>Send a parameter value in chunks (for long, var-sized values).</p>
+<h2 id="stmtbind_resulttype1-...-types_t-maxsize---fields"><code>stmt:bind_result([type1, ... | types_t | maxsize]) -&gt; fields</code></h2>
+<p>Bind result fields according to a list of type definitions (same as for params). Return a binding buffer object to be used for getting row values. If no types are specified, appropriate type definitions will be created automatically as to minimize type conversions. Variable-sized fields will get a buffer sized according to data type's maximum allowed size and <code>maxsize</code> (which defaults to 64k).</p>
+<h2 id="fieldsgeti---value"><code>fields:get(i) -&gt; value</code></h2>
+<h2 id="fieldsget_datetimei---year-month-day-hour-min-sec-frac"><code>fields:get_datetime(i) -&gt; year, month, day, hour, min, sec, frac</code></h2>
+<p>Get a row value from the last fetched row. The same type conversions as for <code>result:fetch()</code> apply.</p>
+<h2 id="fieldsis_nulli---true-false"><code>fields:is_null(i) -&gt; true | false</code></h2>
+<p>Check if a value is null without having to get it if it's not.</p>
+<h2 id="fieldsis_truncatedi---true-false"><code>fields:is_truncated(i) -&gt; true | false</code></h2>
+<p>Check if a value was truncated due to insufficient buffer space.</p>
+<p>==<code>stmt:bind_result_types([maxsize]) -&gt; types_t</code></p>
+<p>Return the list of type definitions that describe the result of a prepared statement.</p>
+<h1 id="prepared-statements-settings">Prepared statements settings</h1>
+<h2 id="stmtupdate_max_length---true-false"><code>stmt:update_max_length() -&gt; true | false</code></h2>
+<h2 id="stmtset_update_max_lengthtrue-false"><code>stmt:set_update_max_length(true | false)</code></h2>
+<h2 id="stmtcursor_type---mysql.c.mysql_cursor_type_"><code>stmt:cursor_type() -&gt; mysql.C.MYSQL_CURSOR_TYPE_*</code></h2>
+<h2 id="stmtset_cursor_typecursor_type_..."><code>stmt:set_cursor_type('CURSOR_TYPE_...')</code></h2>
+<h2 id="stmtset_cursor_typemysql.c.mysql_cursor_type_..."><code>stmt:set_cursor_type(mysql.C.MYSQL_CURSOR_TYPE_...)</code></h2>
+<h2 id="stmtprefetch_rows---n"><code>stmt:prefetch_rows() -&gt; n</code></h2>
+<h2 id="stmtset_prefetch_rowsstmt-n"><code>stmt:set_prefetch_rows(stmt, n)</code></h2>
+<p>See <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a> for these.</p>
+<h1 id="connection-info">Connection info</h1>
+<h2 id="connset_charsetcharset"><code>conn:set_charset(charset)</code></h2>
+<p>Change the current charset.</p>
+<h2 id="connselect_dbdbname"><code>conn:select_db(dbname)</code></h2>
+<p>Change the current database.</p>
+<h2 id="connchange_useruser-pass-db"><code>conn:change_user(user, [pass], [db])</code></h2>
+<p>Change the current user and optionally select a database.</p>
+<h2 id="connset_multiple_statementstrue-false"><code>conn:set_multiple_statements(true | false)</code></h2>
+<p>Enable or disable support for query strings containing multiple statements separated by a semi-colon.</p>
+<h2 id="conncharset---s"><code>conn:charset() -&gt; s</code></h2>
+<p>Get the current charset.</p>
+<h2 id="conncharset_info---info_t"><code>conn:charset_info() -&gt; info_t</code></h2>
+<p>Return a table of information about the current charset.</p>
+<h2 id="connping---true-false"><code>conn:ping() -&gt; true | false</code></h2>
+<p>Check if the connection to the server is still alive.</p>
+<h2 id="connthread_id---id"><code>conn:thread_id() -&gt; id</code></h2>
+<h2 id="connstat---s"><code>conn:stat() -&gt; s</code></h2>
+<h2 id="connserver_info---s"><code>conn:server_info() -&gt; s</code></h2>
+<h2 id="connhost_info---s"><code>conn:host_info() -&gt; s</code></h2>
+<h2 id="connserver_version---n"><code>conn:server_version() -&gt; n</code></h2>
+<h2 id="connproto_info---n"><code>conn:proto_info() -&gt; n</code></h2>
+<h2 id="connssl_cipher---s"><code>conn:ssl_cipher() -&gt; s</code></h2>
+<p>Return various pieces of information about the connection and server.</p>
+<h1 id="transactions">Transactions</h1>
+<h2 id="conncommit"><code>conn:commit()</code></h2>
+<h2 id="connrollback"><code>conn:rollback()</code></h2>
+<p>Commit/rollback the current transaction.</p>
+<h2 id="connset_autocommittrue-false"><code>conn:set_autocommit([true | false])</code></h2>
+<p>Set autocommit on the connection (set to true if no argument is given).</p>
+<h1 id="reflection">Reflection</h1>
+<h2 id="connlist_dbswildcard---result"><code>conn:list_dbs([wildcard]) -&gt; result</code></h2>
+<h2 id="connlist_tableswildcard---result"><code>conn:list_tables([wildcard]) -&gt; result</code></h2>
+<h2 id="connlist_processes---result"><code>conn:list_processes() -&gt; result</code></h2>
+<p>Return information about databases, tables and proceses as a stored result object that can be iterated etc. using the methods of result objects. The optional <code>wild</code> parameter may contain the wildcard characters <code>&quot;%&quot;</code> or <code>&quot;_&quot;</code>, similar to executing the query <code>SHOW DATABASES [LIKE wild]</code>.</p>
+<h1 id="remote-control">Remote control</h1>
+<h2 id="connkillpid"><code>conn:kill(pid)</code></h2>
+<p>Kill a connection with a specific <code>pid</code>.</p>
+<h2 id="connshutdownlevel"><code>conn:shutdown([level])</code></h2>
+<p>Shutdown the server. <code>SHUTDOWN</code> priviledge needed. The level argument is reserved for future versions of mysql.</p>
+<h2 id="connrefreshoptions"><code>conn:refresh(options)</code></h2>
+<p>Flush tables or caches, or resets replication server information. <code>RELOAD</code> priviledge needed. Options are either a table of form <code>{REFRESH_... = true | false, ...}</code> or a number of form <code>bit.bor(mysql.C.MYSQL_REFRESH_*, ...)</code> and they are as described in the <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-refresh.html">mysql manual</a>.</p>
+<h2 id="conndump_debug_info"><code>conn:dump_debug_info()</code></h2>
+<p>Instruct the server to dump debug info in the log file. <code>SUPER</code> priviledge needed.</p>
+<h1 id="client-library-info">Client library info</h1>
+<h2 id="mysql.thread_safe---true-false"><code>mysql.thread_safe() -&gt; true | false</code></h2>
+<h2 id="mysql.client_info---s"><code>mysql.client_info() -&gt; s</code></h2>
+<h2 id="mysql.client_version---n"><code>mysql.client_version() -&gt; n</code></h2>
+<hr />
+<h2 id="todo">TODO</h2>
+<ul>
+<li>reader function for getting large blobs in chunks using mysql_stmt_fetch_column: <code>stmt:chunks(i[, bufsize])</code> or <code>stmt:read()</code> ?</li>
+<li>test with Linux, OSX, 64bit OSs</li>
+<li>support connecting against different runtimes (client_library option)</li>
+</ul>
+			</section>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title>   </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p><em>0.1a</em> | [WinapiDesign doc] | <a href="http://code.google.com/p/lua-files/source/browse/#hg%2Fwinapi">code</a> | LuaJIT 2</p>
+<h3 id="scope">Scope</h3>
+<p>Windows, common controls, auxiliary objects, dialogs, message loop.</p>
+<h3 id="design">Design</h3>
+<p>Procedural API with object API on top.</p>
+<h3 id="status">Status</h3>
+<p>In development, not active. Currently, windows and basic controls (buttons, edits, combos, tab controls etc.), as well as dialogs (color chooser, file open) and resource objects (image lists, fonts, cursors, etc.) are implemented, with a fair degree of feature coverage and some cherry on top.</p>
+<p>I also started working on a [windesigner designer] app that would serve as feature showcase, live testing environment, and ultimately as a GUI designer.</p>
+<h3 id="installation">Installation</h3>
+<p>Downloading <code>lua-files</code> will get you the winapi modules, the designer, and the luajit binary so you can start coding right away.<br> Just add <code>lua-files</code> to your <code>LUA_PATH</code> or <code>package.path</code> and run a few demos to make sure everything is properly found.</p>
+<p>The winapi modules are all in the <code>winapi</code> folder, you don't need any other modules outside of it except <code>glue.lua</code>.</p>
+<h3 id="example">Example</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">winapi</span> <span class="ot">=</span> require<span class="st">&#39;winapi&#39;</span>
+require<span class="st">&#39;winapi.messageloop&#39;</span>
+
+<span class="kw">local</span> <span class="kw">main</span> <span class="ot">=</span> <span class="kw">winapi</span><span class="ot">.</span>Window<span class="ot">{</span>
+   <span class="kw">title</span> <span class="ot">=</span> <span class="st">&#39;Demo&#39;</span><span class="ot">,</span>
+   <span class="kw">w</span> <span class="ot">=</span> <span class="dv">600</span><span class="ot">,</span> <span class="kw">h</span> <span class="ot">=</span> <span class="dv">400</span><span class="ot">,</span>
+   <span class="kw">autoquit</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span>
+<span class="ot">}</span>
+
+<span class="fu">os.exit</span><span class="ot">(</span><span class="kw">winapi</span><span class="ot">.</span>MessageLoop<span class="ot">())</span></code></pre>
+<h3 id="documentation-or-lack-thereof">Documentation, or lack thereof</h3>
+<p>There's no method-by-method documentation, but there's [WinapiDesign technical documentation], [WinapiBinding developer documentation], and a [WinapiHistory narrative] which should give you more context.</p>
+			</section>
+		</div>
+
+	</body>
+</html>

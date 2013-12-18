@@ -1,191 +1,140 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<base target="_parent" />
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 	</head>
 	<body>
 		<ul>
 <li>Basic tools
 <ul>
-<li>[glue]</li>
-<li><em>tables</em>
-<ul>
-<li>[glue.index]</li>
-<li>[glue.keys]</li>
-<li>[glue.update]</li>
-<li>[glue.merge]</li>
-<li>[glue.sortedpairs]</li>
-</ul></li>
-<li><em>lists</em>
-<ul>
-<li>[glue.extend]</li>
-<li>[glue.append]</li>
-<li>[glue.shift]</li>
-<li>[glue.reverse]</li>
-</ul></li>
-<li><em>strings</em>
-<ul>
-<li>[glue.gsplit]</li>
-<li>[glue.trim]</li>
-<li>[glue.escape]</li>
-<li>[glue.tohex]</li>
-<li>[glue.fromhex]</li>
-</ul></li>
-<li><em>iterators</em>
-<ul>
-<li>[glue.collect]</li>
-<li>[glue.ipcall]</li>
-</ul></li>
-<li><em>closures</em>
-<ul>
-<li>[glue.pass]</li>
-</ul></li>
-<li><em>metatables</em>
-<ul>
-<li>[glue.inherit]</li>
-</ul></li>
-<li><em>i/o</em>
-<ul>
-<li>[glue.fileexists]</li>
-<li>[glue.readfile]</li>
-<li>[glue.writefile]</li>
-</ul></li>
-<li><em>errors</em>
-<ul>
-<li>[glue.assert]</li>
-<li>[glue.unprotect]</li>
-<li>[glue.pcall]</li>
-<li>[glue.fpcall, glue.fcall]</li>
-</ul></li>
-<li><em>modules</em>
-<ul>
-<li>[glue.autoload]</li>
-</ul></li>
-<li>[tuple]</li>
-<li>[coro]</li>
-<li>[pp]</li>
-<li>[oo]</li>
-<li>[vararg]</li>
-<li>[utf8]</li>
-<li>[dlist]</li>
-<li>[tricks]</li>
+<li><a href="glue.html">glue</a></li>
+<li><a href="tuple.html">tuple</a></li>
+<li><a href="coro.html">coro</a></li>
+<li><a href="pp.html">pp</a></li>
+<li><a href="oo.html">oo</a></li>
+<li><a href="vararg.html">vararg</a></li>
+<li><a href="utf8.html">utf8</a></li>
+<li><a href="dlist.html">dlist</a></li>
+<li><a href="lua_tricks.html">tricks</a></li>
 </ul></li>
 <li>Basic OS
 <ul>
-<li>[lanes]</li>
-<li>[http://w3.impa.br/~diego/software/luasocket/reference.html luasocket]</li>
-<li>[http://keplerproject.github.com/luafilesystem/manual.html#reference lfs]</li>
+<li><a href="lanes.html">lanes</a></li>
+<li><a href="http://w3.impa.br/~diego/software/luasocket/reference.html">luasocket</a></li>
+<li><a href="http://keplerproject.github.com/luafilesystem/manual.html#reference">lfs</a></li>
 </ul></li>
 <li>Hashing and compression
 <ul>
-<li>[md5]</li>
-<li>[sha2]</li>
-<li>[hmac]</li>
-<li>[zlib]</li>
-<li>[minizip]</li>
-<li>[pmurhash]</li>
-<li>[murmurhash3]</li>
-<li>[crc32]</li>
+<li><a href="md5.html">md5</a></li>
+<li><a href="sha2.html">sha2</a></li>
+<li><a href="hmac.html">hmac</a></li>
+<li><a href="zlib.html">zlib</a></li>
+<li><a href="minizip.html">minizip</a></li>
+<li><a href="pmurhash.html">pmurhash</a></li>
+<li><a href="murmurhash3.html">murmurhash3</a></li>
+<li><a href="crc32.html">crc32</a></li>
 </ul></li>
 <li>Internet formats
 <ul>
-<li>[libb64]</li>
-<li>[expat]</li>
-<li>[genx]</li>
+<li><a href="libb64.html">libb64</a></li>
+<li><a href="expat.html">expat</a></li>
+<li><a href="genx.html">genx</a></li>
 </ul></li>
 <li>Databases
 <ul>
-<li>[mysql]</li>
-<li>[fbclient]</li>
+<li><a href="mysql.html">mysql</a></li>
+<li><a href="fbclient.html">fbclient</a></li>
 </ul></li>
-<li>[winapi Windows API]
+<li>Windows API
 <ul>
-<li>[WinapiDesign tech. doc]</li>
-<li>[WinapiBinding dev. doc]</li>
-<li>[WinapiHistory history]</li>
-<li>[windesigner]</li>
+<li><a href="winapi.html">WinAPI</a></li>
+<li><a href="winapi_design.html">tech. doc</a></li>
+<li><a href="winapi_binding.html">dev. doc</a></li>
+<li><a href="winapi_history.html">history</a></li>
+<li><a href="windesigner.html">windesigner</a></li>
 </ul></li>
 <li>2D Vector Graphics
 <ul>
-<li>[path]</li>
-<li>[path_point]</li>
-<li>[path_line]</li>
-<li>[path_bezier2]</li>
-<li>[path_bezier3]</li>
-<li>[path_arc]</li>
-<li>[path_svgarc]</li>
-<li>[path_arc_3p]</li>
-<li>[path_shapes]</li>
-<li>[path_circle_3p]</li>
-<li>[affine2d]</li>
-<li>[clipper]</li>
-<li>[cairo]</li>
-<li>[openvg]</li>
-<li>[sg_cairo]</li>
-<li>[svg_parser]</li>
+<li><a href="path.html">path</a></li>
+<li><a href="path_point.html">path_point</a></li>
+<li><a href="path_line.html">path_line</a></li>
+<li><a href="path_bezier2.html">path_bezier2</a></li>
+<li><a href="path_bezier3.html">path_bezier3</a></li>
+<li><a href="path_arc.html">path_arc</a></li>
+<li><a href="path_svgarc.html">path_svgarc</a></li>
+<li><a href="path_arc_3p.html">path_arc_3p</a></li>
+<li><a href="path_shapes.html">path_shapes</a></li>
+<li><a href="path_circle_3p.html">path_circle_3p</a></li>
+<li><a href="affine2d.html">affine2d</a></li>
+<li><a href="clipper.html">clipper</a></li>
+<li><a href="cairo.html">cairo</a></li>
+<li><a href="openvg.html">openvg</a></li>
+<li><a href="sg_cairo.html">sg_cairo</a></li>
+<li><a href="svg_parser.html">svg_parser</a></li>
 </ul></li>
 <li>Text Layouting &amp; Rasterization
 <ul>
-<li>[freetype]</li>
-<li>[harfbuzz]</li>
-<li>[libunibreak]</li>
+<li><a href="freetype.html">freetype</a></li>
+<li><a href="harfbuzz.html">harfbuzz</a></li>
+<li><a href="libunibreak.html">libunibreak</a></li>
 </ul></li>
 <li>3D Graphics
 <ul>
-<li>[opengl]</li>
-<li>[sg_gl]</li>
-<li>[sg_gl_mesh]</li>
-<li>[sg_gl_shape]</li>
-<li>[sg_gl_obj]</li>
-<li>[sg_gl_debug]</li>
-<li>[obj_parser]</li>
-<li>[obj_loader]</li>
+<li><a href="opengl.html">opengl</a></li>
+<li><a href="sg_gl.html">sg_gl</a></li>
+<li><a href="sg_gl_mesh.html">sg_gl_mesh</a></li>
+<li><a href="sg_gl_shape.html">sg_gl_shape</a></li>
+<li><a href="sg_gl_obj.html">sg_gl_obj</a></li>
+<li><a href="sg_gl_debug.html">sg_gl_debug</a></li>
+<li><a href="obj_parser.html">obj_parser</a></li>
+<li><a href="obj_loader.html">obj_loader</a></li>
 </ul></li>
 <li>Raster Images
 <ul>
-<li>[bitmap]</li>
-<li>[giflib]</li>
-<li>[libjpeg]</li>
-<li>[nanojpeg]</li>
-<li>[libpng]</li>
-<li>[libexif]</li>
-<li>[imagefile]</li>
+<li><a href="bitmap.html">bitmap</a></li>
+<li><a href="giflib.html">giflib</a></li>
+<li><a href="libjpeg.html">libjpeg</a></li>
+<li><a href="nanojpeg.html">nanojpeg</a></li>
+<li><a href="libpng.html">libpng</a></li>
+<li><a href="libexif.html">libexif</a></li>
+<li><a href="imagefile.html">imagefile</a></li>
 </ul></li>
 <li>GUI
 <ul>
-<li>[cplayer]</li>
-<li>[codedit]</li>
-<li>[box2d]</li>
+<li><a href="cplayer.html">cplayer</a></li>
+<li><a href="codedit.html">codedit</a></li>
+<li><a href="box2d.html">box2d</a></li>
 </ul></li>
 <li>Colors
 <ul>
-<li>[color]</li>
+<li><a href="color.html">color</a></li>
 </ul></li>
 <li>Animation
 <ul>
-<li>[easing]</li>
+<li><a href="easing.html">easing</a></li>
 </ul></li>
 <li>Physics
 <ul>
-<li>[chipmunk]</li>
+<li><a href="chipmunk.html">chipmunk</a></li>
 </ul></li>
 <li>Video
 <ul>
-<li>[http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html libvlc]</li>
+<li><a href="http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html">libvlc</a></li>
 </ul></li>
 <li>General purpose math
 <ul>
-<li>[eq2]</li>
-<li>[eq3]</li>
+<li><a href="eq2.html">eq2</a></li>
+<li><a href="eq3.html">eq3</a></li>
 </ul></li>
 <li>Text proofing
 <ul>
-<li>[hunspell]</li>
+<li><a href="hunspell.html">hunspell</a></li>
 </ul></li>
 <li>Prose
 <ul>
-<li>[APIDesign API Design Notes]</li>
-<li>[GoodLibraries Good Libraries]</li>
+<li><a href="api_design.html">API Design Notes</a></li>
+<li><a href="good_libraries.html">Good Libraries</a></li>
 </ul></li>
 </ul>
 	</body>

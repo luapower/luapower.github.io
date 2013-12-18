@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title>   </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<h1 id="window-designer">Window Designer</h1>
+<p>v0.1a | <a href="http://code.google.com/p/lua-files/source/browse/#hg%2Fwindesigner">code</a></p>
+<h3 id="status">Status</h3>
+<p>In development, see <a href="http://code.google.com/p/lua-files/source/browse/windesigner/TODO.txt">todo list</a>. Not active.</p>
+<h2 id="features-implemented-so-far">Features implemented so far</h2>
+<ul>
+<li>multi-select controls with shift and by dragging</li>
+<li>move &amp; resize controls</li>
+<li>snapping of selected controls to unselected controls when moving and resizing</li>
+<li>snapping to grid when moving and resizing</li>
+<li>cut, copy &amp; paste controls between windows or on the same window</li>
+</ul>
+<h3 id="run">Run</h3>
+<pre><code>&gt; cd lua-files/windesigner
+&gt; designer</code></pre>
+			</section>
+		</div>
+
+	</body>
+</html>

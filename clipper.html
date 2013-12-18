@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title>   </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap//zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<h1 id="clipper-ffi-binding">clipper ffi binding</h1>
+<p>v1.0 | <a href="http://code.google.com/p/lua-files/source/browse/clipper.lua">ffi binding</a> | <a href="http://code.google.com/p/lua-files/source/browse/csrc/clipper/clipper.c">C binding</a> | <a href="https://code.google.com/p/lua-files/source/browse/clipper_demo.lua">demo</a> | Clipper 5.1.5 | LuaJIT 2</p>
+<h2 id="local-clipper-requireclipper"><code>local clipper = require'clipper'</code></h2>
+<p>A C+ffi binding of <a href="http://www.angusj.com/delphi/clipper.php">Clipper</a>, Angus Johnson's free polygon clipping library.</p>
+<div class="figure">
+<img src="http://media.lua-files.googlecode.com/hg/screenshots/clipper_demo.png" />
+</div>
+<h2 id="features">Features</h2>
+<ul>
+<li>polygon clipping: <code>intersection</code>, <code>union</code>, <code>difference</code>, <code>xor</code></li>
+<li>polygon simplificaion with <code>even_odd</code>, <code>non_zero</code>, <code>positive</code> and <code>negative</code> fill types</li>
+<li>polygon offsetting with <code>square</code>, <code>round</code> and <code>miter</code> join types</li>
+</ul>
+<h2 id="api">API</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>Polygons</strong></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>clipper.polygon([n]) -&gt; poly</code></td>
+<td align="left">create a polygon object of size <code>n</code> (default 0)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>poly:size() -&gt; n</code></td>
+<td align="left">number of vertices</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>poly:add(x, y)</code></td>
+<td align="left">add a vertex to the polygon</td>
+</tr>
+<tr class="even">
+<td align="left"><code>poly:get(i).x -&gt; n</code> <br> <code>poly:get(i).y -&gt; n</code></td>
+<td align="left">get vertex coordinates</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>poly:get(i).x = n</code> <br> <code>poly:get(i).y = n</code></td>
+<td align="left">set vertex coordinates</td>
+</tr>
+<tr class="even">
+<td align="left"><code>poly:simplify(['even_odd'|'non_zero'|'positive'|'negative']) -&gt; polys</code></td>
+<td align="left"><a href="http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Routines/SimplifyPolygon.htm">simplify a polygon</a></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>poly:clean([distance]) -&gt; polys</code></td>
+<td align="left"><a href="http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Routines/CleanPolygon.htm">clean a polygon</a></td>
+</tr>
+<tr class="even">
+<td align="left"><code>poly:reverse()</code></td>
+<td align="left">reverse the order (and hence orientation) of vertices</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>poly:orientation() -&gt; true | false</code></td>
+<td align="left">polygon orientation (true = clockwise)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>poly:area() -&gt; n</code></td>
+<td align="left">polygon area</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Polygon lists</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>clipper.polygons([n | poly1, poly2, ...]) -&gt; polys</code></td>
+<td align="left">create a polygon list</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>polys:size() -&gt; n</code></td>
+<td align="left">list size</td>
+</tr>
+<tr class="even">
+<td align="left"><code>polys:add(poly)</code></td>
+<td align="left">add a polygon to the end of the list</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>polys:get(i) -&gt; poly</code></td>
+<td align="left">get a polygon from the list</td>
+</tr>
+<tr class="even">
+<td align="left"><code>polys:set(i, poly)</code></td>
+<td align="left">set a polygon in the list</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>polys:simplify(['even_odd'|'non_zero'|'positive'|'negative']) -&gt; polys</code></td>
+<td align="left"><a href="http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Routines/SimplifyPolygons.htm">simplify polygons</a> (default is <code>'even_odd'</code>)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>polys:clean([distance]) -&gt; polys</code></td>
+<td align="left"><a href="http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Routines/CleanPolygons.htm">clean polygons</a> (default distance is <code>~= sqrt(2)</code>)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>polys:reverse()</code></td>
+<td align="left">reverse the order (and hence orientation) of vertices</td>
+</tr>
+<tr class="even">
+<td align="left"><code>polys:offset(delta, ['square'|'round'|'miter'], [limit]) -&gt; polys</code></td>
+<td align="left">offset polygons (default is 'square', 0)</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Clipping</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>clipper.new() -&gt; cl</code></td>
+<td align="left">create a clipper object</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cl:add_subject(poly | polys)</code></td>
+<td align="left">add polygons to be clipped</td>
+</tr>
+<tr class="even">
+<td align="left"><code>cl:add_clip(poly | polys)</code></td>
+<td align="left">add polygons to be clipped against</td>
+</tr>
+</tbody>
+</table>
+<table>
+<col width="61%" />
+<col width="38%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>cl:execute(operation, [subj_fill_type], [clip_fill_type], [reverse]) -&gt; polys</code> <br> * <code>operation = 'intersection'|'union'|'difference'|'xor'</code> <br> * <code>*_fill_type = 'even_odd'|'non_zero'|'positive'|'negative'</code> <br> * <code>reverse = true | false</code></td>
+<td align="left">clip subject polygons against clip polygons optionally setting the fill type for each polygon list and, optionally reversing the order of the vertices</td>
+</tr>
+<tr class="even">
+<td align="left"><code>cl:get_bounds() -&gt; x1, y1, x2, y2</code></td>
+<td align="left">bounding box of all the polygons in the clipper</td>
+</tr>
+</tbody>
+</table>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>input and output vertices are <code>int64_t</code> cdata, not Lua numbers; use simple scaling on the input and output points to preserve sub-pixel accuracy.</li>
+<li>all objects are garbage collected.</li>
+<li>adding a polygon to a polygon list copies the polygon and all its elements to the list so there's no need to keep a reference to the polygon afterwards.</li>
+<li><code>poly:get(1)</code> returns a pointer to the beginning of the vertex array so pointer arithmetic and memcpy are allowed on it.</li>
+</ul>
+			</section>
+		</div>
+
+	</body>
+</html>
