@@ -9,6 +9,12 @@
 		<title> glue   - everyday Lua functions </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
 	</head>
 
 	<body>
@@ -19,7 +25,7 @@
 					<tr style="border: 0">
 						<td valign="middle">
 							<h1> glue </h1>
-							<h2>everyday Lua functions</h2>
+							<h2> everyday Lua functions </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
@@ -37,7 +43,7 @@
 
 		<div class="tocparentdiv">
 			<div class="tocdiv">
-				<!--<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe> -->
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
 			</div>
 		</div>
 
@@ -519,5 +525,5 @@ hour    8</code></pre>
 			</section>
 		</div>
 
-		<script language="javascript" type="text/javascript">
-			
+	</body>
+</html>

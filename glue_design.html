@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="glue : everyday Lua functions" />
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+		<title> glue   - how and why </title>
 
-    <title>glue</title>
-  </head>
+		<script src="templates/jquery-1.10.2.js"></script>
+	</head>
 
-  <body>
+	<body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/cosminap/glue">View on GitHub</a>
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> glue </h1>
+							<h2> how and why </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/glue" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/glue/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/glue/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
 
-          <h1 id="project_title">glue</h1>
-          <h2 id="project_tagline">everyday Lua functions</h2>
+		<div class="tocparentdiv">
+			<div class="tocdiv">
+				<!--<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe> -->
+			</div>
+		</div>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/cosminap/glue/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/cosminap/glue/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-			<h1 id="design-of-glue">design of glue</h1>
-<p><a href="glue.html">back</a></p>
+		<div class="container">
+			<section id="main_content">
+			<p><a href="glue.html">back</a></p>
 <h2 id="scope">Scope</h2>
 <p>A small, highly useful bag of tricks.</p>
 <p>This API must be <em>compact, not complete</em>. This is the one API that should fit comfortably in someone's head. Adding rarely used or too specialized functions is thus harmful.</p>
@@ -55,18 +66,8 @@
 <h2 id="implementation">Implementation</h2>
 <p>Keep the code readable (didactically when possible) and compact. Code changes that compromise these qualities for optimization should come with a benchmark to justify them.</p>
 <p>Document the limits of the algorithms involved with respect to input, like when does it have non-linear performance and how it is stack bound. Performance characteristics are not an implementation detail.</p>
-      </section>
-    </div>
+			</section>
+		</div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">glue maintained by <a href="https://github.com/cosminap">cosminap</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-
-
-  </body>
-</html>
+		<script language="javascript" type="text/javascript">
+			
