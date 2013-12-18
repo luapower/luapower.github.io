@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title>   </title>
+		<title> nanojpeg   - nanojpeg Lua+ffi binding </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -23,17 +23,17 @@
 			<div class="container">
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
-						<td valign="middle">
-							<h1>  </h1>
-							<h2> &nbsp; </h2>
+						<td valign="middle" style="width: 100%">
+							<h1> nanojpeg </h1>
+							<h2> nanojpeg Lua+ffi binding </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/nanojpeg" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr/nanojpeg/tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr/nanojpeg/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -47,20 +47,31 @@
 			</div>
 
 			<section id="main_content">
-			<p>read jpeg files (slowly)</p>
-<p>v1.0 | <a href="http://code.google.com/p/lua-files/source/browse/nanojpeg.lua">binding</a> | <a href="http://code.google.com/p/lua-files/source/browse/nanojpeg_demo.lua">demo</a> | NanoJPEG 1.3 modified | LuaJIT 2</p>
+			<p>v1.0 | NanoJPEG 1.3 modified | LuaJIT 2</p>
 <h2 id="local-nanojpeg-requirenanojpeg"><code>local nanojpeg = require'nanojpeg'</code></h2>
 <p>A ffi binding of <a href="http://keyj.emphy.de/nanojpeg/">NanoJPEG</a>, a very small JPEG decoder suitable for embedded applications.</p>
 <h2 id="limitations">Limitations</h2>
 <ul>
 <li>no support for arithmetic coding (rarely used)</li>
 <li>no support for progressive jpeg (not-so-rarely used)</li>
-<li>slow (compared to [libjpeg libjpeg-turbo])</li>
+<li>slow (compared to <a href="libjpeg.html">libjpeg-turbo</a>)</li>
 <li>no option to only read the headers</li>
 </ul>
 <h2 id="nanojpeg.loadt---image"><code>nanojpeg.load(t) -&gt; image</code></h2>
-<p>Read and decode a JPEG image. * <code>t</code> is a table specifying: * where to read the data from (one of the following): * <code>path</code>: read data from a file given its filename * <code>string</code>: read data from a string * <code>cdata</code>, <code>size</code>: read data from a buffer</p>
-<p>The returned image object is a table with the fields: * <code>data</code>, <code>size</code>, <code>format</code>, <code>stride</code>, <code>w</code>, <code>h</code>: image format, data and dimensions. * depending on the input file, the format can be either <code>rgb8</code> or <code>g8</code>, that is 24bit RGB or 8bit gray; use [bitmap] to convert to other formats.</p>
+<p>Read and decode a JPEG image.</p>
+<ul>
+<li><code>t</code> is a table specifying:
+<ul>
+<li>where to read the data from (one of the following):</li>
+<li><code>path</code>: read data from a file given its filename</li>
+<li><code>string</code>: read data from a string</li>
+<li><code>cdata</code>, <code>size</code>: read data from a buffer</li>
+</ul></li>
+</ul>
+<p>The returned image object is a table with the fields:</p>
+<pre><code>* `data`, `size`, `format`, `stride`, `w`, `h`: image format, data and dimensions.
+   * depending on the input file, the format can be either `rgb8` or `g8`,
+        that is 24bit RGB or 8bit gray; use [bitmap] to convert to other formats.</code></pre>
 <hr />
 <p>See also: [libjpeg], [imagefile].</p>
 			</section>
