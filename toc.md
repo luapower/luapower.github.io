@@ -29,9 +29,9 @@
     * [mysql](mysql.html)
     * [fbclient](fbclient.html)
   * Windows API
-    * [WinAPI](winapi.html)
-    * [tech. doc](winapi_design.html)
-    * [dev. doc](winapi_binding.html)
+    * [intro](winapi.html)
+    * [tech doc](winapi_design.html)
+    * [dev doc](winapi_binding.html)
     * [history](winapi_history.html)
     * [windesigner](windesigner.html)
   * 2D Vector Graphics

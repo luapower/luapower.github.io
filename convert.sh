@@ -2,15 +2,13 @@
 
 [ "$1" ] || { echo "usage: $0 <markdown-file>"; exit 1; }
 
-file="$1"
-template="$2"
-[ "$template" ] || template="hack"
+in_file="$1"
+template="$2"; [ "$template" ] || template="hack"
 
-in_dir="$(pwd)"
 out_dir="x:/work/lua-files/docs"
-
-in_file="$in_dir/$file"
-out_file="$out_dir/${file%%.md}.html"
+name="${in_file##*/}"
+name="${name%%.md}"
+out_file="$out_dir/$name.html"
 
 #--print-default-template=html
 pandoc -r markdown -w html --data-dir="$out_dir" --template="$template" "$in_file" > "$out_file"

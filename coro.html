@@ -50,7 +50,12 @@
 			<p>v1.0 | LuaJIT 2, Lua 5.1, Lua 5.2</p>
 <h2 id="local-coro-requirecoro"><code>local coro = require'coro'</code></h2>
 <p>Symmetric coroutines are coroutines that allow you to transfer control to a specific coroutine, unlike Lua's standard coroutines which only allow you to suspend execution to the calling coroutine.</p>
-<p>This is the implementation from the paper <a href="http://www.inf.puc-rio.br/~roberto/docs/corosblp.pdf">Coroutines in Lua</a>. Changes from the paper: * threads created with <code>coro.create()</code> finish into the creator thread not main thread, unless otherwise specified. * added <code>coro.wrap()</code> similar to <code>coroutine.wrap()</code>.</p>
+<p>This is the implementation from the paper <a href="http://www.inf.puc-rio.br/~roberto/docs/corosblp.pdf">Coroutines in Lua</a>.</p>
+<p>Changes from the paper:</p>
+<ul>
+<li>threads created with <code>coro.create()</code> finish into the creator thread not main thread, unless otherwise specified.</li>
+<li>added <code>coro.wrap()</code> similar to <code>coroutine.wrap()</code>.</li>
+</ul>
 <h2 id="coro.createf-return_thread---coro_thread"><code>coro.create(f[, return_thread]) -&gt; coro_thread</code></h2>
 <p>Create a symmetric coroutine, optionally specifying the thread which the coroutine should transfer control to when it finishes execution (defaults to <code>coro.current</code>.</p>
 <h2 id="coro.transfercoro_thread-send_val---recv_val"><code>coro.transfer(coro_thread[, send_val]) -&gt; recv_val</code></h2>
@@ -61,14 +66,14 @@
 <p>The coroutine representing the main thread (the thread that calls <code>coro.transfer</code> for the first time).</p>
 <h2 id="coro.wrapf---f"><code>coro.wrap(f) -&gt; f</code></h2>
 <p>Similar to <code>coroutine.wrap</code> for symmetric coroutines. Useful for creating iterators in an environment of symmetric coroutines in which simply calling <code>coroutine.yield</code> is not an option:</p>
-<pre><code>local parent = coro.current
-local iter = coro.wrap(function()
-    local function yield(val)
-        coro.transfer(parent, val)
-    end
-    ...
-    yield(val)
-end)</code></pre>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">parent</span> <span class="ot">=</span> <span class="kw">coro</span><span class="ot">.</span><span class="kw">current</span>
+<span class="kw">local</span> <span class="kw">iter</span> <span class="ot">=</span> <span class="kw">coro</span><span class="ot">.</span>wrap<span class="ot">(</span><span class="kw">function</span><span class="ot">()</span>
+    <span class="kw">local</span> <span class="kw">function</span> yield<span class="ot">(</span><span class="kw">val</span><span class="ot">)</span>
+        <span class="kw">coro</span><span class="ot">.</span>transfer<span class="ot">(</span><span class="kw">parent</span><span class="ot">,</span> <span class="kw">val</span><span class="ot">)</span>
+    <span class="kw">end</span>
+    <span class="ot">...</span>
+    yield<span class="ot">(</span><span class="kw">val</span><span class="ot">)</span>
+<span class="kw">end</span><span class="ot">)</span></code></pre>
 			</section>
 		</div>
 
