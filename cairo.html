@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheets/stylesheet.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheets/pygment_trac.css" media="screen" />
+
+		<title> cairo   - cairo ffi binding </title>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1> cairo </h1>
+							<h2>cairo ffi binding</h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/cairo" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/cairo/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/cairo/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<section id="main_content">
+			<p>v1.0 | <a href="http://code.google.com/p/lua-files/source/browse/cairo.lua">code</a> | <a href="http://code.google.com/p/lua-files/source/browse/cairo_h.lua">header</a> | LuaJIT 2</p>
+<h2 id="local-cairo-requirecairo"><code>local cairo = require'cairo'</code></h2>
+<p>A lightweight ffi binding of the <a href="http://cairographics.org/">cairo graphics library</a> with the following features:</p>
+<ul>
+<li>cairo types have associated methods, so you can use <code>context:paint()</code> instead of <code>cairo.cairo_paint(context)</code></li>
+<li>pointers to objects for which cairo holds no references are bound to Lua's garbage collector to prevent leaks</li>
+<li>ref-counted objects have a free() method that checks ref. count and a destroy() method that doesn't.</li>
+<li>functions that work with <code>char*</code> are made to accept/return Lua strings.</li>
+<li>output buffers are optional - if not passed on as arguments, temporary buffers are allocated instead; the values in the buffers are then returned as multiple return values, such as in <code>context:clip_extents([dx1][,dy1][,dx2[,dy2]) -&gt; x1, y1, x2, y2</code>, where dx1 etc. are <code>double[1]</code> buffers.</li>
+<li>the included binary is built with support for in-memory surfaces, recording surfaces, ps surfaces, pdf surfaces, svg surfaces, win32 surfaces, win32 fonts and freetype fonts.</li>
+</ul>
+<p>See the <a href="http://cairographics.org/manual/">cairo manual</a> for the function list, remembering that method call style is available for them.</p>
+<p>Additional wrappers are provided for completeness:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>cr:quad_curve_to(x1, y1, x2, y2)</code></td>
+<td align="left">add a quad bezier to the current path</td>
+</tr>
+<tr class="even">
+<td align="left"><code>cr:rel_quad_curve_to(x1, y1, x2, y2)</code></td>
+<td align="left">add a relative quad bezier to the current path</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cr:circle(cx, cy, r)</code></td>
+<td align="left">add a circle to the current path</td>
+</tr>
+<tr class="even">
+<td align="left"><code>cr:ellipse(cx, cy, rx, ry)</code></td>
+<td align="left">add an ellipse to the current path</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cr:skew(ax, ay)</code></td>
+<td align="left">skew current matrix</td>
+</tr>
+<tr class="even">
+<td align="left"><code>cr:rotate_around(cx, cy, angle)</code></td>
+<td align="left">rotate current matrix around point</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cr:safe_transform(mt)</code></td>
+<td align="left">transform current matrix if possible</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:transform(with_mt) -&gt; mt</code></td>
+<td align="left">transform matrix with other matrix</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:invertible() -&gt; true|false</code></td>
+<td align="left">is matrix invertible?</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:safe_transform(with_mt)</code></td>
+<td align="left">transform matrix if possible</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:skew(ax, ay)</code></td>
+<td align="left">skew matrix</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:rotate_around(cx, cy, angle)</code></td>
+<td align="left">rotate matrix around point</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>surface:apply_alpha(alpha)</code></td>
+<td align="left">make surface transparent</td>
+</tr>
+</tbody>
+</table>
+<p><br /> <em>See also</em>: <a href="sg_cairo.html">sg_cairo</a>, <a href="cairo_player.html">cairo_player</a>.</p>
+			</section>
+		</div>
+
+	</body>
+</html>

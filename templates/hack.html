@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title>$if(title)$ $title$ $else$ $project$ $endif$ $if(tagline)$ - $tagline$ $endif$</title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle">
+							<h1>$if(title)$ $title$ $else$ $project$ $endif$</h1>
+							<h2>$tagline$</h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/$project$" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/$project$/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/cosminap/$project$/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="tocparentdiv">
+			<div class="tocdiv">
+				<!--<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe> -->
+			</div>
+		</div>
+
+		<div class="container">
+			<section id="main_content">
+			$body$
+			</section>
+		</div>
+
+		<script language="javascript" type="text/javascript">
+			$('#tocdiv').load('toc.html')
+		</script>
+
+	</body>
+</html>
