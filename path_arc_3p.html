@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> path_arc_3p   - 3-point arcs </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> path_arc_3p </h1>
+							<h2> 3-point arcs </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.0 | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+<h2 id="local-arc_3p-requirepath_arc_3p"><code>local arc_3p = require'path_arc_3p'</code></h2>
+<p>Math for 2D 3-point circular arcs defined as:</p>
+<pre><code>x1, y1, xp, yp, x2, y2</code></pre>
+<p>where <code>(x1, y1)</code>, <code>(xp, yp)</code> and <code>(x2, y2)</code> are the arc's endpoints.</p>
+<pre><code>arc_3p.to_arc(x1, y1, xp, yp, x2, y2) -&gt;
+    cx, cy, rx, ry, start_angle, sweep_angle, rotation, x2, y2</code></pre>
+<p>Convert a 3-point arc an <a href="path_arc.html">elliptic arc</a>.</p>
+<p>If the endpoints conicide are collinear then the parametrization is invalid and nothing is returned.</p>
+<pre><code>arc_3p.split(t, x1, y1, xp, yp, x2, y2) -&gt;
+    x11, y11, x1p, y1p, x22, y22
+    x21, y21, x2p, y2p, x22, y22</code></pre>
+<p>Split a 3-point arc at time <code>t</code> into two arcs.</p>
+<hr />
+<p>See also: <a href="path_arc.html">path_arc</a></p>
+			</section>
+		</div>
+
+	</body>
+</html>

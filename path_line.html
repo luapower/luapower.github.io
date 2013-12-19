@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> path_line   - math for 2D line segments </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> path_line </h1>
+							<h2> math for 2D line segments </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.0 | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+<h2 id="local-line-requirepath_line"><code>local line = require'path_line'</code></h2>
+<p>Math for 2D line segments defined as</p>
+<pre><code>x1, y1, x2, y2</code></pre>
+<p>where <code>(x1, y1)</code> and <code>(x2, y2)</code> are the endpoints.</p>
+<h3 id="line.pointt-x1-y1-x2-y2---x-y"><code>line.point(t, x1, y1, x2, y2) -&gt; x, y</code></h3>
+<p>Evaluate a line at time t using linear interpolation. The time between 0..1 covers the segment interval.</p>
+<h3 id="line.lengtht-x1-y1-x2-y2---length"><code>line.length(t, x1, y1, x2, y2) -&gt; length</code></h3>
+<p>Length of line at time t.</p>
+<h3 id="line.bounding_boxx1-y1-x2-y2---left-top-width-height"><code>line.bounding_box(x1, y1, x2, y2) -&gt; left, top, width, height</code></h3>
+<p>Bounding box of line segment.</p>
+<h3 id="line.splitt-x1-y1-x2-y2---ax1-ay1-ax2-ay2-bx1-by1-bx2-by2"><code>line.split(t, x1, y1, x2, y2) -&gt; ax1, ay1, ax2, ay2, bx1, by1, bx2, by2</code></h3>
+<p>Split line segment into two line segments at time t. t is capped between 0..1.</p>
+<h3 id="line.point_line_intersectionx-y-x1-y1-x2-y2---x-y"><code>line.point_line_intersection(x, y, x1, y1, x2, y2) -&gt; x, y</code></h3>
+<p>Intersect an infinite line with its perpendicular from point (x, y). Return the intersection point.</p>
+<h3 id="line.hitx0-y0-x1-y1-x2-y2---d2-x-y-t"><code>line.hit(x0, y0, x1, y1, x2, y2) -&gt; d2, x, y, t</code></h3>
+<p>Return the shortest distance-squared from point (x0, y0) to line, plus the touch point, and the time in the line where the touch point splits the line.</p>
+<h3 id="line.line_line_intersectionx1-y1-x2-y2-x3-y3-x4-y4---x1-y1"><code>line.line_line_intersection(x1, y1, x2, y2, x3, y3, x4, y4) -&gt; x1, y1</code></h3>
+<p>Intersect line segment <code>(x1, y1, x2, y2)</code> with line segment <code>(x3, y3, x4, y4)</code>. Return the time on the first line and the time on the second line where intersection occurs. If the intersection occurs outside the segments themselves, then t1 and t2 are outside the 0..1 range. If the lines are parallel or coincidental then t1 and t2 are infinite.</p>
+<h3 id="line.to_bezier2x1-y1-x2-y2---x1-y1-x2-y2-x3-y3"><code>line.to_bezier2(x1, y1, x2, y2) -&gt; x1, y1, x2, y2, x3, y3</code></h3>
+<p>Return a quadratic bezier that approximates a line segment and also advances linearly i.e. the point on the line at t best matches the point on the curve at t.</p>
+<h3 id="line.to_bezier3x1-y1-x2-y2---x1-y1-x2-y2-x3-y3-x4-y4"><code>line.to_bezier3(x1, y1, x2, y2) -&gt; x1, y1, x2, y2, x3, y3, x4, y4</code></h3>
+<p>Return a cubic bezier that approximates a line segment and also advances linearly i.e. the point on the line at t best matches the point on the curve at t.</p>
+			</section>
+		</div>
+
+	</body>
+</html>

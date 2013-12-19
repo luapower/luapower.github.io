@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> path2d   - 2D geometry library in Lua </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> path2d </h1>
+							<h2> 2D geometry library in Lua </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/path2d/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v0.0 (in active development) | <a href="path_api.html">API</a> | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+<h2 id="local-path-requirepath"><code>local path = require'path'</code></h2>
+<p>Fast, full-featured 2D geometry library.<br />Includes construction, drawing, measuring, hit testing and editing of 2D paths.</p>
+<h3 id="overview">Overview</h3>
+<ul>
+<li>written in Lua</li>
+<li>modular, bottom-up style programming (procedural, no state, no objects)</li>
+<li>dynamic allocations avoided throughout</li>
+<li>all features available under <a href="affine2d.html">affine transformation</a>, with fast code paths for special cases</li>
+<li>full support for SVG path command set and semantics and more.</li>
+</ul>
+<h3 id="geometric-types">Geometric types</h3>
+<ul>
+<li><a href="path_line.html">lines</a>, with horizontal and vertical variations</li>
+<li><a href="path_bezier2.html">quadratic bezier curves</a> and <a href="path_bezier3.html">cubic bezier curves</a>, with smooth and symmetrical variations</li>
+<li>absolute and relative-to-current-point variations for all commands</li>
+<li><a href="path_arc.html">elliptic arcs</a>, <a href="path_arc_3p.html">3-point circular arcs</a> and <a href="path_svgarc.html">svg-style elliptic arcs</a> and <a href="path_circle_3p.html">3-point circles</a></li>
+<li>composite <a href="path_shapes.html">shapes</a>:
+<ul>
+<li>rectangles, including round-corner and elliptic-corner variations</li>
+<li>circles and ellipses, and 3-point circles</li>
+<li>1-anchor-point and 2-anchor-point stars, and regular polygons</li>
+<li>superformula</li>
+</ul></li>
+<li><a href="path_text.html">text</a>, using <a href="freetype.html">freetype</a>, <a href="harfbuzz.html">harfbuzz</a>, <a href="libunibreak.html">libunibreak</a> for fonts and shaping (NYI)</li>
+<li><a href="path_catmull.html">catmull-rom</a> splines (NYI)</li>
+<li><a href="path_spline3.html">cubic splines</a> (NYI)</li>
+<li><a href="path_spiro.html">spiro curves</a> (NYI, GPL but darn hot)</li>
+</ul>
+<h3 id="measuring">Measuring</h3>
+<ul>
+<li>bounding box</li>
+<li>length at time t</li>
+<li>point at time t</li>
+<li>arc length parametrization (NYI)</li>
+</ul>
+<h3 id="hit-testing">Hit testing</h3>
+<ul>
+<li>shortest distance from point</li>
+<li>inside/outside testing for closed subpaths (NYI)</li>
+</ul>
+<h3 id="drawing">Drawing</h3>
+<ul>
+<li>simplification (decomposing into primitive operations)</li>
+<li>adaptive interpolation of quad and cubic bezier curves</li>
+<li>polygon offseting with different line join and line cap styles (NYI)</li>
+<li>dash generation (NYI)</li>
+<li>text-to-path (NYI)</li>
+<li>conversion to cairo paths for drawing with <a href="cairo.html">cairo</a> or with <a href="sg_cairo.html">sg_cairo</a></li>
+<li>conversion to OpenVG paths for drawing with the <a href="openvg.html">openvg</a> API (NYI)</li>
+</ul>
+<h3 id="editing">Editing</h3>
+<ul>
+<li>adding, removing and updating commands</li>
+<li>splitting of lines, curves and arcs at time t</li>
+<li>joining of lines, curves and arcs (NYI)</li>
+<li>conversion between lines, curves, arcs and composite shapes (NYI).</li>
+<li>direct manipulation <a href="path_edit.html">path editor</a> with chained updates and constraints, making it easy to customize and extend to support new command types (TODO).</li>
+</ul>
+<h3 id="help-needed">Help needed</h3>
+<p>I am far from being an expert at floating point math. I'm sure there are many opportunities for preserving precision and avoiding degenerate cases that I've haven't thought about. A code review by someone experienced in this area would help greatly.</p>
+<p>When an elliptic (or circular) arc is approximated with bezier curves, the arc t value (sweep time) is almost the same as the curve t value (parametric time). Almost, but not quite. The error is contained by increasing the number of segments that make up the arc. But instead of increasing the number of segments for larger arcs, I would prefer to have a formula to synchronize the t values for a chosen number of segments, assuming such formula is easy enough to compute.</p>
+			</section>
+		</div>
+
+	</body>
+</html>
