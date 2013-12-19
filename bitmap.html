@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title>   </title>
+		<title> bitmap   - In-memory bitmaps for LuaJIT </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,16 +24,16 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1>  </h1>
-							<h2> &nbsp; </h2>
+							<h1> bitmap </h1>
+							<h2> In-memory bitmaps for LuaJIT </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/bitmap" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr/bitmap/tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr/bitmap/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -47,10 +47,9 @@
 			</div>
 
 			<section id="main_content">
-			<h1 id="in-memory-bitmaps-for-luajit">In-memory bitmaps for LuaJIT</h1>
-<p>v1.3 | <a href="http://code.google.com/p/lua-files/source/browse/bitmap.lua">main</a> | <a href="http://code.google.com/p/lua-files/source/browse/bitmap_dither.lua">dither</a> | <a href="http://code.google.com/p/lua-files/source/browse/bitmap_effects.lua">effects</a> | <a href="http://code.google.com/p/lua-files/source/browse/bitmap_rgbaf.lua">rgbaf</a> | <a href="http://code.google.com/p/lua-files/source/browse/bitmap_blend.lua">blend</a> | <a href="http://code.google.com/p/lua-files/source/browse/bitmap_test.lua">test</a> | <a href="http://code.google.com/p/lua-files/source/browse/bitmap_demo.lua">demo</a> | <a href="http://code.google.com/p/lua-files/source/browse/bitmap_blend_demo.lua">blend demo</a> | LuaJIT 2</p>
-<h2 id="local-bitmap-requirebitmap"><code>local bitmap  require'bitmap'</code></h2>
-<h1 id="features">Features</h1>
+			<p>v1.3 | LuaJIT 2</p>
+<h2 id="local-bitmap-requirebitmap"><code>local bitmap = require'bitmap'</code></h2>
+<h2 id="features">Features</h2>
 <ul>
 <li>multiple pixel formats, color spaces, channel layouts, scanline orderings, row strides, and bit depths.
 <ul>
@@ -62,7 +61,7 @@
 <li>dithering, pixel effects, filters.</li>
 <li>fast (see benchmarks).</li>
 </ul>
-<h1 id="limitations">Limitations</h1>
+<h2 id="limitations">Limitations</h2>
 <ul>
 <li>only packed formats, no separate plane formats
 <ul>
@@ -75,7 +74,7 @@
 <li>no conversions to cmyk (would need color profiling)</li>
 <li>no conversions to ycc and ycck</li>
 </ul>
-<h1 id="whats-a-bitmap">What's a bitmap?</h1>
+<h2 id="whats-a-bitmap">What's a bitmap?</h2>
 <p>A bitmap is a table with the following fields:</p>
 <ul>
 <li><code>w</code>, <code>h</code> - bitmap dimensions, in pixels.</li>
@@ -85,7 +84,7 @@
 <li><code>size</code> - size of the pixel buffer, in bytes.</li>
 <li><code>format</code> - the pixel format, either a string naming a predefined format (below table), or a table specifying a custom format (see customization).</li>
 </ul>
-<h2 id="predefined-formats">Predefined formats</h2>
+<h3 id="predefined-formats">Predefined formats</h3>
 <table>
 <thead>
 <tr class="header">
@@ -260,7 +259,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="predefined-colortypes">Predefined colortypes</h2>
+<h3 id="predefined-colortypes">Predefined colortypes</h3>
 <table>
 <thead>
 <tr class="header">
@@ -321,7 +320,7 @@
 </tr>
 </tbody>
 </table>
-<h1 id="bitmap-operations">Bitmap operations</h1>
+<h2 id="bitmap-operations">Bitmap operations</h2>
 <h2 id="bitmap.neww-h-format-bottom_up-stride_aligned-stride---new_bmp"><code>bitmap.new(w, h, format, [bottom_up], [stride_aligned], [stride]) -&gt; new_bmp</code></h2>
 <p>Create a bitmap object. If <code>stride_aligned</code> is <code>true</code> and no specific <code>stride</code> is given, the stride will be a multiple of 4 bytes.</p>
 <h2 id="bitmap.copybmp-format-bottom_up-stride_aligned-stride---new_bmp"><code>bitmap.copy(bmp, [format], [bottom_up], [stride_aligned], [stride]) -&gt; new_bmp</code></h2>
@@ -334,29 +333,29 @@
 <p>Crop a bitmap without copying the pixels (the <code>data</code> field of the sub-bitmap is a pointer into the <code>data</code> buffer of the parent bitmap). The parent bitmap is pinned in the <code>parent</code> field of the sub-bitmap to prevent garbage collection of the data buffer. Other than that, the sub-bitmap behaves exactly like a normal bitmap (it can be further sub'ed for instance). The coordinates default to <code>0, 0, bmp.w, bmp.h</code> respectively. The coordinates are adjusted to fit the parent bitmap. If they result in zero width or height, nothing is returned.</p>
 <p>To get real cropping, just copy the bitmap, specifying the format and orientation to reset the stride: <code>sub = bitmap.copy(sub, sub.format, sub.bottom_up)</code></p>
 <p><em>Limitation:</em> For 1, 2, 4 bpp formats, the coordinates must be such that the data pointer points to the beginning of a byte (that is, is not fractional). For a non-fractional stride, this means the <code>x</code> coordinate must be a multiple of 8, 4, 2 respectively. For fractional strides don't even bother.</p>
-<h1 id="pixel-interface">Pixel interface</h1>
+<h2 id="pixel-interface">Pixel interface</h2>
 <h2 id="bitmap.pixel_interfacebitmap-colortype---getpixel-setpixel"><code>bitmap.pixel_interface(bitmap[, colortype]) -&gt; getpixel, setpixel</code></h2>
 <p>Return an API for getting and setting individual pixels of a bitmap object: * <code>getpixel(x, y) -&gt; a, b, c, ...</code> * <code>setpixel(x, y, a, b, c, ...)</code> where a, b, c are the individual color channels, converted to the specified colortype or in the colortype of the bitmap (i.e. r, g, b, a for the 'rgba' colortype, etc.).</p>
-<p>Example:</p>
-<pre><code>local function darken(r, g, b, a)
-    return r / 2, g / 2, b / 2, a / 2) --make 2x darker
-end
+<h3 id="example">Example:</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">function</span> darken<span class="ot">(</span><span class="kw">r</span><span class="ot">,</span> <span class="kw">g</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">a</span><span class="ot">)</span>
+    <span class="kw">return</span> <span class="kw">r</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">g</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">a</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">)</span> <span class="co">--make 2x darker</span>
+<span class="kw">end</span>
 
-local getpixel, setpixel = pixel_interface(bmp)
-for y = 0, bmp.h-1 do
-    for x = 0, bmp.w-1 do
-        setpixel(x, y, darken(getpixel(x, y)))
-    end
-end
+<span class="kw">local</span> <span class="kw">getpixel</span><span class="ot">,</span> <span class="kw">setpixel</span> <span class="ot">=</span> pixel_interface<span class="ot">(</span><span class="kw">bmp</span><span class="ot">)</span>
+<span class="kw">for</span> <span class="kw">y</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">h</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
+    <span class="kw">for</span> <span class="kw">x</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">w</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
+        setpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">,</span> darken<span class="ot">(</span>getpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)))</span>
+    <span class="kw">end</span>
+<span class="kw">end</span>
 
---the above has the same effect as:
-convert(bmp, bmp, darken)</code></pre>
-<h1 id="dithering">Dithering</h1>
+<span class="co">--the above has the same effect as:</span>
+convert<span class="ot">(</span><span class="kw">bmp</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">,</span> <span class="kw">darken</span><span class="ot">)</span></code></pre>
+<h2 id="dithering">Dithering</h2>
 <h2 id="bitmap.dither.fsbmp-rbits-gbits-bbits-abits"><code>bitmap.dither.fs(bmp, rbits, gbits, bbits, abits)</code></h2>
 <p>Dither a bitmap using the <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering">Floyd-Steinberg dithering</a> algorithm. <code>*bits</code> specify the number of bits of color to keep for each channel (eg. <code>bitmap.dither.fs(bmp, 5, 6, 5, 0)</code> dithers a bitmap so that its colors fit into the <code>rgb565</code> format). Only implemented for 4-channel colortypes.</p>
 <h2 id="bitmap.dither.orderedbmp-mapsize"><code>bitmap.dither.ordered(bmp, mapsize)</code></h2>
 <p>Dither a bitmap using the <a href="http://en.wikipedia.org/wiki/Ordered_dithering">ordered dithering</a> algorithm. <code>mapsize</code> specifies the threshold map to use and can be 2, 3, 4 or 8. Use the demo to see how this parameter affects the output quality depending on the output format (it's not a clear-cut choice). Implemented for 2-channel and 4-channel colortypes. Note that actual clipping of the low bits is not done, it will be done naturally when converting the bitmap to a lower bit depth.</p>
-<h1 id="pixel-effects">Pixel effects</h1>
+<h2 id="pixel-effects">Pixel effects</h2>
 <h2 id="bitmap.invertbmp"><code>bitmap.invert(bmp)</code></h2>
 <p>Invert colors.</p>
 <h2 id="bitmap.grayscalebmp"><code>bitmap.grayscale(bmp)</code></h2>
@@ -365,35 +364,33 @@ convert(bmp, bmp, darken)</code></pre>
 <p>Convolve a bitmap using a kernel matrix (a Lua array of arrays of the same length). <code>edge</code> can be <code>crop</code>, <code>wrap</code> or <code>extend</code> (default is <code>extend</code>).</p>
 <h2 id="bitmap.sharpenbmp-threshold"><code>bitmap.sharpen(bmp[, threshold])</code></h2>
 <p>Sharpen a bitmap.</p>
-<h1 id="blending">Blending</h1>
+<h2 id="blending">Blending</h2>
 <h2 id="bitmap.blendsource_bmp-dest_bmp-operator-x-y"><code>bitmap.blend(source_bmp, dest_bmp, [operator], [x], [y])</code></h2>
 <p>Blend <code>source_bmp</code> into <code>dest_bmp</code> using a blending operator at <code>x,y</code> coordinates in the target bitmap (default is <code>0,0</code>). Operators are in the <code>bitmap.blend_op</code> table for inspection.</p>
-<h1 id="utilities">Utilities</h1>
+<h2 id="utilities">Utilities</h2>
 <h2 id="bitmap.fitbmp-x-y-w-h---x1-y1-w1-h1"><code>bitmap.fit(bmp, [x], [y], [w], [h]) -&gt; x1, y1, w1, h1</code></h2>
 <p>Adjust a box to fit into a bitmap. Use this to range-check input coordinates before writing into the bitmap data buffer, to guard against buffer overflow. Check for zero width or height before trying to create a bitmap with the fitted coordinates.</p>
 <h2 id="bitmap.min_strideformat-width---min_stride"><code>bitmap.min_stride(format, width) -&gt; min_stride</code></h2>
 <p>Return the minimum stride in bytes given a format and width. A bitmap data buffer should never be smaller than <code>min_stride * height</code>.</p>
 <h2 id="bitmap.aligned_stridestride---aligned_stride"><code>bitmap.aligned_stride(stride) -&gt; aligned_stride</code></h2>
 <p>Given a stride, return the smallest stride that is a multiple of 4 bytes.</p>
-<h1 id="introspection">Introspection</h1>
+<h2 id="introspection">Introspection</h2>
 <h2 id="bitmap.conversionssource_format---iter---name-def"><code>bitmap.conversions(source_format) -&gt; iter() -&gt; name, def</code></h2>
 <p>Given a source bitmap format, iterate through all the formats that the source format can be converted to. <code>name</code> is the format name and <code>def</code> is the format definition which is a table with the fields <code>bpp</code>, <code>ctype</code>, <code>colortype</code>, <code>read</code>, <code>write</code>.</p>
 <h2 id="bitmap.dumpinfo"><code>bitmap.dumpinfo()</code></h2>
 <p>Print the list of supported pixel formats and the list of supported colortype conversions.</p>
-<h1 id="customization">Customization</h1>
+<h2 id="customization">Customization</h2>
 <h2 id="custom-formats">Custom formats</h2>
 <p>A custom pixel format definition is a table with the following fields: * <code>bpp</code> - pixel size, in bits (must be an even number of bits). * <code>ctype</code> - C type to cast <code>data</code> to when reading and writing pixels (see below). * <code>colortype</code> - a string naming a standard color type or a table specifying a custom color type. The channel values that <code>read</code> and <code>write</code> refer to depend on the colortype, eg. for the 'rgba8' colortype, the read function must return 4 numbers in the 0-255 range corresponding to the R, G, B, A channels. * <code>read</code> - a function to be called as <code>read(data, i) -&gt; a, b, c, ...</code>; the function must decode the pixel at <code>data[i]</code> and return its channel values according to colortype. * <code>write</code> - a function to be called as <code>write(data, i, a, b, c, ...)</code>; the function must encode the given channel values according to colortype and write the pixel at <code>data[i]</code>. * for formats that have bpp &lt; 8, the index i is fractional and the bit offset of the pixel is at <code>bit.band(i * 8, 7)</code>.</p>
 <h2 id="custom-colortypes">Custom colortypes</h2>
 <p>A custom colortype definition is a table with the following fields: * <code>channels</code> - a string with each letter a channel name, eg. 'rgba', so that <code>#channels</code> indicates the number of channels. * <code>max</code> - maximum value to which the channel values need to be clipped. * <code>bpc</code> - bits/channel - same meaning as <code>max</code> but in bits.</p>
-<h1 id="extending">Extending</h1>
+<h2 id="extending">Extending</h2>
 <p>Extending the <code>bitmap</code> module with new colortypes, formats, conversions and module functions is easy. Look at the <code>bitmap_rgbaf</code> sub-module for an example on how to do that. For the submodule to be loaded automatically though, you need to reference it in the <code>bitmap</code> module too in a few key spots (look at how <code>rgbaf</code> does it, it's very easy).</p>
-<h1 id="todo">TODO</h1>
+<h2 id="todo">TODO</h2>
 <ul>
 <li>fill with a single color using row-by-row memfill (in fact, add a <code>convert_row</code> callback arg. in <code>convert()</code> analog to <code>convert_pixel</code>)</li>
 <li>premuliply / unpremultiply alpha</li>
 </ul>
-<hr />
-<p>See also: [imagefile].</p>
 			</section>
 		</div>
 

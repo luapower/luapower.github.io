@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title>   </title>
+		<title> cplayer   - procedural graphics player with IMGUI toolkit </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,16 +24,16 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1>  </h1>
-							<h2> &nbsp; </h2>
+							<h1> cplayer </h1>
+							<h2> procedural graphics player with IMGUI toolkit </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/cplayer" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr/cplayer/tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr/cplayer/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -47,10 +47,9 @@
 			</div>
 
 			<section id="main_content">
-			<p>procedural graphics player with immediate mode GUI toolkit</p>
-<p>v1.0 | <a href="http://code.google.com/p/lua-files/source/browse/cplayer.lua">code</a> | <a href="http://code.google.com/p/lua-files/source/browse/cplayer_demo.lua">demo</a> | LuaJIT 2 | Windows</p>
+			<p>v1.0 | LuaJIT 2 | Windows</p>
 <h2 id="local-player-requirecplayer"><code>local player = require'cplayer'</code></h2>
-<p>cplayer is a sandbox environment for making tests and demos of the various 2D libraries around here.</p>
+<p>CPlayer is a procedural graphics player with an IMGUI toolkit. It can be used for anything from quick demos, prototyping graphics apps, to full-fledged apps and games.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>single rendering event receiving a cairo context to draw the frame with</li>
@@ -63,58 +62,149 @@
 <li><p>You define the function <code>player:on_render(cr)</code> in which you draw your frame using the <code>cr</code> argument which is a [cairo] context. The function gets called continuously on a <code>1 ms</code> timer. The current framerate is displayed on the title bar.</p></li>
 <li><p>You call <code>player:play()</code> to display the player's main window and enter the Windows message loop. The function returns after the user has closed the window.</p></li>
 </ol>
-<p><em>Quick example:</em> <sub>~</sub>{.lua} local player = require'cplayer'</p>
-<p>function player:on_render(cr) --draw a red square cr:set_source_rgb(1, 0, 0) cr:rectangle(100, 100, 100, 100) cr:fill() end</p>
-<p>player:play() <sub>~</sub></p>
+<h4 id="quick-example">Quick example:</h4>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">player</span> <span class="ot">=</span> require<span class="st">&#39;cplayer&#39;</span>
+
+<span class="kw">function</span> <span class="kw">player</span>:on_render<span class="ot">(</span><span class="kw">cr</span><span class="ot">)</span>
+    <span class="co">--draw a red square</span>
+    <span class="kw">cr</span>:set_source_rgb<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">)</span>
+    <span class="kw">cr</span>:rectangle<span class="ot">(</span><span class="dv">100</span><span class="ot">,</span> <span class="dv">100</span><span class="ot">,</span> <span class="dv">100</span><span class="ot">,</span> <span class="dv">100</span><span class="ot">)</span>
+    <span class="kw">cr</span>:fill<span class="ot">()</span>
+<span class="kw">end</span>
+
+<span class="kw">player</span>:play<span class="ot">()</span></code></pre>
 <h3 id="mouse-state">Mouse state</h3>
 <table>
-<col width="45%" />
-<col width="55%" />
 <tbody>
 <tr class="odd">
-<td align="left"><code>self.mousex</code><br><code>self.mousey</code> <code>self.clicked</code> <code>self.rightclick</code> <code>self.doubleclicked</code> <code>self.lbutton</code> <code>self.rbutton</code> <code>self.wheel_delta</code> <code>self:hotbox(x, y, w, h) -&gt; true | false</code></td>
-<td align="right">mouse coordinates in device space<br>use <code>cr:device_to_user()</code> to translate them true if the left mouse button was clicked (one-shot) true if the right mouse button was clicked (one-shot) true if the left mouse button was double-clicked (one-shot) true if the left mouse button is down true if the right mouse button is down mouse wheel movement as number of scroll pages (one-shot) check if the mouse hovers a rectangle</td>
+<td align="left"><code>self.mousex</code> </td>
+<td align="left">mouse coordinates in device space.</td>
 </tr>
 <tr class="even">
-<td align="left">### Keyboard state</td>
-<td align="right"></td>
+<td align="left"><code>self.mousey</code></td>
+<td align="left">use <code>cr:device_to_user()</code> to translate them.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self.clicked</code></td>
+<td align="left">true if the left mouse button was clicked (one-shot)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>self.rightclick</code></td>
+<td align="left">true if the right mouse button was clicked (one-shot)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self.doubleclicked</code></td>
+<td align="left">true if the left mouse button was double-clicked (one-shot)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>self.lbutton</code></td>
+<td align="left">true if the left mouse button is down</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self.rbutton</code></td>
+<td align="left">true if the right mouse button is down</td>
+</tr>
+<tr class="even">
+<td align="left"><code>self.wheel_delta</code></td>
+<td align="left">mouse wheel movement as number of scroll pages (one-shot)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self:hotbox(x, y, w, h) -&gt; true | false</code></td>
+<td align="left">check if the mouse hovers a rectangle</td>
 </tr>
 </tbody>
 </table>
-<p><code>self.key</code> set if a key was pressed (one-shot); values are 'left', 'right', etc. (see source for complete list of key names; one-shot) <code>self.char</code> set if a key combination representing a unicode character was pressed (one-shot); value is the character in utf-8 <code>self.shift</code> true if shift key is pressed; only check it when <code>self.key</code> is set <code>self.ctrl</code> true if alt key is pressed; only check it when <code>self.key</code> is set <code>self.alt</code> true if control key is pressed; only check it when <code>self.key</code> is set <code>self:keypressed(keyname) -&gt; true | false</code> check if a key is pressed</p>
-<p><em>Note:</em> one-shot means that the value is only available for the current frame, then it is cleared. With very slow framerates, some mouse or key events could be lost (for simplicity, there's no event queue).</p>
+<h3 id="keyboard-state">Keyboard state</h3>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>self.key</code></td>
+<td align="left">set if a key was pressed (one-shot); values are 'left', 'right', etc. (see source for complete list of key names; one-shot)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>self.char</code></td>
+<td align="left">set if a key combination representing a unicode character was pressed (one-shot); value is the character in utf-8</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self.shift</code></td>
+<td align="left">true if shift key is pressed; only check it when <code>self.key</code> is set</td>
+</tr>
+<tr class="even">
+<td align="left"><code>self.ctrl</code></td>
+<td align="left">true if alt key is pressed; only check it when <code>self.key</code> is set</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self.alt</code></td>
+<td align="left">true if control key is pressed; only check it when <code>self.key</code> is set</td>
+</tr>
+<tr class="even">
+<td align="left"><code>self:keypressed(keyname) -&gt; true | false</code></td>
+<td align="left">check if a key is pressed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> one-shot means that the value is only available for the current frame, then it is cleared. With very slow framerates, some mouse or key events could be lost (for simplicity, there's no event queue).</p>
 <h3 id="wall-clock">Wall clock</h3>
 <p>A wall clock in milliseconds is available as <code>self.clock</code>. Interpolating your animations over clock deltas will result in framerate-independent animations. Currently, it is used to blink the editbox caret.</p>
 <h3 id="mouse-cursor">Mouse cursor</h3>
-<ul>
-<li><code>self.cursor = &lt;name&gt;</code></li>
-</ul>
+<pre><code>self.cursor = &lt;name&gt;</code></pre>
 <p>Changes the mouse pointer to one of the standard pointers: 'link', 'text', 'busy', etc. Look at the <code>cursors</code> table for the full list. The variable is not retained between frames, so it must be set every time to keep the mouse pointer changed otherwise the pointer will revert back to normal.</p>
 <h3 id="theme-aware-api">Theme-aware API</h3>
-<ul>
-<li><code>self:setcolor(color)</code></li>
-<li><code>self:fill(color)</code></li>
-<li><code>self:stroke(color[, line_width])</code></li>
-<li><code>self:fillstroke([fill_color], [stroke_color][, line_width])</code></li>
-</ul>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>self:setcolor(color)</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>self:fill(color)</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self:stroke(color[, line_width])</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>self:fillstroke([fill_color], [stroke_color][, line_width])</code></td>
+</tr>
+</tbody>
+</table>
 <p>The color argument can be either a color name from the current theme, a hex color in <code>#rrggbb</code> or <code>#rrggbbaa</code> format, or a table of form <code>{r, g, b, a}</code> where each channel is in the <code>0..1</code> range. Look at <code>player.themes.*</code> tables for available themes and color names. To change the current theme just set <code>self.theme</code> to a different theme table. Controls also have a <code>theme</code> parameter.</p>
 <h3 id="drawing-helpers">Drawing helpers</h3>
-<ul>
-<li><code>self:dot(x, y, r, [fill_color], [stroke_color][, line_width])</code></li>
-<li><code>self:rect(x, y, w, h, [fill_color], [stroke_color][, line_width])</code></li>
-<li><code>self:circle(x, y, r, [fill_color], [stroke_color][, line_width])</code></li>
-<li><code>self:line(x1, y1, x2, y2, [stroke_color][, line_width])</code></li>
-<li><code>self:curve(x1, y1, x2, y2, x3, y3, x4, y4, [stroke_color][, line_width])</code></li>
-<li><code>self:text(text, font_size, color, halign, valign, x, y, w, h)</code></li>
-<li><code>self:text_path(text, font_size, halign, valign, x, y, w, h)</code>
-<ul>
-<li>halign = 'center', 'left', 'right'</li>
-<li>valign = 'middle', 'top', 'bottom'</li>
-</ul></li>
-</ul>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>self:dot(x, y, r, [fill_color], [stroke_color][, line_width])</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>self:rect(x, y, w, h, [fill_color], [stroke_color][, line_width])</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self:circle(x, y, r, [fill_color], [stroke_color][, line_width])</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>self:line(x1, y1, x2, y2, [stroke_color][, line_width])</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self:curve(x1, y1, x2, y2, x3, y3, x4, y4, [stroke_color][, line_width])</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>self:text(text, font_size, color, halign, valign, x, y, w, h)</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>self:text_path(text, font_size, halign, valign, x, y, w, h)</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>* halign = 'center', 'left', 'right'</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>* valign = 'middle', 'top', 'bottom'</code></td>
+</tr>
+</tbody>
+</table>
 <h3 id="gui-widgets">GUI widgets</h3>
 <p>The GUI Widgets are implemented in <code>cplayer/*.lua</code>. The modules are loaded automatically as needed. For the full list of available widgets and the module where each is implemented in, look for <code>autoload</code> in the code. The player demo should also include a usage example for each widget.</p>
-<p><em>Quick example:</em> <sub><del>{.lua} if self:button{id = 'ok', x = 100, y = 100, w = 100, h = 24, text = 'Okay'} then print'button pressed' end</del></sub></p>
+<h4 id="quick-example-1">Quick example:</h4>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">if</span> <span class="kw">self</span>:button<span class="ot">{</span><span class="kw">id</span> <span class="ot">=</span> <span class="st">&#39;ok&#39;</span><span class="ot">,</span> <span class="kw">x</span> <span class="ot">=</span> <span class="dv">100</span><span class="ot">,</span> <span class="kw">y</span> <span class="ot">=</span> <span class="dv">100</span><span class="ot">,</span> <span class="kw">w</span> <span class="ot">=</span> <span class="dv">100</span><span class="ot">,</span> <span class="kw">h</span> <span class="ot">=</span> <span class="dv">24</span><span class="ot">,</span> <span class="kw">text</span> <span class="ot">=</span> <span class="st">&#39;Okay&#39;</span><span class="ot">}</span> <span class="kw">then</span>
+  print<span class="st">&#39;button pressed&#39;</span>
+<span class="kw">end</span></code></pre>
 <h3 id="additional-windows">Additional windows</h3>
 <p>You can create and show additional windows from the main window with <code>self:window()</code>. Windows are not like other widget methods: each invocation of <code>self:window()</code> creates a new window on screen that doesn't close when the frame ends, but persists until the user closes it (I'll probably change that in the future and have a unique window per id and activate it when invoked and set <code>self.active</code> or something).</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">window</span> <span class="ot">=</span> <span class="kw">self</span>:window<span class="ot">{</span>

@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title> CRC-32   - CRC-32 in Lua </title>
+		<title> chipmunk   - chipmunk physics engine </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,16 +24,16 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1> CRC-32 </h1>
-							<h2> CRC-32 in Lua </h2>
+							<h1> chipmunk </h1>
+							<h2> chipmunk physics engine </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/CRC-32" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/chipmunk" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr/CRC-32/tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr/chipmunk/tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr/CRC-32/zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr/chipmunk/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -47,20 +47,10 @@
 			</div>
 
 			<section id="main_content">
-			<p>v1.0 | LuaJIT 2</p>
-<h2 id="local-crc32-requirecrc32"><code>local crc32 = require'crc32'</code></h2>
-<table>
-<tbody>
-<tr class="odd">
-<td align="left"><code>crc32(s, [size][, seed]) -&gt; sum</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>crc32(cdata, [size][, seed]) -&gt; sum</code></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<p>See also: <a href="zlib.html#crc32">zlib.crc32()</a></p>
+			<h2 id="local-chipmunk-requirechipmunk"><code>local chipmunk = require'chipmunk'</code></h2>
+<p>A ffi binding of chipmunk 2D physics engine.</p>
+<h3 id="status">Status</h3>
+<p>Currently, there's the usual windows binary and build script, sanitized header for ffi, module stub exporting the ffi clib object, and a demo stub. A Lua-friendly API is missing.</p>
 			</section>
 		</div>
 
