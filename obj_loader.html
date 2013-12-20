@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> obj_loader   - wavefront obj loader to the OpenGL scene graph mesh format </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> obj_loader </h1>
+							<h2> wavefront obj loader to the OpenGL scene graph mesh format </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/obj_parser" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/obj_parser/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/obj_parser/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v0.1 | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+<h2 id="local-obj_loader-requireobj_loader"><code>local obj_loader = require'obj_loader'</code></h2>
+<h2 id="obj_loader.loadfile-use_cache---mesh_object"><code>obj_loader.load(file[, use_cache]) -&gt; mesh_object</code></h2>
+<p>Loads an wavefront obj file into an OpenGL scene graph mesh object that can be rendered with <a href="sg_gl.html">sg_gl</a>.</p>
+<p>Supports groups with triangle and quad faces and textures with uv texcoords.</p>
+<p>The resulting VBO and IBO arrays and IBO partitions can be cached to a temp file for a small speed increase with <code>use_cache</code>.</p>
+<hr />
+<p>See also: <a href="obj_parser.html">obj_parser</a>, <a href="sg_gl_obj.html">sg_gl_obj</a></p>
+			</section>
+		</div>
+
+	</body>
+</html>

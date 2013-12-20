@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> obj_parser   - callback-based wavefront obj file parser </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> obj_parser </h1>
+							<h2> callback-based wavefront obj file parser </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/obj_parser" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/obj_parser/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/obj_parser/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.0 | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+<h2 id="local-obj_parser-requireobj_parser"><code>local obj_parser = require'obj_parser'</code></h2>
+<h2 id="obj_parser.parsefile-handlers"><code>obj_parser.parse(file, handlers)</code></h2>
+<p>Parses an obj file calling a specific handler for each piece of the file.</p>
+<p>Here's a template for the handlers table:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">handlers</span> <span class="ot">=</span> <span class="ot">{</span>
+  <span class="kw">vertex</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">x</span><span class="ot">,</span><span class="kw">y</span><span class="ot">,</span><span class="kw">z</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">normal</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">x</span><span class="ot">,</span><span class="kw">y</span><span class="ot">,</span><span class="kw">z</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">texcoord</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">u</span><span class="ot">,</span><span class="kw">v</span><span class="ot">,</span><span class="kw">w</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">start_face</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">()</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">face_vtn</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">v</span><span class="ot">,</span><span class="kw">t</span><span class="ot">,</span><span class="kw">n</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">end_face</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">()</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">line</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">v</span><span class="ot">,</span><span class="kw">t</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">material_def</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">material_name</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">material_attr</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">cmd</span><span class="ot">,</span> <span class="ot">...)</span>
+    <span class="kw">if</span> <span class="kw">cmd</span> <span class="ot">##</span>  <span class="st">&#39;ka&#39;</span> <span class="kw">or</span> cmd  <span class="st">&#39;kd&#39;</span> <span class="kw">or</span> <span class="kw">cmd</span> <span class="ot">==</span> <span class="st">&#39;ks&#39;</span> <span class="kw">then</span>
+      <span class="kw">local</span> <span class="kw">r</span><span class="ot">,</span><span class="kw">g</span><span class="ot">,</span><span class="kw">b</span> <span class="ot">=</span> <span class="ot">...</span>
+    <span class="kw">elseif</span> <span class="kw">cmd</span> <span class="ot">##</span>  <span class="st">&#39;illum&#39;</span> <span class="kw">or</span> cmd   <span class="st">&#39;ns&#39;</span> <span class="kw">or</span> <span class="kw">cmd</span> <span class="ot">##</span>  <span class="st">&#39;d&#39;</span> <span class="kw">or</span> cmd  <span class="st">&#39;tr&#39;</span> <span class="kw">then</span>
+      <span class="kw">local</span> <span class="kw">N</span> <span class="ot">=</span> <span class="ot">...</span>
+    <span class="kw">elseif</span> <span class="ot">({</span><span class="st">&#39;map_ka&#39;</span><span class="ot">,</span> <span class="st">&#39;map_kd&#39;</span><span class="ot">,</span> <span class="st">&#39;map_ks&#39;</span><span class="ot">,</span> <span class="st">&#39;map_ns&#39;</span><span class="ot">,</span> <span class="st">&#39;map_d&#39;</span><span class="ot">,</span> <span class="st">&#39;map_bump&#39;</span><span class="ot">,</span> <span class="st">&#39;bump&#39;</span><span class="ot">,</span> <span class="st">&#39;disp&#39;</span><span class="ot">,</span> <span class="st">&#39;decal&#39;</span><span class="ot">})[</span><span class="kw">cmd</span><span class="ot">]</span> <span class="kw">then</span>
+      <span class="kw">local</span> <span class="kw">filepath</span> <span class="ot">=</span> <span class="ot">...</span>
+    <span class="kw">end</span>
+  <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">material</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">material_name</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">group</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">group_names_t</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+  <span class="kw">smoothing_group</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">group_names_t</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">,</span>
+<span class="ot">}</span></code></pre>
+<hr />
+<p>See also: <a href="obj_loader.html">obj_loader</a></p>
+			</section>
+		</div>
+
+	</body>
+</html>

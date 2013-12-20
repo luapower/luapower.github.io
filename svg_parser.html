@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> svg_parser   - svg parser to a cairo scene graph object </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> svg_parser </h1>
+							<h2> svg parser to a cairo scene graph object </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/svg_parser" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/svg_parser/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/svg_parser/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v0.9 | LuaJIT 2 (written in Lua but uses <a href="expat.html">expat</a>)</p>
+<h2 id="local-svg_parser-requiresvg_parser"><code>local svg_parser = require'svg_parser'</code></h2>
+<p>A SVG 1.1 parser implemented in Lua. There's a handy collection of svg files to test the parser with.</p>
+<p>Some notable features are not yet implemented:</p>
+<ul>
+<li>patterns</li>
+<li>radial gradient has issues</li>
+<li>text</li>
+<li>markers</li>
+<li>constrained transforms: ref(svg,[x,y])</li>
+<li>external references</li>
+<li>use tag</li>
+</ul>
+<p>Low-priority missing features:</p>
+<ul>
+<li>icc colors</li>
+<li>css language</li>
+</ul>
+<h2 id="svg_parser.parsesource---object"><code>svg_parser.parse(source) -&gt; object</code></h2>
+<p>Parses a SVG into a cairo scene graph object that can be rendered with [sg_cairo sg_cairo]. <br></p>
+<ul>
+<li><code>source</code> is an <a href="expat.html">expat</a> source.</li>
+</ul>
+			</section>
+		</div>
+
+	</body>
+</html>

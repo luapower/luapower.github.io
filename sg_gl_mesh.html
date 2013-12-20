@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> sg_gl_mesh   - OpenGL scene graph mesh objects </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> sg_gl_mesh </h1>
+							<h2> OpenGL scene graph mesh objects </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/sg" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/sg/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/sg/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.0</p>
+<h2 id="requiresg_gl_mesh"><code>require'sg_gl_mesh'</code></h2>
+<p>Extends <a href="sg_gl.html">sg_gl</a> to render mesh type objects.</p>
+<h2 id="mesh-objects">Mesh objects</h2>
+<p>A mesh is a type of OpenGL scene graph object that describes a complete 3D object to be stored in VRAM by means of OpenGL's VBO (vertex buffer objects) and IBO (index buffer objects) and then rendered via OpenGL's <code>glDrawElements</code>.</p>
+<p>A mesh is conceptually an array of vertex records, each record containing the position in 3D space of the vertex, a texture reference and texture mapping coordinates (if the object is textured), a normal vector for lighting computation (if lighting is used), and a RGBA color (if the object is colored instead of or in addition to being textured).</p>
+<p>Because many times 3D objects have the same vertex positions and only differ in texture or some other aspect, or they are missing some attributes altogether (eg. a textured object would usually not have color information), OpenGL provides ways to specify vertex information more efficiently to save VRAM.</p>
+<p>In particular, you can have vertex, normal, texcoord and color information in separate arrays (called VBOs), or you can have it all packed in a single array (called interleaved VBO), or you can have vertex and normals packed together in one interleaved array and texcoords in a separate array, or any combination thereof.</p>
+<p>Also, you can choose to render all the vertices in the VBO (this is the default), or you can pick only specific vertices from the VBO to be rendered by way of an array of VBO indices (called IBO). This allows you to pack multiple 3D objects into one big shared VBO and render them individually using IBOs, but more usually, it allows you to bind different textures to different parts of the VBO.</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="ot">&lt;</span><span class="kw">mesh_object</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
+    <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;mesh&#39;</span><span class="ot">,</span>
+    <span class="kw">vbo_v</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--required, vertices</span>
+    <span class="kw">vbo_n</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, normals</span>
+    <span class="kw">vbo_t</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, texcoords</span>
+    <span class="kw">vbo_c</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, colors</span>
+    <span class="kw">ibo</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">ibo</span><span class="ot">&gt;,</span>
+    <span class="kw">ibo_partitions</span> <span class="ot">=</span> <span class="ot">{&lt;</span><span class="kw">partition1</span><span class="ot">&gt;,...},</span> <span class="co">--optional</span>
+    <span class="kw">texture</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">texture</span><span class="ot">&gt;,</span> <span class="co">--optional</span>
+    <span class="kw">mode</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;,</span>       <span class="co">--optional only if there are partitions and they all specify a mode</span>
+<span class="ot">}</span>
+
+<span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
+    <span class="kw">layout</span> <span class="ot">=</span> <span class="kw">S</span><span class="ot">,</span> <span class="co">--any combination of letters &#39;v&#39;, &#39;n&#39;, &#39;t&#39;, and &#39;c&#39; in any order</span>
+    <span class="kw">data</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">size</span> <span class="ot">=</span> <span class="kw">N</span> | <span class="kw">values</span> <span class="ot">=</span> <span class="ot">{</span><span class="kw">N</span><span class="ot">,...},</span>
+    <span class="kw">usage</span> <span class="ot">=</span> <span class="st">&#39;static&#39;</span> | <span class="st">&#39;dynamic&#39;</span> | <span class="st">&#39;stream&#39;</span> <span class="ot">(</span><span class="kw">static</span><span class="ot">),</span>
+<span class="ot">}</span>
+
+<span class="ot">&lt;</span><span class="kw">ibo</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
+    <span class="ot">&lt;</span><span class="kw">ibo_cdata_size</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_cdata_count</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_values</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_create</span><span class="ot">&gt;</span>
+
+    <span class="kw">usage</span> <span class="ot">=</span> <span class="st">&#39;static&#39;</span> | <span class="st">&#39;dynamic&#39;</span> | <span class="st">&#39;stream&#39;</span> <span class="ot">(</span><span class="kw">static</span><span class="ot">),</span>
+<span class="ot">}</span>
+
+<span class="ot">&lt;</span><span class="kw">ibo_cdata_size</span><span class="ot">&gt;</span> <span class="ot">=</span>
+    <span class="kw">cdata</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">size</span> <span class="ot">=</span> <span class="kw">N</span>
+<span class="ot">&lt;</span><span class="kw">ibo_cdata_count</span><span class="ot">&gt;</span> <span class="ot">=</span>
+    <span class="kw">cdata</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span>
+<span class="ot">&lt;</span><span class="kw">ibo_values</span><span class="ot">&gt;</span> <span class="ot">=</span>
+    <span class="ot">{</span><span class="kw">N</span><span class="ot">,...}</span>
+<span class="ot">&lt;</span><span class="kw">ibo_create</span><span class="ot">&gt;</span> <span class="ot">=</span>
+    <span class="kw">from</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span>
+
+<span class="ot">&lt;</span><span class="kw">partition</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
+    <span class="kw">texture</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">texture</span><span class="ot">&gt;,</span> <span class="co">--optional, defaults to mesh_object.texture</span>
+    <span class="kw">mode</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;,</span>       <span class="co">--optional if mesh_object specifies a mode</span>
+    <span class="kw">from</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--</span>
+    <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span>
+    <span class="kw">transparent</span> <span class="ot">=</span> <span class="kw">true</span> | <span class="kw">false</span> <span class="ot">(</span><span class="kw">false</span><span class="ot">)</span>
+<span class="ot">}</span>
+
+<span class="ot">&lt;</span><span class="kw">texture</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
+    <span class="ot">&lt;</span><span class="kw">image_texture</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">surface_texture</span><span class="ot">&gt;</span>
+<span class="ot">}</span>
+
+<span class="ot">&lt;</span><span class="kw">image_texture</span><span class="ot">&gt;</span> <span class="ot">=</span>
+    <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;image&#39;</span><span class="ot">,</span>
+    <span class="kw">file</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">imagefile</span> <span class="kw">source</span><span class="ot">&gt;,</span> <span class="co">--see imagefile</span>
+
+<span class="ot">&lt;</span><span class="kw">surface_texture</span><span class="ot">&gt;</span> <span class="ot">=</span>
+    <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;surface&#39;</span><span class="ot">,</span>
+    <span class="kw">w</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--width</span>
+    <span class="kw">h</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--height</span>
+    <span class="kw">object</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">cairo</span> <span class="kw">scene</span> <span class="kw">graph</span> <span class="kw">object</span><span class="ot">&gt;</span>
+
+
+<span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="st">&#39;points&#39;</span> | <span class="st">&#39;line_strip&#39;</span> | <span class="st">&#39;line_loop&#39;</span> | <span class="st">&#39;lines&#39;</span> | <span class="st">&#39;triangles&#39;</span> |
+         <span class="st">&#39;triangle_strip&#39;</span> | <span class="st">&#39;triangle_fan&#39;</span> | <span class="st">&#39;quads&#39;</span> | <span class="st">&#39;quad_strip&#39;</span> | <span class="st">&#39;polygon&#39;</span></code></pre>
+<h2 id="vbos">VBOs</h2>
+<p>A VBO is an array of records. The record's structure is given by the <code>layout</code> property, a string consisting of any combination of the letters <code>v</code>, <code>n</code>, <code>t</code> and <code>c</code> specifying which attributes make up the record and in which order.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>letter</strong></th>
+<th align="left"><strong>meaning</strong></th>
+<th align="left"><strong>specifically</strong></th>
+<th align="left"><strong>number type</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">v</td>
+<td align="left">vertices</td>
+<td align="left">x,y,z</td>
+<td align="left">32bit float</td>
+</tr>
+<tr class="even">
+<td align="left">n</td>
+<td align="left">normals</td>
+<td align="left">nx,ny,nz</td>
+<td align="left">32bit float</td>
+</tr>
+<tr class="odd">
+<td align="left">t</td>
+<td align="left">texcoords</td>
+<td align="left">u,v</td>
+<td align="left">32bit float</td>
+</tr>
+<tr class="even">
+<td align="left">c</td>
+<td align="left">colors</td>
+<td align="left">r,g,b,a</td>
+<td align="left">32bit float</td>
+</tr>
+</tbody>
+</table>
+<p>So a VBO with a 'vtn' layout is an interleaved VBO of the form {v1.x,v1.y,v1.z,v1.u,v1.v,v1.nx,v1.ny,v1.nz,v2.x,v2.y,...}. A VBO with a 't' layout has the form {v1.u,v1.v,v2.u,v2.v,...} and so on. If values are given as <code>cdata</code>, it must be an array of 32bit floats and either <code>count</code> or <code>size</code> must also be set. Given as <code>values</code> it must be table of Lua numbers which will be converted to 32bit floats upon uploading.</p>
+<h2 id="ibos">IBOs</h2>
+<p>An IBO is an array of indices. Given as <code>cdata</code> it must be an array of uint32_t if larger than 64k entries, uint16_t if larger than 255 entries, and uint8_t if smaller than 256 entries. Given as <code>values</code>, it must be an array of Lua numbers. If <code>from</code> and <code>count</code> is given instead, an IBO with consecutive indices is created.</p>
+<p>An IBO can also be partitioned so that different contiguous segments of it can be rendered with a different mode and/or texture.</p>
+<h2 id="textures">Textures</h2>
+<p>Textures can be either <a href="imagefile.html">image files</a> or <a href="sg_cairo.html">cairo scene graphs</a>.</p>
+<hr />
+<p>See also: <a href="sg_gl_shape.html">sg_gl_shape</a>, <a href="sg_gl_obj.html">sg_gl_obj</a></p>
+			</section>
+		</div>
+
+	</body>
+</html>

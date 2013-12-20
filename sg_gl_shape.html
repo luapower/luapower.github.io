@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> sg_gl_shape   - OpenGL scene graph shape objects </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> sg_gl_shape </h1>
+							<h2> OpenGL scene graph shape objects </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/sg" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/sg/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/sg/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<p>v1.0</p>
+<h2 id="requiresg_gl_shape"><code>require'sg_gl_shape'</code></h2>
+<p>Extends <a href="sg_gl.html">sg_gl</a> to render shape objects.</p>
+<h2 id="shape-objects">Shape objects</h2>
+<p>A shape is a type of OpenGL scene graph object that describes a 3D object in a state-machine kind of language. Internally, the shape description is converted into a <a href="sg_gl_mesh.html">mesh object</a> which is then rendered.</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="ot">&lt;</span><span class="kw">shape_object</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
+    <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;shape&#39;</span><span class="ot">,</span>
+    <span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;</span> |
+    <span class="st">&#39;color&#39;</span><span class="ot">,</span> <span class="kw">r</span><span class="ot">,</span> <span class="kw">g</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">a</span> |
+<span class="ot">}</span>
+
+<span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="kw">see</span> <span class="kw">sg_gl_mesh</span> <span class="kw">for</span> <span class="kw">available</span> <span class="kw">modes</span><span class="ot">.</span></code></pre>
+<hr />
+<p>See also: <a href="sg_gl_mesh.html">sg_gl_mesh</a></p>
+			</section>
+		</div>
+
+	</body>
+</html>
