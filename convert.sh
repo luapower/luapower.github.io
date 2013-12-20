@@ -1,16 +1,18 @@
-# convert file.md from current dir to docs/<basename>.html
-
-[ "$1" ] || { echo "usage: $0 <markdown-file>"; exit 1; }
+# convert an .md file to a .html file given an output dir
 
 in_file="$1"
-template="$2"; [ "$template" ] || template="hack"
+out_dir="$2"
 
-out_dir="x:/work/lua-files/docs"
-name="${in_file##*/}"
-name="${name%%.md}"
-out_file="$out_dir/$name.html"
+[ "$in_file" -a "$out_dir" ] || exit 1
 
-#--print-default-template=html
+s="${in_file##*/}"  # strip path (linux)
+s="${s##*\\}"       # strip path (windows)
+s="${s%.*}"         # strip extension
+out_file="$out_dir/$s.html"
+
+[ "$template" ] || template=hack # default template
+[ "$s" == "toc" ] && template="${template}_toc"  # table of contents has special template
+
 pandoc -r markdown -w html --data-dir="$out_dir" --template="$template" "$in_file" > "$out_file"
 
 echo "$out_file"

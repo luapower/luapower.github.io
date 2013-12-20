@@ -1,11 +1,9 @@
-# pandoc convert & view in browser
+# convert an .md file to a .html file and spawn a browser to view the result
 
 # Tip: add the following to SciTE to convert and preview doc on F5:
-#  command.go.$(file.patterns.markdown)=sh "x:/work/lua-files/docs/convert-and-view.sh" "$(FileNameExt)"
+#    command.go.$(file.patterns.markdown)=sh convert-and-view.sh "$(FilePath)" <output-path>
 
 # Tip: use "Only One" chrome extension to avoid opening the same url in a new window every time
-
-[ "$1" ] || { echo "usage: $0 <markdown-file>"; exit 1; }
 
 out_file="$("$(dirname "$0")/convert.sh" "$@")"
 
