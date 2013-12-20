@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title> lanes   - Lua lanes </title>
+		<title> lanes   - Lua Lanes </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -25,7 +25,7 @@
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
 							<h1> lanes </h1>
-							<h2> Lua lanes </h2>
+							<h2> Lua Lanes </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
@@ -47,11 +47,13 @@
 			</div>
 
 			<section id="main_content">
-			<p>lanes 3.6.2 | Lua 5.1 | Lua 5.2 | LuaJIT 2</p>
+			<p><strong>NOTE: This is just a distribution of Lanes. Lanes is developed <a href="http://github.com/LuaLanes/lanes">here</a>.</strong></p>
+<p>lanes 3.6.2 | Lua 5.1, Lua 5.2, LuaJIT 2</p>
+<h3 id="documentation">Documentation</h3>
+<p>You can read the up-to-date Lanes documentation <a href="https://rawgithub.com/LuaLanes/lanes/master/docs/index.html">here</a>.</p>
+<h3 id="luajit-notes">LuaJIT notes</h3>
 <ul>
-<li>lanes is now hosted on <a href="http://github.com/LuaLanes/lanes">github</a> - ignore the official website.</li>
 <li>the default value of <code>protect_allocator</code> was changed to <code>true</code> in <code>lanes.lua</code> - LuaJIT2 crashes without that.</li>
-<li>you can read the up-to-date documentation <a href="http://lua-files.googlecode.com/hg/csrc/lanes/docs/index.html">here</a> until lanes will have it online.</li>
 <li>to use ffi inside lanes you have to require the ffi module inside the lane, since the ffi module cannot be transferred as an upvalue to your lane (you will get an error about &quot;destination transfer database&quot;).
 <ul>
 <li>this also means that <em>other modules</em> that depend on ffi cannot be upvalues and must be required explicitly inside the lane or luajit will crash.</li>
