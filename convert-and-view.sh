@@ -7,8 +7,9 @@
 
 out_file="$("$(dirname "$0")/convert.sh" "$@")"
 
-"$USERPROFILE\Local Settings\Application Data\Google\Chrome\Application\chrome.exe" \
-	--use-spdy=off --disable-application-cache --allow-file-access-from-files "$out_file"
+chrome="C:\Program Files\Google\Chrome\Application\chrome.exe"
+[ -f "$chrome" ] || chrome="$USERPROFILE\Local Settings\Application Data\Google\Chrome\Application\chrome.exe"
+
+"$chrome" --use-spdy=off --disable-application-cache --allow-file-access-from-files "$out_file"
 
 # "X:\trash\firefox\firefox.exe" "file:///$out_file"
-
