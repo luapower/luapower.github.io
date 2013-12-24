@@ -11,7 +11,8 @@ s="${s%.*}"         # strip extension
 out_file="$out_dir/$s.html"
 
 [ "$template" ] || template=hack # default template
-[ "$s" == "toc" ] && template="${template}_toc"  # table of contents has special template
+[ "$s" == "toc" ] && template="${template}_toc"     # the table of contents uses a special template
+[ "$s" == "index" ] && template="${template}_index" # the homepage uses a special template
 
 pandoc -r markdown -w html --data-dir="$out_dir" --template="$template" "$in_file" > "$out_file"
 

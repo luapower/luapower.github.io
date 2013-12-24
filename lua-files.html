@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
+
+		<title> lua-files   - git-based Lua/LuaJIT2 distribution </title>
+
+		<script src="templates/jquery-1.10.2.js"></script>
+
+		<script language="javascript" type="text/javascript">
+		  function resizeIframe(obj) {
+			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+		  }
+		</script>
+	</head>
+
+	<body>
+
+		<header>
+			<div class="container">
+				<table style="border: 0; margin: 0">
+					<tr style="border: 0">
+						<td valign="middle" style="width: 100%">
+							<h1> lua-files </h1>
+							<h2> git-based Lua/LuaJIT2 distribution </h2>
+						</td>
+						<td align="right">
+								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+								<a href="https://github.com/capr/lua-files-git" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/lua-files-git/tarball/master" class="btn">Download as .tar.gz</a>
+								</td></tr><tr style="border: 0"><td>
+								<a href="https://github.com/capr/lua-files-git/zipball/master" class="btn">Download as .zip</a>
+								</td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</header>
+
+		<div class="container">
+			<div id="toc">
+				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			</div>
+
+			<section id="main_content">
+			<h2 id="on-this-site-you-will-find">On this site you will find</h2>
+<ul>
+<li>Lua solutions for a wide range of programming tasks, from table serialization to bezier curve math.</li>
+<li>LuaJIT ffi bindings for many popular libraries like mysql, expat, cairo.</li>
+<li>Lua modules targeted at the LuaJIT compiler for tasks like bitmap conversions and alpha blending.</li>
+<li>Win32 API bindings for windows and common controls.</li>
+<li>Windows binaries for all libraries involved and simple scripts for building them.</li>
+<li>Everything free (public domain).</li>
+</ul>
+<p>Cosmin Apreutesei<br />cosmin.apreutesei@gmail.com</p>
+<h2 id="get-started">Get started</h2>
+<p>Download and unzip the <a href="http://lua-files.org/downloads">packages</a>. Run demos: cd to <code>lua-files</code> and type <code>bin\luajit.exe &lt;*_demo&gt;.lua</code></p>
+<p>To make sure you always get the most recent files, use Mercurial:</p>
+<pre><code>hg clone https://code.google.com/p/lua-files/
+hg clone https://code.google.com/p/lua-files.media lua-files/media</code></pre>
+<h2 id="in-detail">In Detail</h2>
+<p>The modules come bundled together into one directory for easy deployment and developing. There's little functional dependency between them however, and they can be easily pulled out and used separately if needed. Many modules depend on a small utility library called [glue]. Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.</p>
+<p>Portability varies between libraries. Some are Windows specific, some use the ffi API, some specifically target LuaJIT for speed, while others are written in plain Lua and should work on any platform. This is documented for each module individually.</p>
+<p>Windows binaries for all C/C++ libraries are available in [http://lua-files.org/source/browse/#hg%2Fbin bin]. They are built using the sources and build scripts from [http://lua-files.org/source/browse/#hg%2Fcsrc csrc]. Everything is compiled with MinGW's GCC with <code>-O3 -s</code> and linked against msvcrt.dll, using one-liner build scripts which &quot;just work&quot; provided you have MinGW in your <code>PATH</code>.</p>
+<p>My own code is <a href="http://unlicense.org/">public domain</a> as I do not support copyright law. Third-party code has its licensing in or near the sources. Generally, I tried to avoid viral GPL with some exceptions.</p>
+<h1 id="modules">Modules</h1>
+<h2 id="basic-tools">Basic tools</h2>
+<ul>
+<li>[glue] - everyday functions</li>
+<li>[tuple] - real tuples</li>
+<li>[coro] - symmetric coroutines</li>
+<li>[pp] - fast pretty printer / serializer</li>
+<li>[oo] - object system with virtual properties and overriding hooks</li>
+<li><a href="http://www.inf.puc-rio.br/~roberto/lpeg/">lpeg</a>, <a href="http://www.inf.puc-rio.br/~roberto/lpeg/re.html">lpeg.re</a> - parsing expression grammars (lpeg 0.10.2)</li>
+<li>[vararg] - fast vararg utils</li>
+<li>[utf8] - utf8 basics</li>
+<li><a href="http://www.inf.puc-rio.br/~roberto/struct/">struct</a> - Roberto's struct library</li>
+<li>[dlist] - doubly linked lists</li>
+<li>[tricks] - Lua tricks, LuaJIT assumptions</li>
+</ul>
+<h2 id="basic-os">Basic OS</h2>
+<ul>
+<li>[lanes] - multi-threading</li>
+<li><a href="http://w3.impa.br/~diego/software/luasocket/reference.html">luasocket</a> - sockets (luasocket 2.0.2; base and url modules only)</li>
+<li><a href="http://keplerproject.github.com/luafilesystem/manual.html#reference">lfs</a> - basic filesystem access (luafilesystem 1.6.2)</li>
+</ul>
+<h2 id="hasing-and-compression">Hasing and compression</h2>
+<ul>
+<li>[md5] - MD5 sum and digest</li>
+<li>[sha2] - SHA-256, SHA-384, SHA-512 hashing</li>
+<li>[hmac] - HMAC hashing</li>
+<li>[zlib] - inflate/deflate, gzip/gunzip, CRC-32 and Adler-32 sum</li>
+<li>[minizip] - read/write zip files</li>
+<li>[pmurhash] - murmurhash3 C implementation</li>
+<li>[murmurhash3] - murmurhash3 Lua implementation</li>
+<li>[crc32] - CRC-32 Lua implementation</li>
+</ul>
+<h2 id="internet-formats">Internet formats</h2>
+<ul>
+<li>[libb64] - fast base64 encoding and decoding</li>
+<li>[expat] - XML parsing</li>
+<li>[genx] - XML formatting</li>
+<li>[http://www.kyne.com.au/~mark/software/lua-cjson-manual.html#<em>api</em>functions cjson] - fast json encoding and decoding (Lua CJSON 2.1.0)</li>
+</ul>
+<h2 id="databases">Databases</h2>
+<ul>
+<li>[mysql] - complete mysql binding</li>
+<li>[fbclient] - firebird binding</li>
+</ul>
+<h2 id="windows">Windows</h2>
+<ul>
+<li>[winapi] - bindings for windows and the message loop, standard controls and dialogs, gdi, cairo, opengl and openvg panel components</li>
+</ul>
+<h2 id="d-vector-graphics">2D Vector Graphics</h2>
+<ul>
+<li>[path] - fast 2D geometry library</li>
+<li>[affine2d] - fast affine transformations</li>
+<li>[clipper] - polygon clipping and offsetting</li>
+<li>[cairo] - cairo graphics library</li>
+<li>[openvg] - openvg API and binding for <code>AmanithVG</code></li>
+<li>[sg_cairo] - cairo scene graph rendering</li>
+<li>[svg_parser] - svg parser to a cairo scene graph</li>
+</ul>
+<h2 id="text-layouting-rasterization">Text Layouting &amp; Rasterization</h2>
+<ul>
+<li>[freetype] - font rasterization</li>
+<li>[harfbuzz] - complex text shaping</li>
+<li>[libunibreak] - unicode line &amp; word breaking</li>
+</ul>
+<h2 id="d-graphics">3D Graphics</h2>
+<ul>
+<li>[opengl] - bindings to OpenGL 1.1 and 2.1 + GLU, GLUT, WGL and APIs</li>
+<li>[sg_gl] - opengl scene graph rendering</li>
+<li>[sg_gl_mesh] - OpenGL rendering of meshes via vertex/index buffers</li>
+<li>[sg_gl_shape] - OpenGL scene graph rendering of shapes via vertex/index buffers</li>
+<li>[obj_parser] - callback-based wavefront obj parser</li>
+<li>[obj_loader] - wavefront obj loader to opengl scene graph mesh format</li>
+<li>[sg_gl_obj] - OpenGL scene graph rendering of wavefront obj files</li>
+</ul>
+<h2 id="raster-images">Raster Images</h2>
+<ul>
+<li>[bitmap] - in-memory bitmaps: format conversions, dithering, blending, effects</li>
+<li>[giflib] - read GIF files</li>
+<li>[libjpeg] - read JPEG files</li>
+<li>[nanojpeg] - read JPEG files simply (but slowly)</li>
+<li>[libpng] - read PNG files</li>
+<li>[libexif] - read EXIF information from image files</li>
+<li>[imagefile] - read various raster image formats with a single API</li>
+</ul>
+<h2 id="gui">GUI</h2>
+<ul>
+<li>[cplayer] - cairo-based GUI access layer + immediate mode widgets (Windows only)</li>
+<li>[codedit] - code editor engine written in Lua</li>
+<li>[box2d] - 2D rectangle math for GUIs</li>
+</ul>
+<h2 id="colors">Colors</h2>
+<ul>
+<li>[color] - color conversions in HSL space</li>
+</ul>
+<h2 id="animation">Animation</h2>
+<ul>
+<li>[easing] - easing functions for tweening</li>
+</ul>
+<h2 id="physics">Physics</h2>
+<ul>
+<li>[chipmunk] - chipmunk ffi binding and binary</li>
+</ul>
+<h2 id="video">Video</h2>
+<ul>
+<li><a href="http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html">libvlc</a> - VLC 2.0.5, plugins dir not included</li>
+</ul>
+<h2 id="general-purpose-math">General Purpose Math</h2>
+<ul>
+<li>[eq2] - quadratic equation solver</li>
+<li>[eq3] - cubic equation solver</li>
+</ul>
+<h2 id="text-proofing">Text proofing</h2>
+<ul>
+<li>[hunspell] - spell checking</li>
+</ul>
+<h2 id="prose">Prose</h2>
+<ul>
+<li>[APIDesign API Design Notes] - how to design good APIs for your libraries</li>
+<li>[GoodLibraries Good Libraries] - what makes or breaks a library</li>
+</ul>
+			</section>
+		</div>
+
+	</body>
+</html>
