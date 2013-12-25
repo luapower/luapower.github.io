@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title> lua-files   - git-based Lua/LuaJIT2 distribution </title>
+		<title> lua-files-git   - Git workflow for lua-files </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,8 +24,8 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1> lua-files </h1>
-							<h2> git-based Lua/LuaJIT2 distribution </h2>
+							<h1> lua-files-git </h1>
+							<h2> Git workflow for lua-files </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
@@ -47,21 +47,79 @@
 			</div>
 
 			<section id="main_content">
-			<h2 id="on-this-site-you-will-find">On this site you will find</h2>
+			<h2 id="what">What?</h2>
+<p>A portable LuaJIT2 binary+source distribution for Windows and Linux.</p>
+<p>Many types of libraries:</p>
 <ul>
+<li>ffi bindings to many popular C libraries like mysql, expat, cairo.</li>
+<li>Lua C libraries like luasocket, lfs, lanes.</li>
 <li>Lua solutions for a wide range of programming tasks, from table serialization to bezier curve math.</li>
-<li>LuaJIT ffi bindings for many popular libraries like mysql, expat, cairo.</li>
-<li>Lua modules targeted at the LuaJIT compiler for tasks like bitmap conversions and alpha blending.</li>
-<li>Win32 API bindings for windows and common controls.</li>
-<li>Windows binaries for all libraries involved and simple scripts for building them.</li>
+<li>Lua+ffi modules targeted at the LuaJIT compiler for tasks like bitmap conversions and alpha blending.</li>
+<li>Lua+ffi Win32 API bindings for windows and common controls.</li>
+</ul>
+<p>Each library comes complete with binaries, sources and build scripts:</p>
+<ul>
+<li>binaries for 32bit Windows and Linux so you can start coding right away</li>
+<li>C sources so you can rebuild them on different platforms</li>
+<li>the simplest build scripts invoking gcc directly so you can upgrade and rebuild</li>
+<li>a small demo or test file, many of which are GUI+graphics demos</li>
+<li>your choice on how to use the documentation: online (this website) or in your editor (plain text)</li>
+</ul>
+<p>Everything is modular and free:</p>
+<ul>
+<li>modular: only add what you need, each library has its own git project.</li>
 <li>Everything free (public domain).</li>
 </ul>
-<p>Cosmin Apreutesei<br />cosmin.apreutesei@gmail.com</p>
-<h2 id="get-started">Get started</h2>
-<p>Download and unzip the <a href="http://lua-files.org/downloads">packages</a>. Run demos: cd to <code>lua-files</code> and type <code>bin\luajit.exe &lt;*_demo&gt;.lua</code></p>
-<p>To make sure you always get the most recent files, use Mercurial:</p>
-<pre><code>hg clone https://code.google.com/p/lua-files/
-hg clone https://code.google.com/p/lua-files.media lua-files/media</code></pre>
+<h2 id="get-started-the-easy-way">Get started, the easy way</h2>
+<h2 id="get-started-the-git-way">Get started, the git way</h2>
+<p>The default Lua search path looks for <code>&lt;module&gt;.lua</code> in the current directory. This is a comfortable scheme but it requires the ability to clone multiple repos into the same directory. Luckily, git can do that.</p>
+<p>The trick is to separate the files from the git repos:</p>
+<pre><code>mkdir files
+mkdir repos
+
+git clone -n ssh://git@github.com/capr/affine2d repos/affine2d
+git --git-dir=repos/affine2d/.git --work-tree=files checkout
+
+git clone -n ssh://git@github.com/capr/bitmap repos/bitmap
+git --git-dir=repos/bitmap/.git --work-tree=files checkout
+
+... and so on, with all the packages that you need</code></pre>
+<p>Now the Lua modules are directly in the <code>files</code> dir, so you can:</p>
+<ul>
+<li><code>cd files</code> and run programs from there (eg. you can run the demos like that).</li>
+<li>add <code>full-path-to-files</code> to your <code>package.path</code> and <code>full-path-to-files/bin</code> to your <code>package.cpath</code> and run programs from anywhere.</li>
+<li>set <code>LUA_PATH=full-path-to-files</code> and <code>LUA_CPATH=full-path-to-files/bin</code> and run programs from anywhere.</li>
+</ul>
+<p>To avoid specifying <code>--git-dir</code> and <code>--work-tree</code> on every git command, you can edit <code>.git/config</code> for each package and add <code>worktree = ../../../files</code> under the <code>[core]</code> section. This allows you to use git as usual from the <code>repos/&lt;module&gt;</code> dir.</p>
+<p>If you like the flexibility of this approach but don't want to be bothered typing all these git commands, there's a little project called <code>lua-files-git</code> that wraps it all up in basic shell scripts:</p>
+<pre><code>git clone ssh://git@github.com/capr/lua-files-git</code></pre>
+<blockquote>
+<p>For Windows you need MSYS in your PATH because these are all bash scripts (sorry, I never bothered to learn powershell). You need MSYS and MinGW in your PATH for building these libraries anyway.</p>
+</blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">./list.sh</td>
+<td align="left">list all packages</td>
+</tr>
+<tr class="even">
+<td align="left">./clone.sh <package></td>
+<td align="left">clone a package</td>
+</tr>
+<tr class="odd">
+<td align="left">./clone-all.sh</td>
+<td align="left">clone all packages</td>
+</tr>
+<tr class="even">
+<td align="left">./build.sh <package> <platform></td>
+<td align="left">build a package (platform is <code>mingw32</code> or <code>linux32</code>)</td>
+</tr>
+<tr class="odd">
+<td align="left">./build-all.sh <platform></td>
+<td align="left">build all packages in order</td>
+</tr>
+</tbody>
+</table>
 <h2 id="in-detail">In Detail</h2>
 <p>The modules come bundled together into one directory for easy deployment and developing. There's little functional dependency between them however, and they can be easily pulled out and used separately if needed. Many modules depend on a small utility library called [glue]. Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.</p>
 <p>Portability varies between libraries. Some are Windows specific, some use the ffi API, some specifically target LuaJIT for speed, while others are written in plain Lua and should work on any platform. This is documented for each module individually.</p>

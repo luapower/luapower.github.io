@@ -1,30 +1,82 @@
 ---
 project: lua-files-git
-title:   lua-files
-tagline: git-based Lua/LuaJIT2 distribution
+tagline: Git workflow for lua-files
 ---
 
-## On this site you will find
+## What?
 
+A portable LuaJIT2 binary+source distribution for Windows and Linux.
+
+Many types of libraries:
+
+  * ffi bindings to many popular C libraries like mysql, expat, cairo.
+  * Lua C libraries like luasocket, lfs, lanes.
   * Lua solutions for a wide range of programming tasks, from table serialization to bezier curve math.
-  * LuaJIT ffi bindings for many popular libraries like mysql, expat, cairo.
-  * Lua modules targeted at the LuaJIT compiler for tasks like bitmap conversions and alpha blending.
-  * Win32 API bindings for windows and common controls.
-  * Windows binaries for all libraries involved and simple scripts for building them.
+  * Lua+ffi modules targeted at the LuaJIT compiler for tasks like bitmap conversions and alpha blending.
+  * Lua+ffi Win32 API bindings for windows and common controls.
+
+Each library comes complete with binaries, sources and build scripts:
+
+  * binaries for 32bit Windows and Linux so you can start coding right away
+  * C sources so you can rebuild them on different platforms
+  * the simplest build scripts invoking gcc directly so you can upgrade and rebuild
+  * a small demo or test file, many of which are GUI+graphics demos
+  * your choice on how to use the documentation: online (this website) or in your editor (plain text)
+
+Everything is modular and free:
+
+  * modular: only add what you need, each library has its own git project.
   * Everything free (public domain).
 
-Cosmin Apreutesei \
-cosmin.apreutesei@gmail.com
 
-## Get started
+## Get started, the easy way
 
-Download and unzip the [packages](http://lua-files.org/downloads).
-Run demos: cd to `lua-files` and type `bin\luajit.exe <*_demo>.lua`
 
-To make sure you always get the most recent files, use Mercurial:
 
-	hg clone https://code.google.com/p/lua-files/
-	hg clone https://code.google.com/p/lua-files.media lua-files/media
+## Get started, the git way
+
+The default Lua search path looks for `<module>.lua` in the current directory. This is a comfortable scheme
+but it requires the ability to clone multiple repos into the same directory. Luckily, git can do that.
+
+The trick is to separate the files from the git repos:
+
+	mkdir files
+	mkdir repos
+
+	git clone -n ssh://git@github.com/capr/affine2d repos/affine2d
+	git --git-dir=repos/affine2d/.git --work-tree=files checkout
+
+	git clone -n ssh://git@github.com/capr/bitmap repos/bitmap
+	git --git-dir=repos/bitmap/.git --work-tree=files checkout
+
+	... and so on, with all the packages that you need
+
+Now the Lua modules are directly in the `files` dir, so you can:
+
+  * `cd files` and run programs from there (eg. you can run the demos like that).
+  * add `full-path-to-files` to your `package.path` and `full-path-to-files/bin` to your `package.cpath`
+    and run programs from anywhere.
+  * set `LUA_PATH=full-path-to-files` and `LUA_CPATH=full-path-to-files/bin` and run programs from anywhere.
+
+To avoid specifying `--git-dir` and `--work-tree` on every git command, you can edit `.git/config` for each package
+and add `worktree = ../../../files` under the `[core]` section. This allows you to use git as usual from
+the `repos/<module>` dir.
+
+If you like the flexibility of this approach but don't want to be bothered typing all these git commands,
+there's a little project called `lua-files-git` that wraps it all up in basic shell scripts:
+
+	git clone ssh://git@github.com/capr/lua-files-git
+
+> For Windows you need MSYS in your PATH because these are all bash scripts
+> (sorry, I never bothered to learn powershell). You need MSYS and MinGW in your PATH for building these libraries anyway.
+
+------------------------------------ ------------------------------------
+./list.sh                            list all packages
+./clone.sh <package>                 clone a package
+./clone-all.sh                       clone all packages
+./build.sh <package> <platform>      build a package (platform is `mingw32` or `linux32`)
+./build-all.sh <platform>            build all packages in order
+------------------------------------ ------------------------------------
 
 ## In Detail
 
