@@ -1,49 +1,58 @@
 ---
 project: lua-files-devel
 title:   lua-files
-tagline: LuaJIT binary+source distribution with libraries
+tagline: LuaJIT + batteries
 ---
 
-## What?
+## TL;dr
 
-A portable LuaJIT2 binary+source distribution for Windows and Linux.
+  * Lua libraries and bindings with demos, test files, documentation, separate github project
+  * C libraries with sources, binaries and build scripts for Windows and Linux
+  * LuaJIT2 executable
+  * public domain
 
-Many types of libraries:
+pure Lua                                        Lua+ffi                                         Lua/C
+------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
+[glue]             everyday functions           [md5]              MD5                          [lpeg]             PEGs
+[tuple]            real tuples                  [sha2]             SHA-256/384/512              [varag]            varargs
+[coro]             symmetric coroutines         [zlib]             deflate, gzip                [struct]           structs
+[pp]               serialization                [minizip]          ZIP files                    [lanes]            threads
+[oo]               OOP                          [pmurhash]         murmurhash                   [luasocket]        sockets
+[utf8]             UTF-8                        [libb64]           base64                       [lfs]              file system
+[dlist]            doubly-linked lists          [expat]            XML parsing                  [cjson]            JSON
+[hmac]             HMAC hashing                 [genx]             XML creation
+[murmurhash3]      murmurhash                   [mysql]            mysql client
+[crc32]            CRC-32                       [fbclient]         firebird client
+[path]             2D geometry                  [winapi]           winapi for GUIs
+[affine2d]         2D transforms                [clipper]          polygon clipping
+[box2d]            2D rectangles                [cairo]            2D graphics
+[sg_cairo]         cairo scene graph            [openvg]           2D accel graphics
+[svg_parser]       SVG parser                   [freetype]         text rasterization
+[sg_gl]            OpenGL scene graph           [harfbuzz]         text shaping
+[sg_gl_mesh]       OpenGL meshes                [libunibreak]      line breaking
+[sg_gl_shape]      OpenGL shapes                [opengl]           OpenGL 1.1 & 2.1
+[obj_parser]       wavefront obj parser         [bitmap]           memory bitmaps
+[obj_loader]       obj loader                   [giflib]           GIF files
+[sg_gl_obj]        obj scene graph              [libjpeg]          JPEG files
+[imagefile]        image files                  [libpng]           PNG files
+[cplayer]          procedural graphics          [nanojpeg]         JPEG files
+[codedit]          code editor                  [libexif]          EXIF info
+[color]            HSL colors                   [chipmunk]         2D physics
+[easing]           for tweening                 [libvlc]           video playing
+[eq2], [eq3]       equation solvers             [hunspell]         spell checking
+------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
 
-  * ffi bindings to many popular C libraries like mysql, expat, cairo.
-  * Lua C libraries like luasocket, lfs, lanes.
-  * pure Lua modules for a wide range of programming tasks, from table serialization to bezier curve math.
-  * Lua+ffi modules targeted at the LuaJIT compiler for tasks like bitmap conversions and alpha blending.
-  * Lua+ffi Win32 API bindings for windows and common controls.
+## Directory structure
 
-C libraries come with binaries, sources and build scripts.
-
-  * binaries for Windows and Linux
-  * C sources
-  * one-liner build scripts that invoke gcc directly so you can upgrade the libraries and rebuild them
-
-Everything is modular and free:
-
-  * modular: only add what you need, each library has its own git project.
-  * Everything free (public domain).
-
-
-## Get started, the easy way
-
-[Download as tar.gz](https://github.com/capr/lua-files-devel/tarball/master)
-
-or
-
-[Download as zip](https://github.com/capr/lua-files-devel/zipball/master)
-
-or
-
-	git clone ssh://git@github.com/capr/lua-files-devel
-
-
-## Get started, the git way
-
-See [lua-files-git](lua-files-git.html)
+  * Lua module: `<lib>.lua`
+  * Lua+ffi module: `<lib>.lua`, `<lib>_h.lua`
+  * test file: `<lib>_test.lua`
+  * demo: `<lib>_demo.lua`
+  * documentation: `<lib>.md`
+  * C lib sources: `csrc/<lib>/*`
+  * C lib build script: `csrc/<lib>/build-<platform>.sh`
+  * C lib binary: `bin/mingw32/<lib>.dll`, `bin/linux32/lib<lib>.so`
+  * LuaJIT2 executable: `bin/<platform>/luajit`
 
 ## In Detail
 
@@ -66,109 +75,76 @@ My own code is [public domain] as I do not support copyright law.
 Third-party code has its licensing in or near the sources.
 Generally, I tried to avoid viral GPL with some exceptions.
 
-# Modules
-
-## Basic tools
-  * [glue] - everyday functions
-  * [tuple] - real tuples
-  * [coro] - symmetric coroutines
-  * [pp] - fast pretty printer / serializer
-  * [oo] - object system with virtual properties and overriding hooks
-  * [lpeg](http://www.inf.puc-rio.br/~roberto/lpeg/), [lpeg.re](http://www.inf.puc-rio.br/~roberto/lpeg/re.html) - parsing expression grammars (lpeg 0.10.2)
-  * [vararg] - fast vararg utils
-  * [utf8] - utf8 basics
-  * [struct](http://www.inf.puc-rio.br/~roberto/struct/) - Roberto's struct library
-  * [dlist] - doubly linked lists
-  * [tricks] - Lua tricks, LuaJIT assumptions
-
-## Basic OS
-  * [lanes] - multi-threading
-  * [luasocket](http://w3.impa.br/~diego/software/luasocket/reference.html) - sockets (luasocket 2.0.2; base and url modules only)
-  * [lfs](http://keplerproject.github.com/luafilesystem/manual.html#reference) - basic filesystem access (luafilesystem 1.6.2)
-
-## Hasing and compression
-  * [md5] - MD5 sum and digest
-  * [sha2] - SHA-256, SHA-384, SHA-512 hashing
-  * [hmac] - HMAC hashing
-  * [zlib] - inflate/deflate, gzip/gunzip, CRC-32 and Adler-32 sum
-  * [minizip] - read/write zip files
-  * [pmurhash] - murmurhash3 C implementation
-  * [murmurhash3] - murmurhash3 Lua implementation
-  * [crc32] - CRC-32 Lua implementation
-
-## Internet formats
-  * [libb64] - fast base64 encoding and decoding
-  * [expat] - XML parsing
-  * [genx] - XML formatting
-  * [http://www.kyne.com.au/~mark/software/lua-cjson-manual.html#_api_functions cjson] - fast json encoding and decoding (Lua CJSON 2.1.0)
-
-##  Databases
-  * [mysql] - complete mysql binding
-  * [fbclient] - firebird binding
-
-## Windows
-  * [winapi] - bindings for windows and the message loop, standard controls and dialogs, gdi, cairo, opengl and openvg panel components
-
-## 2D Vector Graphics
-  * [path] - fast 2D geometry library
-  * [affine2d] - fast affine transformations
-  * [clipper] - polygon clipping and offsetting
-  * [cairo] - cairo graphics library
-  * [openvg] - openvg API and binding for `AmanithVG`
-  * [sg_cairo] - cairo scene graph rendering
-  * [svg_parser] - svg parser to a cairo scene graph
-
-## Text Layouting & Rasterization
-  * [freetype] - font rasterization
-  * [harfbuzz] - complex text shaping
-  * [libunibreak] - unicode line & word breaking
-
-## 3D Graphics
-  * [opengl] - bindings to OpenGL 1.1 and 2.1 + GLU, GLUT, WGL and  APIs
-  * [sg_gl] - opengl scene graph rendering
-  * [sg_gl_mesh] - OpenGL rendering of meshes via vertex/index buffers
-  * [sg_gl_shape] - OpenGL scene graph rendering of shapes via vertex/index buffers
-  * [obj_parser] - callback-based wavefront obj parser
-  * [obj_loader] - wavefront obj loader to opengl scene graph mesh format
-  * [sg_gl_obj] - OpenGL scene graph rendering of wavefront obj files
-
-## Raster Images
-  * [bitmap] - in-memory bitmaps: format conversions, dithering, blending, effects
-  * [giflib] - read GIF files
-  * [libjpeg] - read JPEG files
-  * [nanojpeg] - read JPEG files simply (but slowly)
-  * [libpng] - read PNG files
-  * [libexif] - read EXIF information from image files
-  * [imagefile] - read various raster image formats with a single API
-
-## GUI
-  * [cplayer] - cairo-based GUI access layer + immediate mode widgets (Windows only)
-  * [codedit] - code editor engine written in Lua
-  * [box2d] - 2D rectangle math for GUIs
-
-## Colors
-  * [color] - color conversions in HSL space
-
-## Animation
-  * [easing] - easing functions for tweening
-
-## Physics
-  * [chipmunk] - chipmunk ffi binding and binary
-
-## Video
-  * [libvlc](http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html) - VLC 2.0.5, plugins dir not included
-
-## General Purpose Math
-  * [eq2] - quadratic equation solver
-  * [eq3] - cubic equation solver
-
-## Text proofing
-  * [hunspell] - spell checking
-
 ## Prose
   * [APIDesign API Design Notes] - how to design good APIs for your libraries
   * [GoodLibraries Good Libraries] - what makes or breaks a library
 
 
 
-[public domain]: http://unlicense.org/
+[public domain]:      http://unlicense.org/
+
+[glue]:               glue.html
+[tuple]:              tuple.html
+[coro]:               coro.html
+[pp]:                 pp.html
+[oo]:                 oo.html
+[utf8]:               utf8.html
+[dlist]:              dlist.html
+[hmac]:               hmac.html
+[murmurhash3]:        murmurhash3.html
+[crc32]:              crc32.html
+[path]:               path.html
+[affine2d]:           affine2d.html
+[box2d]:              box2d.html
+[sg_cairo]:           sg_cairo.html
+[svg_parser]:         svg_parser.html
+[md5]:                md5.html
+[sha2]:               sha2.html
+[zlib]:               zlib.html
+[minizip]:            minizip.html
+[pmurhash]:           pmurhash.html
+[libb64]:             libb64.html
+[expat]:              expat.html
+[genx]:               genx.html
+[mysql]:              mysql.html
+[fbclient]:           fbclient.html
+[winapi]:             winapi.html
+[clipper]:            clipper.html
+[cairo]:              cairo.html
+[openvg]:             openvg.html
+[lpeg]:               http://www.inf.puc-rio.br/~roberto/lpeg/
+[lpeg.re]:            http://www.inf.puc-rio.br/~roberto/lpeg/re.html
+[varag]:              vararg.html
+[struct]:             http://www.inf.puc-rio.br/~roberto/struct/
+[lanes]:              lanes.html
+[luasocket]:          http://w3.impa.br/~diego/software/luasocket/reference.html
+[lfs]:                http://keplerproject.github.com/luafilesystem/manual.html#reference
+[cjson]:              http://www.kyne.com.au/~mark/software/lua-cjson-manual.html#_api_functions
+[freetype]:           freetype.html
+[harfbuzz]:           harfbuzz.html
+[libunibreak]:        libunibreak.html
+[opengl]:             opengl.html
+[sg_gl]:              sg_gl.html
+[sg_gl_mesh]:         sg_gl_mesh.html
+[sg_gl_shape]:        sg_gl_shape.html
+[obj_parser]:         obj_parser.html
+[obj_loader]:         obj_loader.html
+[sg_gl_obj]:          sg_gl_obj.html
+[bitmap]:             bitmap.html
+[giflib]:             giflib.html
+[libjpeg]:            libjpeg.html
+[nanojpeg]:           nanojpeg.html
+[libpng]:             libpng.html
+[libexif]:            libexif.html
+[imagefile]:          imagefile.html
+[cplayer]:            cplayer.html
+[codedit]:            codedit.html
+[box2d]:              box2d.html
+[color]:              color.html
+[easing]:             easing.html
+[chipmunk]:           chipmunk.html
+[libvlc]:             http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html
+[eq2]:                eq2.html
+[eq3]:                eq3.html
+[hunspell]:           hunspell.html
+

@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title> lua-files   - LuaJIT binary+source distribution with libraries </title>
+		<title> lua-files   - LuaJIT + batteries </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -25,7 +25,7 @@
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
 							<h1> lua-files </h1>
-							<h2> LuaJIT binary+source distribution with libraries </h2>
+							<h2> LuaJIT + batteries </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
@@ -47,155 +47,260 @@
 			</div>
 
 			<section id="main_content">
-			<h2 id="what">What?</h2>
-<p>A portable LuaJIT2 binary+source distribution for Windows and Linux.</p>
-<p>Many types of libraries:</p>
+			<h2 id="tldr">TL;dr</h2>
 <ul>
-<li>ffi bindings to many popular C libraries like mysql, expat, cairo.</li>
-<li>Lua C libraries like luasocket, lfs, lanes.</li>
-<li>pure Lua modules for a wide range of programming tasks, from table serialization to bezier curve math.</li>
-<li>Lua+ffi modules targeted at the LuaJIT compiler for tasks like bitmap conversions and alpha blending.</li>
-<li>Lua+ffi Win32 API bindings for windows and common controls.</li>
+<li>Lua libraries and bindings with demos, test files, documentation, separate github project</li>
+<li>C libraries with sources, binaries and build scripts for Windows and Linux</li>
+<li>LuaJIT2 executable</li>
+<li>public domain</li>
 </ul>
-<p>C libraries come with binaries, sources and build scripts.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">pure Lua</th>
+<th align="left"></th>
+<th align="left">Lua+ffi</th>
+<th align="left"></th>
+<th align="left">Lua/C</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><a href="glue.html">glue</a></td>
+<td align="left">everyday functions</td>
+<td align="left"><a href="md5.html">md5</a></td>
+<td align="left">MD5</td>
+<td align="left"><a href="http://www.inf.puc-rio.br/~roberto/lpeg/">lpeg</a></td>
+<td align="left">PEGs</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="tuple.html">tuple</a></td>
+<td align="left">real tuples</td>
+<td align="left"><a href="sha2.html">sha2</a></td>
+<td align="left">SHA-256/384/512</td>
+<td align="left"><a href="vararg.html">varag</a></td>
+<td align="left">varargs</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="coro.html">coro</a></td>
+<td align="left">symmetric coroutines</td>
+<td align="left"><a href="zlib.html">zlib</a></td>
+<td align="left">deflate, gzip</td>
+<td align="left"><a href="http://www.inf.puc-rio.br/~roberto/struct/">struct</a></td>
+<td align="left">structs</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="pp.html">pp</a></td>
+<td align="left">serialization</td>
+<td align="left"><a href="minizip.html">minizip</a></td>
+<td align="left">ZIP files</td>
+<td align="left"><a href="lanes.html">lanes</a></td>
+<td align="left">threads</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="oo.html">oo</a></td>
+<td align="left">OOP</td>
+<td align="left"><a href="pmurhash.html">pmurhash</a></td>
+<td align="left">murmurhash</td>
+<td align="left"><a href="http://w3.impa.br/~diego/software/luasocket/reference.html">luasocket</a></td>
+<td align="left">sockets</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="utf8.html">utf8</a></td>
+<td align="left">UTF-8</td>
+<td align="left"><a href="libb64.html">libb64</a></td>
+<td align="left">base64</td>
+<td align="left"><a href="http://keplerproject.github.com/luafilesystem/manual.html#reference">lfs</a></td>
+<td align="left">file system</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="dlist.html">dlist</a></td>
+<td align="left">doubly-linked lists</td>
+<td align="left"><a href="expat.html">expat</a></td>
+<td align="left">XML parsing</td>
+<td align="left"><a href="http://www.kyne.com.au/~mark/software/lua-cjson-manual.html#_api_functions">cjson</a></td>
+<td align="left">JSON</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="hmac.html">hmac</a></td>
+<td align="left">HMAC hashing</td>
+<td align="left"><a href="genx.html">genx</a></td>
+<td align="left">XML creation</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="murmurhash3.html">murmurhash3</a></td>
+<td align="left">murmurhash</td>
+<td align="left"><a href="mysql.html">mysql</a></td>
+<td align="left">mysql client</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="crc32.html">crc32</a></td>
+<td align="left">CRC-32</td>
+<td align="left"><a href="fbclient.html">fbclient</a></td>
+<td align="left">firebird client</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="path.html">path</a></td>
+<td align="left">2D geometry</td>
+<td align="left"><a href="winapi.html">winapi</a></td>
+<td align="left">winapi for GUIs</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="affine2d.html">affine2d</a></td>
+<td align="left">2D transforms</td>
+<td align="left"><a href="clipper.html">clipper</a></td>
+<td align="left">polygon clipping</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="box2d.html">box2d</a></td>
+<td align="left">2D rectangles</td>
+<td align="left"><a href="cairo.html">cairo</a></td>
+<td align="left">2D graphics</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="sg_cairo.html">sg_cairo</a></td>
+<td align="left">cairo scene graph</td>
+<td align="left"><a href="openvg.html">openvg</a></td>
+<td align="left">2D accel graphics</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="svg_parser.html">svg_parser</a></td>
+<td align="left">SVG parser</td>
+<td align="left"><a href="freetype.html">freetype</a></td>
+<td align="left">text rasterization</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="sg_gl.html">sg_gl</a></td>
+<td align="left">OpenGL scene graph</td>
+<td align="left"><a href="harfbuzz.html">harfbuzz</a></td>
+<td align="left">text shaping</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="sg_gl_mesh.html">sg_gl_mesh</a></td>
+<td align="left">OpenGL meshes</td>
+<td align="left"><a href="libunibreak.html">libunibreak</a></td>
+<td align="left">line breaking</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="sg_gl_shape.html">sg_gl_shape</a></td>
+<td align="left">OpenGL shapes</td>
+<td align="left"><a href="opengl.html">opengl</a></td>
+<td align="left">OpenGL 1.1 &amp; 2.1</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="obj_parser.html">obj_parser</a></td>
+<td align="left">wavefront obj parser</td>
+<td align="left"><a href="bitmap.html">bitmap</a></td>
+<td align="left">memory bitmaps</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="obj_loader.html">obj_loader</a></td>
+<td align="left">obj loader</td>
+<td align="left"><a href="giflib.html">giflib</a></td>
+<td align="left">GIF files</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="sg_gl_obj.html">sg_gl_obj</a></td>
+<td align="left">obj scene graph</td>
+<td align="left"><a href="libjpeg.html">libjpeg</a></td>
+<td align="left">JPEG files</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="imagefile.html">imagefile</a></td>
+<td align="left">image files</td>
+<td align="left"><a href="libpng.html">libpng</a></td>
+<td align="left">PNG files</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="cplayer.html">cplayer</a></td>
+<td align="left">procedural graphics</td>
+<td align="left"><a href="nanojpeg.html">nanojpeg</a></td>
+<td align="left">JPEG files</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="codedit.html">codedit</a></td>
+<td align="left">code editor</td>
+<td align="left"><a href="libexif.html">libexif</a></td>
+<td align="left">EXIF info</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="color.html">color</a></td>
+<td align="left">HSL colors</td>
+<td align="left"><a href="chipmunk.html">chipmunk</a></td>
+<td align="left">2D physics</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="easing.html">easing</a></td>
+<td align="left">for tweening</td>
+<td align="left"><a href="http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html">libvlc</a></td>
+<td align="left">video playing</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="eq2.html">eq2</a>, <a href="eq3.html">eq3</a></td>
+<td align="left">equation solvers</td>
+<td align="left"><a href="hunspell.html">hunspell</a></td>
+<td align="left">spell checking</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="directory-structure">Directory structure</h2>
 <ul>
-<li>binaries for Windows and Linux</li>
-<li>C sources</li>
-<li>one-liner build scripts that invoke gcc directly so you can upgrade the libraries and rebuild them</li>
+<li>Lua module: <code>&lt;lib&gt;.lua</code></li>
+<li>Lua+ffi module: <code>&lt;lib&gt;.lua</code>, <code>&lt;lib&gt;_h.lua</code></li>
+<li>test file: <code>&lt;lib&gt;_test.lua</code></li>
+<li>demo: <code>&lt;lib&gt;_demo.lua</code></li>
+<li>documentation: <code>&lt;lib&gt;.md</code></li>
+<li>C lib sources: <code>csrc/&lt;lib&gt;/*</code></li>
+<li>C lib build script: <code>csrc/&lt;lib&gt;/build-&lt;platform&gt;.sh</code></li>
+<li>C lib binary: <code>bin/mingw32/&lt;lib&gt;.dll</code>, <code>bin/linux32/lib&lt;lib&gt;.so</code></li>
+<li>LuaJIT2 executable: <code>bin/&lt;platform&gt;/luajit</code></li>
 </ul>
-<p>Everything is modular and free:</p>
-<ul>
-<li>modular: only add what you need, each library has its own git project.</li>
-<li>Everything free (public domain).</li>
-</ul>
-<h2 id="get-started-the-easy-way">Get started, the easy way</h2>
-<p><a href="https://github.com/capr/lua-files-devel/tarball/master">Download as tar.gz</a></p>
-<p>or</p>
-<p><a href="https://github.com/capr/lua-files-devel/zipball/master">Download as zip</a></p>
-<p>or</p>
-<pre><code>git clone ssh://git@github.com/capr/lua-files-devel</code></pre>
-<h2 id="get-started-the-git-way">Get started, the git way</h2>
-<p>See <a href="lua-files-git.html">lua-files-git</a></p>
 <h2 id="in-detail">In Detail</h2>
-<p>The modules come bundled together into one directory for easy deployment and developing. There's little functional dependency between them however, and they can be easily pulled out and used separately if needed. Many modules depend on a small utility library called [glue]. Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.</p>
+<p>The modules come bundled together into one directory for easy deployment and developing. There's little functional dependency between them however, and they can be easily pulled out and used separately if needed. Many modules depend on a small utility library called <a href="glue.html">glue</a>. Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.</p>
 <p>Portability varies between libraries. Some are Windows specific, some use the ffi API, some specifically target LuaJIT for speed, while others are written in plain Lua and should work on any platform. This is documented for each module individually.</p>
 <p>Windows binaries for all C/C++ libraries are available in <code>bin</code>. They are built using the sources and build scripts from <code>csrc</code>. Everything is compiled with MinGW's GCC with <code>-O3 -s</code> and linked against msvcrt.dll, using one-liner build scripts which &quot;just work&quot; provided you have MinGW in your <code>PATH</code>.</p>
 <p>My own code is <a href="http://unlicense.org/">public domain</a> as I do not support copyright law. Third-party code has its licensing in or near the sources. Generally, I tried to avoid viral GPL with some exceptions.</p>
-<h1 id="modules">Modules</h1>
-<h2 id="basic-tools">Basic tools</h2>
-<ul>
-<li>[glue] - everyday functions</li>
-<li>[tuple] - real tuples</li>
-<li>[coro] - symmetric coroutines</li>
-<li>[pp] - fast pretty printer / serializer</li>
-<li>[oo] - object system with virtual properties and overriding hooks</li>
-<li><a href="http://www.inf.puc-rio.br/~roberto/lpeg/">lpeg</a>, <a href="http://www.inf.puc-rio.br/~roberto/lpeg/re.html">lpeg.re</a> - parsing expression grammars (lpeg 0.10.2)</li>
-<li>[vararg] - fast vararg utils</li>
-<li>[utf8] - utf8 basics</li>
-<li><a href="http://www.inf.puc-rio.br/~roberto/struct/">struct</a> - Roberto's struct library</li>
-<li>[dlist] - doubly linked lists</li>
-<li>[tricks] - Lua tricks, LuaJIT assumptions</li>
-</ul>
-<h2 id="basic-os">Basic OS</h2>
-<ul>
-<li>[lanes] - multi-threading</li>
-<li><a href="http://w3.impa.br/~diego/software/luasocket/reference.html">luasocket</a> - sockets (luasocket 2.0.2; base and url modules only)</li>
-<li><a href="http://keplerproject.github.com/luafilesystem/manual.html#reference">lfs</a> - basic filesystem access (luafilesystem 1.6.2)</li>
-</ul>
-<h2 id="hasing-and-compression">Hasing and compression</h2>
-<ul>
-<li>[md5] - MD5 sum and digest</li>
-<li>[sha2] - SHA-256, SHA-384, SHA-512 hashing</li>
-<li>[hmac] - HMAC hashing</li>
-<li>[zlib] - inflate/deflate, gzip/gunzip, CRC-32 and Adler-32 sum</li>
-<li>[minizip] - read/write zip files</li>
-<li>[pmurhash] - murmurhash3 C implementation</li>
-<li>[murmurhash3] - murmurhash3 Lua implementation</li>
-<li>[crc32] - CRC-32 Lua implementation</li>
-</ul>
-<h2 id="internet-formats">Internet formats</h2>
-<ul>
-<li>[libb64] - fast base64 encoding and decoding</li>
-<li>[expat] - XML parsing</li>
-<li>[genx] - XML formatting</li>
-<li>[http://www.kyne.com.au/~mark/software/lua-cjson-manual.html#<em>api</em>functions cjson] - fast json encoding and decoding (Lua CJSON 2.1.0)</li>
-</ul>
-<h2 id="databases">Databases</h2>
-<ul>
-<li>[mysql] - complete mysql binding</li>
-<li>[fbclient] - firebird binding</li>
-</ul>
-<h2 id="windows">Windows</h2>
-<ul>
-<li>[winapi] - bindings for windows and the message loop, standard controls and dialogs, gdi, cairo, opengl and openvg panel components</li>
-</ul>
-<h2 id="d-vector-graphics">2D Vector Graphics</h2>
-<ul>
-<li>[path] - fast 2D geometry library</li>
-<li>[affine2d] - fast affine transformations</li>
-<li>[clipper] - polygon clipping and offsetting</li>
-<li>[cairo] - cairo graphics library</li>
-<li>[openvg] - openvg API and binding for <code>AmanithVG</code></li>
-<li>[sg_cairo] - cairo scene graph rendering</li>
-<li>[svg_parser] - svg parser to a cairo scene graph</li>
-</ul>
-<h2 id="text-layouting-rasterization">Text Layouting &amp; Rasterization</h2>
-<ul>
-<li>[freetype] - font rasterization</li>
-<li>[harfbuzz] - complex text shaping</li>
-<li>[libunibreak] - unicode line &amp; word breaking</li>
-</ul>
-<h2 id="d-graphics">3D Graphics</h2>
-<ul>
-<li>[opengl] - bindings to OpenGL 1.1 and 2.1 + GLU, GLUT, WGL and APIs</li>
-<li>[sg_gl] - opengl scene graph rendering</li>
-<li>[sg_gl_mesh] - OpenGL rendering of meshes via vertex/index buffers</li>
-<li>[sg_gl_shape] - OpenGL scene graph rendering of shapes via vertex/index buffers</li>
-<li>[obj_parser] - callback-based wavefront obj parser</li>
-<li>[obj_loader] - wavefront obj loader to opengl scene graph mesh format</li>
-<li>[sg_gl_obj] - OpenGL scene graph rendering of wavefront obj files</li>
-</ul>
-<h2 id="raster-images">Raster Images</h2>
-<ul>
-<li>[bitmap] - in-memory bitmaps: format conversions, dithering, blending, effects</li>
-<li>[giflib] - read GIF files</li>
-<li>[libjpeg] - read JPEG files</li>
-<li>[nanojpeg] - read JPEG files simply (but slowly)</li>
-<li>[libpng] - read PNG files</li>
-<li>[libexif] - read EXIF information from image files</li>
-<li>[imagefile] - read various raster image formats with a single API</li>
-</ul>
-<h2 id="gui">GUI</h2>
-<ul>
-<li>[cplayer] - cairo-based GUI access layer + immediate mode widgets (Windows only)</li>
-<li>[codedit] - code editor engine written in Lua</li>
-<li>[box2d] - 2D rectangle math for GUIs</li>
-</ul>
-<h2 id="colors">Colors</h2>
-<ul>
-<li>[color] - color conversions in HSL space</li>
-</ul>
-<h2 id="animation">Animation</h2>
-<ul>
-<li>[easing] - easing functions for tweening</li>
-</ul>
-<h2 id="physics">Physics</h2>
-<ul>
-<li>[chipmunk] - chipmunk ffi binding and binary</li>
-</ul>
-<h2 id="video">Video</h2>
-<ul>
-<li><a href="http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html">libvlc</a> - VLC 2.0.5, plugins dir not included</li>
-</ul>
-<h2 id="general-purpose-math">General Purpose Math</h2>
-<ul>
-<li>[eq2] - quadratic equation solver</li>
-<li>[eq3] - cubic equation solver</li>
-</ul>
-<h2 id="text-proofing">Text proofing</h2>
-<ul>
-<li>[hunspell] - spell checking</li>
-</ul>
 <h2 id="prose">Prose</h2>
 <ul>
 <li>[APIDesign API Design Notes] - how to design good APIs for your libraries</li>
@@ -203,6 +308,12 @@
 </ul>
 			</section>
 		</div>
+
+		<br>
+		<br>
+		<hr>
+		lua-files | Cosmin Apreutesei | public domain
+		<br>
 
 	</body>
 </html>
