@@ -1,6 +1,7 @@
 ---
-project: lua-files-git
-tagline: Git workflow for lua-files
+project: lua-files-devel
+title:   lua-files
+tagline: LuaJIT binary+source distribution with libraries
 ---
 
 ## What?
@@ -11,17 +12,15 @@ Many types of libraries:
 
   * ffi bindings to many popular C libraries like mysql, expat, cairo.
   * Lua C libraries like luasocket, lfs, lanes.
-  * Lua solutions for a wide range of programming tasks, from table serialization to bezier curve math.
+  * pure Lua modules for a wide range of programming tasks, from table serialization to bezier curve math.
   * Lua+ffi modules targeted at the LuaJIT compiler for tasks like bitmap conversions and alpha blending.
   * Lua+ffi Win32 API bindings for windows and common controls.
 
-Each library comes complete with binaries, sources and build scripts:
+C libraries come with binaries, sources and build scripts.
 
-  * binaries for 32bit Windows and Linux so you can start coding right away
-  * C sources so you can rebuild them on different platforms
-  * the simplest build scripts invoking gcc directly so you can upgrade and rebuild
-  * a small demo or test file, many of which are GUI+graphics demos
-  * your choice on how to use the documentation: online (this website) or in your editor (plain text)
+  * binaries for Windows and Linux
+  * C sources
+  * one-liner build scripts that invoke gcc directly so you can upgrade the libraries and rebuild them
 
 Everything is modular and free:
 
@@ -31,62 +30,41 @@ Everything is modular and free:
 
 ## Get started, the easy way
 
+[Download as tar.gz](https://github.com/capr/lua-files-devel/tarball/master)
+
+or
+
+[Download as zip](https://github.com/capr/lua-files-devel/zipball/master)
+
+or
+
+	git clone ssh://git@github.com/capr/lua-files-devel
 
 
 ## Get started, the git way
 
-The default Lua search path looks for `<module>.lua` in the current directory. This is a comfortable scheme
-but it requires the ability to clone multiple repos into the same directory. Luckily, git can do that.
-
-The trick is to separate the files from the git repos:
-
-	mkdir files
-	mkdir repos
-
-	git clone -n ssh://git@github.com/capr/affine2d repos/affine2d
-	git --git-dir=repos/affine2d/.git --work-tree=files checkout
-
-	git clone -n ssh://git@github.com/capr/bitmap repos/bitmap
-	git --git-dir=repos/bitmap/.git --work-tree=files checkout
-
-	... and so on, with all the packages that you need
-
-Now the Lua modules are directly in the `files` dir, so you can:
-
-  * `cd files` and run programs from there (eg. you can run the demos like that).
-  * add `full-path-to-files` to your `package.path` and `full-path-to-files/bin` to your `package.cpath`
-    and run programs from anywhere.
-  * set `LUA_PATH=full-path-to-files` and `LUA_CPATH=full-path-to-files/bin` and run programs from anywhere.
-
-To avoid specifying `--git-dir` and `--work-tree` on every git command, you can edit `.git/config` for each package
-and add `worktree = ../../../files` under the `[core]` section. This allows you to use git as usual from
-the `repos/<module>` dir.
-
-If you like the flexibility of this approach but don't want to be bothered typing all these git commands,
-there's a little project called `lua-files-git` that wraps it all up in basic shell scripts:
-
-	git clone ssh://git@github.com/capr/lua-files-git
-
-> For Windows you need MSYS in your PATH because these are all bash scripts
-> (sorry, I never bothered to learn powershell). You need MSYS and MinGW in your PATH for building these libraries anyway.
-
------------------------------------- ------------------------------------
-./list.sh                            list all packages
-./clone.sh <package>                 clone a package
-./clone-all.sh                       clone all packages
-./build.sh <package> <platform>      build a package (platform is `mingw32` or `linux32`)
-./build-all.sh <platform>            build all packages in order
------------------------------------- ------------------------------------
+See [lua-files-git](lua-files-git.html)
 
 ## In Detail
 
-The modules come bundled together into one directory for easy deployment and developing. There's little functional dependency between them however, and they can be easily pulled out and used separately if needed. Many modules depend on a small utility library called [glue]. Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.
+The modules come bundled together into one directory for easy deployment and developing.
+There's little functional dependency between them however, and they can be easily pulled
+out and used separately if needed. Many modules depend on a small utility library called [glue].
+Sources are indented with tabs so you can use any indentation with your editor without the
+need to convert the files.
 
-Portability varies between libraries. Some are Windows specific, some use the ffi API, some specifically target LuaJIT for speed, while others are written in plain Lua and should work on any platform. This is documented for each module individually.
+Portability varies between libraries. Some are Windows specific, some use the ffi API,
+some specifically target LuaJIT for speed, while others are written in plain Lua and
+should work on any platform. This is documented for each module individually.
 
-Windows binaries for all C/C++ libraries are available in [http://lua-files.org/source/browse/#hg%2Fbin bin]. They are built using the sources and build scripts from [http://lua-files.org/source/browse/#hg%2Fcsrc csrc]. Everything is compiled with MinGW's GCC with `-O3 -s` and linked against msvcrt.dll, using one-liner build scripts which "just work" provided you have MinGW in your `PATH`.
+Windows binaries for all C/C++ libraries are available in `bin`.
+They are built using the sources and build scripts from `csrc`.
+Everything is compiled with MinGW's GCC with `-O3 -s` and linked against msvcrt.dll,
+using one-liner build scripts which "just work" provided you have MinGW in your `PATH`.
 
-My own code is [public domain] as I do not support copyright law. Third-party code has its licensing in or near the sources. Generally, I tried to avoid viral GPL with some exceptions.
+My own code is [public domain] as I do not support copyright law.
+Third-party code has its licensing in or near the sources.
+Generally, I tried to avoid viral GPL with some exceptions.
 
 # Modules
 
