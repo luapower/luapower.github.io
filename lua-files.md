@@ -139,7 +139,6 @@ Generally, I tried to avoid viral GPL with some exceptions.
 [imagefile]:          imagefile.html
 [cplayer]:            cplayer.html
 [codedit]:            codedit.html
-[box2d]:              box2d.html
 [color]:              color.html
 [easing]:             easing.html
 [chipmunk]:           chipmunk.html
