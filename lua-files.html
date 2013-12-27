@@ -287,9 +287,10 @@
 </table>
 <h2 id="directory-structure">Directory structure</h2>
 <ul>
-<li>Lua module: <code>&lt;lib&gt;.lua</code></li>
-<li>Lua+ffi module: <code>&lt;lib&gt;.lua</code>, <code>&lt;lib&gt;_h.lua</code></li>
-<li>test file: <code>&lt;lib&gt;_test.lua</code></li>
+<li>module: <code>&lt;lib&gt;.lua</code></li>
+<li>submodule: <code>&lt;lib&gt;_&lt;sub&gt;.lua</code> and sometimes <code>&lt;lib&gt;/&lt;sub&gt;.lua</code></li>
+<li>ffi cdef module: <code>&lt;lib&gt;_h.lua</code></li>
+<li>test program: <code>&lt;lib&gt;_test.lua</code></li>
 <li>demo: <code>&lt;lib&gt;_demo.lua</code></li>
 <li>documentation: <code>&lt;lib&gt;.md</code></li>
 <li>C lib sources: <code>csrc/&lt;lib&gt;/*</code></li>

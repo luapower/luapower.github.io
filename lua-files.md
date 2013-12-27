@@ -44,9 +44,10 @@ pure Lua                                        Lua+ffi                         
 
 ## Directory structure
 
-  * Lua module: `<lib>.lua`
-  * Lua+ffi module: `<lib>.lua`, `<lib>_h.lua`
-  * test file: `<lib>_test.lua`
+  * module: `<lib>.lua`
+  * submodule: `<lib>_<sub>.lua` and sometimes `<lib>/<sub>.lua`
+  * ffi cdef module: `<lib>_h.lua`
+  * test program: `<lib>_test.lua`
   * demo: `<lib>_demo.lua`
   * documentation: `<lib>.md`
   * C lib sources: `csrc/<lib>/*`
