@@ -1,4 +1,4 @@
-# refresh the entire lua-files documentation, assuming `../lua-files` source path.
+# refresh the entire documentation, assuming `..` source path.
 
 for f in *.md ../*.md ../winapi/*.md ../_git/*.md; do
 	./convert.sh $f .

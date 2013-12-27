@@ -65,5 +65,8 @@ p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])
 
 The above are assumptions I use throughout my code, so if any of them are wrong, please correct me.
 
-----
-_See also_: [API Design Notes](api_design.html)
+### LuaJIT gotchas
+
+  * `array[i], array[j] = array[j], array[i]` doesn't work as you would expect (swapping) when the array elements are structs.
+  * `ptr == nil` evaluates to true for a nil pointer, but `if ptr then` doesn't.
+

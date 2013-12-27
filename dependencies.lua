@@ -1,4 +1,5 @@
---script that prints dependencies of a module
+--print dependencies of a module by tracing the `require` calls.
+
 local module_name, display = ...
 if not module_name then
 	print(string.format('usage: %s <module> [direct | tree | all | sub]', arg[0]))
@@ -73,7 +74,7 @@ end)
 
 --finally, print out the list of dependencies
 for i,s in ipairs(t) do
-	t[i] = string.format('\\[%s\\]', s)
+	t[i] = string.format('%s', s)
 end
 print(table.concat(t, ', '))
 

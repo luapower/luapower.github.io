@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title> codedit   - Code editor engine in Lua </title>
+		<title>   </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,16 +24,16 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1> codedit </h1>
-							<h2> Code editor engine in Lua </h2>
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/codedit" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr/codedit/tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr//tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr/codedit/zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr//zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -48,414 +48,44 @@
 
 			<section id="main_content">
 
-			<h2 id="this-is-work-in-progress-nothing-to-see-here-yet">THIS IS WORK IN PROGRESS / NOTHING TO SEE HERE (YET)</h2>
-<p>v0.1a | Lua 5.1, Lua 5.2, LuaJIT 2</p>
-<h2 id="local-codedit-requirecodedit"><code>local codedit = require'codedit'</code></h2>
-<p>Codedit is a source code editor engine written in Lua. It has a minimalist design, striving to capture the essence of source code editing, making it easy to explore, understand and extend. It also comes with some cool features out-of-the-box.</p>
-<h2 id="highlights">Highlights</h2>
-<ul>
-<li>utf8-ready, using a small <a href="http://code.google.com/p/lua-files/source/browse/codedit_str.lua">string module</a> over <a href="utf8.html">utf8</a>.</li>
-<li>cross-platform: written in Lua and has no dependencies</li>
-<li>simple interface for integrating with rendering and input APIs ([https://code.google.com/p/lua-files/source/browse/cplayer/code_editor.lua example])</li>
-<li>highly modular, with separate buffer, cursor, selection, view and controller objects, allowing multiple cursors and multiple selections.</li>
-</ul>
-<h2 id="features">Features</h2>
-<ul>
-<li><em>Buffers</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_buffer.lua">code</a>)
-<ul>
-<li><em>File format autodetection</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_detect.lua">code</a>)</li>
-<li>loading files with mixed line endings</li>
-<li>detecting the most common line ending used in the file and using that when saving the file</li>
-<li><em>Normalization</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_normal.lua">code</a>)</li>
-<li>removing spaces past end-of-line before saving</li>
-<li>removing empty lines at end-of-file before saving, or ensuring that the file ends with at least one empty line before saving</li>
-<li>undo/redo stack (<a href="http://code.google.com/p/lua-files/source/browse/codedit_undo.lua">code</a>)</li>
-</ul></li>
-<li><em>Selections</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_selction.lua">code</a>)
-<ul>
-<li>block (column) selection mode (<a href="http://code.google.com/p/lua-files/source/browse/codedit_blocksel.lua">code</a>)</li>
-<li>indent/outdent (also for block selections)</li>
-</ul></li>
-<li><em>Cursors</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_cursor.lua">code</a>)
-<ul>
-<li>insert and overwrite insert modes, with wide overwrite caret</li>
-<li>smart tabs: use tabs only when indenting, and use spaces inside the lines</li>
-<li>option to allow or restrict the cursor past end-of-line</li>
-<li>option to allow or restrict the cursor past end-of-file</li>
-<li>auto-indent: copy the indent of the line above when pressing enter</li>
-<li>moving through words</li>
-</ul></li>
-<li><em>Rendering</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_render.lua">code</a>)
-<ul>
-<li>syntax highlighting using <a href="http://foicica.com/scintillua/">scintillua</a> lexers</li>
-<li>simple rendering and measuring API for monospace fonts (<a href="http://code.google.com/p/lua-files/source/browse/codedit_metrics.lua">code</a>)</li>
-<li>user-defined margins (<a href="http://code.google.com/p/lua-files/source/browse/codedit_margin.lua">code</a>)</li>
-<li>line numbers margin (<a href="http://code.google.com/p/lua-files/source/browse/codedit_line_numbers.lua">code</a>)</li>
-</ul></li>
-<li><em>Controller</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_editor.lua">code</a>)
-<ul>
-<li>configurable key bindings and commands (<a href="http://code.google.com/p/lua-files/source/browse/codedit_keys.lua">code</a>)</li>
-<li>simple clipboard API (stubbed to an in-process clipboard)</li>
-<li>scrolling, one line/char at a time or smooth scrolling (<a href="http://code.google.com/p/lua-files/source/browse/codedit_scroll.lua">code</a>)</li>
-<li>selecting with the mouse</li>
-</ul></li>
-</ul>
-<h2 id="limitations">Limitations</h2>
-<ul>
-<li>fixed char width (monospace fonts only)</li>
-<li>fixed line height</li>
-<li>no incremental repaint</li>
-<li>mixed line terminators are not preserved</li>
-</ul>
-<h2 id="usage">Usage</h2>
-<pre><code>local codedit = require&#39;codedit&#39;
-local glue = require&#39;glue&#39;
+			<h2 id="requires-this-is-work-in-progress-nothing-to-see-here-yet">| requires: THIS IS WORK IN PROGRESS / NOTHING TO SEE HERE (YET)</h2>
+<p>v0.1a | requires: | Lua 5.1, Lua 5.2, LuaJIT 2</p>
+<h2 id="requires-local-codedit-requirecodedit">| requires: <code>local codedit = require'codedit'</code></h2>
+<p>Codedit | requires: is a source code editor engine written in Lua. It has a minimalist design, striving to capture the essence | requires: of source code editing, making it easy to explore, understand and extend. It | requires: also comes with some cool features out-of-the-box.</p>
+<h2 id="requires-highlights">| requires: Highlights</h2>
+<p>| requires: * utf8-ready, using a small <a href="http://code.google.com/p/lua-files/source/browse/codedit_str.lua">string module</a> over <a href="utf8.html">utf8</a>. | requires: * cross-platform: written in Lua and has no dependencies | requires: * simple interface for integrating with rendering and input APIs ([https://code.google.com/p/lua-files/source/browse/cplayer/code_editor.lua example]) | requires: * highly modular, with separate buffer, cursor, selection, view and controller objects, allowing multiple cursors and multiple selections.</p>
+<h2 id="requires-features">| requires: Features</h2>
+<p>| requires: * <em>Buffers</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_buffer.lua">code</a>) | requires: * <em>File format autodetection</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_detect.lua">code</a>) | requires: * loading files with mixed line endings | requires: * detecting the most common line ending used in the file and using that when saving the file | requires: * <em>Normalization</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_normal.lua">code</a>) | requires: * removing spaces past end-of-line before saving | requires: * removing empty lines at end-of-file before saving, or ensuring that the file ends with at least one empty line before saving | requires: * undo/redo stack (<a href="http://code.google.com/p/lua-files/source/browse/codedit_undo.lua">code</a>) | requires: * <em>Selections</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_selction.lua">code</a>) | requires: * block (column) selection mode (<a href="http://code.google.com/p/lua-files/source/browse/codedit_blocksel.lua">code</a>) | requires: * indent/outdent (also for block selections) | requires: * <em>Cursors</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_cursor.lua">code</a>) | requires: * insert and overwrite insert modes, with wide overwrite caret | requires: * smart tabs: use tabs only when indenting, and use spaces inside the lines | requires: * option to allow or restrict the cursor past end-of-line | requires: * option to allow or restrict the cursor past end-of-file | requires: * auto-indent: copy the indent of the line above when pressing enter | requires: * moving through words | requires: * <em>Rendering</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_render.lua">code</a>) | requires: * syntax highlighting using <a href="http://foicica.com/scintillua/">scintillua</a> lexers | requires: * simple rendering and measuring API for monospace fonts (<a href="http://code.google.com/p/lua-files/source/browse/codedit_metrics.lua">code</a>) | requires: * user-defined margins (<a href="http://code.google.com/p/lua-files/source/browse/codedit_margin.lua">code</a>) | requires: * line numbers margin (<a href="http://code.google.com/p/lua-files/source/browse/codedit_line_numbers.lua">code</a>) | requires: * <em>Controller</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_editor.lua">code</a>) | requires: * configurable key bindings and commands (<a href="http://code.google.com/p/lua-files/source/browse/codedit_keys.lua">code</a>) | requires: * simple clipboard API (stubbed to an in-process clipboard) | requires: * scrolling, one line/char at a time or smooth scrolling (<a href="http://code.google.com/p/lua-files/source/browse/codedit_scroll.lua">code</a>) | requires: * selecting with the mouse</p>
+<h2 id="requires-limitations">| requires: Limitations</h2>
+<p>| requires: * fixed char width (monospace fonts only) | requires: * fixed line height | requires: * no incremental repaint | requires: * mixed line terminators are not preserved</p>
+<h2 id="requires-usage">| requires: Usage</h2>
+<pre><code>local | requires: codedit = require&#39;codedit&#39;
+local | requires: glue = require&#39;glue&#39;
 
---subclass codedit to hook in input and rendering APIs
+--subclass | requires: codedit to hook in input and rendering APIs
 
-local myeditor = glue.inherit({}, codedit) --use glue.update() for static inheritance
+local | requires: myeditor = glue.inherit({}, codedit) --use glue.update() for static inheritance
 
-function myeditor:draw_char(x, y, c, color)
-    --implement drawing a utf8 character at (x, y) coordinates.
-    --the coordinates are relative to the editor&#39;s client area.
-    --the color is always &#39;text&#39; (it will be &#39;number&#39;, &#39;string&#39; etc. when syntax highlighting will be implemented).
+function | requires: myeditor:draw_char(x, y, c, color)
+    --implement | requires: drawing a utf8 character at (x, y) coordinates.
+    --the | requires: coordinates are relative to the editor&#39;s client area.
+    --the | requires: color is always &#39;text&#39; (it will be &#39;number&#39;, &#39;string&#39; etc. when syntax highlighting will be implemented).
 end
 
-function myeditor:draw_rect(x, y, w, h, color)
-    --draw a rectangle. the color can be &#39;selection&#39;, &#39;cursor&#39;, &#39;background&#39;.
+function | requires: myeditor:draw_rect(x, y, w, h, color)
+    --draw | requires: a rectangle. the color can be &#39;selection&#39;, &#39;cursor&#39;, &#39;background&#39;.
 end
 
---create an editor instance
+--create | requires: an editor instance
 
-local editor = myeditor:new{}
+local | requires: editor = myeditor:new{}
 
 
-local editor = codedit:new{option = value, ...}</code></pre>
-<h2 id="buffers">Buffers</h2>
-<p>Buffers are at the core of text editing. A buffer stores the text as a list of lines and contains methods for analyzing, navigating, selecting and editing the text at a logical level, independent of how the text is rendered. The buffer contains methods that deal with text at various levels of abstraction. At the bottom we have lines of utf8 codepoints (chars), let's call that the binary space. Over that there's the char space, the space of lines and columns, where any char can found by the pair (line, col). Since the chars are stored as utf8, the correspondence between char space and binary space is not linear. We don't deal much in binary space, only in char space (we use the utf8 library to traverse the codepoints). The space outside of the available text is called the unclamped char space. We cannot select text from this space, but we can navigate it as if it was made of empty lines. Higher up there's the visual space, which is how the text looks after tab expansion, for a fixed tab size. Again, the correspondence between char space (let's call it real space) and visual space is not linear. Since we don't support automatic line wrapping, lines have a 1:1 correspondence between all these spaces, only the columns are different.</p>
-<h2 id="api">API</h2>
-<table>
-<thead>
-<tr class="header">
-<th align="left"><em>utils</em></th>
-<th align="left"></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>editor:detect_line_terminator(s)</code></td>
-<td align="left">class method that returns the most common line terminator in a string, or <code>self.default_line_terminator</code></td>
-</tr>
-<tr class="even">
-<td align="left"><em>undo/redo</em></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:undo()</code></td>
-<td align="left">undo</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:redo()</code></td>
-<td align="left">redo</td>
-</tr>
-<tr class="odd">
-<td align="left"><em>line interface</em></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:getline(line) -&gt; s</code></td>
-<td align="left">get the contents of a line</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:last_line() -&gt; line</code></td>
-<td align="left">get the last line number (or the number of lines)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:contents([lines]) -&gt; s</code></td>
-<td align="left">get all the lines in the line buffer concatenated with <code>self.line_terminator</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:insert_line(line, s)</code></td>
-<td align="left">insert a new line</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:remove_line(line)</code></td>
-<td align="left">remove a line</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:setline(line, s)</code></td>
-<td align="left">change a line's contents</td>
-</tr>
-<tr class="even">
-<td align="left"><em>(line,col) interface</em></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:last_col(line) -&gt; col</code></td>
-<td align="left">last column of a line</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:indent_col(line) -&gt; col</code></td>
-<td align="left">column of the first non-space character of a line</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:isempty(line) -&gt; true|false</code></td>
-<td align="left">line is empty or contains only spaces</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:sub(line, col1, col2) -&gt; s</code></td>
-<td align="left">chop a line</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:clamp(line, col) -&gt; line, col</code></td>
-<td align="left">clamp a (line, col) pair to the available text</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:select_string(line1, col1, line2, col2) -&gt; s</code></td>
-<td align="left">select the string between two subsequent positions in the text</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:insert_string(line, col, s) -&gt; line, col</code></td>
-<td align="left">insert a string into the text, returning the position right after it</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:remove_string(line1, col1, line2, col2) -&gt; line, col</code></td>
-<td align="left">remove the string between two positions in the text</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:extend(line, col)</code></td>
-<td align="left">extend the text up to (line,col-1) so we can edit there</td>
-</tr>
-<tr class="even">
-<td align="left"><em>normalization</em></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:remove_eol_spaces()</code></td>
-<td align="left">remove any spaces past end-of-line</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:ensure_eof_line()</code></td>
-<td align="left">add an empty line at eof if there is none</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:remove_eof_lines()</code></td>
-<td align="left">remove any empty lines at eof, except the first one</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:normalize()</code></td>
-<td align="left">normalize the text following current normalization options</td>
-</tr>
-<tr class="odd">
-<td align="left"><em>tab expansion</em></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:tabstop_distance(vcol) -&gt; n</code></td>
-<td align="left">how many spaces from a visual column to the next tabstop, for a specific tabsize</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:visual_col(line, col) -&gt; vcol</code></td>
-<td align="left">real column -&gt; visual column, for a fixed tabsize. the real column can be past string's end, in which case vcol will expand to the same amount.</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:real_col(line, vcol) -&gt; col</code></td>
-<td align="left">visual column -&gt; real column, for a fixed tabsize. if the target vcol is between two possible vcols, return the vcol that is closer.</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:max_visual_col() -&gt; vcol</code></td>
-<td align="left">max. visual column</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:aligned_col(target_line, line, col) -&gt; col</code></td>
-<td align="left">real col on a line vertically aligned to the real col on a different line</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:select_block(line1, col1, line2, col2) -&gt; s</code></td>
-<td align="left">select the visually rectangular block between two subequent positions in the text</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:remove_block(line1, col1, line2, col2)</code></td>
-<td align="left">remove the visually rectangular block between two subequent positions in the text</td>
-</tr>
-<tr class="odd">
-<td align="left"><em>selections</em></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor.selection</code></td>
-<td align="left">selection class</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor:create_selection([visible]) -&gt; selection</code></td>
-<td align="left">create a new selection object</td>
-</tr>
-<tr class="even">
-<td align="left"><code>selection:free()</code></td>
-<td align="left">unregister a visible selection from the editor</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>selection.line1</code>, <code>selection.col1</code>, <code>selection.line2</code>, <code>selection.col2</code></td>
-<td align="left">(line1,col1) is the position of the first selected char and (line2,col2) the position of the char just after the last selected char.</td>
-</tr>
-<tr class="even">
-<td align="left"><code>selection:isempty() -&gt; true|false</code></td>
-<td align="left">check if selection is empty</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>selection:move(line, col[, selecting])</code></td>
-<td align="left">reset and re-anchor a selection, or, if <code>selecting</code> is true, extend it</td>
-</tr>
-<tr class="even">
-<td align="left"><code>selection:lines() -&gt; iterator&lt;line, col1, col2</code></td>
-<td align="left">iterate the lines of a selection, giving the start and end column of each line</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>selection:contents() -&gt; s</code></td>
-<td align="left">selection as string, lines concatenated with <code>self.line_terminator</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>selection:remove()</code></td>
-<td align="left">remove the selected text from the buffer</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>selection:indent(levels)</code></td>
-<td align="left">indent or outdent a selection</td>
-</tr>
-<tr class="even">
-<td align="left"><em>cursors</em></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>editor.cursor</code></td>
-<td align="left">in an editor class, it is the cursor class. in an editor instance, it is the default cursor that is bound to the keyboard.</td>
-</tr>
-<tr class="even">
-<td align="left"><code>editor:create_cursor([visible]) -&gt; cursor</code></td>
-<td align="left">create a new cursor object</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:free()</code></td>
-<td align="left">unregister a visible cursor from the editor</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor.selection</code></td>
-<td align="left">each cursor has a selection object attached</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor.insert_mode</code></td>
-<td align="left">insert or overwrite when typing characters</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor.auto_indent</code></td>
-<td align="left">pressing enter copies the indentation of the current line over to the following line</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor.restrict_eol</code></td>
-<td align="left">don't allow caret past end-of-line</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor.restrict_eof</code></td>
-<td align="left">don't allow caret past end-of-file</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor.tabs</code> w</td>
-<td align="left">hen to use <code>'\t'</code> when pressing tab: 'never', 'indent', 'always'</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor.tab_align_list</code></td>
-<td align="left">align to the next word on the above line ; incompatible with <code>tabs = 'always'</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor.tab_align_args</code></td>
-<td align="left">align to the char after '(' on the above line; incompatible with <code>tabs = 'always'</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor.keep_on_page_change</code></td>
-<td align="left">preserve cursor position through page-up/page-down</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor.line</code>, <code>cursor.col</code></td>
-<td align="left">cursor position</td>
-</tr>
-<tr class="even">
-<td align="left"><em>cursors/navigation</em></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:move(line, col, [selecting], [store_vcol], [keep_screen_location])</code></td>
-<td align="left">move cursor to a new location, optionally selecting text, storing the wanted visual column and/or scrolling the view to preserve the screen location.</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor:move_left(cols, selecting, keep_screen_location)</code></td>
-<td align="left">move left</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:move_right(cols, selecting, keep_screen_location)</code></td>
-<td align="left">move right</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor:move_up(lines, selecting, keep_screen_location)</code></td>
-<td align="left">move up</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:move_down(lines, selecting, keep_screen_location)</code></td>
-<td align="left">move down</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor:move_left_word(selecting)</code></td>
-<td align="left">move left one word</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:move_right_word(selecting)</code></td>
-<td align="left">move right one word</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor:move_home(selecting)</code></td>
-<td align="left">move home</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:move_end(selecting)</code></td>
-<td align="left">move to eof</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor:move_bol(selecting)</code></td>
-<td align="left">move to beginning of line</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:move_eol(selecting)</code></td>
-<td align="left">move to end of line</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor:move_up_page(selecting)</code></td>
-<td align="left">move up a page</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:move_down_page(selecting)</code></td>
-<td align="left">move down a page</td>
-</tr>
-<tr class="even">
-<td align="left">* cursors/editing *</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:newline()</code></td>
-<td align="left">add a new line, optionally copy the indent of the current line, and carry the cursor over</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor:insert_char(c)</code></td>
-<td align="left">insert printable char</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cursor:delete_before()</code></td>
-<td align="left">delete the char before cursor</td>
-</tr>
-<tr class="even">
-<td align="left"><code>cursor:delete_after()</code></td>
-<td align="left">delete the char after cursor</td>
-</tr>
-</tbody>
-</table>
+local | requires: editor = codedit:new{option = value, ...}</code></pre>
+<h2 id="requires-buffers">| requires: Buffers</h2>
+<p>Buffers | requires: are at the core of text editing. A buffer stores the text as a list of lines and contains methods for analyzing, navigating, | requires: selecting and editing the text at a logical level, independent of how the text is rendered. The | requires: buffer contains methods that deal with text at various levels of abstraction. At the bottom we have lines of utf8 | requires: codepoints (chars), let's call that the binary space. Over that there's the char space, the space of lines and | requires: columns, where any char can found by the pair (line, col). Since the chars are stored as utf8, the correspondence between | requires: char space and binary space is not linear. We don't deal much in binary space, only in char space (we | requires: use the utf8 library to traverse the codepoints). The space outside of the available text is called the unclamped char | requires: space. We cannot select text from this space, but we can navigate it as if it was made of empty lines. Higher | requires: up there's the visual space, which is how the text looks after tab expansion, for a fixed tab size. Again, | requires: the correspondence between char space (let's call it real space) and visual space is not linear. Since | requires: we don't support automatic line wrapping, lines have a 1:1 correspondence between all these spaces, only | requires: the columns are different.</p>
+<h2 id="requires-api">| requires: API</h2>
+<p><em>utils</em> ----------------------------------------------------------------------------------------- | requires: ---------------------------------------------------------------------------------------------- <code>editor:detect_line_terminator(s)</code> | requires: class method that returns the most common line terminator in a string, or <code>self.default_line_terminator</code> <em>undo/redo</em> <code>editor:undo()</code> | requires: undo <code>editor:redo()</code> | requires: redo <em>line | requires: interface</em> <code>editor:getline(line) | requires: -&gt; s</code> get the contents of a line <code>editor:last_line() | requires: -&gt; line</code> get the last line number (or the number of lines) <code>editor:contents([lines]) | requires: -&gt; s</code> get all the lines in the line buffer concatenated with <code>self.line_terminator</code> <code>editor:insert_line(line, | requires: s)</code> insert a new line <code>editor:remove_line(line)</code> | requires: remove a line <code>editor:setline(line, | requires: s)</code> change a line's contents <em>(line,col) | requires: interface</em> <code>editor:last_col(line) | requires: -&gt; col</code> last column of a line <code>editor:indent_col(line) | requires: -&gt; col</code> column of the first non-space character of a line <code>editor:isempty(line) | requires: -&gt; true|false</code> line is empty or contains only spaces <code>editor:sub(line, | requires: col1, col2) -&gt; s</code> chop a line <code>editor:clamp(line, | requires: col) -&gt; line, col</code> clamp a (line, col) pair to the available text <code>editor:select_string(line1, | requires: col1, line2, col2) -&gt; s</code> select the string between two subsequent positions in the text <code>editor:insert_string(line, | requires: col, s) -&gt; line, col</code> insert a string into the text, returning the position right after it <code>editor:remove_string(line1, | requires: col1, line2, col2) -&gt; line, col</code> remove the string between two positions in the text <code>editor:extend(line, | requires: col)</code> extend the text up to (line,col-1) so we can edit there <em>normalization</em> <code>editor:remove_eol_spaces()</code> | requires: remove any spaces past end-of-line <code>editor:ensure_eof_line()</code> | requires: add an empty line at eof if there is none <code>editor:remove_eof_lines()</code> | requires: remove any empty lines at eof, except the first one <code>editor:normalize()</code> | requires: normalize the text following current normalization options <em>tab | requires: expansion</em> <code>editor:tabstop_distance(vcol) | requires: -&gt; n</code> how many spaces from a visual column to the next tabstop, for a specific tabsize <code>editor:visual_col(line, | requires: col) -&gt; vcol</code> real column -&gt; visual column, for a fixed tabsize. the real column can be past string's end, in which case vcol will expand to the same amount. <code>editor:real_col(line, | requires: vcol) -&gt; col</code> visual column -&gt; real column, for a fixed tabsize. if the target vcol is between two possible vcols, return the vcol that is closer. <code>editor:max_visual_col() | requires: -&gt; vcol</code> max. visual column <code>editor:aligned_col(target_line, | requires: line, col) -&gt; col</code> real col on a line vertically aligned to the real col on a different line <code>editor:select_block(line1, | requires: col1, line2, col2) -&gt; s</code> select the visually rectangular block between two subequent positions in the text <code>editor:remove_block(line1, | requires: col1, line2, col2)</code> remove the visually rectangular block between two subequent positions in the text <em>selections</em> <code>editor.selection</code> | requires: selection class <code>editor:create_selection([visible]) | requires: -&gt; selection</code> create a new selection object <code>selection:free()</code> | requires: unregister a visible selection from the editor <code>selection.line1</code>, | requires: <code>selection.col1</code>, <code>selection.line2</code>, <code>selection.col2</code> (line1,col1) is the position of the first selected char and (line2,col2) the position of the char just after the last selected char. <code>selection:isempty() | requires: -&gt; true|false</code> check if selection is empty <code>selection:move(line, | requires: col[, selecting])</code> reset and re-anchor a selection, or, if <code>selecting</code> is true, extend it <code>selection:lines() | requires: -&gt; iterator&lt;line, col1, col2</code> iterate the lines of a selection, giving the start and end column of each line <code>selection:contents() | requires: -&gt; s</code> selection as string, lines concatenated with <code>self.line_terminator</code> <code>selection:remove()</code> | requires: remove the selected text from the buffer <code>selection:indent(levels)</code> | requires: indent or outdent a selection <em>cursors</em> <code>editor.cursor</code> | requires: in an editor class, it is the cursor class. in an editor instance, it is the default cursor that is bound to the keyboard. <code>editor:create_cursor([visible]) | requires: -&gt; cursor</code> create a new cursor object <code>cursor:free()</code> | requires: unregister a visible cursor from the editor <code>cursor.selection</code> | requires: each cursor has a selection object attached <code>cursor.insert_mode</code> | requires: insert or overwrite when typing characters <code>cursor.auto_indent</code> | requires: pressing enter copies the indentation of the current line over to the following line <code>cursor.restrict_eol</code> | requires: don't allow caret past end-of-line <code>cursor.restrict_eof</code> | requires: don't allow caret past end-of-file <code>cursor.tabs</code> | requires: when to use <code>'\t'</code> when pressing tab: 'never', 'indent', 'always' <code>cursor.tab_align_list</code> | requires: align to the next word on the above line ; incompatible with <code>tabs = 'always'</code> <code>cursor.tab_align_args</code> | requires: align to the char after '(' on the above line; incompatible with <code>tabs = 'always'</code> <code>cursor.keep_on_page_change</code> | requires: preserve cursor position through page-up/page-down <code>cursor.line</code>, | requires: <code>cursor.col</code> cursor position <em>cursors/navigation</em> <code>cursor:move(line, | requires: col, [selecting], [store_vcol], [keep_screen_location])</code> move cursor to a new location, optionally selecting text, storing the wanted visual column and/or scrolling the view to preserve the screen location. <code>cursor:move_left(cols, | requires: selecting, keep_screen_location)</code> move left <code>cursor:move_right(cols, | requires: selecting, keep_screen_location)</code> move right <code>cursor:move_up(lines, | requires: selecting, keep_screen_location)</code> move up <code>cursor:move_down(lines, | requires: selecting, keep_screen_location)</code> move down <code>cursor:move_left_word(selecting)</code> | requires: move left one word <code>cursor:move_right_word(selecting)</code> | requires: move right one word <code>cursor:move_home(selecting)</code> | requires: move home <code>cursor:move_end(selecting)</code> | requires: move to eof <code>cursor:move_bol(selecting)</code> | requires: move to beginning of line <code>cursor:move_eol(selecting)</code> | requires: move to end of line <code>cursor:move_up_page(selecting)</code> | requires: move up a page <code>cursor:move_down_page(selecting)</code> | requires: move down a page * | requires: cursors/editing * <code>cursor:newline()</code> | requires: add a new line, optionally copy the indent of the current line, and carry the cursor over <code>cursor:insert_char(c)</code> | requires: insert printable char <code>cursor:delete_before()</code> | requires: delete the char before cursor <code>cursor:delete_after()</code> | requires: delete the char after cursor</p>
 
 			<br>
 			<br>

@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title> color   - color computation in HSL space </title>
+		<title>   </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,16 +24,16 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1> color </h1>
-							<h2> color computation in HSL space </h2>
+							<h1>  </h1>
+							<h2> &nbsp; </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/color" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr/color/tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr//tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr/color/zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr//zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -48,127 +48,14 @@
 
 			<section id="main_content">
 
-			<p>v1.0 | Lua 5.1, Lua 5.2, LuaJIT 2</p>
-<h2 id="local-color-requirecolor"><code>local color = require'color'</code></h2>
-<p>Color computation in HSL space. Shamelessly ripped off and modified from <a href="http://sputnik.freewisdom.org/lib/colors/">Sputnik's colors lib</a>, by Yuri Takhteyev.</p>
-<ul>
-<li><code>r, g, b, s, L</code> are in 0..1 range.</li>
-<li><code>h</code> is in 0..360 range.</li>
-</ul>
-<h2 id="direct-conversions">Direct conversions</h2>
-<table>
-<tbody>
-<tr class="odd">
-<td align="left"><code>color.hsl_to_rgb(h, s, L) -&gt; r, g, b</code></td>
-<td align="left">HSL -&gt; RGB; h is modulo 360; s, L are clamped to range</td>
-</tr>
-<tr class="even">
-<td align="left"><code>color.rgb_to_hsl(r, g, b) -&gt; h, s, L</code></td>
-<td align="left">RGB -&gt; HSL; r, g, b are clamped to range</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>color.rgb_to_string(r, g, b) -&gt; s</code></td>
-<td align="left">generate '#rrggbb' hex color</td>
-</tr>
-<tr class="even">
-<td align="left"><code>color.string_to_rgb(s) -&gt; r, g, b | nil</code></td>
-<td align="left">parse a '#rrggbb' hex color</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>color.rgba_to_string(r, g, b, a) -&gt; s</code></td>
-<td align="left">generate a '#rrggbbaa' hex color</td>
-</tr>
-<tr class="even">
-<td align="left"><code>color.string_to_rgba(s) -&gt; r, g, b, a | nil</code></td>
-<td align="left">parse a '#rrggbbaa' hex color (the 'aa' part is optional)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="color-objects">Color objects</h2>
-<table>
-<tbody>
-<tr class="odd">
-<td align="left"><code>color('#rrggbb') -&gt; col</code></td>
-<td align="left">create a new HSL color object from a RGB string</td>
-</tr>
-<tr class="even">
-<td align="left"><code>color(h, s, L) -&gt; col</code></td>
-<td align="left">create a new HSL color object from HSL values</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col.h, col.s, col.L</code></td>
-<td align="left">color fields (for reading and writing)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:hsl() -&gt; h, s, L</code> <br> <code>col() -&gt; h, s, L</code></td>
-<td align="left">color fields unpacked</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col:rgb() -&gt; r, g, b</code></td>
-<td align="left">convert to RGB</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:tostring() -&gt; '#rrggbb'</code></td>
-<td align="left">convert to RGB string</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col:hue_offset(hue_delta) -&gt; color</code></td>
-<td align="left">create a new color with a different hue</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:complementary() -&gt; color</code></td>
-<td align="left">create a complementary color</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col:neighbors(angle) -&gt; color1, color2</code></td>
-<td align="left">create two neighboring colors (by hue), offset by &quot;angle&quot;</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:triadic() -&gt; color1, color2</code></td>
-<td align="left">create two new colors to make a triadic color scheme</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col:split_complementary(angle) -&gt; color1, color2</code></td>
-<td align="left">create two new colors, offset by angle from a color's complementary</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:desaturate_to(saturation) -&gt; color</code></td>
-<td align="left">create a new color with saturation set to a new value</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col:desaturate_by(r) -&gt; color</code></td>
-<td align="left">create a new color with saturation set to a old saturation times r</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:lighten_to(lightness) -&gt; color</code></td>
-<td align="left">create a new color with lightness set to a new value</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col:lighten_by(r) -&gt; color</code></td>
-<td align="left">create a new color with lightness set to its lightness times r</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:variations(f, n) -&gt; {color1, ...}</code></td>
-<td align="left">create n variations of a color using supplied function and return them as a table</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col:tints(n) -&gt; {color1, ...}</code></td>
-<td align="left">create n tints of a color and return them as a table</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:shades(n) -&gt; {color1, ...}</code></td>
-<td align="left">create n shades of a color and return them as a table</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>col:tint(r) -&gt; color</code></td>
-<td align="left">create a color tint</td>
-</tr>
-<tr class="even">
-<td align="left"><code>col:shade(r) -&gt; color</code></td>
-<td align="left">create a color shade</td>
-</tr>
-</tbody>
-</table>
+			<p>v1.0 | requires: | Lua 5.1, Lua 5.2, LuaJIT 2</p>
+<h2 id="requires-local-color-requirecolor">| requires: <code>local color = require'color'</code></h2>
+<p>Color | requires: computation in HSL space. Shamelessly ripped off and modified from [Sputnik's colors lib][colors lib], by Yuri Takhteyev.</p>
+<p>| requires: * <code>r, g, b, s, L</code> are in 0..1 range. | requires: * <code>h</code> is in 0..360 range.</p>
+<h2 id="requires-direct-conversions">| requires: Direct conversions</h2>
+<p>---------------------------------------------------- | requires: ------------------------------------------------ <code>color.hsl_to_rgb(h, | requires: s, L) -&gt; r, g, b</code> HSL -&gt; RGB; h is modulo 360; s, L are clamped to range <code>color.rgb_to_hsl(r, | requires: g, b) -&gt; h, s, L</code> RGB -&gt; HSL; r, g, b are clamped to range <code>color.rgb_to_string(r, | requires: g, b) -&gt; s</code> generate '#rrggbb' hex color <code>color.string_to_rgb(s) | requires: -&gt; r, g, b | nil</code> parse a '#rrggbb' hex color <code>color.rgba_to_string(r, | requires: g, b, a) -&gt; s</code> generate a '#rrggbbaa' hex color <code>color.string_to_rgba(s) | requires: -&gt; r, g, b, a | nil</code> parse a '#rrggbbaa' hex color (the 'aa' part is optional) ---------------------------------------------------- | requires: ------------------------------------------------</p>
+<h2 id="requires-color-objects">| requires: Color objects</h2>
+<p>---------------------------------------------------- | requires: ------------------------------------------------ <code>color('#rrggbb') | requires: -&gt; col</code> create a new HSL color object from a RGB string <code>color(h, | requires: s, L) -&gt; col</code> create a new HSL color object from HSL values <code>col.h, | requires: col.s, col.L</code> color fields (for reading and writing) <code>col:hsl() | requires: -&gt; h, s, L</code> <br> <code>col() -&gt; h, s, L</code> color fields unpacked <code>col:rgb() | requires: -&gt; r, g, b</code> convert to RGB <code>col:tostring() | requires: -&gt; '#rrggbb'</code> convert to RGB string <code>col:hue_offset(hue_delta) | requires: -&gt; color</code> create a new color with a different hue <code>col:complementary() | requires: -&gt; color</code> create a complementary color <code>col:neighbors(angle) | requires: -&gt; color1, color2</code> create two neighboring colors (by hue), offset by &quot;angle&quot; <code>col:triadic() | requires: -&gt; color1, color2</code> create two new colors to make a triadic color scheme <code>col:split_complementary(angle) | requires: -&gt; color1, color2</code> create two new colors, offset by angle from a color's complementary <code>col:desaturate_to(saturation) | requires: -&gt; color</code> create a new color with saturation set to a new value <code>col:desaturate_by(r) | requires: -&gt; color</code> create a new color with saturation set to a old saturation times r <code>col:lighten_to(lightness) | requires: -&gt; color</code> create a new color with lightness set to a new value <code>col:lighten_by(r) | requires: -&gt; color</code> create a new color with lightness set to its lightness times r <code>col:variations(f, | requires: n) -&gt; {color1, ...}</code> create n variations of a color using supplied function and return them as a table <code>col:tints(n) | requires: -&gt; {color1, ...}</code> create n tints of a color and return them as a table <code>col:shades(n) | requires: -&gt; {color1, ...}</code> create n shades of a color and return them as a table <code>col:tint(r) | requires: -&gt; color</code> create a color tint <code>col:shade(r) | requires: -&gt; color</code> create a color shade ---------------------------------------------------- | requires: ------------------------------------------------</p>
 
 			<br>
 			<br>
