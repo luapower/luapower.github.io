@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title>   </title>
+		<title> affine2d   - 2D affine transforms </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,16 +24,16 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1>  </h1>
-							<h2> &nbsp; </h2>
+							<h1> affine2d </h1>
+							<h2> 2D affine transforms </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/affine2d" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr/affine2d/tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr/affine2d/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -49,8 +49,111 @@
 			<section id="main_content">
 
 			<p>v1.0</p>
-<h2 id="requires-local-matrix-requireaffine2d">| requires: <code>local matrix = require'affine2d'</code></h2>
-<p>--------------------------------------------------------------- | requires: -------------------------------------------------------------------------------------- <code>matrix(xx, | requires: yx, xy, yy, x0, y0) -&gt; mt</code> <br> <code>matrix() -&gt; mt</code> Create a new matrix object. Defaults to identity matrix <code>1, 0, 0, 1, 0, 0</code>. <code>mt:set(xx, | requires: yx, xy, yy, x0, y0) -&gt; mt</code> Set the matrix fields. <code>mt:reset() | requires: -&gt; mt</code> Set the matrix to the identity matrix <code>1, 0, 0, 1, 0, 0</code>. <code>mt:unpack() | requires: -&gt; xx, yx, xy, yy, x0, y0</code> Unpack the matrix fields. <code>mt:copy() | requires: -&gt; newmt</code> Create a new matrix object with the same fields as <code>mt</code>. <code>mt:transform_point(x, | requires: y) -&gt; tx, ty</code> <br> <code>mt(x, y) -&gt; tx, ty</code> Transform a 2D point. <code>mt:transform_distance(x, | requires: y) -&gt; dx, dy</code> Transform a point ignoring translation. <code>mt:multiply(bxx, | requires: byx, bxy, byy, bx0, by0) -&gt; mt</code> Multiply <code>mt * b</code> and store the result in <code>mt</code>. <code>mt:transform(bxx, | requires: byx, bxy, byy, bx0, by0) -&gt; mt</code> Multiply <code>b * mt</code> and store the result in <code>mt</code>. <code>mt:determinant() | requires: -&gt; det</code> Compute the matrix determinant. <code>mt:is_invertible() | requires: -&gt; true | false</code> Check if the matrix is invertible, that is, if the determinant is not 0, 1/0 or -1/0. <code>mt:scalar_multilpy(s) | requires: -&gt; mt</code> Mulitply each field of the matrix with a scalar value. <code>mt:inverse() | requires: -&gt; newmt</code> Return the inverse matrix, or nothing if the matrix is not invertible. <code>mt:translate(x, | requires: y) -&gt; mt</code> Translate the matrix. <code>mt:scale(sx, | requires: sy) -&gt; mt</code> <br> <code>mt:scale(s)</code> Scale the matrix. <code>mt:rotate(angle) | requires: -&gt; mt</code> Rotate the matrix. The angle is in degrees. <code>mt:skew(angle_x, | requires: angle_y) -&gt; mt</code> Skew the matrix. Angles are in degrees. <code>mt:is_identity() | requires: -&gt; true | false</code> Check if the matrix is the identity matrix, thus having no effect on the input. <code>mt:has_unity_scale() | requires: -&gt; true | false</code> Check that no scaling is done with this transform, only flipping and multiple-of-90-degree rotation. <code>mt:has_uniform_scale() | requires: -&gt; true | false</code> Check that scaling with this transform is uniform on both axes. <code>mt:scale_factor() | requires: -&gt; s</code> Largest dimension of the bounding box of the transformed unit square. <code>mt:is_pixel_exact() | requires: -&gt; true | false</code> Check that pixels map 1:1 with this transform so that no filtering is necessary to project an image to the screen for example. <code>mt:is_straight() | requires: -&gt; true | false</code> Check that there's no skew and that there's no rotation other than multiple-of-90-degree rotation. <code>mt1 | requires: * mt2 -&gt; newmt</code> Multiply two matrices and return the result as a new matrix. <code>mt1 | requires: == mt2</code> Test two matrices for equality. Matrices are considered equal when their fields are equal. --------------------------------------------------------------- | requires: --------------------------------------------------------------------------------------</p>
+<h2 id="local-matrix-requireaffine2d"><code>local matrix = require'affine2d'</code></h2>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>matrix(xx, yx, xy, yy, x0, y0) -&gt; mt</code> <br> <code>matrix() -&gt; mt</code></td>
+<td align="left">Create a new matrix object. Defaults to identity matrix <code>1, 0, 0, 1, 0, 0</code>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:set(xx, yx, xy, yy, x0, y0) -&gt; mt</code></td>
+<td align="left">Set the matrix fields.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:reset() -&gt; mt</code></td>
+<td align="left">Set the matrix to the identity matrix <code>1, 0, 0, 1, 0, 0</code>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:unpack() -&gt; xx, yx, xy, yy, x0, y0</code></td>
+<td align="left">Unpack the matrix fields.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:copy() -&gt; newmt</code></td>
+<td align="left">Create a new matrix object with the same fields as <code>mt</code>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:transform_point(x, y) -&gt; tx, ty</code> <br> <code>mt(x, y) -&gt; tx, ty</code></td>
+<td align="left">Transform a 2D point.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:transform_distance(x, y) -&gt; dx, dy</code></td>
+<td align="left">Transform a point ignoring translation.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:multiply(bxx, byx, bxy, byy, bx0, by0) -&gt; mt</code></td>
+<td align="left">Multiply <code>mt * b</code> and store the result in <code>mt</code>.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:transform(bxx, byx, bxy, byy, bx0, by0) -&gt; mt</code></td>
+<td align="left">Multiply <code>b * mt</code> and store the result in <code>mt</code>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:determinant() -&gt; det</code></td>
+<td align="left">Compute the matrix determinant.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:is_invertible() -&gt; true | false</code></td>
+<td align="left">Check if the matrix is invertible, that is, if the determinant is not 0, 1/0 or -1/0.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:scalar_multilpy(s) -&gt; mt</code></td>
+<td align="left">Mulitply each field of the matrix with a scalar value.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:inverse() -&gt; newmt</code></td>
+<td align="left">Return the inverse matrix, or nothing if the matrix is not invertible.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:translate(x, y) -&gt; mt</code></td>
+<td align="left">Translate the matrix.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:scale(sx, sy) -&gt; mt</code> <br> <code>mt:scale(s)</code></td>
+<td align="left">Scale the matrix.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:rotate(angle) -&gt; mt</code></td>
+<td align="left">Rotate the matrix. The angle is in degrees.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:skew(angle_x, angle_y) -&gt; mt</code></td>
+<td align="left">Skew the matrix. Angles are in degrees.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:is_identity() -&gt; true | false</code></td>
+<td align="left">Check if the matrix is the identity matrix, thus having no effect on the input.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:has_unity_scale() -&gt; true | false</code></td>
+<td align="left">Check that no scaling is done with this transform, only flipping and multiple-of-90-degree rotation.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:has_uniform_scale() -&gt; true | false</code></td>
+<td align="left">Check that scaling with this transform is uniform on both axes.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:scale_factor() -&gt; s</code></td>
+<td align="left">Largest dimension of the bounding box of the transformed unit square.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt:is_pixel_exact() -&gt; true | false</code></td>
+<td align="left">Check that pixels map 1:1 with this transform so that no filtering is necessary to project an image to the screen for example.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt:is_straight() -&gt; true | false</code></td>
+<td align="left">Check that there's no skew and that there's no rotation other than multiple-of-90-degree rotation.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mt1 * mt2 -&gt; newmt</code></td>
+<td align="left">Multiply two matrices and return the result as a new matrix.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mt1 == mt2</code></td>
+<td align="left">Test two matrices for equality. Matrices are considered equal when their fields are equal.</td>
+</tr>
+</tbody>
+</table>
 
 			<br>
 			<br>

@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title>   </title>
+		<title> bitmap   - In-memory bitmaps for LuaJIT </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,16 +24,16 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1>  </h1>
-							<h2> &nbsp; </h2>
+							<h1> bitmap </h1>
+							<h2> In-memory bitmaps for LuaJIT </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/bitmap" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr/bitmap/tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr/bitmap/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -48,86 +48,349 @@
 
 			<section id="main_content">
 
-			<h2 id="requires-bit-ffi-gluelocal-bitmap-requirebitmap">| requires: bit, ffi, glue<code>local bitmap = require'bitmap'</code></h2>
-<h2 id="requires-bit-ffi-gluefeatures">| requires: bit, ffi, glueFeatures</h2>
-<p>| requires: bit, ffi, glue * multiple pixel formats, color spaces, channel layouts, scanline orderings, row strides, and bit depths. | requires: bit, ffi, glue * arbitrary row strides, including sub-byte strides. | requires: bit, ffi, glue * top-down and bottom-up scanline order. | requires: bit, ffi, glue * conversion between most formats. | requires: bit, ffi, glue * reading and writing pixel data in a uniform way, independent of the pixel format. | requires: bit, ffi, glue * dithering, pixel effects, filters. | requires: bit, ffi, glue * fast (see benchmarks).</p>
-<h2 id="requires-bit-ffi-gluelimitations">| requires: bit, ffi, glueLimitations</h2>
-<p>| requires: bit, ffi, glue * only packed formats, no separate plane formats | requires: bit, ffi, glue * but: custom conversions to gray8 and gray16 can be used to separate the channels of any format into separate bitmaps. | requires: bit, ffi, glue * only expanded formats, no palette formats | requires: bit, ffi, glue * but: custom formats with a custom reader and writer can be easily made to use a palette which itself can be a one-row bitmap. | requires: bit, ffi, glue * no conversions to cmyk (would need color profiling) | requires: bit, ffi, glue * no conversions to ycc and ycck</p>
-<h2 id="requires-bit-ffi-gluewhats-a-bitmap">| requires: bit, ffi, glueWhat's a bitmap?</h2>
-<p>A | requires: bit, ffi, gluebitmap is a table with the following fields:</p>
-<p>| requires: bit, ffi, glue * <code>w</code>, <code>h</code> - bitmap dimensions, in pixels. | requires: bit, ffi, glue * <code>stride</code> - row stride in bytes. optional. must be at least <code>w * bpp / 8</code> (can be fractional for &lt; 8bpp formats). | requires: bit, ffi, glue * <code>bottom_up</code> - if <code>true</code>, the rows are are arranged bottom-up instead of top-down. | requires: bit, ffi, glue * <code>data</code> - the pixel buffer (string or a cdata buffer). the pixels must be packed in <code>stride</code>-long rows, top-down or bottom-up. | requires: bit, ffi, glue * <code>size</code> - size of the pixel buffer, in bytes. | requires: bit, ffi, glue * <code>format</code> - the pixel format, either a string naming a predefined format (below table), or a table specifying a custom format (see customization).</p>
-<h3 id="requires-bit-ffi-gluepredefined-formats">| requires: bit, ffi, gluePredefined formats</h3>
-<p><strong>name</strong> | requires: bit, ffi, glue <strong>colortype</strong> <strong>channels</strong> <strong>bits/channel</strong> <strong>bits/pixel</strong> --------------------------------- | requires: bit, ffi, glue------------------- ------------------ ------------------ --------------- rgb8, | requires: bit, ffi, gluebgr8 rgba8 RGB 8 24 rgb16, | requires: bit, ffi, gluebgr16 rgba16 RGB 16 48 rgbx8, | requires: bit, ffi, gluebgrx8, xrgb8, xbgr8 rgba8 RGB 8 32 rgbx16, | requires: bit, ffi, gluebgrx16, xrgb16, xbgr16 rgba16 RGB 16 64 rgba8, | requires: bit, ffi, gluebgra8, argb8, abgr8 rgba8 RGB+alpha 8 32 rgba16, | requires: bit, ffi, gluebgra16, argb16, abgr16 rgba16 RGB+alpha 16 64 rgb565 | requires: bit, ffi, glue rgba8 RGB 5/6/5 16 rgb555 | requires: bit, ffi, glue rgba8 RGB 5 16 rgb444 | requires: bit, ffi, glue rgba8 RGB 4 16 rgba4444 | requires: bit, ffi, glue rgba8 RGB+alpha 4 16 rgba5551 | requires: bit, ffi, glue rgba8 RGB+alpha 5/5/5/1 16 ga8, | requires: bit, ffi, glueag8 ga8 GRAY+alpha 8 8 ga16, | requires: bit, ffi, glueag16 ga16 GRAY+alpha 16 16 g1 | requires: bit, ffi, glue ga8 GRAY 1 1 g2 | requires: bit, ffi, glue ga8 GRAY 2 2 g4 | requires: bit, ffi, glue ga8 GRAY 4 4 g8 | requires: bit, ffi, glue ga8 GRAY 8 8 g16 | requires: bit, ffi, glue ga16 GRAY 16 16 cmyk8 | requires: bit, ffi, glue cmyk8 inverse CMYK 8 32 ycc8 | requires: bit, ffi, glue ycc8 JPEG YCbCr 8 8 24 ycck8 | requires: bit, ffi, glue ycck8 JPEG YCbCrK 8 8 32 rgbaf | requires: bit, ffi, glue rgbaf RGB+alpha 32 128 rgbad | requires: bit, ffi, glue rgbaf RGB+alpha 64 256</p>
-<h3 id="requires-bit-ffi-gluepredefined-colortypes">| requires: bit, ffi, gluePredefined colortypes</h3>
-<p><strong>name</strong> | requires: bit, ffi, glue <strong>channels</strong> <strong>value type</strong> <strong>value range</strong> -------------- | requires: bit, ffi, glue----------------- --------------------- ----------------- rgba8 | requires: bit, ffi, glue r, g, b, a integer 0..0xff rgba16 | requires: bit, ffi, glue r, g, b, a integer 0..0xffff ga8 | requires: bit, ffi, glue g, a integer 0..0xff ga16 | requires: bit, ffi, glue g, a integer 0..0xffff cmyk8 | requires: bit, ffi, glue c, m, y, k integer 0..0xff ycc8 | requires: bit, ffi, glue y, c, c integer 0..0xff ycck8 | requires: bit, ffi, glue y, c, c, k integer 0..0xff rgbaf | requires: bit, ffi, glue r, g, b, a float or double 0..1</p>
-<h2 id="requires-bit-ffi-gluebitmap-operations">| requires: bit, ffi, glueBitmap operations</h2>
-<h2 id="requires-bit-ffi-gluebitmap.neww-h-format-bottom_up-stride_aligned-stride---new_bmp">| requires: bit, ffi, glue<code>bitmap.new(w, h, format, [bottom_up], [stride_aligned], [stride]) -&gt; new_bmp</code></h2>
-<p>Create | requires: bit, ffi, gluea bitmap object. If <code>stride_aligned</code> is <code>true</code> and no specific <code>stride</code> is given, the stride will be a multiple of 4 bytes.</p>
-<h2 id="requires-bit-ffi-gluebitmap.copybmp-format-bottom_up-stride_aligned-stride---new_bmp">| requires: bit, ffi, glue<code>bitmap.copy(bmp, [format], [bottom_up], [stride_aligned], [stride]) -&gt; new_bmp</code></h2>
-<p>Copy | requires: bit, ffi, gluea bitmap, optionally to a new format, orientation and stride. If <code>format</code> is not specified, stride and orientation default to those of source bitmap's, otherwise they default to top-down, minimum stride.</p>
-<h2 id="requires-bit-ffi-gluebitmap.convertsource_bmp-dest_bmp-convert_pixel---dest_bmp">| requires: bit, ffi, glue<code>bitmap.convert(source_bmp, dest_bmp[, convert_pixel]) -&gt; dest_bmp</code></h2>
-<p>Convert | requires: bit, ffi, gluea source bitmap into a destination bitmap of the same width and height.</p>
-<p>The | requires: bit, ffi, glueoptional <code>convert_pixel</code> is a pixel conversion function to be called for each pixel as <code>convert_pixel(a, b, c, ...) -&gt; x, y, z, ...</code>. It receives the channel values of the source bitmap according to its colortype and must return the converted channel values for the destination bitmap according to its colortype.</p>
-<p>In | requires: bit, ffi, gluesome cases, the destination bitmap is allowed to have the same data buffer as the source bitmap. Specifically, the dest. bitmap must not have a different orientation, larger stride or larger pixel size. In particular, the dest. bitmap can always be the source bitmap itself, which is useful for performing custom transformations via the <code>convert_pixel</code> callback.</p>
-<h2 id="requires-bit-ffi-gluebitmap.subbmp-x-y-w-h---sub_bmp">| requires: bit, ffi, glue<code>bitmap.sub(bmp, [x], [y], [w], [h]) -&gt; sub_bmp</code></h2>
-<p>Crop | requires: bit, ffi, gluea bitmap without copying the pixels (the <code>data</code> field of the sub-bitmap is a pointer into the <code>data</code> buffer of the parent bitmap). The parent bitmap is pinned in the <code>parent</code> field of the sub-bitmap to prevent garbage collection of the data buffer. Other than that, the sub-bitmap behaves exactly like a normal bitmap (it can be further sub'ed for instance). The coordinates default to <code>0, 0, bmp.w, bmp.h</code> respectively. The coordinates are adjusted to fit the parent bitmap. If they result in zero width or height, nothing is returned.</p>
-<p>To | requires: bit, ffi, glueget real cropping, just copy the bitmap, specifying the format and orientation to reset the stride: | requires: bit, ffi, glue <code>sub = bitmap.copy(sub, sub.format, sub.bottom_up)</code></p>
-<p><em>Limitation:</em> | requires: bit, ffi, glueFor 1, 2, 4 bpp formats, the coordinates must be such that the data pointer points to the beginning of a byte (that is, is not fractional). For a non-fractional stride, this means the <code>x</code> coordinate must be a multiple of 8, 4, 2 respectively. For fractional strides don't even bother.</p>
-<h2 id="requires-bit-ffi-gluepixel-interface">| requires: bit, ffi, gluePixel interface</h2>
-<h2 id="requires-bit-ffi-gluebitmap.pixel_interfacebitmap-colortype---getpixel-setpixel">| requires: bit, ffi, glue<code>bitmap.pixel_interface(bitmap[, colortype]) -&gt; getpixel, setpixel</code></h2>
-<p>Return | requires: bit, ffi, gluean API for getting and setting individual pixels of a bitmap object: | requires: bit, ffi, glue * <code>getpixel(x, y) -&gt; a, b, c, ...</code> | requires: bit, ffi, glue * <code>setpixel(x, y, a, b, c, ...)</code> where | requires: bit, ffi, gluea, b, c are the individual color channels, converted to the specified colortype or in the colortype of the bitmap (i.e. r, g, b, a for the 'rgba' colortype, etc.).</p>
-<h3 id="requires-bit-ffi-glueexample">| requires: bit, ffi, glueExample:</h3>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> | <span class="kw">requires</span>: <span class="kw">bit</span><span class="ot">,</span> <span class="kw">ffi</span><span class="ot">,</span> <span class="kw">gluefunction</span> darken<span class="ot">(</span><span class="kw">r</span><span class="ot">,</span> <span class="kw">g</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">a</span><span class="ot">)</span>
-    <span class="kw">return</span> | <span class="kw">requires</span>: <span class="kw">bit</span><span class="ot">,</span> <span class="kw">ffi</span><span class="ot">,</span> <span class="kw">gluer</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">g</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">a</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">)</span> <span class="co">--make 2x darker</span>
+			<h2 id="local-bitmap-requirebitmap"><code>local bitmap = require'bitmap'</code></h2>
+<h2 id="features">Features</h2>
+<ul>
+<li>multiple pixel formats, color spaces, channel layouts, scanline orderings, row strides, and bit depths.
+<ul>
+<li>arbitrary row strides, including sub-byte strides.</li>
+<li>top-down and bottom-up scanline order.</li>
+</ul></li>
+<li>conversion between most formats.</li>
+<li>reading and writing pixel data in a uniform way, independent of the pixel format.</li>
+<li>dithering, pixel effects, filters.</li>
+<li>fast (see benchmarks).</li>
+</ul>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li>only packed formats, no separate plane formats
+<ul>
+<li>but: custom conversions to gray8 and gray16 can be used to separate the channels of any format into separate bitmaps.</li>
+</ul></li>
+<li>only expanded formats, no palette formats
+<ul>
+<li>but: custom formats with a custom reader and writer can be easily made to use a palette which itself can be a one-row bitmap.</li>
+</ul></li>
+<li>no conversions to cmyk (would need color profiling)</li>
+<li>no conversions to ycc and ycck</li>
+</ul>
+<h2 id="whats-a-bitmap">What's a bitmap?</h2>
+<p>A bitmap is a table with the following fields:</p>
+<ul>
+<li><code>w</code>, <code>h</code> - bitmap dimensions, in pixels.</li>
+<li><code>stride</code> - row stride in bytes. optional. must be at least <code>w * bpp / 8</code> (can be fractional for &lt; 8bpp formats).</li>
+<li><code>bottom_up</code> - if <code>true</code>, the rows are are arranged bottom-up instead of top-down.</li>
+<li><code>data</code> - the pixel buffer (string or a cdata buffer). the pixels must be packed in <code>stride</code>-long rows, top-down or bottom-up.</li>
+<li><code>size</code> - size of the pixel buffer, in bytes.</li>
+<li><code>format</code> - the pixel format, either a string naming a predefined format (below table), or a table specifying a custom format (see customization).</li>
+</ul>
+<h3 id="predefined-formats">Predefined formats</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>name</strong></th>
+<th align="left"><strong>colortype</strong></th>
+<th align="left"><strong>channels</strong></th>
+<th align="left"><strong>bits/channel</strong></th>
+<th align="left"><strong>bits/pixel</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">rgb8, bgr8</td>
+<td align="left">rgba8</td>
+<td align="left">RGB</td>
+<td align="left">8</td>
+<td align="left">24</td>
+</tr>
+<tr class="even">
+<td align="left">rgb16, bgr16</td>
+<td align="left">rgba16</td>
+<td align="left">RGB</td>
+<td align="left">16</td>
+<td align="left">48</td>
+</tr>
+<tr class="odd">
+<td align="left">rgbx8, bgrx8, xrgb8, xbgr8</td>
+<td align="left">rgba8</td>
+<td align="left">RGB</td>
+<td align="left">8</td>
+<td align="left">32</td>
+</tr>
+<tr class="even">
+<td align="left">rgbx16, bgrx16, xrgb16, xbgr16</td>
+<td align="left">rgba16</td>
+<td align="left">RGB</td>
+<td align="left">16</td>
+<td align="left">64</td>
+</tr>
+<tr class="odd">
+<td align="left">rgba8, bgra8, argb8, abgr8</td>
+<td align="left">rgba8</td>
+<td align="left">RGB+alpha</td>
+<td align="left">8</td>
+<td align="left">32</td>
+</tr>
+<tr class="even">
+<td align="left">rgba16, bgra16, argb16, abgr16</td>
+<td align="left">rgba16</td>
+<td align="left">RGB+alpha</td>
+<td align="left">16</td>
+<td align="left">64</td>
+</tr>
+<tr class="odd">
+<td align="left">rgb565</td>
+<td align="left">rgba8</td>
+<td align="left">RGB</td>
+<td align="left">5/6/5</td>
+<td align="left">16</td>
+</tr>
+<tr class="even">
+<td align="left">rgb555</td>
+<td align="left">rgba8</td>
+<td align="left">RGB</td>
+<td align="left">5</td>
+<td align="left">16</td>
+</tr>
+<tr class="odd">
+<td align="left">rgb444</td>
+<td align="left">rgba8</td>
+<td align="left">RGB</td>
+<td align="left">4</td>
+<td align="left">16</td>
+</tr>
+<tr class="even">
+<td align="left">rgba4444</td>
+<td align="left">rgba8</td>
+<td align="left">RGB+alpha</td>
+<td align="left">4</td>
+<td align="left">16</td>
+</tr>
+<tr class="odd">
+<td align="left">rgba5551</td>
+<td align="left">rgba8</td>
+<td align="left">RGB+alpha</td>
+<td align="left">5/5/5/1</td>
+<td align="left">16</td>
+</tr>
+<tr class="even">
+<td align="left">ga8, ag8</td>
+<td align="left">ga8</td>
+<td align="left">GRAY+alpha</td>
+<td align="left">8</td>
+<td align="left">8</td>
+</tr>
+<tr class="odd">
+<td align="left">ga16, ag16</td>
+<td align="left">ga16</td>
+<td align="left">GRAY+alpha</td>
+<td align="left">16</td>
+<td align="left">16</td>
+</tr>
+<tr class="even">
+<td align="left">g1</td>
+<td align="left">ga8</td>
+<td align="left">GRAY</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">g2</td>
+<td align="left">ga8</td>
+<td align="left">GRAY</td>
+<td align="left">2</td>
+<td align="left">2</td>
+</tr>
+<tr class="even">
+<td align="left">g4</td>
+<td align="left">ga8</td>
+<td align="left">GRAY</td>
+<td align="left">4</td>
+<td align="left">4</td>
+</tr>
+<tr class="odd">
+<td align="left">g8</td>
+<td align="left">ga8</td>
+<td align="left">GRAY</td>
+<td align="left">8</td>
+<td align="left">8</td>
+</tr>
+<tr class="even">
+<td align="left">g16</td>
+<td align="left">ga16</td>
+<td align="left">GRAY</td>
+<td align="left">16</td>
+<td align="left">16</td>
+</tr>
+<tr class="odd">
+<td align="left">cmyk8</td>
+<td align="left">cmyk8</td>
+<td align="left">inverse CMYK</td>
+<td align="left">8</td>
+<td align="left">32</td>
+</tr>
+<tr class="even">
+<td align="left">ycc8</td>
+<td align="left">ycc8</td>
+<td align="left">JPEG YCbCr 8</td>
+<td align="left">8</td>
+<td align="left">24</td>
+</tr>
+<tr class="odd">
+<td align="left">ycck8</td>
+<td align="left">ycck8</td>
+<td align="left">JPEG YCbCrK 8</td>
+<td align="left">8</td>
+<td align="left">32</td>
+</tr>
+<tr class="even">
+<td align="left">rgbaf</td>
+<td align="left">rgbaf</td>
+<td align="left">RGB+alpha</td>
+<td align="left">32</td>
+<td align="left">128</td>
+</tr>
+<tr class="odd">
+<td align="left">rgbad</td>
+<td align="left">rgbaf</td>
+<td align="left">RGB+alpha</td>
+<td align="left">64</td>
+<td align="left">256</td>
+</tr>
+</tbody>
+</table>
+<h3 id="predefined-colortypes">Predefined colortypes</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left"><strong>name</strong></th>
+<th align="left"><strong>channels</strong></th>
+<th align="left"><strong>value type</strong></th>
+<th align="left"><strong>value range</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">rgba8</td>
+<td align="left">r, g, b, a</td>
+<td align="left">integer</td>
+<td align="left">0..0xff</td>
+</tr>
+<tr class="even">
+<td align="left">rgba16</td>
+<td align="left">r, g, b, a</td>
+<td align="left">integer</td>
+<td align="left">0..0xffff</td>
+</tr>
+<tr class="odd">
+<td align="left">ga8</td>
+<td align="left">g, a</td>
+<td align="left">integer</td>
+<td align="left">0..0xff</td>
+</tr>
+<tr class="even">
+<td align="left">ga16</td>
+<td align="left">g, a</td>
+<td align="left">integer</td>
+<td align="left">0..0xffff</td>
+</tr>
+<tr class="odd">
+<td align="left">cmyk8</td>
+<td align="left">c, m, y, k</td>
+<td align="left">integer</td>
+<td align="left">0..0xff</td>
+</tr>
+<tr class="even">
+<td align="left">ycc8</td>
+<td align="left">y, c, c</td>
+<td align="left">integer</td>
+<td align="left">0..0xff</td>
+</tr>
+<tr class="odd">
+<td align="left">ycck8</td>
+<td align="left">y, c, c, k</td>
+<td align="left">integer</td>
+<td align="left">0..0xff</td>
+</tr>
+<tr class="even">
+<td align="left">rgbaf</td>
+<td align="left">r, g, b, a</td>
+<td align="left">float or double</td>
+<td align="left">0..1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bitmap-operations">Bitmap operations</h2>
+<h2 id="bitmap.neww-h-format-bottom_up-stride_aligned-stride---new_bmp"><code>bitmap.new(w, h, format, [bottom_up], [stride_aligned], [stride]) -&gt; new_bmp</code></h2>
+<p>Create a bitmap object. If <code>stride_aligned</code> is <code>true</code> and no specific <code>stride</code> is given, the stride will be a multiple of 4 bytes.</p>
+<h2 id="bitmap.copybmp-format-bottom_up-stride_aligned-stride---new_bmp"><code>bitmap.copy(bmp, [format], [bottom_up], [stride_aligned], [stride]) -&gt; new_bmp</code></h2>
+<p>Copy a bitmap, optionally to a new format, orientation and stride. If <code>format</code> is not specified, stride and orientation default to those of source bitmap's, otherwise they default to top-down, minimum stride.</p>
+<h2 id="bitmap.convertsource_bmp-dest_bmp-convert_pixel---dest_bmp"><code>bitmap.convert(source_bmp, dest_bmp[, convert_pixel]) -&gt; dest_bmp</code></h2>
+<p>Convert a source bitmap into a destination bitmap of the same width and height.</p>
+<p>The optional <code>convert_pixel</code> is a pixel conversion function to be called for each pixel as <code>convert_pixel(a, b, c, ...) -&gt; x, y, z, ...</code>. It receives the channel values of the source bitmap according to its colortype and must return the converted channel values for the destination bitmap according to its colortype.</p>
+<p>In some cases, the destination bitmap is allowed to have the same data buffer as the source bitmap. Specifically, the dest. bitmap must not have a different orientation, larger stride or larger pixel size. In particular, the dest. bitmap can always be the source bitmap itself, which is useful for performing custom transformations via the <code>convert_pixel</code> callback.</p>
+<h2 id="bitmap.subbmp-x-y-w-h---sub_bmp"><code>bitmap.sub(bmp, [x], [y], [w], [h]) -&gt; sub_bmp</code></h2>
+<p>Crop a bitmap without copying the pixels (the <code>data</code> field of the sub-bitmap is a pointer into the <code>data</code> buffer of the parent bitmap). The parent bitmap is pinned in the <code>parent</code> field of the sub-bitmap to prevent garbage collection of the data buffer. Other than that, the sub-bitmap behaves exactly like a normal bitmap (it can be further sub'ed for instance). The coordinates default to <code>0, 0, bmp.w, bmp.h</code> respectively. The coordinates are adjusted to fit the parent bitmap. If they result in zero width or height, nothing is returned.</p>
+<p>To get real cropping, just copy the bitmap, specifying the format and orientation to reset the stride: <code>sub = bitmap.copy(sub, sub.format, sub.bottom_up)</code></p>
+<p><em>Limitation:</em> For 1, 2, 4 bpp formats, the coordinates must be such that the data pointer points to the beginning of a byte (that is, is not fractional). For a non-fractional stride, this means the <code>x</code> coordinate must be a multiple of 8, 4, 2 respectively. For fractional strides don't even bother.</p>
+<h2 id="pixel-interface">Pixel interface</h2>
+<h2 id="bitmap.pixel_interfacebitmap-colortype---getpixel-setpixel"><code>bitmap.pixel_interface(bitmap[, colortype]) -&gt; getpixel, setpixel</code></h2>
+<p>Return an API for getting and setting individual pixels of a bitmap object: * <code>getpixel(x, y) -&gt; a, b, c, ...</code> * <code>setpixel(x, y, a, b, c, ...)</code> where a, b, c are the individual color channels, converted to the specified colortype or in the colortype of the bitmap (i.e. r, g, b, a for the 'rgba' colortype, etc.).</p>
+<h3 id="example">Example:</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">function</span> darken<span class="ot">(</span><span class="kw">r</span><span class="ot">,</span> <span class="kw">g</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">a</span><span class="ot">)</span>
+    <span class="kw">return</span> <span class="kw">r</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">g</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">a</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">)</span> <span class="co">--make 2x darker</span>
 <span class="kw">end</span>
 
-<span class="kw">local</span> | <span class="kw">requires</span>: <span class="kw">bit</span><span class="ot">,</span> <span class="kw">ffi</span><span class="ot">,</span> <span class="kw">gluegetpixel</span><span class="ot">,</span> <span class="kw">setpixel</span> <span class="ot">=</span> pixel_interface<span class="ot">(</span><span class="kw">bmp</span><span class="ot">)</span>
-<span class="kw">for</span> | <span class="kw">requires</span>: <span class="kw">bit</span><span class="ot">,</span> <span class="kw">ffi</span><span class="ot">,</span> <span class="kw">gluey</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">h</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
-    <span class="kw">for</span> | <span class="kw">requires</span>: <span class="kw">bit</span><span class="ot">,</span> <span class="kw">ffi</span><span class="ot">,</span> <span class="kw">gluex</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">w</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
-        setpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> | <span class="kw">requires</span>: <span class="kw">bit</span><span class="ot">,</span> <span class="kw">ffi</span><span class="ot">,</span> <span class="kw">gluey</span><span class="ot">,</span> darken<span class="ot">(</span>getpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)))</span>
+<span class="kw">local</span> <span class="kw">getpixel</span><span class="ot">,</span> <span class="kw">setpixel</span> <span class="ot">=</span> pixel_interface<span class="ot">(</span><span class="kw">bmp</span><span class="ot">)</span>
+<span class="kw">for</span> <span class="kw">y</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">h</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
+    <span class="kw">for</span> <span class="kw">x</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">w</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
+        setpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">,</span> darken<span class="ot">(</span>getpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)))</span>
     <span class="kw">end</span>
 <span class="kw">end</span>
 
-<span class="co">--the | requires: bit, ffi, glueabove has the same effect as:</span>
-convert<span class="ot">(</span><span class="kw">bmp</span><span class="ot">,</span> | <span class="kw">requires</span>: <span class="kw">bit</span><span class="ot">,</span> <span class="kw">ffi</span><span class="ot">,</span> <span class="kw">gluebmp</span><span class="ot">,</span> <span class="kw">darken</span><span class="ot">)</span></code></pre>
-<h2 id="requires-bit-ffi-gluedithering">| requires: bit, ffi, glueDithering</h2>
-<h2 id="requires-bit-ffi-gluebitmap.dither.fsbmp-rbits-gbits-bbits-abits">| requires: bit, ffi, glue<code>bitmap.dither.fs(bmp, rbits, gbits, bbits, abits)</code></h2>
-<p>Dither | requires: bit, ffi, gluea bitmap using the <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering">Floyd-Steinberg dithering</a> algorithm. <code>*bits</code> specify the number of bits of color to keep for each channel (eg. <code>bitmap.dither.fs(bmp, 5, 6, 5, 0)</code> dithers a bitmap so that its colors fit into the <code>rgb565</code> format). Only implemented for 4-channel colortypes.</p>
-<h2 id="requires-bit-ffi-gluebitmap.dither.orderedbmp-mapsize">| requires: bit, ffi, glue<code>bitmap.dither.ordered(bmp, mapsize)</code></h2>
-<p>Dither | requires: bit, ffi, gluea bitmap using the <a href="http://en.wikipedia.org/wiki/Ordered_dithering">ordered dithering</a> algorithm. <code>mapsize</code> specifies the threshold map to use and can be 2, 3, 4 or 8. Use the demo to see how this parameter affects the output quality depending on the output format (it's not a clear-cut choice). Implemented for 2-channel and 4-channel colortypes. Note that actual clipping of the low bits is not done, it will be done naturally when converting the bitmap to a lower bit depth.</p>
-<h2 id="requires-bit-ffi-gluepixel-effects">| requires: bit, ffi, gluePixel effects</h2>
-<h2 id="requires-bit-ffi-gluebitmap.invertbmp">| requires: bit, ffi, glue<code>bitmap.invert(bmp)</code></h2>
-<p>Invert | requires: bit, ffi, gluecolors.</p>
-<h2 id="requires-bit-ffi-gluebitmap.grayscalebmp">| requires: bit, ffi, glue<code>bitmap.grayscale(bmp)</code></h2>
-<p>Convert | requires: bit, ffi, gluepixels to grayscale, without changing the format.</p>
-<h2 id="requires-bit-ffi-gluebitmap.convolvebmp-kernel-edge">| requires: bit, ffi, glue<code>bitmap.convolve(bmp, kernel, [edge])</code></h2>
-<p>Convolve | requires: bit, ffi, gluea bitmap using a kernel matrix (a Lua array of arrays of the same length). <code>edge</code> can be <code>crop</code>, <code>wrap</code> or <code>extend</code> (default is <code>extend</code>).</p>
-<h2 id="requires-bit-ffi-gluebitmap.sharpenbmp-threshold">| requires: bit, ffi, glue<code>bitmap.sharpen(bmp[, threshold])</code></h2>
-<p>Sharpen | requires: bit, ffi, gluea bitmap.</p>
-<h2 id="requires-bit-ffi-glueblending">| requires: bit, ffi, glueBlending</h2>
-<h2 id="requires-bit-ffi-gluebitmap.blendsource_bmp-dest_bmp-operator-x-y">| requires: bit, ffi, glue<code>bitmap.blend(source_bmp, dest_bmp, [operator], [x], [y])</code></h2>
-<p>Blend | requires: bit, ffi, glue<code>source_bmp</code> into <code>dest_bmp</code> using a blending operator at <code>x,y</code> coordinates in the target bitmap (default is <code>0,0</code>). Operators are in the <code>bitmap.blend_op</code> table for inspection.</p>
-<h2 id="requires-bit-ffi-glueutilities">| requires: bit, ffi, glueUtilities</h2>
-<h2 id="requires-bit-ffi-gluebitmap.fitbmp-x-y-w-h---x1-y1-w1-h1">| requires: bit, ffi, glue<code>bitmap.fit(bmp, [x], [y], [w], [h]) -&gt; x1, y1, w1, h1</code></h2>
-<p>Adjust | requires: bit, ffi, gluea box to fit into a bitmap. Use this to range-check input coordinates before writing into the bitmap data buffer, to | requires: bit, ffi, glueguard against buffer overflow. Check for zero width or height before trying to create a bitmap with the fitted coordinates.</p>
-<h2 id="requires-bit-ffi-gluebitmap.min_strideformat-width---min_stride">| requires: bit, ffi, glue<code>bitmap.min_stride(format, width) -&gt; min_stride</code></h2>
-<p>Return | requires: bit, ffi, gluethe minimum stride in bytes given a format and width. A bitmap data buffer should never be smaller than <code>min_stride * height</code>.</p>
-<h2 id="requires-bit-ffi-gluebitmap.aligned_stridestride---aligned_stride">| requires: bit, ffi, glue<code>bitmap.aligned_stride(stride) -&gt; aligned_stride</code></h2>
-<p>Given | requires: bit, ffi, gluea stride, return the smallest stride that is a multiple of 4 bytes.</p>
-<h2 id="requires-bit-ffi-glueintrospection">| requires: bit, ffi, glueIntrospection</h2>
-<h2 id="requires-bit-ffi-gluebitmap.conversionssource_format---iter---name-def">| requires: bit, ffi, glue<code>bitmap.conversions(source_format) -&gt; iter() -&gt; name, def</code></h2>
-<p>Given | requires: bit, ffi, gluea source bitmap format, iterate through all the formats that the source format can be converted to. <code>name</code> is the format name and <code>def</code> is the format definition which is a table with the fields <code>bpp</code>, <code>ctype</code>, <code>colortype</code>, <code>read</code>, <code>write</code>.</p>
-<h2 id="requires-bit-ffi-gluebitmap.dumpinfo">| requires: bit, ffi, glue<code>bitmap.dumpinfo()</code></h2>
-<p>Print | requires: bit, ffi, gluethe list of supported pixel formats and the list of supported colortype conversions.</p>
-<h2 id="requires-bit-ffi-gluecustomization">| requires: bit, ffi, glueCustomization</h2>
-<h2 id="requires-bit-ffi-gluecustom-formats">| requires: bit, ffi, glueCustom formats</h2>
-<p>A | requires: bit, ffi, gluecustom pixel format definition is a table with the following fields: | requires: bit, ffi, glue * <code>bpp</code> - pixel size, in bits (must be an even number of bits). | requires: bit, ffi, glue * <code>ctype</code> - C type to cast <code>data</code> to when reading and writing pixels (see below). | requires: bit, ffi, glue * <code>colortype</code> - a string naming a standard color type or a table specifying a custom color type. The channel values that <code>read</code> and <code>write</code> refer to depend on the colortype, eg. for the 'rgba8' colortype, the read function must return 4 numbers in the 0-255 range corresponding to the R, G, B, A channels. | requires: bit, ffi, glue * <code>read</code> - a function to be called as <code>read(data, i) -&gt; a, b, c, ...</code>; the function must decode the pixel at <code>data[i]</code> and return its channel values according to colortype. | requires: bit, ffi, glue * <code>write</code> - a function to be called as <code>write(data, i, a, b, c, ...)</code>; the function must encode the given channel values according to colortype and write the pixel at <code>data[i]</code>. | requires: bit, ffi, glue * for formats that have bpp &lt; 8, the index i is fractional and the bit offset of the pixel is at <code>bit.band(i * 8, 7)</code>.</p>
-<h2 id="requires-bit-ffi-gluecustom-colortypes">| requires: bit, ffi, glueCustom colortypes</h2>
-<p>A | requires: bit, ffi, gluecustom colortype definition is a table with the following fields: | requires: bit, ffi, glue * <code>channels</code> - a string with each letter a channel name, eg. 'rgba', so that <code>#channels</code> indicates the number of channels. | requires: bit, ffi, glue * <code>max</code> - maximum value to which the channel values need to be clipped. | requires: bit, ffi, glue * <code>bpc</code> - bits/channel - same meaning as <code>max</code> but in bits.</p>
-<h2 id="requires-bit-ffi-glueextending">| requires: bit, ffi, glueExtending</h2>
-<p>Extending | requires: bit, ffi, gluethe <code>bitmap</code> module with new colortypes, formats, conversions and module functions is easy. Look at the <code>bitmap_rgbaf</code> sub-module for an example on how to do that. For the submodule to be loaded automatically though, you need to reference it in the <code>bitmap</code> module too in a few key spots (look at how <code>rgbaf</code> does it, it's very easy).</p>
-<h2 id="requires-bit-ffi-gluetodo">| requires: bit, ffi, glueTODO</h2>
-<p>| requires: bit, ffi, glue * fill with a single color using row-by-row memfill (in fact, add a <code>convert_row</code> callback arg. in <code>convert()</code> analog to <code>convert_pixel</code>) | requires: bit, ffi, glue * premuliply / unpremultiply alpha</p>
+<span class="co">--the above has the same effect as:</span>
+convert<span class="ot">(</span><span class="kw">bmp</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">,</span> <span class="kw">darken</span><span class="ot">)</span></code></pre>
+<h2 id="dithering">Dithering</h2>
+<h2 id="bitmap.dither.fsbmp-rbits-gbits-bbits-abits"><code>bitmap.dither.fs(bmp, rbits, gbits, bbits, abits)</code></h2>
+<p>Dither a bitmap using the <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering">Floyd-Steinberg dithering</a> algorithm. <code>*bits</code> specify the number of bits of color to keep for each channel (eg. <code>bitmap.dither.fs(bmp, 5, 6, 5, 0)</code> dithers a bitmap so that its colors fit into the <code>rgb565</code> format). Only implemented for 4-channel colortypes.</p>
+<h2 id="bitmap.dither.orderedbmp-mapsize"><code>bitmap.dither.ordered(bmp, mapsize)</code></h2>
+<p>Dither a bitmap using the <a href="http://en.wikipedia.org/wiki/Ordered_dithering">ordered dithering</a> algorithm. <code>mapsize</code> specifies the threshold map to use and can be 2, 3, 4 or 8. Use the demo to see how this parameter affects the output quality depending on the output format (it's not a clear-cut choice). Implemented for 2-channel and 4-channel colortypes. Note that actual clipping of the low bits is not done, it will be done naturally when converting the bitmap to a lower bit depth.</p>
+<h2 id="pixel-effects">Pixel effects</h2>
+<h2 id="bitmap.invertbmp"><code>bitmap.invert(bmp)</code></h2>
+<p>Invert colors.</p>
+<h2 id="bitmap.grayscalebmp"><code>bitmap.grayscale(bmp)</code></h2>
+<p>Convert pixels to grayscale, without changing the format.</p>
+<h2 id="bitmap.convolvebmp-kernel-edge"><code>bitmap.convolve(bmp, kernel, [edge])</code></h2>
+<p>Convolve a bitmap using a kernel matrix (a Lua array of arrays of the same length). <code>edge</code> can be <code>crop</code>, <code>wrap</code> or <code>extend</code> (default is <code>extend</code>).</p>
+<h2 id="bitmap.sharpenbmp-threshold"><code>bitmap.sharpen(bmp[, threshold])</code></h2>
+<p>Sharpen a bitmap.</p>
+<h2 id="blending">Blending</h2>
+<h2 id="bitmap.blendsource_bmp-dest_bmp-operator-x-y"><code>bitmap.blend(source_bmp, dest_bmp, [operator], [x], [y])</code></h2>
+<p>Blend <code>source_bmp</code> into <code>dest_bmp</code> using a blending operator at <code>x,y</code> coordinates in the target bitmap (default is <code>0,0</code>). Operators are in the <code>bitmap.blend_op</code> table for inspection.</p>
+<h2 id="utilities">Utilities</h2>
+<h2 id="bitmap.fitbmp-x-y-w-h---x1-y1-w1-h1"><code>bitmap.fit(bmp, [x], [y], [w], [h]) -&gt; x1, y1, w1, h1</code></h2>
+<p>Adjust a box to fit into a bitmap. Use this to range-check input coordinates before writing into the bitmap data buffer, to guard against buffer overflow. Check for zero width or height before trying to create a bitmap with the fitted coordinates.</p>
+<h2 id="bitmap.min_strideformat-width---min_stride"><code>bitmap.min_stride(format, width) -&gt; min_stride</code></h2>
+<p>Return the minimum stride in bytes given a format and width. A bitmap data buffer should never be smaller than <code>min_stride * height</code>.</p>
+<h2 id="bitmap.aligned_stridestride---aligned_stride"><code>bitmap.aligned_stride(stride) -&gt; aligned_stride</code></h2>
+<p>Given a stride, return the smallest stride that is a multiple of 4 bytes.</p>
+<h2 id="introspection">Introspection</h2>
+<h2 id="bitmap.conversionssource_format---iter---name-def"><code>bitmap.conversions(source_format) -&gt; iter() -&gt; name, def</code></h2>
+<p>Given a source bitmap format, iterate through all the formats that the source format can be converted to. <code>name</code> is the format name and <code>def</code> is the format definition which is a table with the fields <code>bpp</code>, <code>ctype</code>, <code>colortype</code>, <code>read</code>, <code>write</code>.</p>
+<h2 id="bitmap.dumpinfo"><code>bitmap.dumpinfo()</code></h2>
+<p>Print the list of supported pixel formats and the list of supported colortype conversions.</p>
+<h2 id="customization">Customization</h2>
+<h2 id="custom-formats">Custom formats</h2>
+<p>A custom pixel format definition is a table with the following fields: * <code>bpp</code> - pixel size, in bits (must be an even number of bits). * <code>ctype</code> - C type to cast <code>data</code> to when reading and writing pixels (see below). * <code>colortype</code> - a string naming a standard color type or a table specifying a custom color type. The channel values that <code>read</code> and <code>write</code> refer to depend on the colortype, eg. for the 'rgba8' colortype, the read function must return 4 numbers in the 0-255 range corresponding to the R, G, B, A channels. * <code>read</code> - a function to be called as <code>read(data, i) -&gt; a, b, c, ...</code>; the function must decode the pixel at <code>data[i]</code> and return its channel values according to colortype. * <code>write</code> - a function to be called as <code>write(data, i, a, b, c, ...)</code>; the function must encode the given channel values according to colortype and write the pixel at <code>data[i]</code>. * for formats that have bpp &lt; 8, the index i is fractional and the bit offset of the pixel is at <code>bit.band(i * 8, 7)</code>.</p>
+<h2 id="custom-colortypes">Custom colortypes</h2>
+<p>A custom colortype definition is a table with the following fields: * <code>channels</code> - a string with each letter a channel name, eg. 'rgba', so that <code>#channels</code> indicates the number of channels. * <code>max</code> - maximum value to which the channel values need to be clipped. * <code>bpc</code> - bits/channel - same meaning as <code>max</code> but in bits.</p>
+<h2 id="extending">Extending</h2>
+<p>Extending the <code>bitmap</code> module with new colortypes, formats, conversions and module functions is easy. Look at the <code>bitmap_rgbaf</code> sub-module for an example on how to do that. For the submodule to be loaded automatically though, you need to reference it in the <code>bitmap</code> module too in a few key spots (look at how <code>rgbaf</code> does it, it's very easy).</p>
+<h2 id="todo">TODO</h2>
+<ul>
+<li>fill with a single color using row-by-row memfill (in fact, add a <code>convert_row</code> callback arg. in <code>convert()</code> analog to <code>convert_pixel</code>)</li>
+<li>premuliply / unpremultiply alpha</li>
+</ul>
 
 			<br>
 			<br>

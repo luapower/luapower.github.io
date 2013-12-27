@@ -6,7 +6,7 @@
 
 		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
 
-		<title>   </title>
+		<title> box2d   - math for 2D rectangles </title>
 
 		<script src="templates/jquery-1.10.2.js"></script>
 
@@ -24,16 +24,16 @@
 				<table style="border: 0; margin: 0">
 					<tr style="border: 0">
 						<td valign="middle" style="width: 100%">
-							<h1>  </h1>
-							<h2> &nbsp; </h2>
+							<h1> box2d </h1>
+							<h2> math for 2D rectangles </h2>
 						</td>
 						<td align="right">
 								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
-								<a href="https://github.com/capr/" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/capr/box2d" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//tarball/master" class="btn">Download as .tar.gz</a>
+								<a href="https://github.com/capr/box2d/tarball/master" class="btn">Download as .tar.gz</a>
 								</td></tr><tr style="border: 0"><td>
-								<a href="https://github.com/capr//zipball/master" class="btn">Download as .zip</a>
+								<a href="https://github.com/capr/box2d/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
 						</td>
 					</tr>
@@ -48,14 +48,152 @@
 
 			<section id="main_content">
 
-			<p>v1.0 | requires: | Lua 5.1, Lua 5.2, LuaJIT 2</p>
-<h2 id="requires-local-box-requirebox2d">| requires: <code>local box = require'box2d'</code></h2>
-<p>Math | requires: for 2D rectangles defined as <code>(x, y, w, h)</code>.</p>
-<p>---------------------------------------------------------------------------------------------- | requires: -------------------------------------------- <strong>representation | requires: forms</strong> <code>box.corners(x, | requires: y, w, h) -&gt; x1, y1, x2, y2</code> left,top and right,bottom corners <code>box.rect(x1, | requires: y1, x2, y2) -&gt; x, y, w, h</code> box given left,top and right,bottom corners <strong>layouting</strong> <code>box.align(w, | requires: h, halign, valign, bx, by, bw, bh) -&gt; x, y, w, h</code> align a box in another box <code>box.vsplit(i, | requires: sh, x, y, w, h) -&gt; x, y, w, h</code> slice a box horizontally at a certain height and return the i'th box. if sh is negative, slicing is done from the bottom side. <code>box.hsplit(i, | requires: sw, x, y, w, h) -&gt; x, y, w, h</code> slice a box vertically at a certain width and return the i'th box. if sw is negative, slicing is done from the right side. <code>box.nsplit(i, | requires: n, direction, x, y, w, h) -&gt; x, y, w, h</code> slice a box in n equal slices, vertically or horizontally, and return the i'th box. direction = 'v' or 'h' <code>box.translate(x0, | requires: y0, x, y, w, h) -&gt; x, y, w, h</code> move a box <code>box.offset(d, | requires: x, y, w, h) -&gt; x, y, w, h</code> offset a box by d, outward if d is positive <code>box.fit(w, | requires: h, bw, bh) -&gt; w, h</code> fit a box into another box preserving aspect ratio. use align() to position the box <strong>hit | requires: testing</strong> <code>box.hit(x0, | requires: y0, x, y, w, h) -&gt; true | false</code> check if a point (x0, y0) is inside rect (x, y, w, h) <code>box.hit_margins(x0, | requires: y0, d, x, y, w, h) -&gt; hit, left, top, right, bottom</code> hit test for margins and corners <strong>edge | requires: snapping</strong> <code>box.snap_margins(d, | requires: x, y, w, h, rectangles) -&gt; x, y, w, h</code> snap the sides of a rectangle against an iterator of rectangles. <code>rectangles = function() -&gt; x, y, w, h | nil</code> <code>box.snap_pos(d, | requires: x, y, w, h, rectangles) -&gt; x, y, w, h</code> snap the position of a rectangle against an iterator of rectangles. <code>box.snapped_margins(d, | requires: x1, y1, w1, h1, x2, y2, w2, h2) -&gt; snapped, left, top, right, bottom</code> check if two boxes are snapped and on which margins. ---------------------------------------------------------------------------------------------- | requires: --------------------------------------------</p>
-<h2 id="requires-oop-api-untested">| requires: OOP API (untested)</h2>
-<p>Operations | requires: never mutate the box object, they always return a new one.</p>
-<p>-------------------------------------------------------------------- | requires: -------------------------------------------------------------------- <code>box(x, | requires: y, w, h) -&gt; box</code> create a new box object <code>box.x, | requires: box.y, box.w, box.h</code> box coordinates (for reading and writing) <code>box:rect() | requires: -&gt; x, y, w, h</code> <br> <code>box() -&gt; x, y, w, h</code> coordinates unpacked <code>box:corners() | requires: -&gt; x1, y1, x2, y2</code> left,top and right,bottom corners <code>box:align(halign, | requires: valign, parent_box) -&gt; box</code> align <code>box:vsplit(i, | requires: sh) -&gt; box</code> split vertically <code>box:hsplit(i, | requires: sw) -&gt; box</code> split horizontally <code>box:nsplit(i, | requires: n, direction) -&gt; box</code> split in equal parts <code>box:translate(x0, | requires: y0) -&gt; box</code> translate <code>box:offset(d) | requires: -&gt; box</code> offset by d (outward if d is positive) <code>box:fit(parent_box, | requires: halign, valign) -&gt; box</code> enlarge/shrink-to-fit and align <code>box:hit(x0, | requires: y0) -&gt; true | false</code> hit test <code>box:hit_margins(x0, | requires: y0, d) -&gt; hit, left, top, right, bottom</code> hit test for margins <code>box:snap_margins(d, | requires: boxes) -&gt; box</code> snap the margins. boxes is an <code>iterator&lt;box&gt;</code> or a list of boxes <code>box:snap_pos(d, | requires: boxes) -&gt; box</code> snap the position -------------------------------------------------------------------- | requires: --------------------------------------------------------------------</p>
-<p>TODO: | requires: access x1, y1, x2, y2 directly.</p>
+			<p>v1.0 | Lua 5.1, Lua 5.2, LuaJIT 2</p>
+<h2 id="local-box-requirebox2d"><code>local box = require'box2d'</code></h2>
+<p>Math for 2D rectangles defined as <code>(x, y, w, h)</code>.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>representation forms</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.corners(x, y, w, h) -&gt; x1, y1, x2, y2</code></td>
+<td align="left">left,top and right,bottom corners</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box.rect(x1, y1, x2, y2) -&gt; x, y, w, h</code></td>
+<td align="left">box given left,top and right,bottom corners</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>layouting</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box.align(w, h, halign, valign, bx, by, bw, bh) -&gt; x, y, w, h</code></td>
+<td align="left">align a box in another box</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.vsplit(i, sh, x, y, w, h) -&gt; x, y, w, h</code></td>
+<td align="left">slice a box horizontally at a certain height and return the i'th box. if sh is negative, slicing is done from the bottom side.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box.hsplit(i, sw, x, y, w, h) -&gt; x, y, w, h</code></td>
+<td align="left">slice a box vertically at a certain width and return the i'th box. if sw is negative, slicing is done from the right side.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.nsplit(i, n, direction, x, y, w, h) -&gt; x, y, w, h</code></td>
+<td align="left">slice a box in n equal slices, vertically or horizontally, and return the i'th box. direction = 'v' or 'h'</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box.translate(x0, y0, x, y, w, h) -&gt; x, y, w, h</code></td>
+<td align="left">move a box</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.offset(d, x, y, w, h) -&gt; x, y, w, h</code></td>
+<td align="left">offset a box by d, outward if d is positive</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box.fit(w, h, bw, bh) -&gt; w, h</code></td>
+<td align="left">fit a box into another box preserving aspect ratio. use align() to position the box</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>hit testing</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box.hit(x0, y0, x, y, w, h) -&gt; true | false</code></td>
+<td align="left">check if a point (x0, y0) is inside rect (x, y, w, h)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.hit_margins(x0, y0, d, x, y, w, h) -&gt; hit, left, top, right, bottom</code></td>
+<td align="left">hit test for margins and corners</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>edge snapping</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.snap_margins(d, x, y, w, h, rectangles) -&gt; x, y, w, h</code></td>
+<td align="left">snap the sides of a rectangle against an iterator of rectangles. <code>rectangles = function() -&gt; x, y, w, h | nil</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box.snap_pos(d, x, y, w, h, rectangles) -&gt; x, y, w, h</code></td>
+<td align="left">snap the position of a rectangle against an iterator of rectangles.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.snapped_margins(d, x1, y1, w1, h1, x2, y2, w2, h2) -&gt; snapped, left, top, right, bottom</code></td>
+<td align="left">check if two boxes are snapped and on which margins.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="oop-api-untested">OOP API (untested)</h2>
+<p>Operations never mutate the box object, they always return a new one.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>box(x, y, w, h) -&gt; box</code></td>
+<td align="left">create a new box object</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.x, box.y, box.w, box.h</code></td>
+<td align="left">box coordinates (for reading and writing)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box:rect() -&gt; x, y, w, h</code> <br> <code>box() -&gt; x, y, w, h</code></td>
+<td align="left">coordinates unpacked</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box:corners() -&gt; x1, y1, x2, y2</code></td>
+<td align="left">left,top and right,bottom corners</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box:align(halign, valign, parent_box) -&gt; box</code></td>
+<td align="left">align</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box:vsplit(i, sh) -&gt; box</code></td>
+<td align="left">split vertically</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box:hsplit(i, sw) -&gt; box</code></td>
+<td align="left">split horizontally</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box:nsplit(i, n, direction) -&gt; box</code></td>
+<td align="left">split in equal parts</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box:translate(x0, y0) -&gt; box</code></td>
+<td align="left">translate</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box:offset(d) -&gt; box</code></td>
+<td align="left">offset by d (outward if d is positive)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box:fit(parent_box, halign, valign) -&gt; box</code></td>
+<td align="left">enlarge/shrink-to-fit and align</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box:hit(x0, y0) -&gt; true | false</code></td>
+<td align="left">hit test</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box:hit_margins(x0, y0, d) -&gt; hit, left, top, right, bottom</code></td>
+<td align="left">hit test for margins</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box:snap_margins(d, boxes) -&gt; box</code></td>
+<td align="left">snap the margins. boxes is an <code>iterator&lt;box&gt;</code> or a list of boxes</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box:snap_pos(d, boxes) -&gt; box</code></td>
+<td align="left">snap the position</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: access x1, y1, x2, y2 directly.</p>
 
 			<br>
 			<br>
