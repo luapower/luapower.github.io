@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<p><a href="winapi.html">back</a></p>
 <h2 id="how-to-use-the-ffi-layer">How to use the ffi layer</h2>
 <p>Wrap winapi calls in <code>callnz</code>, <code>callh</code> and friends according to what constitutes an error in the result: you get automatic error handling and clear code.</p>
@@ -72,14 +73,14 @@
 <p>Btw, use lowercase with underscores for virtual field names. Use names like caption, x, y, w, h, pos, parent, etc. consistently throughout.</p>
 <h2 id="how-to-use-the-oo-system">How to use the OO system</h2>
 <p>The easiest way to bind a new control is to use the code of an existing control as a template. Basically, you subclass from <code>Control</code> (or a specific control, if your control is a refinement of a standard control) after you define the style bitmasks, default values, and event name mappings, if any. You override the constructor and/or any methods and define any new properties by way of getters and setters.</p>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>

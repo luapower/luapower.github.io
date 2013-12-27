@@ -231,6 +231,10 @@ hr {
 	background: url("blacktocat.png") 0 0 no-repeat;
 }
 
+.faint {
+	color: #888;
+}
+
 /* Links
 	 a, a:hover, a:visited
 */

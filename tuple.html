@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<p>v1.0 | Lua 5.1, Lua 5.2, LuaJIT 2</p>
 <h2 id="local-tuple-requiretuple"><code>local tuple = require'tuple'</code></h2>
 <p>Real tuples are immutable lists that can be used as table keys because they have value semantics, i.e. the tuple constructor returns the same identity for the exact same list of identities. If you don't need this property, [vararg vararg.pack()] is a faster and more memory efficient way to store small lists of values.</p>
@@ -57,14 +58,14 @@
 <p><em>Example:</em> <sub>~</sub>{.lua} local tuple = require'tuple'</p>
 <p>local tup = tuple('a',0/0,2,nil) local t = {[tup] = 'here'} assert(t[tuple('a',0/0,2,nil)] == 'here') assert(t[tuple('a',0/0,2)] == nil) print(tup()) &gt; a nan 2 nil <sub>~</sub></p>
 <p><em><em>Implementation note</em>: all the tuple elements of all the tuples created with this function are indexed internally with a global weak hash tree. This means that creating a tuple takes N hash lookups and M table creations, where N+M is the number of elements of the tuple. Lookup time depends on how dense the tree is on the search path, which depends on how many existing tuples share a first sequence of elements with the tuple being created. In particular, creating tuples out of all permutations of a certain set of values hits the worst case for hash lookup time, but creates the minimum amount of tables relative to the number of tuples.</em></p>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>

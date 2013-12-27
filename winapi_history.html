@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<p>Here's how the process of binding a subset of winapi for the purpose of writing a humble Win32 GUI could lead you to write this library in the end.</p>
 <p>So you are on Windows and you want to write a GUI. With just the ffi, the headers from the Windows SDK and the good old MSDN you could bind enough of winapi to get by. So you start binding and transcribing to Lua the necessary functions, macros and constants for windows and controls and messages and all that's needed to get the app off the ground.</p>
 <p>Soon you realize some facts about winapi that draw more and more attention to the binding than to the actual application that you want to write.</p>
@@ -63,14 +64,14 @@
 <p>Now you have windows and controls on the screen and you can respond to events. But writing GUIs procedural style is tedious to say the least. So you now have to devise an object system to encapsulate the controls creation, setting and getting of properties and assigning event handlers. It needs to have inheritance because you want to reuse the many properties and methods of similar controls like buttons and checkboxes. Virtual properties that are read and written to by way of getters and setters would also be nice, considering the sheer number of those.</p>
 <p>Finally, you may remember how Delphi had a simple yet very effective layouting system based on anchors. Windows doesn't come with that, so you write that too.</p>
 <p>This is more/less where the winapi binding is right now, and this is the process that got it here. There are still a lot of missing pieces of this huge API, but there's an infrastructure of utilities and conventions and code organization in place (which is outlined in the <a href="winapi_binding.html">dev doc</a>) that makes further work on the library relatively painless and opens it up for collaboration.</p>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>

@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<p>v0.0 (in active development) | <a href="path_api.html">API</a> | LuaJIT 2, Lua 5.1, Lua 5.2</p>
 <h2 id="local-path-requirepath"><code>local path = require'path'</code></h2>
 <p>Fast, full-featured 2D geometry library.<br />Includes construction, drawing, measuring, hit testing and editing of 2D paths.</p>
@@ -109,14 +110,14 @@
 <h3 id="help-needed">Help needed</h3>
 <p>I am far from being an expert at floating point math. I'm sure there are many opportunities for preserving precision and avoiding degenerate cases that I've haven't thought about. A code review by someone experienced in this area would help greatly.</p>
 <p>When an elliptic (or circular) arc is approximated with bezier curves, the arc t value (sweep time) is almost the same as the curve t value (parametric time). Almost, but not quite. The error is contained by increasing the number of segments that make up the arc. But instead of increasing the number of segments for larger arcs, I would prefer to have a formula to synchronize the t values for a chosen number of segments, assuming such formula is easy enough to compute.</p>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>

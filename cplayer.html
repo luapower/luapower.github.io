@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<p>v1.0 | LuaJIT 2 | Windows</p>
 <h2 id="local-player-requirecplayer"><code>local player = require'cplayer'</code></h2>
 <p>CPlayer is a procedural graphics player with an IMGUI toolkit. It can be used for anything from quick demos, prototyping graphics apps, to full-fledged apps and games.</p>
@@ -59,7 +60,7 @@
 </ul>
 <h2 id="how-it-works">How it works</h2>
 <ol style="list-style-type: decimal">
-<li><p>You define the function <code>player:on_render(cr)</code> in which you draw your frame using the <code>cr</code> argument which is a [cairo] context. The function gets called continuously on a <code>1 ms</code> timer. The current framerate is displayed on the title bar.</p></li>
+<li><p>You define the function <code>player:on_render(cr)</code> in which you draw your frame using the <code>cr</code> argument which is a <a href="cairo.html">cairo</a> context. The function gets called continuously on a <code>1 ms</code> timer. The current framerate is displayed on the title bar.</p></li>
 <li><p>You call <code>player:play()</code> to display the player's main window and enter the Windows message loop. The function returns after the user has closed the window.</p></li>
 </ol>
 <h4 id="quick-example">Quick example:</h4>
@@ -212,14 +213,14 @@
    <span class="kw">on_render</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">cr</span><span class="ot">)</span>
       <span class="ot">...</span>
    <span class="kw">end</span><span class="ot">}</span></code></pre>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>

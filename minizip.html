@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<p>v1.0 | minizip 1.1 | LuaJIT 2</p>
 <h2 id="local-zip-requireminizip"><code>local zip = require'minizip'</code></h2>
 <p>Supports creating, reading, writing, appending, and listing a ZIP file. Advanced use of this module requires an understanding of the <a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">ZIP file format</a>.</p>
@@ -124,14 +125,14 @@
 <p>List files in archive, returning the file info table for each file. On each iteration, the file is set as the current file so <code>z:open_file()</code> can be used to read the file contents.</p>
 <h2 id="zextractfilepath---s"><code>z:extract(filepath) -&gt; s</code></h2>
 <p>Extract a file from the ZIP archive and return its contents as a string. This is a shortcut for the sequence <code>z:open_file()</code>, <code>z:read()</code>, <code>z:close_file()</code>.</p>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>

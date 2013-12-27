@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<p>The OpenGL API is not usually found in a OS as a straight C library, or at least not all of it is. Instead, the OS supplies a loader API (called WGL in Windows, GLX in Linux, CGL in MacOS X) through which you retrieve pointers to actual OpenGL functions. So while the OpenGL functions and constants themselves are standard, you can only get access to a working OpenGL namespace through a platform-specific API.</p>
 <h2 id="local-gl-requirewinapi.gl11"><code>local gl = require'winapi.gl11'</code></h2>
 <h2 id="local-gl-requirewinapi.gl21"><code>local gl = require'winapi.gl21'</code></h2>
@@ -78,14 +79,14 @@
 <li>make OpenGL constants C enums and access them through a proxy table into ffi.C.</li>
 <li>make a binding to regal instead, which should be faster or at least more memory efficient.</li>
 </ul>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>

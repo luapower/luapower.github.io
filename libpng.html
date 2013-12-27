@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<h2 id="note-work-in-progress-version-1.0-coming-soon">NOTE: work-in-progress (version 1.0 coming soon)</h2>
 <p>v1.0 | libpng 1.5.12 | LuaJIT 2</p>
 <h2 id="local-libpng-requirelibpng"><code>local libpng = require'libpng'</code></h2>
@@ -89,7 +90,7 @@
 </ul></li>
 </ul></li>
 </ul>
-<p>For more info on decoding process and options, read the <a href="http://www.libpng.org/pub/png/libpng-1.2.5-manual.html">libpng documentation</a> (have coffee/ibuprofen ready).</p>
+<p>For more info on decoding process and options, read the <a href="http://www.libpng.org/pub/png/libpng-1.2.5-manual.html">libpng doc</a> (have coffee/ibuprofen ready).</p>
 <p>The returned image object is a table with the fields: * <code>pixel</code>, <code>orientation</code>, <code>stride</code>, <code>data</code>, <code>size</code>, <code>w</code>, <code>h</code>: image format and dimensions and pixel data. * <code>file.pixel</code>, <code>file.paletted</code>, <code>file.bit_depth</code>, <code>file.interlaced</code>, <code>file.w</code>, <code>file.h</code>: format of the original image before conversion.</p>
 <h2 id="help-needed">Help needed</h2>
 <ul>
@@ -97,14 +98,14 @@
 <li>jit is turned off because we can't call error() from a ffi callback called from C; and yet we must not return control to C on errors. is there a way around it?</li>
 <li>the read callback cannot yield since it is called from C code. this means coroutine-based socket schedulers are out, so much for progressive loading. is there a way around it?</li>
 </ul>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>

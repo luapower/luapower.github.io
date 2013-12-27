@@ -47,6 +47,7 @@
 			</div>
 
 			<section id="main_content">
+
 			<h2 id="tldr">TL;dr</h2>
 <ul>
 <li>Lua libraries and bindings with demos, test files, documentation, separate github project</li>
@@ -79,13 +80,13 @@
 <td align="left">real tuples</td>
 <td align="left"><a href="sha2.html">sha2</a></td>
 <td align="left">SHA-256/384/512</td>
-<td align="left"><a href="vararg.html">varag</a></td>
+<td align="left"><a href="vararg.html">vararg</a></td>
 <td align="left">varargs</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="coro.html">coro</a></td>
 <td align="left">symmetric coroutines</td>
-<td align="left"><a href="zlib.html">zlib</a></td>
+<td align="left"><a href="zlib.html%20&lt;!--%20external%20references%20that%20can%20be%20used%20in%20any%20doc%20--&gt;">zlib</a></td>
 <td align="left">deflate, gzip</td>
 <td align="left"><a href="http://www.inf.puc-rio.br/~roberto/struct/">struct</a></td>
 <td align="left">structs</td>
@@ -214,7 +215,7 @@
 <td align="left"><a href="obj_parser.html">obj_parser</a></td>
 <td align="left">wavefront obj parser</td>
 <td align="left"><a href="bitmap.html">bitmap</a></td>
-<td align="left">memory bitmaps</td>
+<td align="left">in-memory bitmaps</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -222,7 +223,7 @@
 <td align="left"><a href="obj_loader.html">obj_loader</a></td>
 <td align="left">obj loader</td>
 <td align="left"><a href="giflib.html">giflib</a></td>
-<td align="left">GIF files</td>
+<td align="left">read GIFs</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -230,7 +231,7 @@
 <td align="left"><a href="sg_gl_obj.html">sg_gl_obj</a></td>
 <td align="left">obj scene graph</td>
 <td align="left"><a href="libjpeg.html">libjpeg</a></td>
-<td align="left">JPEG files</td>
+<td align="left">read JPEGs</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -238,7 +239,7 @@
 <td align="left"><a href="imagefile.html">imagefile</a></td>
 <td align="left">image files</td>
 <td align="left"><a href="libpng.html">libpng</a></td>
-<td align="left">PNG files</td>
+<td align="left">read PNGs</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -246,7 +247,7 @@
 <td align="left"><a href="cplayer.html">cplayer</a></td>
 <td align="left">procedural graphics</td>
 <td align="left"><a href="nanojpeg.html">nanojpeg</a></td>
-<td align="left">JPEG files</td>
+<td align="left">read JPEGs</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -294,26 +295,26 @@
 <li>C lib sources: <code>csrc/&lt;lib&gt;/*</code></li>
 <li>C lib build script: <code>csrc/&lt;lib&gt;/build-&lt;platform&gt;.sh</code></li>
 <li>C lib binary: <code>bin/mingw32/&lt;lib&gt;.dll</code>, <code>bin/linux32/lib&lt;lib&gt;.so</code></li>
-<li>LuaJIT2 executable: <code>bin/&lt;platform&gt;/luajit</code></li>
+<li>LuaJIT2 executable with paths set: <code>bin/&lt;platform&gt;/luajit</code></li>
 </ul>
 <h2 id="in-detail">In Detail</h2>
 <p>The modules come bundled together into one directory for easy deployment and developing. There's little functional dependency between them however, and they can be easily pulled out and used separately if needed. Many modules depend on a small utility library called <a href="glue.html">glue</a>. Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.</p>
 <p>Portability varies between libraries. Some are Windows specific, some use the ffi API, some specifically target LuaJIT for speed, while others are written in plain Lua and should work on any platform. This is documented for each module individually.</p>
 <p>Windows binaries for all C/C++ libraries are available in <code>bin</code>. They are built using the sources and build scripts from <code>csrc</code>. Everything is compiled with MinGW's GCC with <code>-O3 -s</code> and linked against msvcrt.dll, using one-liner build scripts which &quot;just work&quot; provided you have MinGW in your <code>PATH</code>.</p>
-<p>My own code is <a href="http://unlicense.org/">public domain</a> as I do not support copyright law. Third-party code has its licensing in or near the sources. Generally, I tried to avoid viral GPL with some exceptions.</p>
+<p>My own code is in public domain as I do not support copyright law. Third-party code has its licensing in or near the sources. Generally, I tried to avoid viral GPL with some exceptions.</p>
 <h2 id="prose">Prose</h2>
 <ul>
 <li>[APIDesign API Design Notes] - how to design good APIs for your libraries</li>
 <li>[GoodLibraries Good Libraries] - what makes or breaks a library</li>
 </ul>
+
+			<br>
+			<br>
+			<hr>
+			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			<br>
+
 			</section>
 		</div>
-
-		<br>
-		<br>
-		<hr>
-		lua-files | Cosmin Apreutesei | public domain
-		<br>
-
 	</body>
 </html>
