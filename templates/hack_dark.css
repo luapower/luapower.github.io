@@ -4,19 +4,26 @@ footer {border-top-color: #663;}
 .faint {color: #888;}
 .faint a:hover {color: white;}
 header h1 {
-	color: #b5e853;
-	text-shadow:
-		0 1px 1px rgba(0, 0, 0, 0.3),
-		0 0 5px rgba(181, 232, 83, 0.3),
-		0 0 10px rgba(181, 232, 83, 0.3);
+	color: #669900;
+	text-shadow: 2px 2px rgba(0, 0, 0, .6);
 }
 header h2 {color: #666;}
-.btn {background: #222; color: #bbb; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);}
-.btn:hover {background: #444;color: #fff;}
+.btn {
+	color: #bbb;
+	text-shadow: 0 0 1px rgba(0, 0, 0, 0.75);
+	box-shadow:
+		0 1px 1px rgba(0, 0, 0, .8),
+		0 0 5px rgba(25, 25, 25, .6);
+}
+.btn:hover {color: #fff;}
+.btn-rightside {background: #222;}
+.btn-rightside:hover {background: #444;}
 .btn-home {color: #fff; background: #00aa00;}
 .btn-home:hover {background: #33ee33;}
-.btn-lights {color: #fff; background: #00aa00;}
-.btn-lights:hover {background: #33ee33;}
+.btn-lights {background: #333;}
+.btn-lights:hover {color: #000; background: #fff;}
+.btn-discuss {color: #fff; background: #4586AC;}
+.btn-discuss:hover {color: #fff; background: #82CDF7;}
 
 .doc h6 {color: #999;}
 .doc li:before {color: #b5e853;}

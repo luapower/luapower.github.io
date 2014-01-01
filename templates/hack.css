@@ -60,20 +60,17 @@ header h2 { /* tagline */
 
 /* Buttons */
 
+.btn-container {position: absolute;}
+
 .btn {
 	display: block;
-	padding: 6px 18px;
 	font-family: Helvetica, Arial, sans-serif;
 	font-weight: bold;
 	font-size: 13px;
 	text-decoration: none;
 	text-align: center;
-	width: 130px;
-	margin: 2px;
 	border-radius: 0px;
 }
-
-.btn:hover {}
 
 .btn .icon {
 	display: inline-block;
@@ -83,41 +80,42 @@ header h2 { /* tagline */
 	float: left;
 }
 
-.btn-github .icon {
-	opacity: 0.6;
-	background: url("hack_cat.png") 0 0 no-repeat;
+.btn-rightside {
+	width: 130px;
+	padding: 6px 18px;
+	margin: 2px;
 }
 
 .btn-home-container {
-	position: absolute;
 	float: left;
 	left: -300px;
 	margin-left: 2em;
-	top: 118px;
+	top: 114px;
 }
 
-.btn-home {
-	margin: 0;
-	width: 80px;
-	padding: 4px;
-}
-
-.btn-home:hover {}
+.btn-home {width: 80px; padding: 4px;}
 
 .btn-lights-container {
-	position: absolute;
 	float: left;
 	left: -300px;
 	margin-left: 2em;
 }
 
-.btn-lights {
-	margin: 0;
-	width: 80px;
-	padding: 4px;
+.btn-lights {width: 80px; padding: 4px;}
+
+.btn-discuss-container {
+	width: 100%;
 }
 
-.btn-lights:hover {}
+.btn-discuss {
+	float: right;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin-top: 0;
+}
+
+.btn-github  .icon {background: url("hack_cat.png") 0 0 no-repeat;}
+.btn-discuss .icon {background: url("hack_discuss.png") 0 0 no-repeat;}
 
 /* Document */
 

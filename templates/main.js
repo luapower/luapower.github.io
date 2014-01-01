@@ -1,26 +1,37 @@
 
-function lights(on) {
-	var css = on ? 'light' : 'dark';
-	$('#lights_css').
-		html($('<link rel="stylesheet" href="templates/hack_' + css + '.css" type="text/css" />'));
-	$('iframe').contents().find('#lights_css').
-		html($('<link rel="stylesheet" href="templates/hack_' + css + '.css" type="text/css" />'));
+function lights_state() {
+	return jQuery.cookie('lights') == 'on'
+}
 
-	$('#lights').html('lights ' + (on ? 'off' : 'on'));
-	$.cookie('lights', on ? 'on' : 'off');
+function update_lights_button() {
+	jQuery('#lights').html('lights ' + (!lights_state() ? 'on' : 'off'));
+}
+
+function lights(on) {
+	if (on === undefined)
+		on = lights_state();
+	var css = on ? 'light' : 'dark';
+	jQuery('#lights_css').
+		html(jQuery('<link rel="stylesheet" href="templates/hack_' + css + '.css" type="text/css" />'));
+	jQuery.cookie('lights', on ? 'on' : 'off');
+	update_lights_button();
 }
 
 function resize_iframe(obj) {
-	console.log('resize_iframe');
 	obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-	lights($.cookie('lights') == 'on');
 }
 
 $(document).ready(function() {
 
+	update_lights_button(); //there was no button to set when the lights css was set
+
 	$('#lights').click(function() {
 		event.preventDefault();
-		lights($('#lights').html() == 'lights on');
+		lights(!lights_state());
+
+		var css = lights_state() ? 'light' : 'dark';
+		jQuery('iframe').contents().find('#lights_css').
+			html(jQuery('<link rel="stylesheet" href="templates/hack_' + css + '.css" type="text/css" />'));
 	});
 
 	// Put custom repo URL's in this object, keyed by repo name.
