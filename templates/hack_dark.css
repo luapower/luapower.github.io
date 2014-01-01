@@ -1,0 +1,52 @@
+body {background: #151515 url("hack_bg.png") 0 0; color: #eaeaea;}
+header {background: rgba(0, 0, 0, 0.3); border-bottom-color: #663;}
+footer {border-top-color: #663;}
+.faint {color: #888;}
+.faint a:hover {color: white;}
+header h1 {
+	color: #b5e853;
+	text-shadow:
+		0 1px 1px rgba(0, 0, 0, 0.3),
+		0 0 5px rgba(181, 232, 83, 0.3),
+		0 0 10px rgba(181, 232, 83, 0.3);
+}
+header h2 {color: #666;}
+.btn {background: #222; color: #bbb; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);}
+.btn:hover {background: #444;color: #fff;}
+.btn-home {color: #fff; background: #00aa00;}
+.btn-home:hover {background: #33ee33;}
+.btn-lights {color: #fff; background: #00aa00;}
+.btn-lights:hover {background: #33ee33;}
+
+.doc h6 {color: #999;}
+.doc li:before {color: #b5e853;}
+.doc blockquote {color: #aaa; border-left-color: #666;}
+.doc th {border-bottom-color: #b5e853;}
+.doc tr {border-top-color: #333; border-bottom-color: #333;}
+.doc hr {border-bottom-color: #b5e853;}
+.doc a {color: #63c0f5; text-decoration: none;}
+.doc a:hover {text-decoration: underline;}
+
+.doc .sourceCode { color: #FFFFFF; }
+/*  KeyWordTok */
+.doc .sourceCode .kw { color: #FFFFFF; }
+/*  DataTypeTok */
+.doc .sourceCode .dt { color: #FFFFCC; }
+/*  DecValTok (decimal value), BaseNTok, FloatTok */
+.doc .sourceCode .dv, .doc .sourceCode .bn, .doc .sourceCode .fl { color: #CCCCFF; }
+/*  CharTok */
+.doc .sourceCode .ch { color: #FF6666; }
+/*  StringTok */
+.doc .sourceCode .st { color: #FF6666; }
+/*  CommentTok */
+.doc .sourceCode .co { color: #99CC99; }
+/*  OtherTok */
+.doc .sourceCode .ot { color: #CCCCCC; }
+/*  AlertTok */
+.doc .sourceCode .al { color: #FF0000; }
+/*  FunctionTok */
+.doc .sourceCode .fu { color: #FFFFFF; }
+/*  RegionMarkerTok */
+.doc .sourceCode .re { }
+/*  ErrorTok */
+.doc .sourceCode .er { color: #FF0000; }

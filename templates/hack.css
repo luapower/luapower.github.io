@@ -1,0 +1,239 @@
+/* Layout */
+
+body {
+	font-size: 12px;
+	line-height: 1.5;
+	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+}
+
+header {
+	width: 100%;
+	border-bottom: 1px dashed;
+	margin-bottom: 30px;
+}
+
+#header_table {
+	height: 140px;
+}
+
+section {
+	width: 100%;
+	display: block;
+	margin-bottom: 20px;
+}
+
+footer {
+	width: 100%;
+	border-top: 1px dashed;
+	padding-top: 5px;
+	margin-bottom: 20px;
+}
+
+.container {
+	width: 800px;
+	max-width: 90%;
+	margin: 0 auto;
+	position: relative;
+}
+
+.toc_container {
+	position: absolute;
+	float: left;
+	left: -300px;
+}
+
+.faint {}
+.faint a, .faint a:visited {color: inherit;}
+.faint a:hover {}
+
+header h1 { /* page title */
+	font-size: 30px;
+	margin: 0;
+	font-weight: bold;
+	letter-spacing: -1px;
+}
+
+header h2 { /* tagline */
+	font-size: 18px;
+	font-weight: 300;
+}
+
+/* Buttons */
+
+.btn {
+	display: block;
+	padding: 6px 18px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	font-size: 13px;
+	text-decoration: none;
+	text-align: center;
+	width: 130px;
+	margin: 2px;
+	border-radius: 0px;
+}
+
+.btn:hover {}
+
+.btn .icon {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin: 1px 8px 0 0;
+	float: left;
+}
+
+.btn-github .icon {
+	opacity: 0.6;
+	background: url("hack_cat.png") 0 0 no-repeat;
+}
+
+.btn-home-container {
+	position: absolute;
+	float: left;
+	left: -300px;
+	margin-left: 2em;
+	top: 118px;
+}
+
+.btn-home {
+	margin: 0;
+	width: 80px;
+	padding: 4px;
+}
+
+.btn-home:hover {}
+
+.btn-lights-container {
+	position: absolute;
+	float: left;
+	left: -300px;
+	margin-left: 2em;
+}
+
+.btn-lights {
+	margin: 0;
+	width: 80px;
+	padding: 4px;
+}
+
+.btn-lights:hover {}
+
+/* Document */
+
+.doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6,
+.doc p, .doc hr, .doc table {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.doc h1, .doc h2, .doc h3, .doc h4 {
+	letter-spacing: -0.03em;
+}
+
+.doc h1 {font-size: 30px;}
+.doc h2 {font-size: 18px;}
+.doc h3 {font-size: 16px;}
+.doc h4 {font-size: 14px;}
+
+.doc h5 {
+	font-size: 12px;
+	text-transform: uppercase;
+	margin-bottom: 5px;
+}
+
+.doc h6 {
+	font-size: 12px;
+	text-transform: uppercase;
+	margin-bottom: 5px;
+}
+
+.doc dt {
+	font-style: italic;
+	font-weight: bold;
+}
+
+.doc ul, .doc li {
+	line-height: 1.4;
+	list-style: none;
+	padding-left: 1em;
+	text-indent: -2em;
+}
+
+.doc li:before {
+	content: ">";
+	font-size: 13px;
+	margin-right: 16px;
+}
+
+.doc blockquote {
+	padding-left: 10px;
+	border-left: 1px dotted;
+}
+
+.doc pre {
+	padding: 10px;
+	font-size: 14px;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	text-wrap: normal;
+}
+
+.doc th {
+	text-align: left;
+	border-bottom: 1px dashed;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+
+.doc tr {
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+}
+
+.doc td {
+	width: 1%;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.doc hr {
+	border-bottom: 1px dashed;
+}
+
+.doc a {
+	text-decoration: none;
+}
+
+.doc a:hover {
+	text-decoration: underline;
+}
+
+/* Syntax highlighting */
+
+.doc .sourceCode {}
+
+/*  KeyWordTok */
+.doc .sourceCode .kw {}
+/*  DataTypeTok */
+.doc .sourceCode .dt {}
+/*  DecValTok (decimal value), BaseNTok, FloatTok */
+.doc .sourceCode .dv, .doc .sourceCode .bn, .doc .sourceCode .fl {}
+/*  CharTok */
+.doc .sourceCode .ch {}
+/*  StringTok */
+.doc .sourceCode .st {}
+/*  CommentTok */
+.doc .sourceCode .co {}
+/*  OtherTok */
+.doc .sourceCode .ot {}
+/*  AlertTok */
+.doc .sourceCode .al {}
+/*  FunctionTok */
+.doc .sourceCode .fu {}
+/*  RegionMarkerTok */
+.doc .sourceCode .re {}
+/*  ErrorTok */
+.doc .sourceCode .er {}
+

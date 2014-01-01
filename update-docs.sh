@@ -1,11 +1,10 @@
 # refresh the entire documentation, assuming `..` source path.
 
+i=0
 for f in *.md ../*.md ../winapi/*.md ../_git/*.md; do
-	./convert.sh $f .
+	i=$((i + 1))
+	./convert.sh $f . &
+	[ $((i % 4)) == 0 ] && wait
 done
 
-[ "$HOME"] || export HOME="$USERPROFILE"
-
-git add -A
-git commit -m "update"
-git push
+git status -s

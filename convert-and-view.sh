@@ -7,9 +7,18 @@
 
 out_file="$("$(dirname "$0")/convert.sh" "$@")"
 
-chrome="C:\Program Files\Google\Chrome\Application\chrome.exe"
-[ -f "$chrome" ] || chrome="$USERPROFILE\Local Settings\Application Data\Google\Chrome\Application\chrome.exe"
+#start "$out_file"
 
-"$chrome" --use-spdy=off --disable-application-cache --allow-file-access-from-files "$out_file"
+# to enable ajax on file:/// urls use:
+  chrome="C:\Program Files\Google\Chrome\Application\chrome.exe"
+  [ -f "$chrome" ] || chrome="$USERPROFILE\Local Settings\Application Data\Google\Chrome\Application\chrome.exe"
+  "$chrome" \
+		--use-spdy=off \
+		--disable-application-cache \
+		--allow-file-access-from-files \
+		--user-data-dir="$(dirname "$0")/../_chrome" \
+		--disable-web-security \
+		--enable-file-cookies \
+		"$out_file"
 
-# "X:\trash\firefox\firefox.exe" "file:///$out_file"
+# to view with firefox use: "X:\trash\firefox\firefox.exe" "file:///$out_file"

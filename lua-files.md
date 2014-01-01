@@ -9,7 +9,7 @@ tagline: LuaJIT + batteries
   * Lua libraries and bindings with demos, test files, documentation, separate github project
   * C libraries with sources, binaries and build scripts for Windows and Linux
   * LuaJIT2 executable
-  * public domain
+  * all public domain
 
 pure Lua                                        Lua+ffi                                         Lua/C
 ------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
@@ -42,7 +42,7 @@ pure Lua                                        Lua+ffi                         
 [eq2], [eq3]       equation solvers             [hunspell]         spell checking
 ------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
 
-## Directory structure
+## Layout
 
   * module: `<lib>.lua`
   * submodule: `<lib>_<sub>.lua` and sometimes `<lib>/<sub>.lua`
@@ -75,9 +75,4 @@ using one-liner build scripts which "just work" provided you have MinGW in your 
 My own code is in public domain as I do not support copyright law.
 Third-party code has its licensing in or near the sources.
 Generally, I tried to avoid viral GPL with some exceptions.
-
-## Prose
-  * [APIDesign API Design Notes] - how to design good APIs for your libraries
-  * [GoodLibraries Good Libraries] - what makes or breaks a library
-
 

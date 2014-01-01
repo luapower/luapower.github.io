@@ -12,8 +12,8 @@ s="${s%.*}"         # strip extension
 out_file="$out_dir/$s.html"
 
 [ "$template" ] || template=hack # default template
-[ "$s" == "toc" ] && template="${template}_toc"     # the table of contents uses a special template
-[ "$s" == "index" ] && template="${template}_index" # the homepage uses a special template
+[ "$s" == "toc" ] && template="${template}_toc"         # the table of contents uses a special template
+[ "$s" == "lua-files" ] && opt=--variable=index
 
 (cat "$in_file"
 echo
@@ -26,6 +26,6 @@ for f in *.html; do
 done
 # include external references
 cat external-refs.md.inc
-) | pandoc -r markdown -w html --data-dir="$out_dir" --template="$template" > "$out_file"
+) | pandoc -r markdown -w html --data-dir="$out_dir" --template="$template" $opt > "$out_file"
 
 echo "$out_file"

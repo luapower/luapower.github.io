@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html class="main">
 	<head>
 		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
-
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<div id="lights_css"></div>
 		<title> path2d   - 2D geometry library in Lua </title>
-
-		<script src="templates/jquery-1.10.2.js"></script>
-
-		<script language="javascript" type="text/javascript">
-		  function resizeIframe(obj) {
-			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-		  }
-		</script>
+		<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
 	</head>
-
 	<body>
-
 		<header>
 			<div class="container">
-				<table style="border: 0; margin: 0">
-					<tr style="border: 0">
-						<td valign="middle" style="width: 100%">
+				<div class="btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights on</a>
+				</div>
+				<div class="btn-home-container">
+					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+				</div>
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
 							<h1> path2d </h1>
 							<h2> 2D geometry library in Lua </h2>
 						</td>
-						<td align="right">
-								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+															<table><tr><td>
 								<a href="https://github.com/capr/path2d" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/path2d/tarball/master" class="btn">Download as .tar.gz</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/path2d/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
-						</td>
+													</td>
 					</tr>
 				</table>
 			</div>
 		</header>
-
 		<div class="container">
-			<div id="toc">
-				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			<div class="toc_container">
+				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
 			</div>
-
-			<section id="main_content">
-
-			<p>v0.0 (in active development) | <a href="path_api.html">API</a> | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+			<section class="doc">
+				<p>v0.0 (in active development) | <a href="path_api.html">API</a> | LuaJIT 2, Lua 5.1, Lua 5.2</p>
 <h2 id="local-path-requirepath"><code>local path = require'path'</code></h2>
 <p>Fast, full-featured 2D geometry library.<br />Includes construction, drawing, measuring, hit testing and editing of 2D paths.</p>
 <h3 id="overview">Overview</h3>
@@ -110,14 +106,12 @@
 <h3 id="help-needed">Help needed</h3>
 <p>I am far from being an expert at floating point math. I'm sure there are many opportunities for preserving precision and avoiding degenerate cases that I've haven't thought about. A code review by someone experienced in this area would help greatly.</p>
 <p>When an elliptic (or circular) arc is approximated with bezier curves, the arc t value (sweep time) is almost the same as the curve t value (parametric time). Almost, but not quite. The error is contained by increasing the number of segments that make up the arc. But instead of increasing the number of segments for larger arcs, I would prefer to have a formula to synchronize the t values for a chosen number of segments, assuming such formula is easy enough to compute.</p>
-
-			<br>
-			<br>
-			<hr>
-			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
-			<br>
-
 			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			</footer>
 		</div>
 	</body>
 </html>

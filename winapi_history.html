@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html class="main">
 	<head>
 		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
-
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<div id="lights_css"></div>
 		<title> winapi   - how it came about </title>
-
-		<script src="templates/jquery-1.10.2.js"></script>
-
-		<script language="javascript" type="text/javascript">
-		  function resizeIframe(obj) {
-			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-		  }
-		</script>
+		<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
 	</head>
-
 	<body>
-
 		<header>
 			<div class="container">
-				<table style="border: 0; margin: 0">
-					<tr style="border: 0">
-						<td valign="middle" style="width: 100%">
+				<div class="btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights on</a>
+				</div>
+				<div class="btn-home-container">
+					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+				</div>
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
 							<h1> winapi </h1>
 							<h2> how it came about </h2>
 						</td>
-						<td align="right">
-								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+															<table><tr><td>
 								<a href="https://github.com/capr/winapi" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/winapi/tarball/master" class="btn">Download as .tar.gz</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/winapi/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
-						</td>
+													</td>
 					</tr>
 				</table>
 			</div>
 		</header>
-
 		<div class="container">
-			<div id="toc">
-				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			<div class="toc_container">
+				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
 			</div>
-
-			<section id="main_content">
-
-			<p>Here's how the process of binding a subset of winapi for the purpose of writing a humble Win32 GUI could lead you to write this library in the end.</p>
+			<section class="doc">
+				<p>Here's how the process of binding a subset of winapi for the purpose of writing a humble Win32 GUI could lead you to write this library in the end.</p>
 <p>So you are on Windows and you want to write a GUI. With just the ffi, the headers from the Windows SDK and the good old MSDN you could bind enough of winapi to get by. So you start binding and transcribing to Lua the necessary functions, macros and constants for windows and controls and messages and all that's needed to get the app off the ground.</p>
 <p>Soon you realize some facts about winapi that draw more and more attention to the binding than to the actual application that you want to write.</p>
 <p>Most functions can result in an error but there's different ways in which they report that (some by a zero result, others with null, others with -1 and so on). When that happens you have to call <code>GetLastResult</code> and <code>FormatMessageA</code> every time if you want to get a clue of what happened. And so you start wrapping the calls.</p>
@@ -64,14 +60,12 @@
 <p>Now you have windows and controls on the screen and you can respond to events. But writing GUIs procedural style is tedious to say the least. So you now have to devise an object system to encapsulate the controls creation, setting and getting of properties and assigning event handlers. It needs to have inheritance because you want to reuse the many properties and methods of similar controls like buttons and checkboxes. Virtual properties that are read and written to by way of getters and setters would also be nice, considering the sheer number of those.</p>
 <p>Finally, you may remember how Delphi had a simple yet very effective layouting system based on anchors. Windows doesn't come with that, so you write that too.</p>
 <p>This is more/less where the winapi binding is right now, and this is the process that got it here. There are still a lot of missing pieces of this huge API, but there's an infrastructure of utilities and conventions and code organization in place (which is outlined in the <a href="winapi_binding.html">dev doc</a>) that makes further work on the library relatively painless and opens it up for collaboration.</p>
-
-			<br>
-			<br>
-			<hr>
-			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
-			<br>
-
 			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			</footer>
 		</div>
 	</body>
 </html>

@@ -1,68 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html class="main">
 	<head>
 		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
-
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<div id="lights_css"></div>
 		<title> eq3   - 3rd degree equation solver </title>
-
-		<script src="templates/jquery-1.10.2.js"></script>
-
-		<script language="javascript" type="text/javascript">
-		  function resizeIframe(obj) {
-			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-		  }
-		</script>
+		<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
 	</head>
-
 	<body>
-
 		<header>
 			<div class="container">
-				<table style="border: 0; margin: 0">
-					<tr style="border: 0">
-						<td valign="middle" style="width: 100%">
+				<div class="btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights on</a>
+				</div>
+				<div class="btn-home-container">
+					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+				</div>
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
 							<h1> eq3 </h1>
 							<h2> 3rd degree equation solver </h2>
 						</td>
-						<td align="right">
-								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+															<table><tr><td>
 								<a href="https://github.com/capr/eq" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/eq/tarball/master" class="btn">Download as .tar.gz</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/eq/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
-						</td>
+													</td>
 					</tr>
 				</table>
 			</div>
 		</header>
-
 		<div class="container">
-			<div id="toc">
-				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			<div class="toc_container">
+				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
 			</div>
-
-			<section id="main_content">
-
-			<p>v1.0 | Lua 5.1, Lua 5.2, LuaJIT 2</p>
+			<section class="doc">
+				<p>v1.0 | Lua 5.1, Lua 5.2, LuaJIT 2</p>
 <h2 id="local-solve_equation3-requireeq3"><code>local solve_equation3 = require'eq3'</code></h2>
 <h2 id="solve_equation3a-b-c-d-epsilon---s1-s2-s3"><code>solve_equation3(a, b, c, d[, epsilon]) -&gt; [s1[, s2[, s3]]]</code></h2>
 <p>Solve the <a href="http://en.wikipedia.org/wiki/Cubic_function">3rd degree equation</a> <em>ax<sup>3</sup> + bx<sup>2</sup> + cx + d</em> and return all the real solutions.</p>
 <p>Epsilon controls the precision at which the solver converges on close enough solutions.</p>
 <hr />
 <p>See also: <a href="eq2.html">eq2</a></p>
-
-			<br>
-			<br>
-			<hr>
-			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
-			<br>
-
 			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			</footer>
 		</div>
 	</body>
 </html>

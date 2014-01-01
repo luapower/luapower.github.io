@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html class="main">
 	<head>
 		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
-
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<div id="lights_css"></div>
 		<title> minizip   - minizip ffi binding </title>
-
-		<script src="templates/jquery-1.10.2.js"></script>
-
-		<script language="javascript" type="text/javascript">
-		  function resizeIframe(obj) {
-			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-		  }
-		</script>
+		<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
 	</head>
-
 	<body>
-
 		<header>
 			<div class="container">
-				<table style="border: 0; margin: 0">
-					<tr style="border: 0">
-						<td valign="middle" style="width: 100%">
+				<div class="btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights on</a>
+				</div>
+				<div class="btn-home-container">
+					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+				</div>
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
 							<h1> minizip </h1>
 							<h2> minizip ffi binding </h2>
 						</td>
-						<td align="right">
-								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+															<table><tr><td>
 								<a href="https://github.com/capr/minizip" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/minizip/tarball/master" class="btn">Download as .tar.gz</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/minizip/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
-						</td>
+													</td>
 					</tr>
 				</table>
 			</div>
 		</header>
-
 		<div class="container">
-			<div id="toc">
-				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			<div class="toc_container">
+				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
 			</div>
-
-			<section id="main_content">
-
-			<p>v1.0 | minizip 1.1 | LuaJIT 2</p>
+			<section class="doc">
+				<p>v1.0 | minizip 1.1 | LuaJIT 2</p>
 <h2 id="local-zip-requireminizip"><code>local zip = require'minizip'</code></h2>
 <p>Supports creating, reading, writing, appending, and listing a ZIP file. Advanced use of this module requires an understanding of the <a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">ZIP file format</a>.</p>
 <h2 id="features">Features:</h2>
@@ -125,14 +121,12 @@
 <p>List files in archive, returning the file info table for each file. On each iteration, the file is set as the current file so <code>z:open_file()</code> can be used to read the file contents.</p>
 <h2 id="zextractfilepath---s"><code>z:extract(filepath) -&gt; s</code></h2>
 <p>Extract a file from the ZIP archive and return its contents as a string. This is a shortcut for the sequence <code>z:open_file()</code>, <code>z:read()</code>, <code>z:close_file()</code>.</p>
-
-			<br>
-			<br>
-			<hr>
-			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
-			<br>
-
 			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			</footer>
 		</div>
 	</body>
 </html>

@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html class="main">
 	<head>
 		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
-
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<div id="lights_css"></div>
 		<title> glue   - everyday Lua functions </title>
-
-		<script src="templates/jquery-1.10.2.js"></script>
-
-		<script language="javascript" type="text/javascript">
-		  function resizeIframe(obj) {
-			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-		  }
-		</script>
+		<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
 	</head>
-
 	<body>
-
 		<header>
 			<div class="container">
-				<table style="border: 0; margin: 0">
-					<tr style="border: 0">
-						<td valign="middle" style="width: 100%">
+				<div class="btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights on</a>
+				</div>
+				<div class="btn-home-container">
+					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+				</div>
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
 							<h1> glue </h1>
 							<h2> everyday Lua functions </h2>
 						</td>
-						<td align="right">
-								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+															<table><tr><td>
 								<a href="https://github.com/capr/glue" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/glue/tarball/master" class="btn">Download as .tar.gz</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/glue/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
-						</td>
+													</td>
 					</tr>
 				</table>
 			</div>
 		</header>
-
 		<div class="container">
-			<div id="toc">
-				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			<div class="toc_container">
+				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
 			</div>
-
-			<section id="main_content">
-
-			<p>v2.0 | <a href="glue_design.html">design</a> | LuaJIT 2, Lua 5.1, Lua 5.2</p>
+			<section class="doc">
+				<p>v2.0 | <a href="glue_design.html">design</a> | LuaJIT 2, Lua 5.1, Lua 5.2</p>
 <h2 id="local-glue-requireglue"><code>local glue = require'glue'</code></h2>
 <table>
 <tbody>
@@ -242,7 +238,7 @@ hour    8</code></pre>
 <h3 id="examples-1">Examples:</h3>
 <p>An API expects a list of things but you have them as keys in a table because you are indexing something on them.</p>
 <p>For instance, you have a table of the form <code>{socket = thread}</code> but <code>socket.select</code> wants a list of sockets.</p>
-<p><em>See also:</em> <a href="#sortedpairs">glue.sortedpairs</a>.</p>
+<p>See also: <a href="#sortedpairs">glue.sortedpairs</a>.</p>
 <hr />
 <h2 id="glue.updatedtt1...---dt"><code id="update">glue.update(dt,t1,...) -&gt; dt</code></h2>
 <p>Update a table with elements of other tables, overwriting any existing keys.</p>
@@ -258,7 +254,7 @@ hour    8</code></pre>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">t</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>update<span class="ot">({},</span> <span class="kw">t</span><span class="ot">)</span></code></pre>
 <p>Static multiple inheritance:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">C</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>update<span class="ot">({},</span> <span class="kw">A</span><span class="ot">,</span> <span class="kw">B</span><span class="ot">)</span> <span class="co">--#TODO: find real-world example of multiple inheritance</span></code></pre>
-<p><em>See also:</em> <a href="#extend">glue.extend</a>, <a href="#inherit">glue.inherit</a>.</p>
+<p>See also: <a href="#extend">glue.extend</a>, <a href="#inherit">glue.inherit</a>.</p>
 <hr />
 <h2 id="glue.mergedtt1...---dt"><code id="merge">glue.merge(dt,t1,...) -&gt; dt</code></h2>
 <p>Update a table with elements of other tables skipping on any existing keys.</p>
@@ -268,19 +264,13 @@ hour    8</code></pre>
 <h3 id="examples-3">Examples:</h3>
 <p>Normalize a data object with default values:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">glue</span><span class="ot">.</span>merge<span class="ot">(</span><span class="kw">t</span><span class="ot">,</span> <span class="kw">defaults</span><span class="ot">)</span></code></pre>
-<p><em>See also:</em> <a href="#update">glue.update</a>.</p>
+<p>See also: <a href="#update">glue.update</a>.</p>
 <hr />
 <h2 id="glue.sortedpairstcmp---iteratorkv"><code id="sortedpairs">glue.sortedpairs(t[,cmp]) -&gt; iterator&lt;k,v&gt;</code></h2>
 <p>Like pairs() but in key order.</p>
 <p>The implementation creates a temporary table to sort the keys in.</p>
-<table>
-<col width="5%" />
-<tbody>
-<tr class="odd">
-<td align="left"><em>See also:</em> <a href="#keys">glue.keys</a>.</td>
-</tr>
-</tbody>
-</table>
+<p>See also: <a href="#keys">glue.keys</a>.</p>
+<hr />
 <h2 id="glue.extenddtt1...---dt"><code id="extend">glue.extend(dt,t1,...) -&gt; dt</code></h2>
 <p>Extend the list with the elements of other lists.</p>
 <ul>
@@ -289,13 +279,13 @@ hour    8</code></pre>
 </ul>
 <h3 id="uses">Uses:</h3>
 <p>Accumulating values from multiple list sources.</p>
-<p><em>See also:</em> <a href="#append">glue.append</a>, <a href="#update">glue.update</a>.</p>
+<p>See also: <a href="#append">glue.append</a>, <a href="#update">glue.update</a>.</p>
 <hr />
 <h2 id="glue.appenddtv1...---dt"><code id="append">glue.append(dt,v1,...) -&gt; dt</code></h2>
 <p>Append one or more values to a list.</p>
 <h3 id="uses-1">Uses:</h3>
 <p>Appending an object to a flattened list of lists (eg. appending a path element to a 2d path).</p>
-<p><em>See also:</em> <a href="#extend">glue.extend</a>, <a href="#update">glue.update</a>.</p>
+<p>See also: <a href="#extend">glue.extend</a>, <a href="#update">glue.update</a>.</p>
 <hr />
 <h2 id="glue.shifttin---t"><code id="shift">glue.shift(t,i,n) -&gt; t</code></h2>
 <p>Shift all the list elements starting at index <code>i</code>, <code>n</code> positions to the left or further to the right.</p>
@@ -303,7 +293,7 @@ hour    8</code></pre>
 <p>For a negative <code>n</code>, shift the elements to the left, effectively removing the <code>n</code> elements at index <code>i</code>. When <code>n</code> is -1, the effect is the same as for <code>table.remove(t, i)</code>.</p>
 <h3 id="uses-2">Uses:</h3>
 <p>Removing a portion of a list or making room for more elements inside the list.</p>
-<p><em>See also:</em> <a href="#extend">glue.extend</a>.</p>
+<p>See also: <a href="#extend">glue.extend</a>.</p>
 <hr />
 <h2 id="glue.gsplitssepplain---iteratorecaptures..."><code id="gsplit">glue.gsplit(s,sep[,plain]) -&gt; iterator&lt;e[,captures...]&gt;</code></h2>
 <p>Split a string by a separator pattern (or plain string) and iterate over the elements.</p>
@@ -352,11 +342,11 @@ hour    8</code></pre>
 <li>uppercase if <code>upper</code> is anything non-false, like say, the string &quot;upper&quot;</li>
 <li>numbers must be in the unsigned 32 bit integer range</li>
 </ul>
-<p><em>See also:</em> <a href="#fromhex">glue.fromhex</a>.</p>
+<p>See also: <a href="#fromhex">glue.fromhex</a>.</p>
 <hr />
 <h2 id="glue.fromhexs---s"><code id="fromhex">glue.fromhex(s) -&gt; s</code></h2>
 <p>Convert a hex string to its binary representation.</p>
-<p><em>See also:</em> <a href="#tohex">glue.tohex</a>.</p>
+<p>See also: <a href="#tohex">glue.tohex</a>.</p>
 <hr />
 <h2 id="glue.collecti-iterator---t"><code id="collect">glue.collect([i, ]iterator) -&gt; t</code></h2>
 <p>Iterate an iterator and collect its i'th return value of every step into a list.</p>
@@ -430,21 +420,21 @@ hour    8</code></pre>
 <hr />
 <h2 id="glue.fileexistsfile---true-false"><code id="fileexists">glue.fileexists(file) -&gt; true | false</code></h2>
 <p>Checks whether a file exists and it's available for reading.</p>
-<p><em>See also:</em> <a href="#readfile">glue.readfile</a>.</p>
+<p>See also: <a href="#readfile">glue.readfile</a>.</p>
 <hr />
 <h2 id="glue.readfilefileformat---s"><code id="readfile">glue.readfile(file[,format]) -&gt; s</code></h2>
 <p>Read the contents of a file into a string.</p>
 <ul>
 <li><code>format</code> can be <code>t</code> in which case the file will be read in text mode (default is binary mode).</li>
 </ul>
-<p><em>See also:</em> <a href="#writefile">glue.writefile</a>, <a href="#fileexists">glue.fileexists</a>.</p>
+<p>See also: <a href="#writefile">glue.writefile</a>, <a href="#fileexists">glue.fileexists</a>.</p>
 <hr />
 <h2 id="glue.writefilefilesformat"><code id="writefile">glue.writefile(file,s[,format])</code></h2>
 <p>Write the contents of a string to a file.</p>
 <ul>
 <li><code>format</code> can be <code>t</code> in which case the file will be written in text mode (default is binary mode).</li>
 </ul>
-<p><em>See also:</em> <a href="#readfile">glue.readfile</a>.</p>
+<p>See also: <a href="#readfile">glue.readfile</a>.</p>
 <hr />
 <h2 id="glue.assertv-message-format_args..."><code id="assert">glue.assert(v[, message[, format_args...]])</code></h2>
 <p>Like <code>assert</code> but supports formatting of the error message using string.format.</p>
@@ -520,14 +510,12 @@ hour    8</code></pre>
 <h3 id="keywords">Keywords</h3>
 <p><em>for syntax highlighting</em></p>
 <p>glue.index, glue.keys, glue.update, glue.merge, glue.extend, glue.append, glue.shift, glue.gsplit, glue.trim, glue.escape, glue.collect, glue.ipcall, glue.pass, glue.inherit, glue.fileexists, glue.readfile, glue.writefile, glue.assert, glue.unprotect, glue.pcall, glue.fpcall, glue.fcall, glue.autoload</p>
-
-			<br>
-			<br>
-			<hr>
-			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
-			<br>
-
 			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			</footer>
 		</div>
 	</body>
 </html>

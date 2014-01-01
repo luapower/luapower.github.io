@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html class="main">
 	<head>
 		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
-
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<div id="lights_css"></div>
 		<title> winapi   - technical documentation </title>
-
-		<script src="templates/jquery-1.10.2.js"></script>
-
-		<script language="javascript" type="text/javascript">
-		  function resizeIframe(obj) {
-			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-		  }
-		</script>
+		<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
 	</head>
-
 	<body>
-
 		<header>
 			<div class="container">
-				<table style="border: 0; margin: 0">
-					<tr style="border: 0">
-						<td valign="middle" style="width: 100%">
+				<div class="btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights on</a>
+				</div>
+				<div class="btn-home-container">
+					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+				</div>
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
 							<h1> winapi </h1>
 							<h2> technical documentation </h2>
 						</td>
-						<td align="right">
-								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+															<table><tr><td>
 								<a href="https://github.com/capr/winapi" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/winapi/tarball/master" class="btn">Download as .tar.gz</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/winapi/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
-						</td>
+													</td>
 					</tr>
 				</table>
 			</div>
 		</header>
-
 		<div class="container">
-			<div id="toc">
-				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			<div class="toc_container">
+				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
 			</div>
-
-			<section id="main_content">
-
-			<p><a href="winapi.html">back</a></p>
+			<section class="doc">
+				<p><a href="winapi.html">back</a></p>
 <h2 id="structure">Structure</h2>
 <p>The library publishes a procedural API that mimics the windows API and an object API for creating windows and controls. Both APIs share the same namespace, which is the table returned by <code>require'winapi'</code>.</p>
 <p>Interactivity (windows message processing) is handled in the object layer since it requires keeping state. Dispatching of messages to child controls is implemented in the object layer. The object layer also provides additional features like anchor-based layouting, so there's little reason to use the procedural API directly except for say, implementing a different object API.</p>
@@ -74,14 +70,12 @@
 <p>Boilerplate like a struct's mask field or a struct/buffer/string size, etc. are hidden from the API. In general, stuff that doesn't relate to actual functionality but it's an artifact of the ABI is considered an unnecessary distraction and so is hidden away.</p>
 <p>The API doesn't mimic winapi perfectly. Object constructors like <code>CreateWindow</code> take a table with named arguments instead of a list of arguments like in winapi. Argument positions are sometimes reversed to make less-used arguments optional, and so on. Struct fields are renamed to hide away the crazy hungarian notation, etc.</p>
 <p>The procedural API is implemented with the aid of a set of utilities dealing with bitmasks, utf-8 conversion, etc. See the <a href="winapi_binding.html">dev doc</a> for more on that.</p>
-
-			<br>
-			<br>
-			<hr>
-			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
-			<br>
-
 			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			</footer>
 		</div>
 	</body>
 </html>

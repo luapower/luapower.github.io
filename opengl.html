@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html class="main">
 	<head>
 		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-		<link rel="stylesheet" type="text/css" href="templates/hack/stylesheet.css" media="screen" />
-
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<div id="lights_css"></div>
 		<title> opengl   - OpenGL Lua+ffi bindings </title>
-
-		<script src="templates/jquery-1.10.2.js"></script>
-
-		<script language="javascript" type="text/javascript">
-		  function resizeIframe(obj) {
-			 obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-		  }
-		</script>
+		<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
 	</head>
-
 	<body>
-
 		<header>
 			<div class="container">
-				<table style="border: 0; margin: 0">
-					<tr style="border: 0">
-						<td valign="middle" style="width: 100%">
+				<div class="btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights on</a>
+				</div>
+				<div class="btn-home-container">
+					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+				</div>
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
 							<h1> opengl </h1>
 							<h2> OpenGL Lua+ffi bindings </h2>
 						</td>
-						<td align="right">
-								<table style="border: 0; margin: 0"><tr style="border: 0"><td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+															<table><tr><td>
 								<a href="https://github.com/capr/opengl" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/opengl/tarball/master" class="btn">Download as .tar.gz</a>
-								</td></tr><tr style="border: 0"><td>
+								</td></tr><tr><td>
 								<a href="https://github.com/capr/opengl/zipball/master" class="btn">Download as .zip</a>
 								</td></tr></table>
-						</td>
+													</td>
 					</tr>
 				</table>
 			</div>
 		</header>
-
 		<div class="container">
-			<div id="toc">
-				<iframe src="toc.html" frameborder="0" scrolling="no" onload="javascript:resizeIframe(this)"></iframe>
+			<div class="toc_container">
+				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
 			</div>
-
-			<section id="main_content">
-
-			<p>The OpenGL API is not usually found in a OS as a straight C library, or at least not all of it is. Instead, the OS supplies a loader API (called WGL in Windows, GLX in Linux, CGL in MacOS X) through which you retrieve pointers to actual OpenGL functions. So while the OpenGL functions and constants themselves are standard, you can only get access to a working OpenGL namespace through a platform-specific API.</p>
+			<section class="doc">
+				<p>The OpenGL API is not usually found in a OS as a straight C library, or at least not all of it is. Instead, the OS supplies a loader API (called WGL in Windows, GLX in Linux, CGL in MacOS X) through which you retrieve pointers to actual OpenGL functions. So while the OpenGL functions and constants themselves are standard, you can only get access to a working OpenGL namespace through a platform-specific API.</p>
 <h2 id="local-gl-requirewinapi.gl11"><code>local gl = require'winapi.gl11'</code></h2>
 <h2 id="local-gl-requirewinapi.gl21"><code>local gl = require'winapi.gl21'</code></h2>
 <p>Get an OpenGL 1.1 or 2.1 namespace. Functions are discovered automatically through WGL and their pointers memoized for later calls.</p>
@@ -79,14 +75,12 @@
 <li>make OpenGL constants C enums and access them through a proxy table into ffi.C.</li>
 <li>make a binding to regal instead, which should be faster or at least more memory efficient.</li>
 </ul>
-
-			<br>
-			<br>
-			<hr>
-			<span class="faint"><a href="lua-files.html">lua-files</a> | cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
-			<br>
-
 			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			</footer>
 		</div>
 	</body>
 </html>
