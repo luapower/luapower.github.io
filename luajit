@@ -1,0 +1,5 @@
+if [ "$OSTYPE" == "msys" ]; then
+	cmd //C "$(dirname "$0")\\..\\bin\\mingw32\\luajit" "$@"
+else
+	"$(dirname "$0")/../bin/linux32/luajit" "$@"
+fi

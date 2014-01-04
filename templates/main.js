@@ -7,31 +7,40 @@ function update_lights_button() {
 	jQuery('#lights').html('lights ' + (!lights_state() ? 'on' : 'off'));
 }
 
-function lights(on) {
-	if (on === undefined)
+function set_lights(on, frame) {
+	if (on !== true && on !== false)
 		on = lights_state();
 	var css = on ? 'light' : 'dark';
-	jQuery('#lights_css').
+	jQuery('#lights_css', frame).
 		html(jQuery('<link rel="stylesheet" href="templates/hack_' + css + '.css" type="text/css" />'));
 	jQuery.cookie('lights', on ? 'on' : 'off');
 	update_lights_button();
 }
 
-function resize_iframe(obj) {
-	obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+function in_iframe() {
+	return !$('iframe').get(0);
 }
 
-$(document).ready(function() {
+function get_iframe() {
+	return ($('iframe').get(0) || $('iframe', window.parent.document).get(0));
+}
 
-	update_lights_button(); //there was no button to set when the lights css was set
+function resize_iframe() {
+	var iframe = get_iframe();
+	var content_h = iframe.contentWindow.document.body.scrollHeight;
+	iframe.style.height = content_h + 'px';
+}
+
+$(function() {
+
+	//there was no button to set when the lights was set so we set it now
+	update_lights_button();
 
 	$('#lights').click(function() {
 		event.preventDefault();
-		lights(!lights_state());
-
-		var css = lights_state() ? 'light' : 'dark';
-		jQuery('iframe').contents().find('#lights_css').
-			html(jQuery('<link rel="stylesheet" href="templates/hack_' + css + '.css" type="text/css" />'));
+		set_lights(!lights_state());
+		//change the lights in the iframe too
+		set_lights(null, jQuery('iframe').contents());
 	});
 
 	// Put custom repo URL's in this object, keyed by repo name.
@@ -144,6 +153,42 @@ $(document).ready(function() {
 			}
 		});
 	}
-	addRepos();
+	//addRepos();
+
+	if (!in_iframe())
+		return;
+
+	// Execute this after the site is loaded.
+	// Find list items representing folders and
+	// style them accordingly.  Also, turn them
+	// into links that can expand/collapse the
+	// tree leaf.
+	$('li > ul').each(function(i) {
+		// Find this list's parent list item.
+		var parent_li = $(this).parent('li');
+
+		// Style the list item as folder.
+		parent_li.addClass('folder');
+
+		// Temporarily remove the list from the
+		// parent list item, wrap the remaining
+		// text in an anchor, then reattach it.
+		var sub_ul = $(this).remove();
+		parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0);').click(function() {
+			// Make the anchor toggle the leaf display.
+			sub_ul.toggle();
+			resize_iframe();
+		});
+		parent_li.append(sub_ul);
+	});
+
+	// Hide all lists except the outermost.
+	$('ul ul').hide();
+
+	// expand the list containing the element that links to the current page
+	var cfile = window.parent.document.location.pathname.split('/').slice(-1)[0];
+	var clink = $('a[href="' + cfile + '"]');
+	clink.parent().parent().show();
+	clink.replaceWith(clink.html());
 
 });

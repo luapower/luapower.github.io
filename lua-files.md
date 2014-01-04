@@ -6,10 +6,10 @@ tagline: LuaJIT + batteries
 
 ## TL;dr
 
-  * Lua libraries and bindings with demos, test files, documentation, separate github project
+  * Lua libraries and bindings with demos, test files, documentation, separate github repo
   * C libraries with sources, binaries and build scripts for Windows and Linux
-  * LuaJIT2 executable
-  * all public domain
+  * LuaJIT executable
+  * all free
 
 pure Lua                                        Lua+ffi                                         Lua/C
 ------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
@@ -42,7 +42,7 @@ pure Lua                                        Lua+ffi                         
 [eq2], [eq3]       equation solvers             [hunspell]         spell checking
 ------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
 
-## Layout
+## Directory Layout
 
   * module: `<lib>.lua`
   * submodule: `<lib>_<sub>.lua` and sometimes `<lib>/<sub>.lua`
@@ -53,13 +53,14 @@ pure Lua                                        Lua+ffi                         
   * C lib sources: `csrc/<lib>/*`
   * C lib build script: `csrc/<lib>/build-<platform>.sh`
   * C lib binary: `bin/mingw32/<lib>.dll`, `bin/linux32/lib<lib>.so`
-  * LuaJIT2 executable with paths set: `bin/<platform>/luajit`
+  * LuaJIT executable: `bin/<platform>/luajit`
 
 ## In Detail
 
-The modules come bundled together into one directory for easy deployment and developing.
-There's little functional dependency between them however, and they can be easily pulled
-out and used separately if needed. Many modules depend on a small utility library called [glue].
+A selection of the best Lua and C libraries out there, chosen for speed, portability.
+
+My code is in public domain, most libraries are MIT, very few are GPL.
+
 Sources are indented with tabs so you can use any indentation with your editor without the
 need to convert the files.
 

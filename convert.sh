@@ -9,11 +9,12 @@ out_dir="$2"
 s="${in_file##*/}"  # strip path (linux)
 s="${s##*\\}"       # strip path (windows)
 s="${s%.*}"         # strip extension
-out_file="$out_dir/$s.html"
+docname="$s"
+out_file="$out_dir/$docname.html"
 
 [ "$template" ] || template=hack # default template
-[ "$s" == "toc" ] && template="${template}_toc"         # the table of contents uses a special template
-[ "$s" == "lua-files" ] && opt=--variable=index
+[ "$s" == "toc" ] && opt="$opt --variable=bare"    # the TOC has no header/footer
+[ "$s" == "lua-files" ] && opt="$opt --variable=homepage" # homepage is special
 
 (cat "$in_file"
 echo
@@ -26,6 +27,6 @@ for f in *.html; do
 done
 # include external references
 cat external-refs.md.inc
-) | pandoc -r markdown -w html --data-dir="$out_dir" --template="$template" $opt > "$out_file"
+) | pandoc -r markdown -w html --data-dir="$out_dir" --template="$template" --variable="docname:$docname" $opt > "$out_file"
 
 echo "$out_file"
