@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="main">
+<html>
 	<head>
 		<meta charset='utf-8'>
 		<title> glue   - everyday Lua functions </title>
-		<script src="templates/jquery.js"></script>
+				<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/strftime.js"></script>
 		<script src="templates/main.js"></script>
@@ -11,11 +11,11 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<div id="lights_css"></div>
 		<script>
-			lights()
+			set_lights(); //set the lights before rendering starts
 		</script>
 	</head>
 	<body>
-		<header>
+				<header>
 			<div class="container">
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
@@ -30,7 +30,7 @@
 							<h2> everyday Lua functions </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
-															<table><tr><td>
+																						<table><tr><td>
 								<a href="https://github.com/capr/glue" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
 								<a href="https://github.com/capr/glue/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
@@ -40,10 +40,10 @@
 													</td>
 					</tr>
 				</table>
-				<div class="btn-container btn-discuss-container">
+								<div class="btn-container btn-discuss-container">
 					<a href="https://github.com/capr/glue/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
-			</div>
+							</div>
 		</header>
 		<div class="container">
 			<div class="toc_container">
@@ -171,7 +171,7 @@
 <td align="left"><a href="#assert">assert with error message formatting</a></td>
 </tr>
 <tr class="even">
-<td align="left">glue.unprotect(ok,result,...) -&gt; result,... nil,result,...</td>
+<td align="left">glue.unprotect(ok,result,...) -&gt; result,... | nil,result,...</td>
 <td align="left"><a href="#unprotect">unprotect a protected call</a></td>
 </tr>
 <tr class="odd">
@@ -517,11 +517,29 @@ hour    8</code></pre>
 <p><em>for syntax highlighting</em></p>
 <p>glue.index, glue.keys, glue.update, glue.merge, glue.extend, glue.append, glue.shift, glue.gsplit, glue.trim, glue.escape, glue.collect, glue.ipcall, glue.pass, glue.inherit, glue.fileexists, glue.readfile, glue.writefile, glue.assert, glue.unprotect, glue.pcall, glue.fpcall, glue.fcall, glue.autoload</p>
 			</section>
+
+			<!--
+			<div id="disqus_thread"></div>
+				 <script type="text/javascript">
+					  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					  var disqus_shortname = 'luafiles'; // required: replace example with your forum shortname
+
+					  /* * * DON'T EDIT BELOW THIS LINE * * */
+					  (function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					  })();
+				 </script>
+				 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+			-->
+
 		</div>
 		<div class="container">
 			<footer>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
-	</body>
+			</body>
 </html>

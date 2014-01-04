@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html class="main">
+<html>
 	<head>
 		<meta charset='utf-8'>
-		<title>$if(title)$ $title$ $else$ $project$ $endif$ $if(tagline)$ - $tagline$ $endif$</title>
+		<title>$if(title)$ $title$ $else$ $docname$ $endif$ $if(tagline)$ - $tagline$ $endif$</title>
+		$if(bare)$
+		<base target="_parent" />
+		$endif$
 		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -11,10 +14,15 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<div id="lights_css"></div>
 		<script>
-			lights()
+			set_lights(); //set the lights before rendering starts
 		</script>
 	</head>
 	<body>
+		$if(bare)$
+			<section id="toc" class="doc">
+				$body$
+			</section>
+		$else$
 		<header>
 			<div class="container">
 				<div class="btn-container btn-lights-container">
@@ -26,16 +34,17 @@
 				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
-							<h1>$if(title)$ $title$ $else$ $project$ $endif$</h1>
+							<h1>$if(title)$ $title$ $else$ $docname$ $endif$</h1>
 							<h2>$if(tagline)$ $tagline$ $else$ &nbsp; $endif$</h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
-							$if(index222)$
+							$if(homepage222)$
 								<div id="recently-updated">
 									<h1>Recently updated <a href="https://github.com/capr/repositories">View All on GitHub</a></h1>
 									<ol id="recently-updated-repos"></ol>
 								</div>
-							$else$
+							$endif$
+							$if(project)$
 								<table><tr><td>
 								<a href="https://github.com/capr/$project$" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
@@ -47,9 +56,11 @@
 						</td>
 					</tr>
 				</table>
+				$if(project)$
 				<div class="btn-container btn-discuss-container">
 					<a href="https://github.com/capr/$project$/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
+				$endif$
 			</div>
 		</header>
 		<div class="container">
@@ -59,11 +70,30 @@
 			<section class="doc">
 				$body$
 			</section>
+
+			<!--
+			<div id="disqus_thread"></div>
+				 <script type="text/javascript">
+					  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					  var disqus_shortname = 'luafiles'; // required: replace example with your forum shortname
+
+					  /* * * DON'T EDIT BELOW THIS LINE * * */
+					  (function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					  })();
+				 </script>
+				 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+			-->
+
 		</div>
 		<div class="container">
 			<footer>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
+		$endif$
 	</body>
 </html>

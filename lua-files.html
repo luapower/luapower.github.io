@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="main">
+<html>
 	<head>
 		<meta charset='utf-8'>
 		<title> lua-files   - LuaJIT + batteries </title>
-		<script src="templates/jquery.js"></script>
+				<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/strftime.js"></script>
 		<script src="templates/main.js"></script>
@@ -11,11 +11,11 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<div id="lights_css"></div>
 		<script>
-			lights()
+			set_lights(); //set the lights before rendering starts
 		</script>
 	</head>
 	<body>
-		<header>
+				<header>
 			<div class="container">
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
@@ -30,7 +30,7 @@
 							<h2> LuaJIT + batteries </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
-															<table><tr><td>
+																						<table><tr><td>
 								<a href="https://github.com/capr/lua-files-devel" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
 								<a href="https://github.com/capr/lua-files-devel/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
@@ -40,10 +40,10 @@
 													</td>
 					</tr>
 				</table>
-				<div class="btn-container btn-discuss-container">
+								<div class="btn-container btn-discuss-container">
 					<a href="https://github.com/capr/lua-files-devel/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
-			</div>
+							</div>
 		</header>
 		<div class="container">
 			<div class="toc_container">
@@ -52,10 +52,10 @@
 			<section class="doc">
 				<h2 id="tldr">TL;dr</h2>
 <ul>
-<li>Lua libraries and bindings with demos, test files, documentation, separate github project</li>
+<li>Lua libraries and bindings with demos, test files, documentation, separate github repo</li>
 <li>C libraries with sources, binaries and build scripts for Windows and Linux</li>
-<li>LuaJIT2 executable</li>
-<li>all public domain</li>
+<li>LuaJIT executable</li>
+<li>all free</li>
 </ul>
 <table>
 <thead>
@@ -287,7 +287,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="layout">Layout</h2>
+<h2 id="directory-layout">Directory Layout</h2>
 <ul>
 <li>module: <code>&lt;lib&gt;.lua</code></li>
 <li>submodule: <code>&lt;lib&gt;_&lt;sub&gt;.lua</code> and sometimes <code>&lt;lib&gt;/&lt;sub&gt;.lua</code></li>
@@ -298,19 +298,39 @@
 <li>C lib sources: <code>csrc/&lt;lib&gt;/*</code></li>
 <li>C lib build script: <code>csrc/&lt;lib&gt;/build-&lt;platform&gt;.sh</code></li>
 <li>C lib binary: <code>bin/mingw32/&lt;lib&gt;.dll</code>, <code>bin/linux32/lib&lt;lib&gt;.so</code></li>
-<li>LuaJIT2 executable with paths set: <code>bin/&lt;platform&gt;/luajit</code></li>
+<li>LuaJIT executable: <code>bin/&lt;platform&gt;/luajit</code></li>
 </ul>
 <h2 id="in-detail">In Detail</h2>
-<p>The modules come bundled together into one directory for easy deployment and developing. There's little functional dependency between them however, and they can be easily pulled out and used separately if needed. Many modules depend on a small utility library called <a href="glue.html">glue</a>. Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.</p>
+<p>A selection of the best Lua and C libraries out there, chosen for speed, portability.</p>
+<p>My code is in public domain, most libraries are MIT, very few are GPL.</p>
+<p>Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.</p>
 <p>Portability varies between libraries. Some are Windows specific, some use the ffi API, some specifically target LuaJIT for speed, while others are written in plain Lua and should work on any platform. This is documented for each module individually.</p>
 <p>Windows binaries for all C/C++ libraries are available in <code>bin</code>. They are built using the sources and build scripts from <code>csrc</code>. Everything is compiled with MinGW's GCC with <code>-O3 -s</code> and linked against msvcrt.dll, using one-liner build scripts which &quot;just work&quot; provided you have MinGW in your <code>PATH</code>.</p>
 <p>My own code is in public domain as I do not support copyright law. Third-party code has its licensing in or near the sources. Generally, I tried to avoid viral GPL with some exceptions.</p>
 			</section>
+
+			<!--
+			<div id="disqus_thread"></div>
+				 <script type="text/javascript">
+					  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					  var disqus_shortname = 'luafiles'; // required: replace example with your forum shortname
+
+					  /* * * DON'T EDIT BELOW THIS LINE * * */
+					  (function() {
+							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					  })();
+				 </script>
+				 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+			-->
+
 		</div>
 		<div class="container">
 			<footer>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
-	</body>
+			</body>
 </html>

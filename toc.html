@@ -2,8 +2,9 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<base target="_parent" />
-		<script src="templates/jquery.js"></script>
+		<title> toc  </title>
+				<base target="_parent" />
+				<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/strftime.js"></script>
 		<script src="templates/main.js"></script>
@@ -11,12 +12,12 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<div id="lights_css"></div>
 		<script>
-			lights()
+			set_lights(); //set the lights before rendering starts
 		</script>
 	</head>
 	<body>
-		<section class="doc">
-			<ul>
+					<section id="toc" class="doc">
+				<ul>
 <li>Basic tools
 <ul>
 <li><a href="glue.html">glue</a></li>
@@ -142,6 +143,6 @@
 <li><a href="hunspell.html">hunspell</a></li>
 </ul></li>
 </ul>
-		</section>
-	</body>
+			</section>
+			</body>
 </html>
