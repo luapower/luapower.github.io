@@ -187,7 +187,7 @@ $(function() {
 
 	// expand the list containing the element that links to the current page
 	var cfile = window.parent.document.location.pathname.split('/').slice(-1)[0];
-	var clink = $('a[href="' + cfile + '"]') || $('a[href="' + cfile + '.html"]');
+	var clink = $('a[href="' + cfile + '.html"]');
 	clink.parent().parent().show();
 	clink.replaceWith(clink.html());
 
