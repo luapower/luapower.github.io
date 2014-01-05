@@ -27,44 +27,48 @@ jQuery(function() {
 	})
 })
 
-// setup TOC
+// load TOC
 jQuery(function() {
-	jQuery("#toc_container" ).load("toc.html", function() {
-
-		// find list items representing TOC items and style them accordingly.
-		// also, turn them into links that can expand/collapse the tree leaf.
-		$('li > ul').each(function(i) {
-
-			// find this list's parent list item.
-			var parent_li = $(this).parent('li')
-
-			// style the list item as folder.
-			parent_li.addClass('folder')
-
-			// temporarily remove the list from the
-			// parent list item, wrap the remaining
-			// text in an anchor, then reattach it.
-			var sub_ul = $(this).remove()
-			parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
-				// Make the anchor toggle the leaf display.
-				sub_ul.toggle()
-			})
-			parent_li.append(sub_ul)
-		})
-
-		// hide all lists except the outermost.
-		$('ul ul').hide()
-
-		// expand the list containing the element that links to the current page
-		var cfile = window.parent.document.location.pathname.split('/').slice(-1)[0]
-		var clink = $('li > a[href="' + cfile + '.html"], li > a[href="' + cfile + '"]')
-		clink.parent().parent().show()
-		clink.replaceWith(clink.html())
-
-	})
+	$("#toc_container" ).load("toc.html", doc_ready)
 })
 
+function doc_ready() {
+	// find list items representing TOC items and style them accordingly.
+	// also, turn them into links that can expand/collapse the tree leaf.
+	$('#toc_container li > ul').each(function(i) {
 
+		// find this list's parent list item.
+		var parent_li = $(this).parent('li')
+
+		// style the list item as folder.
+		parent_li.addClass('folder')
+
+		// temporarily remove the list from the
+		// parent list item, wrap the remaining
+		// text in an anchor, then reattach it.
+		var sub_ul = $(this).remove()
+		parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
+			// Make the anchor toggle the leaf display.
+			sub_ul.toggle()
+		})
+		parent_li.append(sub_ul)
+	})
+
+	// hide all lists except the outermost.
+	$('#toc_container ul ul').hide()
+
+	// expand the list containing the element that links to the current page
+	var cfile = window.parent.document.location.pathname.split('/').slice(-1)[0]
+	var clink = $('#toc_container li > a[href="' + cfile + '.html"], #toc_container li > a[href="' + cfile + '"]')
+	clink.parent().parent().show()
+	clink.replaceWith(clink.html())
+
+	// make extenral links open in new window
+	$('a').each(function() {
+		if (this.hostname != location.hostname)
+			$(this).addClass('external_link').attr('target', '_blank')
+	})
+}
 
 // add repos
 jQuery(function() {
