@@ -1,10 +1,10 @@
-# convert an .md file to a .html file given an output dir.
-# also generates automatic reference definitions for local html files and includes external-refs.md.inc.
+# convert an .md file to a .html file which will be written in the dir of this script.
+# also generates automatic reference definitions for local html files.
 
 in_file="$1"
-out_dir="$2"
+out_dir="$(cd "$(dirname "$0")"; echo "$PWD")"
 
-[ "$in_file" -a "$out_dir" ] || exit 1
+[ "$in_file" ] || { echo "usage: $0 <input-file>"; exit 1; }
 
 s="${in_file##*/}"  # strip path (linux)
 s="${s##*\\}"       # strip path (windows)
@@ -13,7 +13,7 @@ docname="$s"
 out_file="$out_dir/$docname.html"
 
 [ "$template" ] || template=hack # default template
-[ "$s" == "toc" ] && opt="$opt --variable=bare"    # the TOC has no header/footer
+[ "$s" == "toc" ] && opt="$opt --variable=bare" # the TOC has no header/footer
 [ "$s" == "lua-files" ] && opt="$opt --variable=homepage" # homepage is special
 
 (cat "$in_file"

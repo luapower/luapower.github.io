@@ -8,9 +8,9 @@
 --TODO: generate toc.md
 --TODO: generate packages.js and modules.js
 
-local lfs = require'lfs'
+local lfs = require'lfs'; lfs.chdir'..'
 local glue = require'glue'
-local module_dependencies = require'dependencies'
+local module_dependencies = require'_site.dependencies'
 local pp = require'pp'.pp
 
 --file finding helpers
@@ -241,7 +241,7 @@ local function undocumented_packages(pkgs, docs)
 	print_list('undocumented packages', t)
 end
 
---submodules that are documented in the doc page of their parent module
+--modules that don't need documentation for submodules (it's all documented in the parent page).
 local single_page_doc_modules = {
 	cplayer=1,
 	hmac=1,
@@ -259,7 +259,6 @@ end
 
 --submodules which don't ascribe to the correct naming pattern.
 local problem_no_doc_modules = {
-	strict=1,
 	sg_base=1,
 	sg_cache=1,
 	svg_colors=1,
@@ -274,7 +273,7 @@ local function problem_no_doc_module(mod)
 	return problem_no_doc_modules[mod]
 end
 
---external modules with external documentation for their submodules
+--external modules with external documentation for their submodules.
 local external_modules = {
 	socket=1,
 	lpeg=1,
@@ -325,6 +324,10 @@ local function uncategorized_modules(mods, docs)
 	print_list('uncategorized modules', t)
 end
 
+local function unknown_csrc(mods)
+
+end
+
 local function duplicate_titles(docs)
 	local titles = {}
 	for doc,t in pairs(docs) do
@@ -360,8 +363,6 @@ local function print_cat_tree(tree)
 end
 
 --main
-
-lfs.chdir'..'
 
 local pkgs = get_packages()
 local docs = get_docs()

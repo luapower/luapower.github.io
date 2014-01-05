@@ -1,7 +1,7 @@
 ---
-project: lua-files-devel
-title:   lua-files
-tagline: LuaJIT + batteries
+project:  lua-files-devel
+title:    lua-files
+tagline:  LuaJIT + batteries
 ---
 
 ## TL;dr
