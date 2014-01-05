@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> glue   - everyday Lua functions </title>
+		<title> glue_literate  </title>
 				<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -26,219 +26,22 @@
 				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
-							<h1> glue </h1>
-							<h2> everyday Lua functions </h2>
+							<h1> glue_literate </h1>
+							<h2> &nbsp; </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
-																						<table><tr><td>
-								<a href="https://github.com/capr/glue" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr><td>
-								<a href="https://github.com/capr/glue/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
-								</td></tr><tr><td>
-								<a href="https://github.com/capr/glue/zipball/master" class="btn btn-rightside">Download as .zip</a>
-								</td></tr></table>
-													</td>
+																				</td>
 					</tr>
 				</table>
-								<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/capr/glue/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
-				</div>
 							</div>
 		</header>
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
-				<h2 id="local-glue-requireglue"><code>local glue = require'glue'</code></h2>
-<table>
-<tbody>
-<tr class="odd">
-<td align="left"><strong>tables</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">glue.index(t) -&gt; dt</td>
-<td align="left"><a href="#index">switch keys with values</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.keys(t[, sorted | cmp]) -&gt; dt</td>
-<td align="left"><a href="#keys">make a list of all the keys</a></td>
-</tr>
-<tr class="even">
-<td align="left">glue.update(dt,t1,...) -&gt; dt</td>
-<td align="left"><a href="#update">merge tables - overwrites keys</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.merge(dt,t1,...) -&gt; dt</td>
-<td align="left"><a href="#merge">merge tables - no overwriting</a></td>
-</tr>
-<tr class="even">
-<td align="left">glue.sortedpairs(t[, cmp])-&gt; iterator<k,v></td>
-<td align="left"><a href="#sortedpairs">like pairs() but in key order</a></td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>lists</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">glue.extend(dt,t1,...) -&gt; dt</td>
-<td align="left"><a href="#extend">extend a list</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.append(dt,v1,...) -&gt; dt</td>
-<td align="left"><a href="#append">append values to a list</a></td>
-</tr>
-<tr class="even">
-<td align="left">glue.shift(t,i,n) -&gt; t</td>
-<td align="left"><a href="#shift">shift list elements</a></td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>strings</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">glue.gsplit(s,sep[, plain]) -&gt; iterator<e[,captures...]></td>
-<td align="left"><a href="#gsplit">split a string by a pattern</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.trim(s) -&gt; s</td>
-<td align="left"><a href="#trim">remove padding</a></td>
-</tr>
-<tr class="even">
-<td align="left">glue.escape(s[,mode])-&gt; s</td>
-<td align="left"><a href="#escape">escape magic pattern characters</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.tohex(s) -&gt; s</td>
-<td align="left"><a href="#tohex">string to hex</a></td>
-</tr>
-<tr class="even">
-<td align="left">glue.fromhex(s) -&gt; s</td>
-<td align="left"><a href="#fromhex">hex to string</a></td>
-</tr>
-<tr class="odd">
-<td align="left"><strong>iterators</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">glue.collect([i,]iterator)-&gt; t</td>
-<td align="left"><a href="#collect">collect iterated values into a list</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.ipcall(iterator<v1,v2,...>) -&gt; iterator<ok,v1,v2,...></td>
-<td align="left"><a href="#ipcall">iterator pcall</a></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>closures</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.pass(...) -&gt; ...</td>
-<td align="left"><a href="#pass">does nothing, returns back all arguments</a></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>metatables</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.inherit(t,parent) -&gt; t</td>
-<td align="left"><a href="#inherit">set or clear inheritance</a></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>i/o</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.fileexists(file) -&gt; true | false</td>
-<td align="left"><a href="#fileexists">check if a file exists and it's readable</a></td>
-</tr>
-<tr class="even">
-<td align="left">glue.readfile(file[format]) -&gt; s</td>
-<td align="left"><a href="#readfile">read the contents of a file into a string</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.writefile(file,s[,format])</td>
-<td align="left"><a href="#writefile">write a string to a file</a></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>errors</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.assert(v,[message[,args...]]) -&gt; args</td>
-<td align="left"><a href="#assert">assert with error message formatting</a></td>
-</tr>
-<tr class="even">
-<td align="left">glue.unprotect(ok,result,...) -&gt; result,... | nil,result,...</td>
-<td align="left"><a href="#unprotect">unprotect a protected call</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.pcall(f,...) -&gt; true,... | false,traceback</td>
-<td align="left"><a href="#pcall">pcall with traceback</a> <em>(not for Lua 5.1)</em></td>
-</tr>
-<tr class="even">
-<td align="left">glue.fpcall(f,...) -&gt; result | nil,traceback</td>
-<td align="left"><a href="#fpcall">coding with finally and except</a></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.fcall(f,...) -&gt; result</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>modules</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">glue.autoload(t, submodule_t) -&gt; t</td>
-<td align="left"><a href="#autoload">autoload table keys from submodules</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="glue.indext---dt"><code id="index">glue.index(t) -&gt; dt</code></h2>
-<p>Switch table keys with values.</p>
-<h3 id="examples">Examples:</h3>
-<p>Extract a rfc850 date from a string. Use lookup tables for weekdays and months.</p>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">weekdays</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>index<span class="ot">{</span><span class="st">&#39;Sunday&#39;</span><span class="ot">,</span> <span class="st">&#39;Monday&#39;</span><span class="ot">,</span> <span class="st">&#39;Tuesday&#39;</span><span class="ot">,</span> <span class="st">&#39;Wednesday&#39;</span><span class="ot">,</span> <span class="st">&#39;Thursday&#39;</span><span class="ot">,</span> <span class="st">&#39;Friday&#39;</span><span class="ot">,</span> <span class="st">&#39;Saturday&#39;</span><span class="ot">}</span>
-<span class="kw">local</span> <span class="kw">months</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>index<span class="ot">{</span><span class="st">&#39;Jan&#39;</span><span class="ot">,</span> <span class="st">&#39;Feb&#39;</span><span class="ot">,</span> <span class="st">&#39;Mar&#39;</span><span class="ot">,</span> <span class="st">&#39;Apr&#39;</span><span class="ot">,</span> <span class="st">&#39;May&#39;</span><span class="ot">,</span> <span class="st">&#39;Jun&#39;</span><span class="ot">,</span> <span class="st">&#39;Jul&#39;</span><span class="ot">,</span> <span class="st">&#39;Aug&#39;</span><span class="ot">,</span> <span class="st">&#39;Sep&#39;</span><span class="ot">,</span> <span class="st">&#39;Oct&#39;</span><span class="ot">,</span> <span class="st">&#39;Nov&#39;</span><span class="ot">,</span> <span class="st">&#39;Dec&#39;</span><span class="ot">}</span>
-
-<span class="co">--weekday &quot;,&quot; SP 2DIGIT &quot;-&quot; month &quot;-&quot; 2DIGIT SP 2DIGIT &quot;:&quot; 2DIGIT &quot;:&quot; 2DIGIT SP &quot;GMT&quot;</span>
-<span class="co">--eg. Sunday, 06-Nov-94 08:49:37 GMT</span>
-<span class="kw">function</span> rfc850date<span class="ot">(</span><span class="kw">s</span><span class="ot">)</span>
-   <span class="kw">local</span> <span class="kw">w</span><span class="ot">,</span><span class="kw">d</span><span class="ot">,</span><span class="kw">mo</span><span class="ot">,</span><span class="kw">y</span><span class="ot">,</span><span class="kw">h</span><span class="ot">,</span><span class="kw">m</span><span class="ot">,</span><span class="kw">s</span> <span class="ot">=</span> <span class="kw">s</span>:match<span class="st">&#39;([A-Za-z]+), (%d+)%-([A-Za-z]+)%-(%d+) (%d+):(%d+):(%d+) GMT&#39;</span>
-   <span class="kw">d</span><span class="ot">,</span><span class="kw">y</span><span class="ot">,</span><span class="kw">h</span><span class="ot">,</span><span class="kw">m</span><span class="ot">,</span><span class="kw">s</span> <span class="ot">=</span> <span class="fu">tonumber</span><span class="ot">(</span><span class="kw">d</span><span class="ot">),</span><span class="fu">tonumber</span><span class="ot">(</span><span class="kw">y</span><span class="ot">),</span><span class="fu">tonumber</span><span class="ot">(</span><span class="kw">h</span><span class="ot">),</span><span class="fu">tonumber</span><span class="ot">(</span><span class="kw">m</span><span class="ot">),</span><span class="fu">tonumber</span><span class="ot">(</span><span class="kw">s</span><span class="ot">)</span>
-   <span class="kw">w</span> <span class="ot">=</span> <span class="fu">assert</span><span class="ot">(</span><span class="kw">weekdays</span><span class="ot">[</span><span class="kw">w</span><span class="ot">])</span>
-   <span class="kw">mo</span> <span class="ot">=</span> <span class="fu">assert</span><span class="ot">(</span><span class="kw">months</span><span class="ot">[</span><span class="kw">mo</span><span class="ot">])</span>
-   <span class="kw">if</span> <span class="kw">y</span> <span class="kw">then</span> <span class="kw">y</span> <span class="ot">=</span> <span class="kw">y</span> <span class="ot">+</span> <span class="ot">(</span><span class="kw">y</span> <span class="ot">&gt;</span> <span class="dv">50</span> <span class="kw">and</span> <span class="dv">1900</span> <span class="kw">or</span> <span class="dv">2000</span><span class="ot">)</span> <span class="kw">end</span>
-   <span class="kw">return</span> <span class="ot">{</span><span class="kw">wday</span> <span class="ot">=</span> <span class="kw">w</span><span class="ot">,</span> <span class="kw">day</span> <span class="ot">=</span> <span class="kw">d</span><span class="ot">,</span> <span class="kw">year</span> <span class="ot">=</span> <span class="kw">y</span><span class="ot">,</span> <span class="kw">month</span> <span class="ot">=</span> <span class="kw">mo</span><span class="ot">,</span> <span class="kw">hour</span> <span class="ot">=</span> <span class="kw">h</span><span class="ot">,</span> <span class="fu">min</span> <span class="ot">=</span> <span class="kw">m</span><span class="ot">,</span> <span class="kw">sec</span> <span class="ot">=</span> <span class="kw">s</span><span class="ot">}</span>
-<span class="kw">end</span>
-
-<span class="kw">for</span> <span class="kw">k</span><span class="ot">,</span><span class="kw">v</span> <span class="kw">in</span> <span class="fu">pairs</span><span class="ot">(</span>rfc850date<span class="st">&#39;Sunday, 06-Nov-94 08:49:37 GMT&#39;</span><span class="ot">)</span> <span class="kw">do</span>
-   <span class="fu">print</span><span class="ot">(</span><span class="kw">k</span><span class="ot">,</span><span class="kw">v</span><span class="ot">)</span>
-<span class="kw">end</span></code></pre>
-<p>Output:</p>
-<pre><code>day 6
-sec 37
-wday    1
-min 49
-year    1994
-month   11
-hour    8</code></pre>
-<p>Copy-paste a bunch of defines from a C header file and create an inverse lookup table to find the name of a value at runtime.</p>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--from ibase.h</span>
-<span class="kw">info_end_codes</span> <span class="ot">=</span> <span class="ot">{</span>
-   <span class="kw">isc_info_end</span>             <span class="ot">=</span> <span class="dv">1</span><span class="ot">,</span>  <span class="co">--normal ending</span>
-   <span class="kw">isc_info_truncated</span>       <span class="ot">=</span> <span class="dv">2</span><span class="ot">,</span>  <span class="co">--receiving buffer too small</span>
-   <span class="kw">isc_info_error</span>           <span class="ot">=</span> <span class="dv">3</span><span class="ot">,</span>  <span class="co">--error, check status vector</span>
-   <span class="kw">isc_info_data_not_ready</span>  <span class="ot">=</span> <span class="dv">4</span><span class="ot">,</span>  <span class="co">--data not available for some reason</span>
-   <span class="kw">isc_info_svc_timeout</span>     <span class="ot">=</span> <span class="dv">64</span><span class="ot">,</span> <span class="co">--timeout expired</span>
-<span class="ot">}</span>
-<span class="kw">info_end_code_names</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>index<span class="ot">(</span><span class="kw">info_end_codes</span><span class="ot">)</span>
-<span class="fu">print</span><span class="ot">(</span><span class="kw">info_end_code_names</span><span class="ot">[</span><span class="dv">64</span><span class="ot">])</span></code></pre>
-<p>Output:</p>
-<pre><code>isc_info_svc_timeout</code></pre>
-<hr />
+				<hr />
 <h2 id="glue.keyst-sorted-cmp---dt"><code id="keys">glue.keys(t[, sorted | cmp]) -&gt; dt</code></h2>
 <p>Make a list of all the keys of <code>t</code>, optionally sorted.</p>
-<h3 id="examples-1">Examples:</h3>
+<h3 id="examples">Examples:</h3>
 <p>An API expects a list of things but you have them as keys in a table because you are indexing something on them.</p>
 <p>For instance, you have a table of the form <code>{socket = thread}</code> but <code>socket.select</code> wants a list of sockets.</p>
 <p>See also: <a href="#sortedpairs">glue.sortedpairs</a>.</p>
@@ -248,7 +51,7 @@ hour    8</code></pre>
 <ul>
 <li>nil arguments are skipped.</li>
 </ul>
-<h3 id="examples-2">Examples:</h3>
+<h3 id="examples-1">Examples:</h3>
 <p>Create an options table by merging the options received as an argument (if any) over the default options.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> f<span class="ot">(</span><span class="kw">opts</span><span class="ot">)</span>
    <span class="kw">opts</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>update<span class="ot">({},</span> <span class="kw">default_opts</span><span class="ot">,</span> <span class="kw">opts</span><span class="ot">)</span>
@@ -264,7 +67,7 @@ hour    8</code></pre>
 <ul>
 <li>nil arguments are skipped.</li>
 </ul>
-<h3 id="examples-3">Examples:</h3>
+<h3 id="examples-2">Examples:</h3>
 <p>Normalize a data object with default values:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">glue</span><span class="ot">.</span>merge<span class="ot">(</span><span class="kw">t</span><span class="ot">,</span> <span class="kw">defaults</span><span class="ot">)</span></code></pre>
 <p>See also: <a href="#update">glue.update</a>.</p>
@@ -306,7 +109,7 @@ hour    8</code></pre>
 <li>empty strings between separators are always returned, eg. <code>glue.gsplit(',', ',')</code> produces 2 empty strings</li>
 <li>captures are allowed in sep and they are returned after the element, except for the last element for which they don't match (by definition).</li>
 </ul>
-<h3 id="examples-4">Examples:</h3>
+<h3 id="examples-3">Examples:</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">for</span> <span class="kw">s</span> <span class="kw">in</span> <span class="kw">glue</span><span class="ot">.</span>gsplit<span class="ot">(</span><span class="st">&#39;Spam eggs spam spam and ham&#39;</span><span class="ot">,</span> <span class="st">&#39;%s*spam%s*&#39;</span><span class="ot">)</span> <span class="kw">do</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;&quot;&#39;</span><span class="ot">..</span><span class="kw">s</span><span class="ot">..</span><span class="st">&#39;&quot;&#39;</span><span class="ot">)</span>
 <span class="kw">end</span>
@@ -356,7 +159,7 @@ hour    8</code></pre>
 <ul>
 <li>i defaults to 1</li>
 </ul>
-<h3 id="examples-5">Examples:</h3>
+<h3 id="examples-4">Examples:</h3>
 <p>Implementation of <code>keys()</code> and <code>values()</code> in terms of <code>collect()</code></p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">keys</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">t</span><span class="ot">)</span> <span class="kw">return</span> <span class="kw">glue</span><span class="ot">.</span>collect<span class="ot">(</span><span class="fu">pairs</span><span class="ot">(</span><span class="kw">t</span><span class="ot">))</span> <span class="kw">end</span>
 <span class="kw">values</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">t</span><span class="ot">)</span> <span class="kw">return</span> <span class="kw">glue</span><span class="ot">.</span>collect<span class="ot">(</span><span class="dv">2</span><span class="ot">,</span><span class="fu">pairs</span><span class="ot">(</span><span class="kw">t</span><span class="ot">))</span> <span class="kw">end</span></code></pre>
@@ -391,7 +194,7 @@ hour    8</code></pre>
 <h2 id="glue.inheritt-nil---t"><code>glue.inherit(t, nil) -&gt; t</code></h2>
 <p>Set a table to inherit attributes from a parent table, or clear inheritance.</p>
 <p>If the table has no metatable (and inheritance has to be set, not cleared) make it one.</p>
-<h3 id="examples-6">Examples:</h3>
+<h3 id="examples-5">Examples:</h3>
 <p>Logging mixin:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">AbstractLogger</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>inherit<span class="ot">({},</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">t</span><span class="ot">,</span><span class="kw">k</span><span class="ot">)</span> <span class="fu">error</span><span class="ot">(</span><span class="st">&#39;abstract &#39;</span><span class="ot">..</span><span class="kw">k</span><span class="ot">)</span> <span class="kw">end</span><span class="ot">)</span>
 <span class="kw">NullLogger</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>inherit<span class="ot">({</span><span class="fu">log</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">()</span> <span class="kw">end</span><span class="ot">},</span> <span class="kw">AbstractLogger</span><span class="ot">)</span>

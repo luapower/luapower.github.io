@@ -9,9 +9,9 @@
 		<script src="templates/main.js"></script>
 		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
-		<div id="lights_css"></div>
+		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights(); //set the lights before rendering starts
+			set_lights() //set the lights before rendering starts
 		</script>
 	</head>
 	<body>
@@ -46,9 +46,7 @@
 							</div>
 		</header>
 		<div class="container">
-			<div class="toc_container">
-				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
-			</div>
+			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
 				<p>The OpenGL API is not usually found in a OS as a straight C library, or at least not all of it is. Instead, the OS supplies a loader API (called WGL in Windows, GLX in Linux, CGL in MacOS X) through which you retrieve pointers to actual OpenGL functions. So while the OpenGL functions and constants themselves are standard, you can only get access to a working OpenGL namespace through a platform-specific API.</p>
 <h2 id="local-gl-requirewinapi.gl11"><code>local gl = require'winapi.gl11'</code></h2>
@@ -82,24 +80,6 @@
 <li>make a binding to regal instead, which should be faster or at least more memory efficient.</li>
 </ul>
 			</section>
-
-			<!--
-			<div id="disqus_thread"></div>
-				 <script type="text/javascript">
-					  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					  var disqus_shortname = 'luafiles'; // required: replace example with your forum shortname
-
-					  /* * * DON'T EDIT BELOW THIS LINE * * */
-					  (function() {
-							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-					  })();
-				 </script>
-				 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-			-->
-
 		</div>
 		<div class="container">
 			<footer>
@@ -108,3 +88,4 @@
 		</div>
 			</body>
 </html>
+

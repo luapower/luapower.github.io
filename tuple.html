@@ -9,9 +9,9 @@
 		<script src="templates/main.js"></script>
 		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
-		<div id="lights_css"></div>
+		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights(); //set the lights before rendering starts
+			set_lights() //set the lights before rendering starts
 		</script>
 	</head>
 	<body>
@@ -46,9 +46,7 @@
 							</div>
 		</header>
 		<div class="container">
-			<div class="toc_container">
-				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
-			</div>
+			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
 				<h2 id="local-tuple-requiretuple"><code>local tuple = require'tuple'</code></h2>
 <p>Real tuples are immutable lists that can be used as table keys because they have value semantics, i.e. the tuple constructor returns the same identity for the exact same list of identities. If you don't need this property, [vararg vararg.pack()] is a faster and more memory efficient way to store small lists of values.</p>
@@ -60,24 +58,6 @@
 <p>local tup = tuple('a',0/0,2,nil) local t = {[tup] = 'here'} assert(t[tuple('a',0/0,2,nil)] == 'here') assert(t[tuple('a',0/0,2)] == nil) print(tup()) &gt; a nan 2 nil <sub>~</sub></p>
 <p><em><em>Implementation note</em>: all the tuple elements of all the tuples created with this function are indexed internally with a global weak hash tree. This means that creating a tuple takes N hash lookups and M table creations, where N+M is the number of elements of the tuple. Lookup time depends on how dense the tree is on the search path, which depends on how many existing tuples share a first sequence of elements with the tuple being created. In particular, creating tuples out of all permutations of a certain set of values hits the worst case for hash lookup time, but creates the minimum amount of tables relative to the number of tuples.</em></p>
 			</section>
-
-			<!--
-			<div id="disqus_thread"></div>
-				 <script type="text/javascript">
-					  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					  var disqus_shortname = 'luafiles'; // required: replace example with your forum shortname
-
-					  /* * * DON'T EDIT BELOW THIS LINE * * */
-					  (function() {
-							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-					  })();
-				 </script>
-				 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-			-->
-
 		</div>
 		<div class="container">
 			<footer>
@@ -86,3 +66,4 @@
 		</div>
 			</body>
 </html>
+

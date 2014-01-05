@@ -9,9 +9,9 @@
 		<script src="templates/main.js"></script>
 		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
-		<div id="lights_css"></div>
+		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights(); //set the lights before rendering starts
+			set_lights() //set the lights before rendering starts
 		</script>
 	</head>
 	<body>
@@ -46,9 +46,7 @@
 							</div>
 		</header>
 		<div class="container">
-			<div class="toc_container">
-				<iframe src="toc.html" scrolling="no" onload="resize_iframe(this)"></iframe>
-			</div>
+			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
 				<p>Here's how the process of binding a subset of winapi for the purpose of writing a humble Win32 GUI could lead you to write this library in the end.</p>
 <p>So you are on Windows and you want to write a GUI. With just the ffi, the headers from the Windows SDK and the good old MSDN you could bind enough of winapi to get by. So you start binding and transcribing to Lua the necessary functions, macros and constants for windows and controls and messages and all that's needed to get the app off the ground.</p>
@@ -67,24 +65,6 @@
 <p>Finally, you may remember how Delphi had a simple yet very effective layouting system based on anchors. Windows doesn't come with that, so you write that too.</p>
 <p>This is more/less where the winapi binding is right now, and this is the process that got it here. There are still a lot of missing pieces of this huge API, but there's an infrastructure of utilities and conventions and code organization in place (which is outlined in the <a href="winapi_binding.html">dev doc</a>) that makes further work on the library relatively painless and opens it up for collaboration.</p>
 			</section>
-
-			<!--
-			<div id="disqus_thread"></div>
-				 <script type="text/javascript">
-					  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					  var disqus_shortname = 'luafiles'; // required: replace example with your forum shortname
-
-					  /* * * DON'T EDIT BELOW THIS LINE * * */
-					  (function() {
-							var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-							dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-							(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-					  })();
-				 </script>
-				 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-			-->
-
 		</div>
 		<div class="container">
 			<footer>
@@ -93,3 +73,4 @@
 		</div>
 			</body>
 </html>
+
