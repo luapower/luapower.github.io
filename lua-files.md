@@ -50,30 +50,20 @@ pure Lua                                        Lua+ffi                         
   * test program: `<lib>_test.lua`
   * demo: `<lib>_demo.lua`
   * documentation: `<lib>.md`
-  * C lib sources: `csrc/<lib>/*`
-  * C lib build script: `csrc/<lib>/build-<platform>.sh`
-  * C lib binary: `bin/mingw32/<lib>.dll`, `bin/linux32/lib<lib>.so`
+  * C libs:
+    * sources: `csrc/<lib>/*`
+    * build scripts: `csrc/<lib>/build-<platform>.sh`
+    * binaries: `bin/mingw32/<lib>.dll`, `bin/linux32/lib<lib>.so`
   * LuaJIT executable: `bin/<platform>/luajit`
 
 ## In Detail
 
-A selection of the best Lua and C libraries out there, chosen for speed, portability.
+A selection of the best Lua and C libraries out there, chosen for speed, portability, API stability and a free license.
 
-My code is in public domain, most libraries are MIT, very few are GPL.
-
-Sources are indented with tabs so you can use any indentation with your editor without the
-need to convert the files.
-
-Portability varies between libraries. Some are Windows specific, some use the ffi API,
-some specifically target LuaJIT for speed, while others are written in plain Lua and
-should work on any platform. This is documented for each module individually.
-
-Windows binaries for all C/C++ libraries are available in `bin`.
-They are built using the sources and build scripts from `csrc`.
-Everything is compiled with MinGW's GCC with `-O3 -s` and linked against msvcrt.dll,
+Windows dlls are compiled with MinGW GCC 4.7 with `-O3 -s` and linked against msvcrt.dll,
 using one-liner build scripts which "just work" provided you have MinGW in your `PATH`.
 
-My own code is in public domain as I do not support copyright law.
-Third-party code has its licensing in or near the sources.
-Generally, I tried to avoid viral GPL with some exceptions.
+My own code is in public domain as I do not support copyright law. Most other libs are MIT.
+
+An updated list of packages, with versioning and license info is coming soon. Stay tuned.
 

@@ -67,7 +67,7 @@ local function get_docs()
 	local docs = find('^(.-)%.md$', '.')
 	for doc,t in pairs(docs) do
 		parse_tags(doc, t)
-		t.title = t.title or doc --default title the doc's name
+		t.title = t.title or doc --default title is the doc's filename without extension
 	end
 	return docs
 end
@@ -75,10 +75,10 @@ end
 --get the modules and their parents
 
 local function get_module_names()
-	local mods = {} -- *.lua -> {module_name = {module_parent=''}}
+	local mods = {} -- *.lua -> {module_name = {parent_module=''}}
 	for f,p in dir('.', 'recurse') do
 		local m = f:match'^(.-)%.lua$'
-		if m and (not p or (not p:match'^csrc/' and not p:match'^_')) then
+		if m and (not p or (not p:match'^bin/' and not p:match'^csrc/' and not p:match'^media/' and not p:match'^_')) then
 			m = (p and p:gsub('/', '.') .. '.' or '') .. m --path,file -> module name
 			mods[m] = {}
 		end
@@ -86,44 +86,65 @@ local function get_module_names()
 	return mods
 end
 
-local function module_parent_name(mod) --parent module name based on mod.submod and mod_submod conventions
+local function parent_module_name(mod) --parent module name based on mod.submod and mod_submod conventions
 	local parent = mod:match'(.-)[_%.][^_%.]+$'
 	if not parent or parent == '' then return end
 	return parent
 end
 
-local function module_parent(mod, mods) --ancestor module (parent, grandad etc) that exists
-	local parent = module_parent_name(mod)
+local function parent_module(mod, mods) --the first ancestor module (parent, grandad etc) that actually exists
+	local parent = parent_module_name(mod)
 	if not parent then return end
-	return mods[parent] and parent or module_parent(parent, mods)
+	return mods[parent] and parent or parent_module(parent, mods)
 end
 
 local function get_modules()
 	local mods = get_module_names()
 	for mod,t in pairs(mods) do
-		t.module_parent = module_parent(mod, mods)
+		t.parent_module = parent_module(mod, mods)
 	end
 	return mods
 end
 
 --get the list of dependencies for documented modules
+
 local function get_module_dependencies(mods, docs)
 	for doc,t in pairs(docs) do
 		local mod = doc
-		if mods[mod] and not mods[mod].module_parent then
+		if mods[mod] and not mods[mod].parent_module then
 			mods[mod].dependencies = module_dependencies(mod)
 		end
 	end
 end
 
---get the packages and infer package info
+--get the C source packages and their info
+
+local function parse_what_file(cpkg, t)
+	local f = assert(io.open('csrc/' .. cpkg .. '/WHAT'), 'WHAT file missing for '.. cpkg)
+	local s = assert(f:read'*l', 'invalid WHAT file for '.. cpkg)
+	t.realname, t.version, t.url, t.license = s:match('^(.-)%s+(.-)%s+from%s+(.-)%s+%((.*)%)$')
+	if not t.realname then error('invalid WHAT file for '.. cpkg) end
+	f:close()
+end
+
+local function get_csrc_packages()
+	local cpkgs = {} -- csrc/*/WHAT -> {package_name = {name=, version=, url=, license=}}
+	for cpkg, p, mode in dir('csrc') do
+		if mode == 'directory' then
+			local t = {}
+			cpkgs[cpkg] = t
+			parse_what_file(cpkg, t)
+			--get supported platforms by checking for the existence of csrc/<package>/build-<platform>.sh scripts.
+			t.platforms = find('^build%-(.-)%.sh$', 'csrc/'..cpkg, nil, true)
+		end
+	end
+	return cpkgs
+end
+
+--get the git packages
 
 local function get_packages()
 	local pkgs = find('^(.-)%.exclude$', '_git') -- _git/*.exclude -> {package_name = {}}
-	for pkg,t in pairs(pkgs) do
-		--get supported platforms by checking for the existence of csrc/<package>/build-<platform>.sh scripts.
-		t.platforms = find('^build%-(.-)%.sh$', 'csrc/'..pkg, false, true)
-	end
 	--TODO: infer the package type
 	return pkgs
 end
@@ -145,27 +166,22 @@ end
 
 --infer doc categories where missing
 
-local function set_missing_doc_categories(docs, mods)
-	for doc,t in pairs(docs) do --fix categories for submodules and project sub-documents
-		if not t.category then
-			if mods[doc] then --it's a module
-				local module_parent = mods[doc].module_parent
-				if module_parent then --it's a submodule
-					if docs[module_parent] then --it's parent module is documented
-						t.category = docs[module_parent].title
-					end
-				end
-				if not t.category then
-					t.category = 'Other'
-				end
-			elseif t.project then --it's a document belonging to a project
-				if docs[t.project] then --the project is documented
-					t.category = docs[t.project].title
-				end
+local function fix_missing_doc_categories(docs, mods)
+	for doc,t in pairs(docs) do
+		--attach submodule docs to their parent module docs
+		if not t.category and mods[doc] then --the doc matches a module name
+			local parent_module = mods[doc].parent_module
+			if parent_module and docs[parent_module] then --it's a submodule and its parent module is documented
+				t.category = docs[parent_module].title
 			end
 		end
-		if not t.category then --couldn't tie it to anything, must be a blabering doc
-			t.category = 'Prose'
+		--attach docs of projects to their project doc
+		if not t.category and t.project and docs[t.project] then --its project is documented
+			t.category = docs[t.project].title
+		end
+		--attach uncategorized docs to default categories
+		if not t.category then
+			t.category = mods[doc] and 'Other' or 'Prose'
 		end
 	end
 end
@@ -253,7 +269,7 @@ local single_page_doc_modules = {
 	sg_cairo=1,
 }
 local function no_doc_submodule(mod, mods)
-	local parent = mods[mod].module_parent
+	local parent = mods[mod].parent_module
 	return parent and single_page_doc_modules[parent]
 end
 
@@ -281,7 +297,7 @@ local external_modules = {
 }
 local function external_module(mod)
 	repeat
-		mod = module_parent_name(mod)
+		mod = parent_module_name(mod)
 		if external_modules[mod] then return true end
 	until not mod
 end
@@ -306,7 +322,7 @@ local function undocumented_modules(mods, docs, include_submodules)
 	local t = {}
 	for mod in pairs(mods) do
 		if not docs[mod] and not no_doc_module(mod, mods) then
-			if include_submodules or not mods[mod].module_parent then
+			if include_submodules or not mods[mod].parent_module then
 				t[mod] = true
 			end
 		end
@@ -367,14 +383,25 @@ end
 local pkgs = get_packages()
 local docs = get_docs()
 local mods = get_modules()
+local cpkgs = get_csrc_packages()
 get_package_versions(pkgs)
-get_module_dependencies(mods, docs)
-set_missing_doc_categories(docs, mods)
-local tree = get_cat_tree(docs, mods)
+get_module_dependencies(mods, docs) --only for documented modules
+fix_missing_doc_categories(docs, mods) --attach modules to their parents and other docs to their projects
 
+if false then
+	pp(pkgs.cairo)
+	pp(docs.cairo)
+	pp(mods.cairo)
+	pp(cpkgs.cairo)
+end
+
+local tree = get_cat_tree(docs, mods)
+print_cat_tree(tree)
+
+--[[
 undocumented_packages(pkgs, docs)
 undocumented_modules(mods, docs)
 uncategorized_modules(mods, docs)
 duplicate_titles(docs)
 print_cat_tree(tree)
-
+]]

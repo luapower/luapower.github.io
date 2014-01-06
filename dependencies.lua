@@ -2,7 +2,7 @@
 --can be used standalone, as a script, or required as a module.
 --CAVEAT: can't find modules loaded conditionally based on OS type.
 
-local function get_dependencies(module_name, display)
+local function get_dependencies_worker(module_name, display)
 
 	--standard names to appear in the list before other names
 	local std = {}
@@ -12,7 +12,7 @@ local function get_dependencies(module_name, display)
 	std.ffi = true
 	std.jit = true
 
-	--excluded names, to ignore
+	--built-in libraries, to ignore
 	local exclude = {string = true, table = true, coroutine = true, package = true, io = true}
 
 	local function is_submodule(name) --check if name is a submodule of module_name
@@ -72,6 +72,12 @@ local function get_dependencies(module_name, display)
 	end)
 
 	return t
+end
+
+local lanes = require'lanes'.configure()
+
+local function get_dependencies(...)
+	return lanes.gen('*', get_dependencies_worker)(...)[1]
 end
 
 --use as script

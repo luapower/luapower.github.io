@@ -72,7 +72,7 @@
 <td align="left">everyday functions</td>
 <td align="left"><a href="md5.html">md5</a></td>
 <td align="left">MD5</td>
-<td align="left"><a href="http://www.inf.puc-rio.br/~roberto/lpeg/">lpeg</a></td>
+<td align="left"><a href="lpeg.html">lpeg</a></td>
 <td align="left">PEGs</td>
 </tr>
 <tr class="even">
@@ -88,7 +88,7 @@
 <td align="left">symmetric coroutines</td>
 <td align="left"><a href="zlib.html">zlib</a></td>
 <td align="left">deflate, gzip</td>
-<td align="left"><a href="http://www.inf.puc-rio.br/~roberto/struct/">struct</a></td>
+<td align="left"><a href="struct.html">struct</a></td>
 <td align="left">structs</td>
 </tr>
 <tr class="even">
@@ -104,7 +104,7 @@
 <td align="left">OOP</td>
 <td align="left"><a href="pmurhash.html">pmurhash</a></td>
 <td align="left">murmurhash</td>
-<td align="left"><a href="http://w3.impa.br/~diego/software/luasocket/reference.html">luasocket</a></td>
+<td align="left"><a href="luasocket.html">luasocket</a></td>
 <td align="left">sockets</td>
 </tr>
 <tr class="even">
@@ -112,7 +112,7 @@
 <td align="left">UTF-8</td>
 <td align="left"><a href="libb64.html">libb64</a></td>
 <td align="left">base64</td>
-<td align="left"><a href="http://keplerproject.github.com/luafilesystem/manual.html#reference">lfs</a></td>
+<td align="left"><a href="lfs.html">lfs</a></td>
 <td align="left">file system</td>
 </tr>
 <tr class="odd">
@@ -120,7 +120,7 @@
 <td align="left">doubly-linked lists</td>
 <td align="left"><a href="expat.html">expat</a></td>
 <td align="left">XML parsing</td>
-<td align="left"><a href="http://www.kyne.com.au/~mark/software/lua-cjson-manual.html#_api_functions">cjson</a></td>
+<td align="left"><a href="cjson.html">cjson</a></td>
 <td align="left">JSON</td>
 </tr>
 <tr class="even">
@@ -270,7 +270,7 @@
 <tr class="even">
 <td align="left"><a href="easing.html">easing</a></td>
 <td align="left">for tweening</td>
-<td align="left"><a href="http://www.videolan.org/developers/vlc/doc/doxygen/html/modules.html">libvlc</a></td>
+<td align="left"><a href="libvlc.html">libvlc</a></td>
 <td align="left">video playing</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -293,18 +293,19 @@
 <li>test program: <code>&lt;lib&gt;_test.lua</code></li>
 <li>demo: <code>&lt;lib&gt;_demo.lua</code></li>
 <li>documentation: <code>&lt;lib&gt;.md</code></li>
-<li>C lib sources: <code>csrc/&lt;lib&gt;/*</code></li>
-<li>C lib build script: <code>csrc/&lt;lib&gt;/build-&lt;platform&gt;.sh</code></li>
-<li>C lib binary: <code>bin/mingw32/&lt;lib&gt;.dll</code>, <code>bin/linux32/lib&lt;lib&gt;.so</code></li>
+<li>C libs:
+<ul>
+<li>sources: <code>csrc/&lt;lib&gt;/*</code></li>
+<li>build scripts: <code>csrc/&lt;lib&gt;/build-&lt;platform&gt;.sh</code></li>
+<li>binaries: <code>bin/mingw32/&lt;lib&gt;.dll</code>, <code>bin/linux32/lib&lt;lib&gt;.so</code></li>
+</ul></li>
 <li>LuaJIT executable: <code>bin/&lt;platform&gt;/luajit</code></li>
 </ul>
 <h2 id="in-detail">In Detail</h2>
-<p>A selection of the best Lua and C libraries out there, chosen for speed, portability.</p>
-<p>My code is in public domain, most libraries are MIT, very few are GPL.</p>
-<p>Sources are indented with tabs so you can use any indentation with your editor without the need to convert the files.</p>
-<p>Portability varies between libraries. Some are Windows specific, some use the ffi API, some specifically target LuaJIT for speed, while others are written in plain Lua and should work on any platform. This is documented for each module individually.</p>
-<p>Windows binaries for all C/C++ libraries are available in <code>bin</code>. They are built using the sources and build scripts from <code>csrc</code>. Everything is compiled with MinGW's GCC with <code>-O3 -s</code> and linked against msvcrt.dll, using one-liner build scripts which &quot;just work&quot; provided you have MinGW in your <code>PATH</code>.</p>
-<p>My own code is in public domain as I do not support copyright law. Third-party code has its licensing in or near the sources. Generally, I tried to avoid viral GPL with some exceptions.</p>
+<p>A selection of the best Lua and C libraries out there, chosen for speed, portability, API stability and a free license.</p>
+<p>Windows dlls are compiled with MinGW GCC 4.7 with <code>-O3 -s</code> and linked against msvcrt.dll, using one-liner build scripts which &quot;just work&quot; provided you have MinGW in your <code>PATH</code>.</p>
+<p>My own code is in public domain as I do not support copyright law. Most other libs are MIT.</p>
+<p>An updated list of packages, with versioning and license info is coming soon. Stay tuned.</p>
 			</section>
 		</div>
 		<div class="container">
