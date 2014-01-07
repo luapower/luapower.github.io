@@ -6,9 +6,7 @@ tagline:  Lua, JIT, batteries
 
 ![](luapower.png)
 
-## TL;dr
-
-  * Lua libraries and bindings with demos, test files, documentation, separate github repo
+  * Lua libraries and bindings with demos, documentation, separate github repos
   * C libraries with sources, binaries and build scripts for Windows and Linux
   * LuaJIT executable
   * all free
