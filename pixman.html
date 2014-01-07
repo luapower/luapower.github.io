@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> freetype   - freetype2 ffi binding </title>
+		<title> pixman   - pixman support library for cairo </title>
 				<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -26,38 +26,31 @@
 								<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
-							<h1> freetype </h1>
-							<h2> freetype2 ffi binding </h2>
+							<h1> pixman </h1>
+							<h2> pixman support library for cairo </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
-								<a href="https://github.com/luapower/freetype" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/luapower/pixman" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/luapower/freetype/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								<a href="https://github.com/luapower/pixman/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/luapower/freetype/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								<a href="https://github.com/luapower/pixman/zipball/master" class="btn btn-rightside">Download as .zip</a>
 								</td></tr></table>
 																				</td>
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/freetype/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/pixman/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
-				<h2 id="local-freetype-requirefreetype"><code>local freetype = require'freetype'</code></h2>
-<p>A ffi binding of <a href="http://freetype.org/freetype2/">FreeType 2</a>.</p>
-<div class="figure">
-<img src="screenshots/freetype_demo.png" alt="screenshot" /><p class="caption">screenshot</p>
-</div>
-<h2 id="api">API</h2>
-<p>Look at the bottom of <code>freetype.lua</code> for method names for each object type. Use the demo and test files for usage examples.</p>
-<p>Consult the <a href="http://www.freetype.org/freetype2/documentation.html">FreeType docs</a> for knowledge about fonts and rasterization.</p>
-<h2 id="binary">Binary</h2>
-<p>The included freetype binary is a <em>stripped</em> build of freetype. In particular, font formats other than ttf and cff are not supported. Also, the <em>patent-encumbered LCD filtering is enabled</em>, so it may well be illegal to use this binary in your country. If unsure, compile your own.</p>
+				<p>The pixman library is the backend for cairo's in-memory rendering (cairo image surfaces).</p>
+<p>Cairo is built to bind dynamically to pixman, so pixman is a C level dependency of cairo, there's no Lua binding for it.</p>
+<p>Check out <a href="bitmap.html">bitmap</a> for a flexible and fast Lua implementation.</p>
 			</section>
 		</div>
 		<div class="container">
