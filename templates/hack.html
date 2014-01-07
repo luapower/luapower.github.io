@@ -28,9 +28,12 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
+				$if(homepage)$
+				$else$
 				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
+				$endif$
 				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
@@ -44,6 +47,15 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 									<ol id="recently-updated-repos"></ol>
 								</div>
 							$endif$
+							$if(homepage)$
+								<table><tr><td>
+								<a href="https://github.com/luapower" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a style="visibility: hidden" href="https://github.com/luapower/$project$/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a style="visibility: hidden" href="https://github.com/luapower/$project$/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+							$else$
 							$if(project)$
 								<table><tr><td>
 								<a href="https://github.com/luapower/$project$" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
@@ -53,13 +65,17 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 								<a href="https://github.com/luapower/$project$/zipball/master" class="btn btn-rightside">Download as .zip</a>
 								</td></tr></table>
 							$endif$
+							$endif$
 						</td>
 					</tr>
 				</table>
+				$if(homepage)$
+				$else$
 				$if(project)$
 				<div class="btn-container btn-discuss-container">
 					<a href="https://github.com/luapower/$project$/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
+				$endif$
 				$endif$
 			</div>
 		</header>

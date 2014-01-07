@@ -10,7 +10,7 @@
     * [tricks][lua_tricks]
   * Basic OS
     * [lanes]
-    * [luasocket]
+    * [socket]
     * [lfs]
   * Hashing and compression
     * [md5]
@@ -70,7 +70,6 @@
     * [nanojpeg]
     * [libpng]
     * [libexif]
-    * [imagefile]
   * GUI
     * [cplayer]
     * [codedit]
