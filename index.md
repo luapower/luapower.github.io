@@ -1,5 +1,6 @@
 ---
 project:  luapower
+title:    luapower
 tagline:  Lua, JIT, batteries
 ---
 
