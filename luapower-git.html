@@ -70,7 +70,7 @@ cd _git
 </tr>
 <tr class="even">
 <td align="left">./packages.sh</td>
-<td align="left">list cloned packages</td>
+<td align="left">list local (cloned) packages</td>
 </tr>
 <tr class="odd">
 <td align="left">./clone.sh <package></td>
@@ -90,7 +90,38 @@ cd _git
 <p>NOTE: These shell scripts work in Windows too if you have MSYS in your PATH. Use the cmd wrappers then.</p>
 </blockquote>
 <h2 id="module-development">Module development</h2>
-<p>Git commands can be invoked from the work tree by passing <code>--git-dir=_git/&lt;package&gt;/.git</code> to git, or by setting the environment variable <code>GIT_DIR</code>. To ease the pain, copy the scripts from <code>_worktree_tools</code> into the worktree and use those, they are very easy to use.</p>
+<p>Git commands can be invoked from the work tree by passing <code>--git-dir=_git/&lt;package&gt;/.git</code> to git, or by setting the environment variable <code>GIT_DIR</code>. To ease the pain, copy the scripts from <code>_worktree_tools</code> into the worktree and use those, you'll be much happier. Here's how they work:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">./proj.sh</td>
+<td align="left">list available repos (local repos)</td>
+</tr>
+<tr class="even">
+<td align="left">./proj.sh <project></td>
+<td align="left">set <code>GIT_DIR</code> for a specific repo</td>
+</tr>
+<tr class="odd">
+<td align="left">./modified.sh</td>
+<td align="left">show modified files across all repos</td>
+</tr>
+<tr class="even">
+<td align="left">./unpushed.sh</td>
+<td align="left">show unpushed repos</td>
+</tr>
+<tr class="odd">
+<td align="left">./untracked.sh</td>
+<td align="left">show untracked files (takes a while)</td>
+</tr>
+<tr class="even">
+<td align="left">./versions.sh</td>
+<td align="left">show current (local) version for all repos</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Again, use the cmd wrappers if you are on Windows and prefer the cmd shell over bash.</p>
+</blockquote>
 			</section>
 		</div>
 		<div class="container">
