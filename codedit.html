@@ -21,7 +21,7 @@
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
 				<div class="btn-container btn-home-container">
-					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+					<a href="/" class="btn btn-home">luapower</a>
 				</div>
 				<table id="header_table">
 					<tr>
@@ -31,17 +31,17 @@
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
-								<a href="https://github.com/capr/codedit" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/luapower/codedit" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/capr/codedit/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								<a href="https://github.com/luapower/codedit/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/capr/codedit/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								<a href="https://github.com/luapower/codedit/zipball/master" class="btn btn-rightside">Download as .zip</a>
 								</td></tr></table>
 													</td>
 					</tr>
 				</table>
 								<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/capr/codedit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/codedit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 							</div>
 		</header>
@@ -54,29 +54,29 @@
 <p>Codedit is a source code editor engine written in Lua. It has a minimalist design, striving to capture the essence of source code editing, making it easy to explore, understand and extend. It also comes with some cool features out-of-the-box.</p>
 <h2 id="highlights">Highlights</h2>
 <ul>
-<li>utf8-ready, using a small <a href="http://code.google.com/p/lua-files/source/browse/codedit_str.lua">string module</a> over <a href="utf8.html">utf8</a>.</li>
+<li>utf8-ready, using a small <a href="https://github.com/luapower/codedit/blob/master/codedit_str.lua">string module</a> over <a href="utf8.html">utf8</a>.</li>
 <li>cross-platform: written in Lua and has no dependencies</li>
-<li>simple interface for integrating with rendering and input APIs ([https://code.google.com/p/lua-files/source/browse/cplayer/code_editor.lua example])</li>
+<li>simple interface for integrating with rendering and input APIs ([https://github.com/luapower/cplayer/blob/master/cplayer/code_editor.lua example])</li>
 <li>highly modular, with separate buffer, cursor, selection, view and controller objects, allowing multiple cursors and multiple selections.</li>
 </ul>
 <h2 id="features">Features</h2>
 <ul>
-<li><em>Buffers</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_buffer.lua">code</a>)
+<li><em>Buffers</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_buffer.lua">code</a>)
 <ul>
-<li><em>File format autodetection</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_detect.lua">code</a>)</li>
+<li><em>File format autodetection</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_detect.lua">code</a>)</li>
 <li>loading files with mixed line endings</li>
 <li>detecting the most common line ending used in the file and using that when saving the file</li>
-<li><em>Normalization</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_normal.lua">code</a>)</li>
+<li><em>Normalization</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_normal.lua">code</a>)</li>
 <li>removing spaces past end-of-line before saving</li>
 <li>removing empty lines at end-of-file before saving, or ensuring that the file ends with at least one empty line before saving</li>
-<li>undo/redo stack (<a href="http://code.google.com/p/lua-files/source/browse/codedit_undo.lua">code</a>)</li>
+<li>undo/redo stack (<a href="https://github.com/luapower/codedit/blob/master/codedit_undo.lua">code</a>)</li>
 </ul></li>
-<li><em>Selections</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_selction.lua">code</a>)
+<li><em>Selections</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_selction.lua">code</a>)
 <ul>
-<li>block (column) selection mode (<a href="http://code.google.com/p/lua-files/source/browse/codedit_blocksel.lua">code</a>)</li>
+<li>block (column) selection mode (<a href="https://github.com/luapower/codedit/blob/master/codedit_blocksel.lua">code</a>)</li>
 <li>indent/outdent (also for block selections)</li>
 </ul></li>
-<li><em>Cursors</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_cursor.lua">code</a>)
+<li><em>Cursors</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_cursor.lua">code</a>)
 <ul>
 <li>insert and overwrite insert modes, with wide overwrite caret</li>
 <li>smart tabs: use tabs only when indenting, and use spaces inside the lines</li>
@@ -85,18 +85,18 @@
 <li>auto-indent: copy the indent of the line above when pressing enter</li>
 <li>moving through words</li>
 </ul></li>
-<li><em>Rendering</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_render.lua">code</a>)
+<li><em>Rendering</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_render.lua">code</a>)
 <ul>
 <li>syntax highlighting using <a href="http://foicica.com/scintillua/">scintillua</a> lexers</li>
-<li>simple rendering and measuring API for monospace fonts (<a href="http://code.google.com/p/lua-files/source/browse/codedit_metrics.lua">code</a>)</li>
-<li>user-defined margins (<a href="http://code.google.com/p/lua-files/source/browse/codedit_margin.lua">code</a>)</li>
-<li>line numbers margin (<a href="http://code.google.com/p/lua-files/source/browse/codedit_line_numbers.lua">code</a>)</li>
+<li>simple rendering and measuring API for monospace fonts (<a href="https://github.com/luapower/codedit/blob/master/codedit_metrics.lua">code</a>)</li>
+<li>user-defined margins (<a href="https://github.com/luapower/codedit/blob/master/codedit_margin.lua">code</a>)</li>
+<li>line numbers margin (<a href="https://github.com/luapower/codedit/blob/master/codedit_line_numbers.lua">code</a>)</li>
 </ul></li>
-<li><em>Controller</em> (<a href="http://code.google.com/p/lua-files/source/browse/codedit_editor.lua">code</a>)
+<li><em>Controller</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_editor.lua">code</a>)
 <ul>
-<li>configurable key bindings and commands (<a href="http://code.google.com/p/lua-files/source/browse/codedit_keys.lua">code</a>)</li>
+<li>configurable key bindings and commands (<a href="https://github.com/luapower/codedit/blob/master/codedit_keys.lua">code</a>)</li>
 <li>simple clipboard API (stubbed to an in-process clipboard)</li>
-<li>scrolling, one line/char at a time or smooth scrolling (<a href="http://code.google.com/p/lua-files/source/browse/codedit_scroll.lua">code</a>)</li>
+<li>scrolling, one line/char at a time or smooth scrolling (<a href="https://github.com/luapower/codedit/blob/master/codedit_scroll.lua">code</a>)</li>
 <li>selecting with the mouse</li>
 </ul></li>
 </ul>

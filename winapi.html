@@ -21,7 +21,7 @@
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
 				<div class="btn-container btn-home-container">
-					<a href="lua-files.html" class="btn btn-home">lua-files</a>
+					<a href="/" class="btn btn-home">luapower</a>
 				</div>
 				<table id="header_table">
 					<tr>
@@ -31,17 +31,17 @@
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
-								<a href="https://github.com/capr/winapi" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/luapower/winapi" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/capr/winapi/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								<a href="https://github.com/luapower/winapi/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/capr/winapi/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								<a href="https://github.com/luapower/winapi/zipball/master" class="btn btn-rightside">Download as .zip</a>
 								</td></tr></table>
 													</td>
 					</tr>
 				</table>
 								<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/capr/winapi/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/winapi/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 							</div>
 		</header>
@@ -55,10 +55,7 @@
 <p>Procedural API with object API on top.</p>
 <h2 id="status">Status</h2>
 <p>In development, not active. Currently, windows and basic controls (buttons, edits, combos, tab controls etc.), as well as dialogs (color chooser, file open) and resource objects (image lists, fonts, cursors, etc.) are implemented, with a fair degree of feature coverage and some cherry on top.</p>
-<p>I also started working on a <a href="windesigner.html">designer</a> app that would serve as feature showcase, live testing environment, and ultimately as a GUI designer.</p>
-<h2 id="installation">Installation</h2>
-<p>Downloading <code>lua-files</code> will get you the winapi modules, the designer, and the luajit binary so you can start coding right away.<br> Just add <code>lua-files</code> to your <code>LUA_PATH</code> or <code>package.path</code> and run a few demos to make sure everything is properly found.</p>
-<p>The winapi modules are all in the <code>winapi</code> folder, you don't need any other modules outside of it except <code>glue.lua</code>.</p>
+<p>I also started working on a [designer][windesigner] app that would serve as feature showcase, live testing environment, and ultimately as a GUI designer.</p>
 <h2 id="example">Example</h2>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">winapi</span> <span class="ot">=</span> require<span class="st">&#39;winapi&#39;</span>
 require<span class="st">&#39;winapi.messageloop&#39;</span>

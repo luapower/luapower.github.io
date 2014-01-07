@@ -14,7 +14,7 @@ out_file="$out_dir/$docname.html"
 
 [ "$template" ] || template=hack # default template
 [ "$s" == "toc" ] && opt="$opt --variable=bare" # the TOC has no header/footer
-[ "$s" == "lua-files" ] && opt="$opt --variable=homepage" # homepage is special
+[ "$s" == "index" ] && opt="$opt --variable=homepage" # homepage is special
 
 (cat "$in_file"
 echo

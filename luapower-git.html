@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> luapower-git   - Git workflow for luapower </title>
+				<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			set_lights() //set the lights before rendering starts
+		</script>
+	</head>
+	<body>
+				<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> luapower-git </h1>
+							<h2> Git workflow for luapower </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<a href="https://github.com/luapower/luapower-git" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/luapower-git/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/luapower-git/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+													</td>
+					</tr>
+				</table>
+								<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/luapower-git/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+							</div>
+		</header>
+		<div class="container">
+			<div id="toc_container" class="toc_container doc"></div>
+			<section class="doc">
+				<h2 id="what">What?</h2>
+<p>A way to download and manage luapower packages using git.</p>
+<h2 id="why-not-just-use-git-directly">Why not just use git directly?</h2>
+<p>Because looking for modules on github and copy-pasting git URLs into the command line is boring. And because luapower packages need to be overlaid over a single directory but git repositories want to have their own separate directories by default.</p>
+<h2 id="how">How?</h2>
+<pre><code>mkdir luapower
+cd luapower
+git clone ssh://git@github.com/luapower/luapower-git _git
+cd _git
+./known-packages.sh
+./clone.sh &lt;package&gt;
+...</code></pre>
+<p>This way the packages are all cloned into <code>luapower</code> (one dir above <code>_git</code>). They all share the same git worktree which is <code>luapower</code>, but they maintain a separate git dir, at <code>_git/&lt;package&gt;/.git</code>.</p>
+<h2 id="package-management">Package management</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">./known-packages.sh</td>
+<td align="left">list all available packages</td>
+</tr>
+<tr class="even">
+<td align="left">./packages.sh</td>
+<td align="left">list cloned packages</td>
+</tr>
+<tr class="odd">
+<td align="left">./clone.sh <package></td>
+<td align="left">clone a package in the parent dir</td>
+</tr>
+<tr class="even">
+<td align="left">./clone-all.sh</td>
+<td align="left">clone all packages</td>
+</tr>
+<tr class="odd">
+<td align="left">./build-all.sh</td>
+<td align="left">build all C packages in the right order</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>NOTE: These shell scripts work in Windows too if you have MSYS in your PATH. Use the cmd wrappers then.</p>
+</blockquote>
+<h2 id="module-development">Module development</h2>
+<p>Git commands can be invoked from the work tree by passing <code>--git-dir=_git/&lt;package&gt;/.git</code> to git, or by setting the environment variable <code>GIT_DIR</code>. To ease the pain, copy the scripts from <code>_worktree_tools</code> into the worktree and use those, they are very easy to use.</p>
+			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+			</footer>
+		</div>
+			</body>
+</html>
+

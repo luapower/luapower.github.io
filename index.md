@@ -1,8 +1,9 @@
 ---
-project:  lua-files-devel
-title:    lua-files
-tagline:  LuaJIT + batteries
+project:  luapower
+tagline:  Lua, JIT, batteries
 ---
+
+![](luapower.png)
 
 ## TL;dr
 
