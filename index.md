@@ -19,7 +19,7 @@ pure Lua                                        Lua+ffi                         
 [tuple]            real tuples                  [sha2]             SHA-256/384/512              [vararg]           varargs
 [coro]             symmetric coroutines         [zlib]             deflate, gzip                [struct]           structs
 [pp]               serialization                [minizip]          ZIP files                    [lanes]            threads
-[oo]               OOP                          [pmurhash]         murmurhash                   [luasocket]        sockets
+[oo]               OOP                          [pmurhash]         murmurhash                   [socket]           sockets
 [utf8]             UTF-8                        [libb64]           base64                       [lfs]              file system
 [dlist]            doubly-linked lists          [expat]            XML parsing                  [cjson]            JSON
 [hmac]             HMAC hashing                 [genx]             XML creation
@@ -36,12 +36,12 @@ pure Lua                                        Lua+ffi                         
 [obj_parser]       wavefront obj parser         [bitmap]           in-memory bitmaps
 [obj_loader]       obj loader                   [giflib]           read GIFs
 [sg_gl_obj]        obj scene graph              [libjpeg]          read JPEGs
-[imagefile]        image files                  [libpng]           read PNGs
-[cplayer]          procedural graphics          [nanojpeg]         read JPEGs
-[codedit]          code editor                  [libexif]          EXIF info
-[color]            HSL colors                   [chipmunk]         2D physics
-[easing]           for tweening                 [libvlc]           video playing
-[eq2], [eq3]       equation solvers             [hunspell]         spell checking
+[cplayer]          procedural graphics          [libpng]           read PNGs
+[codedit]          code editor                  [nanojpeg]         read JPEGs
+[color]            HSL colors                   [libexif]          EXIF info
+[easing]           for tweening                 [chipmunk]         2D physics
+[eq2], [eq3]       equation solvers             [libvlc]           video playing
+                                                [hunspell]         spell checking
 ------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
 
 ## Directory Layout
