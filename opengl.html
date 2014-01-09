@@ -46,6 +46,7 @@
 											</div>
 		</header>
 		<div class="container">
+			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
 				<p>The OpenGL API is not usually found in a OS as a straight C library, or at least not all of it is. Instead, the OS supplies a loader API (called WGL in Windows, GLX in Linux, CGL in MacOS X) through which you retrieve pointers to actual OpenGL functions. So while the OpenGL functions and constants themselves are standard, you can only get access to a working OpenGL namespace through a platform-specific API.</p>
 <h2 id="local-gl-requirewinapi.gl11"><code>local gl = require'winapi.gl11'</code></h2>
