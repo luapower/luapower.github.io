@@ -27,6 +27,50 @@ jQuery(function() {
 	})
 })
 
+//load package table
+jQuery(function() {
+
+	$.getJSON('packages.json', function(packages) {
+
+		/*
+		var package_list = []
+		$.each(packages, function(k, t) {
+			t.name = k
+			package_list.push(t)
+		})
+
+		app.controller('myCtrl', function($scope) {
+			 $scope.myData = package_list
+			 $scope.gridOptions = {
+				  data: 'myData',
+				  showGroupPanel: true
+			 }
+		})
+		*/
+
+		var s = '<table width="100%"><tr><th width="1%">Lib</th><th width="1%">Type</th><th width="1%">Version</th><th width="20%">What</th>' +
+				'<th width="1%" align="center" colspan="2">Platforms</th>' +
+				'<th width="1%">License</th></tr>'
+		$.each(packages, function(k, t) {
+			s = s + '<tr>'
+			s = s + '<td><a href="' + k + '.html">' + k + '</td>'
+			s = s + '<td>' + t.type + '</td>'
+			s = s + '<td>' + t.git_tag + '</td>'
+			s = s + '<td>' + (t.tagline || '') + '</td>'
+			s = s + '<td align="center">' +
+				(t.platforms.mingw32 && '<img class="svg-icon" src="templates/windows.svg" width="20" height="20" alt="Win32"/>' || '') + '</td>'
+			s = s + '<td align="center">' +
+				(t.platforms.linux32 && '<img class="svg-icon" src="templates/linux.svg" width="20" height="20" alt="Tux32"/>' || '') + '</td>'
+			s = s + '<td nowrap>' + (t.c_license || 'PD') + '</td>'
+			s = s + '</tr>'
+		})
+		s = s + '</table>'
+		console.log(s)
+		$('#package_table').html(s)
+
+	})
+})
+
 // load TOC
 jQuery(function() {
 	$("#toc_container" ).load("toc.html", doc_ready)

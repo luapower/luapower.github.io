@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
 	<head>
 		<meta charset='utf-8'>
 		<title> luapower   - Lua, JIT, batteries </title>
@@ -13,8 +13,17 @@
 		<script>
 			set_lights() //set the lights before rendering starts
 		</script>
-	</head>
-	<body>
+
+		<script type="text/javascript" src="grid/lib/angular.min.js"></script>
+		<script type="text/javascript" src="grid/ng-grid-2.0.7.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="grid/ng-grid.min.css" />
+
+				<script>
+				var app = angular.module('myApp', ['ngGrid'])
+
+		</script>
+			</head>
+	<body ng-controller="MyCtrl">
 		<header>
 			<div class="container">
 				<div class="btn-container btn-lights-container">
@@ -40,7 +49,6 @@
 											</div>
 		</header>
 		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
 				<div class="figure">
 <img src="luapower.png" />
@@ -51,6 +59,7 @@
 <li>LuaJIT executable</li>
 <li>all free</li>
 </ul>
+<div style="display: none">
 <table>
 <thead>
 <tr class="header">
@@ -281,6 +290,13 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="gridStyle" ng-grid="gridOptions">
+
+</div>
+<div id="package_table" class="package_table">
+
+</div>
 <h2 id="directory-layout">Directory Layout</h2>
 <ul>
 <li>module: <code>&lt;lib&gt;.lua</code></li>

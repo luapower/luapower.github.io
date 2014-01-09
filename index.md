@@ -11,6 +11,7 @@ tagline:  Lua, JIT, batteries
   * LuaJIT executable
   * all free
 
+<div style="display: none">
 pure Lua                                        Lua+ffi                                         Lua/C
 ------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
 [glue]             everyday functions           [md5]              MD5                          [lpeg]             PEGs
@@ -41,6 +42,10 @@ pure Lua                                        Lua+ffi                         
 [eq2], [eq3]       equation solvers             [libvlc]           video playing
                                                 [hunspell]         spell checking
 ------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
+</div>
+
+<div class="gridStyle" ng-grid="gridOptions"></div>
+<div id="package_table" class="package_table"></div>
 
 ## Directory Layout
 
