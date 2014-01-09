@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="myApp">
+<html>
 	<head>
 		<meta charset='utf-8'>
 		<title> luapower   - Lua, JIT, batteries </title>
@@ -13,17 +13,8 @@
 		<script>
 			set_lights() //set the lights before rendering starts
 		</script>
-
-		<script type="text/javascript" src="grid/lib/angular.min.js"></script>
-		<script type="text/javascript" src="grid/ng-grid-2.0.7.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="grid/ng-grid.min.css" />
-
-				<script>
-				var app = angular.module('myApp', ['ngGrid'])
-
-		</script>
-			</head>
-	<body ng-controller="MyCtrl">
+	</head>
+	<body>
 		<header>
 			<div class="container">
 				<div class="btn-container btn-lights-container">
@@ -290,9 +281,6 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="gridStyle" ng-grid="gridOptions">
-
 </div>
 <div id="package_table" class="package_table">
 
