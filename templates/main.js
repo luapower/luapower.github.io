@@ -32,22 +32,6 @@ jQuery(function() {
 
 	$.getJSON('packages.json', function(packages) {
 
-		/*
-		var package_list = []
-		$.each(packages, function(k, t) {
-			t.name = k
-			package_list.push(t)
-		})
-
-		app.controller('myCtrl', function($scope) {
-			 $scope.myData = package_list
-			 $scope.gridOptions = {
-				  data: 'myData',
-				  showGroupPanel: true
-			 }
-		})
-		*/
-
 		var s = '<table width="100%"><tr><th width="1%">Lib</th><th width="1%">Type</th><th width="1%">Version</th><th width="20%">What</th>' +
 				'<th width="1%" align="center" colspan="2">Platforms</th>' +
 				'<th width="1%">License</th></tr>'

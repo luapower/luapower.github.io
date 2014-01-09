@@ -1,5 +1,5 @@
 $if(bare)$$body$$else$<!DOCTYPE html>
-<html ng-app="myApp">
+<html>
 	<head>
 		<meta charset='utf-8'>
 		<title>$if(title)$ $title$ $else$ $docname$ $endif$ $if(tagline)$ - $tagline$ $endif$</title>
@@ -16,19 +16,8 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 		<script>
 			set_lights() //set the lights before rendering starts
 		</script>
-
-		<script type="text/javascript" src="grid/lib/angular.min.js"></script>
-		<script type="text/javascript" src="grid/ng-grid-2.0.7.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="grid/ng-grid.min.css" />
-
-		$if(homepage)$
-		<script>
-				var app = angular.module('myApp', ['ngGrid'])
-
-		</script>
-		$endif$
 	</head>
-	<body ng-controller="MyCtrl">
+	<body>
 		<header>
 			<div class="container">
 				<div class="btn-container btn-lights-container">

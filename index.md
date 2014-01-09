@@ -44,7 +44,6 @@ pure Lua                                        Lua+ffi                         
 ------------------ ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
 </div>
 
-<div class="gridStyle" ng-grid="gridOptions"></div>
 <div id="package_table" class="package_table"></div>
 
 ## Directory Layout
