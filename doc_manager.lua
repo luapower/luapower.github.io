@@ -1,21 +1,90 @@
---acquire the list of packages, modules and documentation files.
---get doc metadata by reading doc's yaml header.
---get package versions using `git describe`.
---get package supported platforms by checking for the existence of build scripts.
---get module dependencies by tracking `require` calls.
---do various checks on the documentation and report missing documents and inconsistencies.
---create an automatic navigation tree for the entire documentation based on category tags and heuristics.
---TODO: generate toc.md
---TODO: generate packages.js and modules.js
+--package management API for luapower. leverages the many conventions in luapower to extract and aggregate metadata
+--about packages, modules, and documentation and perform various consistency checks.
+--it also can generate and update the list of packages to be used by the luapower.com website and the table of contents.
+--the entire API is memoized so it can be abused without worrying about doing multiple calls on the same arguments.
+--TODO: Lua/C modules are not detected!
 
-local lfs = require'lfs'; lfs.chdir'..'
+--helpers
+---------------------------------------------------------------------------
+
+--find dependencies of a module by tracing the `require` calls.
+
+local modules = {} --{module = {dep1 = true, ...}}
+local parents = {}
+local require_ = require
+
+function require(m)
+	modules[m] = modules[m] or {}
+	local parent = parents[#parents]
+	if parent then
+		modules[parent][m] = true
+	end
+	table.insert(parents, m)
+	local ret = require_(m)
+	table.remove(parents)
+	return ret
+end
+
+local function get_deps(m)
+	require(m)
+	return modules[m]
+end
+
+--get a refined and ordered list of dependencies for printing
+
+--standard names to appear in the list before other names
+local std = {}
+for k in pairs(package.loaded) do
+	std[k] = true
+end
+std.ffi = true
+std.jit = true
+
+--built-in libraries, to ignore
+local exclude = {string = true, table = true, coroutine = true, package = true, io = true}
+
+local dep_lists = {}
+
+local function get_dep_list(m)
+	if dep_lists[m] then
+		return dep_lists[m]
+	end
+	local deps = get_deps(m)
+	local t = {}
+	--collect modules to a list, skipping excludes
+	for k in pairs(deps) do
+		if not exclude[k] then
+			t[#t+1] = k
+		end
+	end
+	--sort names by std then by name
+	table.sort(t, function(a, b)
+		if std[a] == std[b] then
+			return a < b
+		else
+			return not std[b]
+		end
+	end)
+	local s = table.concat(t, ', ')
+	dep_lists[m] = s
+	return s
+end
+
+--check if a module is a submodule of another module
+local function is_submodule(m, parent)
+	return m == parent or m:match('^'..parent..'[%.%_]')
+end
+
+--now that we trace require calls, we can load other modules that we need
+
+local lfs = require'lfs'
 local glue = require'glue'
-local module_dependencies = require'_site.dependencies'
-local pp = require'pp'.pp
+local tuple = require'tuple'
+--also, cjson is a runtime dependency for building the package db
+--also, pp is a runtime dependency for inspect()
 
---file finding helpers
-
-local function dir(p0, recurse) --recursive lfs.dir() -> iter() -> filename, path, mode
+--recursive lfs.dir() -> iter() -> filename, path, mode
+local function dir(p0, recurse)
 	assert(p0)
 	local function rec(p)
 		local dp = p0 .. (p and '/' .. p or '')
@@ -32,137 +101,643 @@ local function dir(p0, recurse) --recursive lfs.dir() -> iter() -> filename, pat
 	return coroutine.wrap(rec)
 end
 
-local function find(pat, path, recurse, simple) --search for a filename pattern and return matching filenames in a list
+--read a cmd output to a line iterator
+local function pipe_lines(cmd)
+	local f = assert(io.popen(cmd, 'rb'))
+	f:setvbuf('full')
+	return coroutine.wrap(function()
+		for line in f:lines() do
+			coroutine.yield(line)
+		end
+		f:close()
+	end)
+end
+
+--read a cmd output to a string
+local function read_pipe(cmd)
 	local t = {}
-	for f, p in dir(path, recurse) do
-		local s = f:match(pat)
-		if s then t[s] = simple or {} end
+	for line in pipe_lines(cmd) do
+		t[#t+1] = line
 	end
+	return table.concat(t, '\n')
+end
+
+--path/dir/file -> path/dir, file
+local function split_path(path)
+	local filename = path:match'([^/]*)$'
+	local n = #path - #filename
+	if n > 1 then n = n - 1 end --remove trailing / if not /
+	return path:sub(1, n), filename
+end
+
+--"key <separator> value" -> key, value
+local function split_kv(s, sep)
+	sep = glue.escape(sep)
+	return s:match('^([^'..sep..']*)%s*'..sep..'%s*(.*)$')
+end
+
+--parse the yaml header of a pandoc .md file, enclosed by '---' lines
+local function parse_md_file(md_file, docname)
+	local t = {}
+	local f = io.open(md_file, 'r')
+	if not f or f:read'*l' ~= '---' then
+		error('no tags on '..md_file)
+	end
+	for s in f:lines() do
+		if s == '---' then break end
+		local k,v = split_kv(s, ':')
+		k,v = k and glue.trim(k), v and glue.trim(v)
+		if not k or k == '' then
+			error('invalid tag '..s)
+		elseif t[k] then
+			error('duplicate tag '..k)
+		else
+			t[k] = v
+		end
+	end
+	t.title = t.title or docname --set default title
+	f:close()
 	return t
 end
 
---get the docs and their tags
+--WHAT file -> {realname='', version='', url='', license='', dependencies={d1,...}}
+local function parse_what_file(what_file)
+	local t = {}
+	local f = assert(io.open(what_file), 'WHAT file '.. what_file ..' missing')
 
-local function kvsplit(s, sep) --"key <separator> value" -> key, value
-	sep = glue.escape(sep)
-	return s:match('^([^'..sep..']*)'..sep..'%s*(.*)$')
-end
-
-local function parse_tags(doc, t) --parse the yaml header of a pandoc .md file, enclosed by '---' lines
-	local f = io.open(doc..'.md', 'r')
-	if not f or f:read'*l' ~= '---' then error('no tags on '..doc..'.md') end
-	for s in f:lines() do
-		if s == '---' then break end
-		local k,v = kvsplit(s, ':')
-		k,v = k and glue.trim(k), v and glue.trim(v)
-		if not k or k == '' then error('invalid tag '..s)
-		elseif t[k] then error('duplicate tag '..k)
-		else t[k] = v end
+	--parse the first line which has the format: '<realname> <version> from <url> (<license>)'
+	local s = assert(f:read'*l', 'invalid WHAT file '.. what_file)
+	t.realname, t.version, t.url, t.license = s:match('^%s*(.-)%s+(.-)%s+from%s+(.-)%s+%((.*)%)$')
+	if not t.realname then
+		error('invalid WHAT file '.. what_file)
 	end
-	f:close()
-end
+	t.license = t.license and t.license:match('^(.-)%s+'..glue.escape('license', '*i')..'$') or t.license
+	t.license = t.license:match('^'..glue.escape('public domain', '*i')..'$') and 'PD' or t.license
 
--- *.md -> {doc_name = {title='', project='', category=''}}
-local function get_docs()
-	local docs = find('^(.-)%.md$', '.')
-	for doc,t in pairs(docs) do
-		parse_tags(doc, t)
-		t.title = t.title or doc --default title is the doc's filename without extension
-	end
-	return docs
-end
-
---get the modules and their parents
-
-local function get_module_names()
-	local mods = {} -- *.lua -> {module_name = {parent_module=''}}
-	for f,p in dir('.', 'recurse') do
-		local m = f:match'^(.-)%.lua$'
-		if m and (not p or (not p:match'^bin/' and not p:match'^csrc/' and not p:match'^media/' and not p:match'^_')) then
-			m = (p and p:gsub('/', '.') .. '.' or '') .. m --path,file -> module name
-			mods[m] = {}
+	--parse the second line which has the format: 'requires: <pkg1>, <pkg2>, ...'
+	t.dependencies = {}
+	local s = f:read'*l'
+	s = s and s:match'^%s*requires:%s*(.*)'
+	if s then
+		for s in glue.gsplit(s, ',') do
+			s = glue.trim(s)
+			if s ~= '' then
+				t.dependencies[s] = true
+			end
 		end
 	end
-	return mods
+
+	f:close()
+	return t
 end
 
-local function parent_module_name(mod) --parent module name based on mod.submod and mod_submod conventions
+--path/*.lua -> lua module name
+local function module_name(path)
+	return path:gsub('/', '.'):match('(.-)%.lua$')
+end
+
+--mod_submod -> mod; mod.submod -> mod
+local function parent_module_name(mod)
 	local parent = mod:match'(.-)[_%.][^_%.]+$'
 	if not parent or parent == '' then return end
 	return parent
 end
 
-local function parent_module(mod, mods) --the first ancestor module (parent, grandad etc) that actually exists
-	local parent = parent_module_name(mod)
-	if not parent then return end
-	return mods[parent] and parent or parent_module(parent, mods)
-end
+local cache = {}
 
-local function get_modules()
-	local mods = get_module_names()
-	for mod,t in pairs(mods) do
-		t.parent_module = parent_module(mod, mods)
-	end
-	return mods
-end
-
---get the list of dependencies for documented modules
-
-local function get_module_dependencies(mods, docs)
-	for doc,t in pairs(docs) do
-		local mod = doc
-		if mods[mod] and not mods[mod].parent_module then
-			mods[mod].dependencies = module_dependencies(mod)
+local function cached(k, f)
+	if cache[k] == nil then
+		if f ~= nil then
+			cache[k] = f()
+		else
+			cache[k] = {}
 		end
 	end
+	return cache[k]
 end
 
---get the C source packages and their info
 
-local function parse_what_file(cpkg, t)
-	local f = assert(io.open('csrc/' .. cpkg .. '/WHAT'), 'WHAT file missing for '.. cpkg)
-	local s = assert(f:read'*l', 'invalid WHAT file for '.. cpkg)
-	t.realname, t.version, t.url, t.license = s:match('^(.-)%s+(.-)%s+from%s+(.-)%s+%((.*)%)$')
-	if not t.realname then error('invalid WHAT file for '.. cpkg) end
-	f:close()
+--data aquisition
+---------------------------------------------------------------------------
+
+--check if a path is valid for containing tracked files
+local function is_valid_path(p)
+	return not p or not (
+		p:match'^_'
+		or p:match'^%.git/'
+		or p:match'/%.git/'
+		--TODO: remove these in the future
+		or p:match'%.cmd$'
+		or p:match'%.sh$'
+	)
 end
 
-local function get_csrc_packages()
-	local cpkgs = {} -- csrc/*/WHAT -> {package_name = {name=, version=, url=, license=}}
-	for cpkg, p, mode in dir('csrc') do
-		if mode == 'directory' then
-			local t = {}
-			cpkgs[cpkg] = t
-			parse_what_file(cpkg, t)
-			--get supported platforms by checking for the existence of csrc/<package>/build-<platform>.sh scripts.
-			t.platforms = find('^build%-(.-)%.sh$', 'csrc/'..cpkg, nil, true)
+--check if a path is valid for containing docs
+local function is_doc_path(p)
+	return not p or not (
+		p:match'^bin/'
+		or p:match'^csrc/'
+		or p:match'^media/'
+	)
+end
+
+--check if a path is valid for containing modules
+local function is_module_path(p)
+	return not p or not (
+		p:match'^bin/'
+		or p:match'^csrc/'
+		or p:match'^media/'
+	)
+end
+
+--check if a name is a module as opposed to a script or app
+local function is_module(mod)
+	return not (
+		mod:match'_test$'
+		or mod:match '_demo$'
+		or mod:match'_benchmark$'
+		or mod:match'_app$'
+		or mod:match'^lexers%.'
+	)
+end
+
+--_git/*.exclude -> {name = true}
+local function known_packages()
+	return cached('known_packages', function()
+		local t = {}
+		for f in dir('_git') do
+			local s = f:match'^(.-)%.exclude$'
+			if s then t[s] = true end
+		end
+		return t
+	end)
+end
+
+--_git/*/.git -> {name = true}
+local function installed_packages()
+	return cached('installed_packages', function()
+		local t = {}
+		for f, _, mode in dir('_git') do
+			if mode == 'directory' and lfs.attributes('_git/'..f..'/.git', 'mode') == 'directory' then
+				t[f] = true
+			end
+		end
+		return t
+	end)
+end
+
+--git ls-files -> {path = package}
+local function tracked_files(package)
+	return cached(tuple('files', package), function()
+		local t = {}
+		for path in pipe_lines(string.format('git --git-dir=_git/%s/.git ls-files', package)) do
+			t[path] = package
+		end
+		return t
+	end)
+end
+
+--*.md -> {doc = path}
+local function docs(package)
+	return cached(tuple('docs', package), function()
+		local t = {}
+		local files = tracked_files(package)
+		for path in pairs(files) do
+			if is_doc_path(path) then
+				local dir, file = split_path(path)
+				local name = file:match'^(.-)%.md$'
+				if name then
+					if t[name] then
+						error('duplicate doc '..name..' as '..t[name]..' and '..path)
+					end
+					t[name] = path
+				end
+			end
+		end
+		return t
+	end)
+end
+
+--*.lua -> {module = path}
+local function modules(package)
+	return cached(tuple('modules', package), function()
+		local t = {}
+		local files = tracked_files(package)
+		for path in pairs(files) do
+			if is_module_path(path) then
+				local mod = module_name(path)
+				if mod then
+					t[mod] = path
+				end
+			end
+		end
+		return t
+	end)
+end
+
+--csrc/*/WHAT -> {tag=val,...} | false
+local function c_tags(package)
+	return cached(tuple('c_tags', package), function()
+		local what_file = string.format('csrc/%s/WHAT', package)
+		return tracked_files(package)[what_file] and parse_what_file(what_file) or false
+	end)
+end
+
+--*.md -> {title='', project='', category=''}
+local function doc_tags(package, doc)
+	return cached(tuple('doc_tags', package, doc), function()
+		local docs = docs(package)
+		local path = docs[doc]
+		return path and parse_md_file(path, doc) or false
+	end)
+end
+
+--first ancestor module (parent, grandad etc) that actually exists
+local function module_parent(package, mod)
+	return cached(tuple('module_parent', package, mod), function()
+		local mods = modules(package)
+		local parent = parent_module_name(mod)
+		if not parent then return end
+		return mods[parent] and parent or module_parent(package, parent)
+	end)
+end
+
+--list of modules required by a module
+local function module_deps(mod)
+	return is_module(mod) and get_deps(mod) or {}
+end
+
+local function module_dep_list(mod)
+	return is_module(mod) and get_dep_list(mod) or ''
+end
+
+--current git version
+local function git_version(package)
+	return cached(tuple('git_version', package), function()
+		return read_pipe('git --git-dir="_git/'..package..'/.git" describe --tags --long --always')
+	end)
+end
+
+local function git_tag(package)
+	return cached(tuple('git_tag', package), function()
+		return read_pipe('git --git-dir="_git/'..package..'/.git" tag')
+	end)
+end
+
+--csrc/<package>/build-<platform>.sh -> {platform = true,...}
+local function platforms(package)
+	return cached(tuple('platforms', package), function()
+		local t = {}
+		for path in pairs(tracked_files(package)) do
+			local platform = path:match('^csrc/'..glue.escape(package..'/build-')..'(.-)%.sh$')
+			if platform then
+				t[platform] = true
+			end
+		end
+		return t
+	end)
+end
+
+--package type (heuristic)
+local function package_type(package)
+	local has_c = c_tags(package)
+	local has_lua = next(modules(package))
+	local has_ffi = false
+	for mod in pairs(modules(package)) do
+		local deps = module_deps(mod)
+		if deps.ffi then
+			has_ffi = true
+			break
 		end
 	end
-	return cpkgs
+	return
+		has_ffi and 'Lua+ffi' or
+		has_lua and not has_c and not has_ffi and 'Lua' or
+		has_c and not has_lua and 'C' or
+		has_c and has_lua and not has_ffi and 'Lua/C' or
+		'other'
 end
 
---get the git packages
-
-local function get_packages()
-	local pkgs = find('^(.-)%.exclude$', '_git') -- _git/*.exclude -> {package_name = {}}
-	--TODO: infer the package type
-	return pkgs
+--build a module tree for a package based on naming conventions
+local function module_tree(package)
+	return cached(tuple('module_tree', package), function()
+		local parents = {}
+		for mod in pairs(modules(package)) do
+			parents[mod] = module_parent(package, mod) or 'root'
+		end
+		local root = {name = 'root'}
+		local function add_children(pnode)
+			for mod, parent in pairs(parents) do
+				if parent == pnode.name then
+					local node = {name = mod, parent = pnode}
+					table.insert(pnode, node)
+					add_children(node)
+				end
+			end
+		end
+		add_children(root)
+		return root
+	end)
 end
 
---get current git version for all packages
-
-local function read_pipe(cmd)
-	local f = io.popen(cmd, 'r')
-	local s = f:read'*l'
-	f:close()
-	return s
+--get all the trackable files in current dir. recursively
+local function disk_files()
+	return cached('disk_files', function()
+		local t = {}
+		for f, p, mode in dir('.', '-R') do
+			local path = (p and p .. '/' or '') .. f
+			if mode ~= 'directory' and is_valid_path(path) then
+				t[path] = true
+			end
+		end
+		return t
+	end)
 end
 
-local function get_package_versions(pkgs)
-	for pkg,t in pairs(pkgs) do
-		t.version = read_pipe('git.exe --git-dir="_git/'..pkg..'/.git" describe --tags --long --always')
+
+--inspecting
+---------------------------------------------------------------------------
+
+--generate a nice markdown page for a package
+local function inspect(package)
+	local function h(s)
+		print''
+		print('## '..s)
+		print''
+	end
+
+	h'Overview'
+
+	local t = doc_tags(package, package)
+	local tagline = t and t.tagline or ''
+	print(string.format('  %-16s %s', 'tagline:', tagline))
+	print(string.format('  %-16s %s', 'type:',    package_type(package)))
+	print(string.format('  %-16s %s', 'version:', git_version(package)))
+	local t = glue.keys(platforms(package)); table.sort(t)
+	print(string.format('  %-16s %s', 'platforms:', #t > 0 and table.concat(t, ', ') or 'Lua'))
+
+	if next(modules(package)) then
+		h'Modules'
+		local function print_children(pnode, depth)
+			for i,node in ipairs(pnode) do
+				local t = doc_tags(package, node.name)
+				local tagline = t and t.tagline or ''
+				print(string.format('%-36s %s', ('  '):rep(depth) .. '  * ' .. node.name, tagline))
+				print_children(node, depth + 1)
+			end
+		end
+		print_children(module_tree(package), 0)
+
+		h'Dependencies'
+		local fmt = '%-16s %s'
+		local sep = ('-'):rep(16)..' '..('-'):rep(64)
+		print(string.format(fmt, 'module', 'dependencies'))
+		print(sep)
+		for mod in pairs(modules(package)) do
+			if module_dep_list(mod) ~= '' then
+				print(string.format(fmt, mod, module_dep_list(mod)))
+			end
+		end
+		print(sep)
+	end
+
+	if c_tags(package) then
+		h'C Lib'
+		print(string.format('   csrc/%s/WHAT: %s', package, require'pp'.pformat(c_tags(package), '   ', nil, nil, nil, 2)))
+	end
+
+	if next(docs(package)) then
+		h'Docs'
+		for doc, path in pairs(docs(package)) do
+			print(string.format('   %s: %s', path, require'pp'.pformat(doc_tags(package, doc), '   ', nil, nil, nil, 2)))
+		end
+	end
+	print''
+end
+
+local function inspect_packages()
+	for package in pairs(known_packages()) do
+		print(string.format('%-16s %-16s %s', package, git_version(package), package_type(package)))
 	end
 end
+
+
+--building and updating the package database
+---------------------------------------------------------------------------
+
+local PACKAGES_JSON = '_site/packages.json'
+
+local function package_record(package)
+	return {
+		name = package,
+		tagline = doc_tags(package, package) and doc_tags(package, package).tagline,
+		type = package_type(package),
+		git_version = git_version(package),
+		git_tag = git_tag(package),
+		c_version = c_tags(package) and ((c_tags(package).realname or name) .. ' ' .. c_tags(package).version),
+		c_license = c_tags(package) and c_tags(package).license,
+		platforms = platforms(package) and platforms(package),
+	}
+end
+
+local function rebuild_package_db()
+	local db = {}
+	for package in pairs(installed_packages()) do
+		db[package] = package_record(package)
+	end
+	local cjson = require'cjson'
+	glue.writefile(PACKAGES_JSON, cjson.encode(db))
+end
+
+--get packages db
+local function package_db()
+	local cjson = require'cjson'
+	return cached('package_db', function()
+		if not glue.fileexists(PACKAGES_JSON) then
+			rebuild_package_db()
+		end
+		return cjson.decode(glue.readfile(PACKAGES_JSON))
+	end)
+end
+
+--update a package in the json file and rewrite the file
+local function update_pacakge(package)
+	local cjson = require'cjson'
+	local db = package_db()
+	db[package] = package_record(package)
+	glue.writefile(PACKAGES_JSON, cjson.encode(db))
+end
+
+
+--consistency checks
+---------------------------------------------------------------------------
+
+local function count(t)
+	local n = 0
+	for k in pairs(t) do n = n + 1 end
+	return n
+end
+
+local function error_list(title, t)
+	if not next(t) then return end
+	local s = string.format('%s (%d)', title, count(t))
+	print(s)
+	print(('-'):rep(#s))
+	for k in glue.sortedpairs(t) do
+		print(k)
+	end
+	print''
+end
+
+--check if more than one package tracks the same file
+local function multitracked_files()
+	local files = {} --{file = package}
+	local dupes = {}
+	for package in pairs(installed_packages()) do
+		for path in pairs(tracked_files(package)) do
+			if files[path] then
+				dupes[path..' in '..package..' and '..files[path]] = true
+			end
+			files[path] = package
+		end
+	end
+	error_list('multitracked files', dupes)
+end
+
+--check if there are files on disk that are not tracked by any git project
+local function untracked_files()
+	local untracked = disk_files()
+	for package in pairs(installed_packages()) do
+		for path in pairs(tracked_files(package)) do
+			untracked[path] = false
+		end
+	end
+	local t = {}
+	for path, untracked in pairs(untracked) do
+		if untracked then
+			t[path] = true
+		end
+	end
+	error_list('untracked files', t)
+end
+
+--check for the same doc in a different path. since docs get converted into the same dir, this is not allowed.
+local function duplicate_docs()
+	local dt = {} --{doc = package}
+	local dupes = {}
+	for package in pairs(installed_packages()) do
+		for doc, path in pairs(docs(package)) do
+			if dt[doc] then
+				dupes[doc..' in '..package..' and '..dt[doc]] = true
+			end
+		end
+	end
+	error_list('duplicate docs', dupes)
+end
+
+--check for undocumented (thus invisible) packages
+local function undocumented_packages()
+	local t = {}
+	for package in pairs(installed_packages()) do
+		local docs = docs(package)
+		if not docs[package] then
+			--if any modules are documented that's ok too
+			local hasdoc
+			for mod in pairs(modules(package)) do
+				if docs[mod] then
+					hasdoc = true
+					break
+				end
+			end
+			if not hasdoc then
+				t[package] = true
+			end
+		end
+	end
+	error_list('undocumented packages', t)
+end
+
+--check for wrong project tag in docs
+local function wrong_project_tag()
+	local t = {}
+	for package in pairs(installed_packages()) do
+		for doc in pairs(docs(package)) do
+			local project_tag = doc_tags(package, doc).project
+			if project_tag ~= package then
+				t[doc] = true
+			end
+		end
+	end
+	error_list('wrong project tag', t)
+end
+
+--check for csrc dirs not matching package name
+local function wrong_csrc_dirs()
+	local t = {}
+	for package in pairs(installed_packages()) do
+		for path in pairs(tracked_files(package)) do
+			local csrc_dir = path:match('^csrc/(.-)/')
+			if csrc_dir then
+				if csrc_dir ~= package then
+					t[csrc_dir] = true
+				end
+			end
+		end
+	end
+	error_list('wrong csrc dirs', t)
+end
+
+--check for undocumented modules. lots cases when a module doesn't need documenting.
+
+--all these modules don't need docuentation for any of their submodules.
+local blacklisted_parents = {
+	--external doc
+	socket=1,
+	lpeg=1,
+	lexers=1,
+	--single-page doc
+	cplayer=1,
+	hmac=1,
+	fbclient=1,
+	utf8=1,
+	bitmap=1,
+	winapi=1,
+}
+local function blacklisted_parent(mod) --todo: review this check
+	repeat
+		mod = parent_module_name(mod)
+		if blacklisted_parents[mod] then
+			return true
+		end
+	until not mod
+end
+
+local function blacklisted_module(mod) --some modules don't need documenting
+	return
+		not is_module(mod)
+		or mod:match'_h$'
+		or blacklisted_parent(mod)
+end
+
+local function undocumented_modules(include_submodules)
+	local t = {}
+	for package in pairs(installed_packages()) do
+		local docs = docs(package)
+		local mods = modules(package)
+		for mod in pairs(mods) do
+			if not docs[mod] and not blacklisted_module(mod) then
+				if include_submodules or not module_parent(package, mod) then
+					t[mod] = true
+				end
+			end
+		end
+	end
+	error_list('undocumented modules', t)
+end
+
+
+--building the category tree
+---------------------------------------------------------------------------
 
 --infer doc categories where missing
 
@@ -228,148 +803,13 @@ local function get_cat_tree(docs)
 	return tree
 end
 
---doc linting
-
-local function count(t)
-	local n = 0
-	for k in pairs(t) do n = n + 1 end
-	return n
-end
-
-local function print_list(title, t)
-	if not next(t) then return end
-	local s = string.format('%s (%d)', title, count(t))
-	print(s)
-	print(('-'):rep(#s))
-	for k in glue.sortedpairs(t) do
-		print(k)
-	end
-	print''
-end
-
-local function undocumented_packages(pkgs, docs)
-	local t = {}
-	for pkg in pairs(pkgs) do
-		if not docs[pkg] then
-			t[pkg] = true
-		end
-	end
-	print_list('undocumented packages', t)
-end
-
---modules that don't need documentation for submodules (it's all documented in the parent page).
-local single_page_doc_modules = {
-	cplayer=1,
-	hmac=1,
-	path_bezier2=1,
-	path_bezier3=1,
-	fbclient=1,
-	utf8=1,
-	bitmap=1,
-	sg_cairo=1,
-}
-local function no_doc_submodule(mod, mods)
-	local parent = mods[mod].parent_module
-	return parent and single_page_doc_modules[parent]
-end
-
---submodules which don't ascribe to the correct naming pattern.
-local problem_no_doc_modules = {
-	sg_base=1,
-	sg_cache=1,
-	svg_colors=1,
-	glut=1,
-	gl_types=1,
-	gl_funcs11=1,
-	gl_consts11=1,
-	gl_funcs21=1,
-	gl_consts21=1,
-}
-local function problem_no_doc_module(mod)
-	return problem_no_doc_modules[mod]
-end
-
---external modules with external documentation for their submodules.
-local external_modules = {
-	socket=1,
-	lpeg=1,
-	lexers=1,
-}
-local function external_module(mod)
-	repeat
-		mod = parent_module_name(mod)
-		if external_modules[mod] then return true end
-	until not mod
-end
-
-local function no_doc_module(mod, mods) --some modules don't need documenting
-	return
-		--places where modules don't need documenting
-		mod:match'^bin%.'
-		--classes of modules that don't need documenting
-		or mod:match'_h$'
-		or mod:match'_test$'
-		or mod:match'_demo$'
-		or mod:match'_benchmark$'
-		--custom filters
-		or problem_no_doc_module(mod)
-		or external_module(mod)
-		or no_doc_submodule(mod, mods)
-end
-
---TODO: Lua/C modules are not detected!
-local function undocumented_modules(mods, docs, include_submodules)
-	local t = {}
-	for mod in pairs(mods) do
-		if not docs[mod] and not no_doc_module(mod, mods) then
-			if include_submodules or not mods[mod].parent_module then
-				t[mod] = true
-			end
-		end
-	end
-	print_list('undocumented modules', t)
-end
-
-local function uncategorized_modules(mods, docs)
-	local t = {}
-	for mod in pairs(mods) do
-		if docs[mod] and docs[mod].category == 'Other' then
-			t[mod] = true
-		end
-	end
-	print_list('uncategorized modules', t)
-end
-
-local function unknown_csrc(mods)
-
-end
-
-local function duplicate_titles(docs)
-	local titles = {}
-	for doc,t in pairs(docs) do
-		titles[t.title] = titles[t.title] or {}
-		table.insert(titles[t.title], doc)
-	end
-	local dupes = {}
-	for title,docs in pairs(titles) do
-		if #docs > 1 then
-			dupes[title] = table.concat(docs, ', ')
-		end
-	end
-	if not next(dupes) then return end
-	print'duplicate titles'
-	print'----------------'
-	for title,docs in glue.sortedpairs(dupes) do
-		print(title, '->', docs)
-	end
-	print''
-end
 
 local function print_children(parent, indent)
 	for i,t in ipairs(parent) do
 		print(('   '):rep(indent) .. t.name .. (t.doc and ' (' .. t.doc .. ')' or ''))
 		print_children(t, indent + 1)
 	end
+
 end
 local function print_cat_tree(tree)
 	print'category tree'
@@ -378,30 +818,22 @@ local function print_cat_tree(tree)
 	print''
 end
 
---main
 
-local pkgs = get_packages()
-local docs = get_docs()
-local mods = get_modules()
-local cpkgs = get_csrc_packages()
-get_package_versions(pkgs)
-get_module_dependencies(mods, docs) --only for documented modules
-fix_missing_doc_categories(docs, mods) --attach modules to their parents and other docs to their projects
+--use as cmdline script, from the _git directory
+---------------------------------------------------------------------------
 
-if false then
-	pp(pkgs.cairo)
-	pp(docs.cairo)
-	pp(mods.cairo)
-	pp(cpkgs.cairo)
+if not ... then
+
+lfs.chdir'..'
+inspect('cairo')
+--inspect_packages()
+multitracked_files()
+untracked_files()
+duplicate_docs()
+undocumented_packages()
+wrong_project_tag()
+wrong_csrc_dirs()
+undocumented_modules(true)
+update_pacakge'cairo'
+
 end
-
-local tree = get_cat_tree(docs, mods)
-print_cat_tree(tree)
-
---[[
-undocumented_packages(pkgs, docs)
-undocumented_modules(mods, docs)
-uncategorized_modules(mods, docs)
-duplicate_titles(docs)
-print_cat_tree(tree)
-]]
