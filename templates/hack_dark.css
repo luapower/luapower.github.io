@@ -8,7 +8,15 @@ header h1 {
 	text-shadow: 2px 2px rgba(0, 0, 0, .6);
 }
 header h2 {color: #666;}
-.svg-icon {-webkit-filter: invert(50%);}
+.icon-mingw32  {content:url("icons/icon-mingw32-light.png");}
+.icon-mingw64  {content:url("icons/icon-mingw64-light.png");}
+.icon-linux32  {content:url("icons/icon-linux32-light.png");}
+.icon-linux64  {content:url("icons/icon-linux64-light.png");}
+.icon-macosx32 {content:url("icons/icon-macosx32-light.png");}
+.icon-macosx64 {content:url("icons/icon-macosx64-light.png");}
+.icon-android  {content:url("icons/icon-android-light.png");}
+.icon-lua      {content:url("icons/icon-lua-light.png");}
+.pd-logo-image {background: url("pd.png") 0 0;}
 .btn {
 	color: #bbb;
 	text-shadow: 0 0 1px rgba(0, 0, 0, 0.75);

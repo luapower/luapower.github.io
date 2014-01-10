@@ -8,6 +8,15 @@ header h1 {
 	text-shadow: 1px 1px rgba(1, 1, 1, .1);
 }
 header h2 {color: #666;}
+.icon-mingw32  {content:url("icons/icon-mingw32-dark.png");}
+.icon-mingw64  {content:url("icons/icon-mingw64-dark.png");}
+.icon-linux32  {content:url("icons/icon-linux32-dark.png");}
+.icon-linux64  {content:url("icons/icon-linux64-dark.png");}
+.icon-macosx32 {content:url("icons/icon-macosx32-dark.png");}
+.icon-macosx64 {content:url("icons/icon-macosx64-dark.png");}
+.icon-android  {content:url("icons/icon-android-dark.png");}
+.icon-lua      {content:url("icons/icon-lua-dark.png");}
+.pd-logo-image {background: url("pd.png") 0 0;}
 .btn {
 	color: #bbb;
 	text-shadow: 0 1px 0 rgba(1, 1, 1, .1);

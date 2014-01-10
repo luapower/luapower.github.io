@@ -30,27 +30,44 @@ jQuery(function() {
 //load package table
 jQuery(function() {
 
+	if($('#package_table').length == 0) //only load the packages on the homepage
+		return
+
 	$.getJSON('packages.json', function(packages) {
 
-		var s = '<table width="100%"><tr><th width="1%">Lib</th><th width="1%">Type</th><th width="1%">Version</th><th width="20%">What</th>' +
-				'<th width="1%" align="center" colspan="2">Platforms</th>' +
-				'<th width="1%">License</th></tr>'
+		var s = '<table id="package_table_table" width="100%"><thead>' +
+				'<tr><th width="1%">Lib</th><th width="1%">Type</th><th width="1%">Version</th><th width="20%">What</th>' +
+				'<th width="1%" align="center">Platforms</th>' +
+				'<th width="1%">License</th></tr></thead><tbody>'
+
+		var platforms = ['mingw32', 'mingw64', 'linux32', 'linux64', 'macosx32', 'macosx64', 'android']
+
 		$.each(packages, function(k, t) {
 			s = s + '<tr>'
 			s = s + '<td><a href="' + k + '.html">' + k + '</td>'
 			s = s + '<td>' + t.type + '</td>'
 			s = s + '<td>' + t.git_tag + '</td>'
 			s = s + '<td>' + (t.tagline || '') + '</td>'
-			s = s + '<td align="center">' +
-				(t.platforms.mingw32 && '<img class="svg-icon" src="templates/windows.svg" width="20" height="20" alt="Win32"/>' || '') + '</td>'
-			s = s + '<td align="center">' +
-				(t.platforms.linux32 && '<img class="svg-icon" src="templates/linux.svg" width="20" height="20" alt="Tux32"/>' || '') + '</td>'
+			s = s + '<td>'
+			var has_platforms = false
+			for (var i = 0; i < platforms.length; i++) {
+				var platform = platforms[i]
+				if (t.platforms[platform]) {
+					s = s + '<img class="icon icon-' + platform + '" alt="' + platform + '" />'
+					has_platforms = true
+				}
+			}
+			if (!has_platforms)
+				s = s + '<img class="icon icon-lua" alt="Lua" />'
+			s = s + '</td>'
 			s = s + '<td nowrap>' + (t.c_license || 'PD') + '</td>'
 			s = s + '</tr>'
 		})
-		s = s + '</table>'
-		console.log(s)
+		s = s + '</tbody></table>'
 		$('#package_table').html(s)
+		$('#package_table_table').tablesorter({
+			sortList: [[0,0]]
+		})
 
 	})
 })

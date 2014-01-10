@@ -8,6 +8,7 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 		$endif$
 		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/jquery-tablesorter.js"></script>
 		<script src="templates/strftime.js"></script>
 		<script src="templates/main.js"></script>
 		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
@@ -24,6 +25,9 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
 				$if(homepage)$
+					<div class="btn-container">
+						<div class="pd-logo pd-logo-image"></div>
+					</div>
 				$else$
 				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
