@@ -54,17 +54,20 @@ jQuery(function() {
 			s = s + '<td>' + t.git_tag + '</td>'
 			s = s + '<td>' + (t.tagline || '') + '</td>'
 			s = s + '<td>'
-			var has_platforms = false
+			var pn = 0
+			var imgs = ''
 			for (var i = 0; i < platforms.length; i++) {
 				var platform = platforms[i]
 				if (t.platforms[platform]) {
-					s = s + '<span style="display: none;">' + platform + '</span>' // tablesorter is buggy with just images
-					s = s + '<img alt="' + platform + '" class="icon icon-' + platform + '" />'
-					has_platforms = true
+					imgs = imgs + '<img alt="' + platform + '" class="icon icon-' + platform + '" />'
+					pn += 1
 				}
 			}
-			if (!has_platforms)
-				s = s + '<img class="icon icon-lua" alt="Lua" />'
+			if (pn == 0) {
+				imgs = imgs + '<img class="icon icon-lua" alt="Lua" />'
+				pn = platforms.length + 1 // pure Lua modules are compatible with all platforms and more
+			}
+			s = s + '<span style="display: none;">' + pn + '</span>' + imgs // tablesorter is buggy with just images
 			s = s + '</td>'
 			s = s + '<td nowrap>' + (t.c_license || 'PD') + '</td>'
 			s = s + '</tr>'
