@@ -36,7 +36,11 @@ jQuery(function() {
 	$.getJSON('packages.json', function(packages) {
 
 		var s = '<table id="package_table_table" width="100%"><thead>' +
-				'<tr><th width="1%">Lib</th><th width="1%">Type</th><th width="1%">Version</th><th width="20%">What</th>' +
+				'<tr>' +
+					'<th class="header" width="1%">Lib</th>' +
+					'<th class="header" width="1%">Type</th>' +
+					'<th class="header" width="1%">Version</th>' +
+					'<th class="header" width="20%">What</th>' +
 				'<th width="1%" align="center">Platforms</th>' +
 				'<th width="1%">License</th></tr></thead><tbody>'
 
@@ -66,7 +70,8 @@ jQuery(function() {
 		s = s + '</tbody></table>'
 		$('#package_table').html(s)
 		$('#package_table_table').tablesorter({
-			sortList: [[0,0]]
+			cancelSelection: true,
+			sortList: [[0,0]],
 		})
 
 	})
@@ -74,43 +79,66 @@ jQuery(function() {
 
 // load TOC
 jQuery(function() {
-	$("#toc_container" ).load("toc.html", doc_ready)
+
+	$("#toc_container" ).load("toc.html", function() {
+
+		// find list items representing TOC items and style them accordingly.
+		// also, turn them into links that can expand/collapse the tree leaf.
+		$('#toc_container li > ul').each(function(i) {
+
+			// find this list's parent list item.
+			var parent_li = $(this).parent('li')
+
+			// style the list item as folder.
+			parent_li.addClass('folder')
+
+			// temporarily remove the list from the
+			// parent list item, wrap the remaining
+			// text in an anchor, then reattach it.
+			var sub_ul = $(this).remove()
+			parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
+				// Make the anchor toggle the leaf display.
+				sub_ul.toggle()
+			})
+			parent_li.append(sub_ul)
+		})
+
+		// hide all lists except the outermost.
+		$('#toc_container ul ul').hide()
+
+		// expand the list containing the element that links to the current page
+		var cfile = window.parent.document.location.pathname.split('/').slice(-1)[0]
+		var clink = $('#toc_container li > a[href="' + cfile + '.html"], #toc_container li > a[href="' + cfile + '"]')
+		clink.parent().parent().show()
+		clink.replaceWith(clink.html())
+
+		// make extenral links open in new window
+		$("a[href^='http']").not('.btn').each(function() {
+			if (this.hostname != location.hostname)
+				$(this).attr('target', '_blank')
+		})
+	})
+
 })
 
-function doc_ready() {
-	// find list items representing TOC items and style them accordingly.
-	// also, turn them into links that can expand/collapse the tree leaf.
-	$('#toc_container li > ul').each(function(i) {
+// load analytics
+jQuery(function() {
 
-		// find this list's parent list item.
-		var parent_li = $(this).parent('li')
+	if (window.location.protocol == 'file:')
+		return
 
-		// style the list item as folder.
-		parent_li.addClass('folder')
+	(function(i,s,o,g,r,a,m) {
+		i['GoogleAnalyticsObject']=r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1*new Date();
+		a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0];
+		a.async=1;
+		a.src=g;
+		m.parentNode.insertBefore(a,m)
+	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+	ga('create', 'UA-10841867-16', 'luapower.com');
+	ga('send', 'pageview');
 
-		// temporarily remove the list from the
-		// parent list item, wrap the remaining
-		// text in an anchor, then reattach it.
-		var sub_ul = $(this).remove()
-		parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
-			// Make the anchor toggle the leaf display.
-			sub_ul.toggle()
-		})
-		parent_li.append(sub_ul)
-	})
-
-	// hide all lists except the outermost.
-	$('#toc_container ul ul').hide()
-
-	// expand the list containing the element that links to the current page
-	var cfile = window.parent.document.location.pathname.split('/').slice(-1)[0]
-	var clink = $('#toc_container li > a[href="' + cfile + '.html"], #toc_container li > a[href="' + cfile + '"]')
-	clink.parent().parent().show()
-	clink.replaceWith(clink.html())
-
-	// make extenral links open in new window
-	$("a[href^='http']").not('.btn').each(function() {
-		if (this.hostname != location.hostname)
-			$(this).attr('target', '_blank')
-	})
-}
+})

@@ -34,6 +34,10 @@ header h2 {color: #666;}
 .btn-discuss {color: #fff; background: #4586AC;}
 .btn-discuss:hover {color: #fff; background: #82CDF7;}
 
+.package_table th.header:hover {color: #fff;}
+.package_table th.headerSortUp {background-image: url("asc_light.gif");}
+.package_table th.headerSortDown {background-image: url("desc_light.gif");}
+
 .doc h6 {color: #999;}
 .doc li:before {color: #b5e853;}
 .doc blockquote {color: #aaa; border-left-color: #666;}

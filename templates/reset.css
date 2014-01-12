@@ -61,7 +61,7 @@ sub {bottom: -0.25em;}
 th {vertical-align: bottom;}
 td {vertical-align: top;}
 input, select {vertical-align: middle;}
-td, td img {vertical-align: top;}
+td img {vertical-align: top;}
 input[type="radio"] {vertical-align: text-bottom;}
 input[type="checkbox"] {vertical-align: bottom;}
 

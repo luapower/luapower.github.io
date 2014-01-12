@@ -120,6 +120,22 @@ header h2 { /* tagline */
 .btn-github  .icon {background: url("hack_cat.png") 0 0 no-repeat;}
 .btn-discuss .icon {background: url("hack_discuss.png") 0 0 no-repeat;}
 
+/* Package table */
+
+.package_table th.header {
+	cursor: pointer;
+	background-repeat: no-repeat;
+	background-position: center right;
+	padding-right: 10px;
+	padding-left: 2px;
+}
+
+.package_table th.header:hover {text-decoration: underline;}
+
+.doc .package_table td {
+	vertical-align: middle;
+}
+
 /* Document */
 
 .doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6,
@@ -184,8 +200,8 @@ header h2 { /* tagline */
 .doc th {
 	text-align: left;
 	border-bottom: 1px dashed;
-	padding-top: 5px;
-	padding-bottom: 10px;
+	padding-top: 8px;
+	padding-bottom: 8px;
 }
 
 .doc tr {
