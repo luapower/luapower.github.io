@@ -36,13 +36,14 @@ jQuery(function() {
 	$.getJSON('packages.json', function(packages) {
 
 		var s = '<table id="package_table_table" width="100%"><thead>' +
-				'<tr title="Hold Shift to sort by multiple columns">' +
-					'<th class="header" width="1%">Lib</th>' +
-					'<th class="header" width="1%">Type</th>' +
-					'<th class="header" width="1%">Version</th>' +
-					'<th class="header" width="20%">What</th>' +
-				'<th width="1%" align="center">Platforms</th>' +
-				'<th width="1%">License</th></tr></thead><tbody>'
+				'<tr>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Lib</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Type</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Version</th>' +
+					'<th width="20%" data-sorter="false">What</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%" align="center">Platforms</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">License</th>' +
+				'</tr></thead><tbody>'
 
 		var platforms = ['mingw32', 'mingw64', 'linux32', 'linux64', 'macosx32', 'macosx64', 'android']
 
@@ -57,7 +58,8 @@ jQuery(function() {
 			for (var i = 0; i < platforms.length; i++) {
 				var platform = platforms[i]
 				if (t.platforms[platform]) {
-					s = s + '<img class="icon icon-' + platform + '" alt="' + platform + '" />'
+					s = s + '<span style="display: none;">' + platform + '</span>' // tablesorter is buggy with just images
+					s = s + '<img alt="' + platform + '" class="icon icon-' + platform + '" />'
 					has_platforms = true
 				}
 			}
