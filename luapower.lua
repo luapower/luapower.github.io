@@ -1,7 +1,9 @@
---package management API for luapower. leverages the many conventions in luapower to extract and aggregate metadata
---about packages, modules, and documentation and perform various consistency checks.
---it also can generate and update the list of packages to be used by the luapower.com website and the table of contents.
---the entire API is memoized so it can be abused without worrying about doing multiple calls on the same arguments.
+--luapower package management library (Cosmin Apreutesei, public domain).
+--leverages the many conventions in luapower to extract and aggregate metadata about
+--packages, modules, and documentation and perform various consistency checks.
+--it also generates and updates the list of packages that is used on luapower.com
+--and the table of contents. the entire API is memoized so it can be abused
+--without worrying about doing multiple calls on the same arguments.
 --TODO: Lua/C modules are not detected!
 
 --helpers
@@ -192,8 +194,19 @@ local function parse_what_file(what_file)
 end
 
 --path/*.lua -> lua module name
-local function module_name(path)
+local function lua_module_name(path)
 	return path:gsub('/', '.'):match('(.-)%.lua$')
+end
+
+--path/*.dll|.so -> C module name
+local function c_module_name(path)
+	local ext = package.cpath:match'%?%.(.-);'
+	local name = path:match('bin/[^/]+/clib/(.-)%.'..ext..'$')
+	return name and name:gsub('/', '.')
+end
+
+local function module_name(path)
+	return lua_module_name(path) or c_module_name(path)
 end
 
 --mod_submod -> mod; mod.submod -> mod
@@ -244,7 +257,7 @@ end
 --check if a path is valid for containing modules
 local function is_module_path(p)
 	return not p or not (
-		p:match'^bin/'
+		(p:match'^bin/' and not p:match'^bin/[^/]+/clib/')
 		or p:match'^csrc/'
 		or p:match'^media/'
 	)
@@ -385,13 +398,25 @@ local function git_tag(package)
 end
 
 --csrc/<package>/build-<platform>.sh -> {platform = true,...}
+--<package>.md:platforms -> {platform = true,...}
 local function platforms(package)
 	return cached(tuple('platforms', package), function()
+		--platforms are inferred from the name of the build script
 		local t = {}
 		for path in pairs(tracked_files(package)) do
 			local platform = path:match('^csrc/'..glue.escape(package..'/build-')..'(.-)%.sh$')
 			if platform then
 				t[platform] = true
+			end
+		end
+		--platforms can also be specified in the 'platforms' tag of the package doc file
+		local tags = doc_tags(package, package)
+		if tags and tags.platforms then
+			for platform in glue.gsplit(tags.platforms, ',') do
+				platform = glue.trim(platform)
+				if platform ~= '' then
+					t[platform] = true
+				end
 			end
 		end
 		return t
@@ -536,7 +561,7 @@ local function package_record(package)
 		git_tag = git_tag(package),
 		c_version = c_tags(package) and ((c_tags(package).realname or name) .. ' ' .. c_tags(package).version),
 		c_license = c_tags(package) and c_tags(package).license,
-		platforms = platforms(package) and platforms(package),
+		platforms = platforms(package),
 	}
 end
 
@@ -825,7 +850,7 @@ end
 if not ... then
 
 lfs.chdir'..'
-inspect('cairo')
+inspect('lfs')
 --inspect_packages()
 multitracked_files()
 untracked_files()
@@ -834,6 +859,6 @@ undocumented_packages()
 wrong_project_tag()
 wrong_csrc_dirs()
 undocumented_modules(true)
-update_pacakge'cairo'
+update_pacakge'winapi'
 
 end
