@@ -36,7 +36,7 @@ jQuery(function() {
 	$.getJSON('packages.json', function(packages) {
 
 		var s = '<table id="package_table_table" width="100%"><thead>' +
-				'<tr>' +
+				'<tr title="Hold Shift to sort by multiple columns">' +
 					'<th class="header" width="1%">Lib</th>' +
 					'<th class="header" width="1%">Type</th>' +
 					'<th class="header" width="1%">Version</th>' +
