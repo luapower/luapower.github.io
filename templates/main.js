@@ -27,21 +27,33 @@ jQuery(function() {
 	})
 })
 
-//load package table
+var package_db_loaded = false
+var toc_loaded = false
+function check_ready() {
+	if(package_db_loaded && toc_loaded)
+		doc_ready()
+}
+
+
+//load package db
 jQuery(function() {
 
-	if($('#package_table').length == 0) //only load the packages on the homepage
+	if($('#package_table').length == 0) {//only load the packages on the homepage
+		package_db_loaded = true
+		check_ready()
 		return
+	}
 
 	$.getJSON('packages.json', function(packages) {
 
 		var s = '<table id="package_table_table" width="100%"><thead>' +
 				'<tr>' +
 					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Lib</th>' +
+					//'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Category</th>' +
 					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Type</th>' +
 					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Version</th>' +
 					'<th width="20%" data-sorter="false">What</th>' +
-					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%" align="center">Platforms</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Platforms</th>' +
 					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">License</th>' +
 				'</tr></thead><tbody>'
 
@@ -50,6 +62,7 @@ jQuery(function() {
 		$.each(packages, function(k, t) {
 			s = s + '<tr>'
 			s = s + '<td><a href="' + k + '.html">' + k + '</td>'
+			//s = s + '<td>' + t.category + '</td>'
 			s = s + '<td>' + t.type + '</td>'
 			s = s + '<td>' + t.git_tag + '</td>'
 			s = s + '<td>' + (t.tagline || '') + '</td>'
@@ -79,6 +92,8 @@ jQuery(function() {
 			sortList: [[0,0]],
 		})
 
+		package_db_loaded = true
+		check_ready()
 	})
 })
 
@@ -97,9 +112,8 @@ jQuery(function() {
 			// style the list item as folder.
 			parent_li.addClass('folder')
 
-			// temporarily remove the list from the
-			// parent list item, wrap the remaining
-			// text in an anchor, then reattach it.
+			// temporarily remove the list from the parent list item,
+			// wrap the remaining text in an anchor, then reattach it.
 			var sub_ul = $(this).remove()
 			parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
 				// Make the anchor toggle the leaf display.
@@ -114,17 +128,38 @@ jQuery(function() {
 		// expand the list containing the element that links to the current page
 		var cfile = window.parent.document.location.pathname.split('/').slice(-1)[0]
 		var clink = $('#toc_container li > a[href="' + cfile + '.html"], #toc_container li > a[href="' + cfile + '"]')
-		clink.parent().parent().show()
+		clink.parents().show()
 		clink.replaceWith(clink.html())
 
-		// make extenral links open in new window
-		$("a[href^='http']").not('.btn').each(function() {
-			if (this.hostname != location.hostname)
-				$(this).attr('target', '_blank')
-		})
+		toc_loaded = true
+		check_ready()
 	})
 
 })
+
+function doc_ready() {
+
+	// make extenral links open in new window
+	$("a[href^='http']").not('.btn').each(function() {
+		if (this.hostname != location.hostname)
+			$(this).attr('target', '_blank')
+	})
+
+	//fix homepage links for file:/// access
+	if (window.location.protocol == 'file:')
+		$('a[href="/"]').attr('href', 'index.html')
+
+	/* TODO
+	//remove .html from links if loading from the web
+	if (window.location.protocol != 'file:') {
+		$('a').each(function() {
+			var s = $(this).attr('href')
+			if (s.indexOf('/') == -1 && s.indexOf('.html') != -1)
+				$(this).attr('href', s.substring(0, s.length - 5))
+		})
+	}
+	*/
+}
 
 // load analytics
 jQuery(function() {

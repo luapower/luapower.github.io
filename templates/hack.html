@@ -3,9 +3,6 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 	<head>
 		<meta charset='utf-8'>
 		<title>$if(title)$ $title$ $else$ $docname$ $endif$ $if(tagline)$ - $tagline$ $endif$</title>
-		$if(bare)$
-		<base target="_parent" />
-		$endif$
 		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
