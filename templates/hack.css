@@ -58,7 +58,15 @@ header h2 { /* tagline */
 	font-weight: 300;
 }
 
-.icon {margin-left: 2px; margin-right: 2px; width: 22px; height: 22px;}
+.icon {
+	width: 22px;
+	height: 22px;
+	margin: 0px 2px -4px 2px;  /* that -4px thing it's the reason why I deeply hate CSS */
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
 .pd-logo {position: relative; left: 750px; top: 180px; width: 60px; height: 60px;}
 
 /* Buttons */
@@ -76,7 +84,6 @@ header h2 { /* tagline */
 }
 
 .btn .icon {
-	display: inline-block;
 	width: 16px;
 	height: 16px;
 	margin: 1px 8px 0 0;
@@ -194,7 +201,6 @@ header h2 { /* tagline */
 	border-radius: 2px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
-	text-wrap: normal;
 }
 
 .doc th {

@@ -48,41 +48,57 @@ jQuery(function() {
 
 		var s = '<table id="package_table_table" width="100%"><thead>' +
 				'<tr>' +
-					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Lib</th>' +
-					//'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Category</th>' +
-					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Type</th>' +
-					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Version</th>' +
-					'<th width="20%" data-sorter="false">What</th>' +
-					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">Platforms</th>' +
-					'<th title="Hold Shift to sort by multiple columns" class="header" width="1%">License</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Lib</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Type</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Version</th>' +
+					'<th style="width: 20%;" data-sorter="false">What</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Platforms</th>' +
+					'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">License</th>' +
 				'</tr></thead><tbody>'
 
-		var platforms = ['mingw32', 'mingw64', 'linux32', 'linux64', 'macosx32', 'macosx64', 'android']
+		var platforms = ['mingw32', 'linux32', 'macosx32', 'android']
 
 		$.each(packages, function(k, t) {
 			s = s + '<tr>'
-			s = s + '<td><a href="' + k + '.html">' + k + '</td>'
-			//s = s + '<td>' + t.category + '</td>'
+			s = s + '<td><a href="' + (t.has_doc ? k + '.html' : 'http://github.com/luapower/' + k) + '">' + k + '</td>'
 			s = s + '<td>' + t.type + '</td>'
 			s = s + '<td>' + t.git_tag + '</td>'
 			s = s + '<td>' + (t.tagline || '') + '</td>'
-			s = s + '<td>'
+			s = s + '<td style="min-width: 136px;" >'
+
+			var has_lua = t.type.indexOf('Lua') >= 0
+			var has_ffi = t.type.indexOf('ffi') >= 0
+
+			var imgs1 = ''
+			if (has_ffi)
+				imgs1 += '<div title="LuaJIT" class="icon icon-luajit-enabled"></div>'
+			else if (has_lua)
+				imgs1 += '<div title="Lua" class="icon icon-lua-enabled"></div>'
+			else
+				imgs1 += '<div class="icon"></div>'
+
 			var pn = 0
 			var imgs = ''
+			var sorts = ''
 			for (var i = 0; i < platforms.length; i++) {
 				var platform = platforms[i]
-				if (t.platforms[platform]) {
-					imgs = imgs + '<img alt="' + platform + '" class="icon icon-' + platform + '" />'
-					pn += 1
-				}
+				var has = t.platforms[platform]
+				imgs += '<div ' + (has ? 'title="' + platform + '"' : '') +
+							' class="icon icon-' + platform + '-' + (has ? 'enabled' : 'disabled') + '"></div>'
+				if (has) sorts += platform + ';'
+				if (has) pn += 1
 			}
+			var lua_pn = has_ffi ? 1 : (has_lua ? 2 : 0)
 			if (pn == 0) {
-				imgs = imgs + '<img class="icon icon-lua" alt="Lua" />'
-				pn = platforms.length + 1 // pure Lua modules are compatible with all platforms and more
+				pn = platforms.length
+				imgs = ''
 			}
-			s = s + '<span style="display: none;">' + pn + '</span>' + imgs // tablesorter is buggy with just images
+			pn += lua_pn
+
+			s = s + '<span style="display: none;">' + pn + sorts + '</span>' // for tablesorter
+			s = s + imgs1 + imgs
 			s = s + '</td>'
-			s = s + '<td nowrap>' + (t.c_license || 'PD') + '</td>'
+			s = s + '<td>' + (t.c_license || 'PD') + '</td>'
 			s = s + '</tr>'
 		})
 		s = s + '</tbody></table>'

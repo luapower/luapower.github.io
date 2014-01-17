@@ -8,14 +8,26 @@ header h1 {
 	text-shadow: 2px 2px rgba(0, 0, 0, .6);
 }
 header h2 {color: #666;}
-.icon-mingw32  {content:url("icons/icon-mingw32-light.png");}
-.icon-mingw64  {content:url("icons/icon-mingw64-light.png");}
-.icon-linux32  {content:url("icons/icon-linux32-light.png");}
-.icon-linux64  {content:url("icons/icon-linux64-light.png");}
-.icon-macosx32 {content:url("icons/icon-macosx32-light.png");}
-.icon-macosx64 {content:url("icons/icon-macosx64-light.png");}
-.icon-android  {content:url("icons/icon-android-light.png");}
-.icon-lua      {content:url("icons/icon-lua-light.png");}
+
+.icon-mingw32-disabled   {background-image:url("icons/icon-mingw32-dark.png");}
+.icon-mingw64-disabled   {background-image:url("icons/icon-mingw64-dark.png");}
+.icon-linux32-disabled   {background-image:url("icons/icon-linux32-dark.png");}
+.icon-linux64-disabled   {background-image:url("icons/icon-linux64-dark.png");}
+.icon-macosx32-disabled  {background-image:url("icons/icon-macosx32-dark.png");}
+.icon-macosx64-disabled  {background-image:url("icons/icon-macosx64-dark.png");}
+.icon-android-disabled   {background-image:url("icons/icon-android-dark.png");}
+.icon-lua-disabled       {background-image:url("icons/icon-lua-dark.png");}
+.icon-luajit-disabled    {background-image:url("icons/icon-luajit-dark.png");}
+.icon-mingw32-enabled    {background-image:url("icons/icon-mingw32-light.png");}
+.icon-mingw64-enabled    {background-image:url("icons/icon-mingw64-light.png");}
+.icon-linux32-enabled    {background-image:url("icons/icon-linux32-light.png");}
+.icon-linux64-enabled    {background-image:url("icons/icon-linux64-light.png");}
+.icon-macosx32-enabled   {background-image:url("icons/icon-macosx32-light.png");}
+.icon-macosx64-enabled   {background-image:url("icons/icon-macosx64-light.png");}
+.icon-android-enabled    {background-image:url("icons/icon-android-light.png");}
+.icon-lua-enabled        {background-image:url("icons/icon-lua-light.png");}
+.icon-luajit-enabled     {background-image:url("icons/icon-luajit-light.png");}
+
 .pd-logo-image {background: url("pd.png") 0 0;}
 .btn {
 	color: #bbb;
