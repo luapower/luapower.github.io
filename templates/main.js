@@ -63,41 +63,45 @@ jQuery(function() {
 			s = s + '<td><a href="' + (t.has_doc ? k + '.html' : 'http://github.com/luapower/' + k) + '">' + k + '</td>'
 			s = s + '<td>' + t.type + '</td>'
 			s = s + '<td>' + t.git_tag + '</td>'
-			s = s + '<td>' + (t.tagline || '') + '</td>'
+			s = s + '<td>' + t.tagline + '</td>'
 			s = s + '<td style="min-width: 136px;" >'
 
-			var has_lua = t.type.indexOf('Lua') >= 0
-			var has_ffi = t.type.indexOf('ffi') >= 0
+			//platform icons: display and sorting order
 
 			var imgs1 = ''
-			if (has_ffi)
+			if (t.has_ffi)
 				imgs1 += '<div title="LuaJIT" class="icon icon-luajit-enabled"></div>'
-			else if (has_lua)
+			else if (t.has_lua)
 				imgs1 += '<div title="Lua" class="icon icon-lua-enabled"></div>'
 			else
 				imgs1 += '<div class="icon"></div>'
 
-			var pn = 0
+			var pn = 0     // number of platforms
+			var ps = ''    // platforms sort string
 			var imgs = ''
-			var sorts = ''
 			for (var i = 0; i < platforms.length; i++) {
 				var platform = platforms[i]
-				var has = t.platforms[platform]
-				imgs += '<div ' + (has ? 'title="' + platform + '"' : '') +
-							' class="icon icon-' + platform + '-' + (has ? 'enabled' : 'disabled') + '"></div>'
-				if (has) sorts += platform + ';'
-				if (has) pn += 1
+				var enabled = t.platforms[platform]
+				imgs += '<div' + (enabled ? ' title="' + platform + '"' : '') +
+							' class="icon icon-' + platform + '-' + (enabled ? 'enabled' : 'disabled') + '"></div>'
+				if (enabled) {
+					pn += 1
+					ps += platform + ';'
+				}
 			}
-			var lua_pn = has_ffi ? 1 : (has_lua ? 2 : 0)
-			if (pn == 0) {
-				pn = platforms.length
-				imgs = ''
-			}
-			pn += lua_pn
+			// if no explicit platforms, remove the disabled buttons
+			if (pn == 0) imgs = ''
 
-			s = s + '<span style="display: none;">' + pn + sorts + '</span>' // for tablesorter
+			// fix platforms sorting order
+			if (pn == 0 && t.has_lua)
+				pn = platforms.length + (t.has_ffi ? 1 : 2)
+			else if (pn > 0)
+				ps = (t.has_lua ? (t.has_ffi ? 1 : 2) : 0) + ';' + ps
+
+			s = s + '<span style="display: none;">' + pn + ';' + ps + '</span>' // sort string for tablesorter
 			s = s + imgs1 + imgs
 			s = s + '</td>'
+
 			s = s + '<td>' + (t.c_license || 'PD') + '</td>'
 			s = s + '</tr>'
 		})
