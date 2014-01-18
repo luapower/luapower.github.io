@@ -8,7 +8,6 @@
 	* [lpeg]
 	* [vararg]
 	* [dlist]
-	* [tricks][lua_tricks]
 * Basic OS
 	* [lanes]
 	* [socket]
@@ -99,3 +98,4 @@
 	* [pixman]
 * Notes
 	* [design of glue][glue_design]
+	* [tricks][lua_tricks]

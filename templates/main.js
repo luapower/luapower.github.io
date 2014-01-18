@@ -101,7 +101,7 @@ function build_package_table() {
 		s = s + imgs1 + imgs
 		s = s + '</td>'
 
-		s = s + '<td>' + (t.c_license || 'PD') + '</td>'
+		s = s + '<td>' + (t.c_tags.license || 'PD') + '</td>'
 		s = s + '</tr>'
 	})
 	s = s + '</tbody></table>'
