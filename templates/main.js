@@ -22,8 +22,8 @@ jQuery(function() {
 	update_lights_button()
 
 	$('#lights').click(function() {
-		event.preventDefault()
 		set_lights(!lights_state())
+		return false
 	})
 })
 
