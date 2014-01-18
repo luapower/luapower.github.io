@@ -3,7 +3,7 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> lanes   - Lua Lanes </title>
-				<script src="templates/jquery.js"></script>
+		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -12,7 +12,10 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights() //set the lights before rendering starts
+			var DOCNAME = 'lanes'
+			var PROJECT = 'lanes'
+			//set the lights before rendering starts
+			set_lights()
 		</script>
 	</head>
 	<body>
@@ -29,6 +32,7 @@
 						<td style="vertical-align: middle;" width="100%">
 							<h1> lanes </h1>
 							<h2> Lua Lanes </h2>
+							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -49,6 +53,7 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
+				<span id="module_info">&nbsp;</span>
 				<p><strong>NOTE: This is just a distribution of Lanes. Lanes is developed <a href="http://github.com/LuaLanes/lanes">here</a>.</strong></p>
 <h3 id="documentation">Documentation</h3>
 <p>There's up-to-date Lanes documentation <a href="https://rawgithub.com/LuaLanes/lanes/master/docs/index.html">here</a>. Ignore the <a href="http://kotisivu.dnainternet.net/askok/bin/lanes/">old site</a>.</p>

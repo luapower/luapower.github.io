@@ -16,6 +16,13 @@ header {
 	height: 140px;
 }
 
+#package_info {
+	position: relative;
+	float: right;
+	left: -20px;
+	top: -80px;
+}
+
 section {
 	width: 100%;
 	display: block;

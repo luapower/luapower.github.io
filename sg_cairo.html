@@ -3,7 +3,7 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> sg_cairo   - cairo scene graph render </title>
-				<script src="templates/jquery.js"></script>
+		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -12,7 +12,10 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights() //set the lights before rendering starts
+			var DOCNAME = 'sg_cairo'
+			var PROJECT = 'sg'
+			//set the lights before rendering starts
+			set_lights()
 		</script>
 	</head>
 	<body>
@@ -29,6 +32,7 @@
 						<td style="vertical-align: middle;" width="100%">
 							<h1> sg_cairo </h1>
 							<h2> cairo scene graph render </h2>
+							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -49,6 +53,7 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
+				<span id="module_info">&nbsp;</span>
 				<h2 id="local-sg-requiresg_cairo"><code>local SG = require'sg_cairo'</code></h2>
 <h2 id="local-sg-sgnewsurfacecache"><code>local sg = SG:new(surface[,cache])</code></h2>
 <p>Create a new scene graph renderer that can draw scene graph objects on a cairo surface. A cache object can be passed so you can share cached resources like fonts and images with other renderers, otherwise a private cache object will be created.</p>

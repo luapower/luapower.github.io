@@ -3,7 +3,7 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> md5   - md5 digest </title>
-				<script src="templates/jquery.js"></script>
+		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -12,7 +12,10 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights() //set the lights before rendering starts
+			var DOCNAME = 'md5'
+			var PROJECT = 'md5'
+			//set the lights before rendering starts
+			set_lights()
 		</script>
 	</head>
 	<body>
@@ -29,6 +32,7 @@
 						<td style="vertical-align: middle;" width="100%">
 							<h1> md5 </h1>
 							<h2> md5 digest </h2>
+							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -49,6 +53,7 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
+				<span id="module_info">&nbsp;</span>
 				<h2 id="local-md5-requiremd5"><code>local md5 = require'md5'</code></h2>
 <p>A ffi binding of the popular <a href="http://openwall.info/wiki/people/solar/software/public-domain-source-code/md5">MD5 implementation</a> by Alexander Peslyak.</p>
 <table>

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> murmurhash3   - murmurhash3 Lua implementation </title>
-				<script src="templates/jquery.js"></script>
+		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -12,7 +12,10 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights() //set the lights before rendering starts
+			var DOCNAME = 'murmurhash3'
+			var PROJECT = 'murmurhash3'
+			//set the lights before rendering starts
+			set_lights()
 		</script>
 	</head>
 	<body>
@@ -29,6 +32,7 @@
 						<td style="vertical-align: middle;" width="100%">
 							<h1> murmurhash3 </h1>
 							<h2> murmurhash3 Lua implementation </h2>
+							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -49,6 +53,7 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
+				<span id="module_info">&nbsp;</span>
 				<h2 id="local-murmurhash3-requiremurmurhash3"><code>local murmurhash3 = require'murmurhash3'</code></h2>
 <table>
 <tbody>

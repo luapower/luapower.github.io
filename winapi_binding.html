@@ -3,7 +3,7 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> winapi_binding   - developer documentation </title>
-				<script src="templates/jquery.js"></script>
+		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -12,7 +12,10 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights() //set the lights before rendering starts
+			var DOCNAME = 'winapi_binding'
+			var PROJECT = 'winapi'
+			//set the lights before rendering starts
+			set_lights()
 		</script>
 	</head>
 	<body>
@@ -29,6 +32,7 @@
 						<td style="vertical-align: middle;" width="100%">
 							<h1> winapi_binding </h1>
 							<h2> developer documentation </h2>
+							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -49,6 +53,7 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
+				<span id="module_info">&nbsp;</span>
 				<p><a href="winapi.html">back</a></p>
 <h2 id="how-to-use-the-ffi-layer">How to use the ffi layer</h2>
 <p>Wrap winapi calls in <code>callnz</code>, <code>callh</code> and friends according to what constitutes an error in the result: you get automatic error handling and clear code.</p>

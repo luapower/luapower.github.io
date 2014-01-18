@@ -3,7 +3,7 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> obj_parser   - callback-based wavefront obj file parser </title>
-				<script src="templates/jquery.js"></script>
+		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
 		<script src="templates/strftime.js"></script>
@@ -12,7 +12,10 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights() //set the lights before rendering starts
+			var DOCNAME = 'obj_parser'
+			var PROJECT = 'obj_parser'
+			//set the lights before rendering starts
+			set_lights()
 		</script>
 	</head>
 	<body>
@@ -29,6 +32,7 @@
 						<td style="vertical-align: middle;" width="100%">
 							<h1> obj_parser </h1>
 							<h2> callback-based wavefront obj file parser </h2>
+							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -49,6 +53,7 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
+				<span id="module_info">&nbsp;</span>
 				<h2 id="local-obj_parser-requireobj_parser"><code>local obj_parser = require'obj_parser'</code></h2>
 <h2 id="obj_parser.parsefile-handlers"><code>obj_parser.parse(file, handlers)</code></h2>
 <p>Parses an obj file calling a specific handler for each piece of the file.</p>
