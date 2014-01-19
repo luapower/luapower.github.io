@@ -30,10 +30,10 @@
 	* [mysql]
 	* [fbclient]
 * Windows API
-	* [intro][winapi]
-	* [tech doc][winapi_design]
-	* [dev doc][winapi_binding]
-	* [history][winapi_history]
+	* [winapi]
+	* [winapi_design]
+	* [winapi_binding]
+	* [winapi_history]
 	* [windesigner]
 * 2D Graphics
 	* [path]

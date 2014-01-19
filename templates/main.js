@@ -34,13 +34,12 @@ function check_ready() {
 		doc_ready()
 }
 
-function package_link(pkg) {
-	var has_doc = packages[pkg].has_doc
-	return has_doc ? pkg + '.html' : 'https://github.com/luapower/' + pkg
+function ahref(href, text, attrs) {
+	return '<a' + (attrs ? ' ' + attrs : '') + (href ? ' href="' + href + '"' : '') + '>' + text + '</a>'
 }
 
-function ahref(href, text, attrs) {
-	return '<a ' + attrs + ' href="' + href + '">' + text + '</a>'
+function link(link, attrs) {
+	return ahref(link[1], link[0], attrs)
 }
 
 function build_package_table() {
@@ -59,10 +58,10 @@ function build_package_table() {
 
 	$.each(packages, function(k, t) {
 		s = s + '<tr>'
-		s = s + '<td>' + ahref(package_link(k), k) + '</td>'
+		s = s + '<td>' + link(t.link) + '</td>'
 		s = s + '<td>' + t.type + '</td>'
 		s = s + '<td>' + t.git_tag + '</td>'
-		s = s + '<td>' + t.tagline + '</td>'
+		s = s + '<td>' + (t.tagline || '') + '</td>'
 		s = s + '<td style="min-width: 136px;" >'
 
 		//platform icons: display and sorting order
@@ -101,7 +100,7 @@ function build_package_table() {
 		s = s + imgs1 + imgs
 		s = s + '</td>'
 
-		s = s + '<td>' + (t.c_tags.license || 'PD') + '</td>'
+		s = s + '<td>' + (t.c_license || 'PD') + '</td>'
 		s = s + '</tr>'
 	})
 	s = s + '</tbody></table>'
@@ -119,38 +118,36 @@ function set_doc_page() {
 
 	// list package dependencies
 	var t = []
-	for (var i=0; i < pkg.dependencies.length; i++) {
-		var dep = pkg.dependencies[i]
-		t.push(ahref(package_link(dep), dep))
-	}
+	//...not anymore: turns out that these are not very relevant in the context of the whole package.
+	//for (var i=0; i < pkg.pdep_links.length; i++)
+	//	t.push(link(pkg.pdep_links[i]))
 
 	var tt = []
-	tt.push(pkg.type)
 	tt.push(pkg.git_tag)
-	if(pkg.c_tags)
-		tt.push(ahref(pkg.c_tags.url, pkg.c_tags.realname + ' ' + pkg.c_tags.version)
-						+ ' (' + pkg.c_tags.license + ')')
-	if (t.length > 0)
-		tt.push('requires: ' + t.join(', '))
+	tt.push(pkg.type)
+	if(pkg.c_link) tt.push(link(pkg.c_link) + ' (' + pkg.c_license + ')')
+	if (t.length > 0) tt.push('depends: ' + t.join(', '))
 
 	$('#package_info').html(tt.join(' | '))
 
 	var mod = pkg.modules[DOCNAME]
 	if (!mod) return
 
-	// list module dependencies
-	var t = []
-	for (var i=0; i < mod.dependencies.length; i++) {
-		var dep = mod.dependencies[i]
-		var link = mod.dep_links[i]
-		t.push(link ? ahref(link, dep) : dep)
-	}
+	// list module module dependencies
+	var pdeps = []
+	for (var i=0; i < mod.pdep_links.length; i++)
+		pdeps.push(link(mod.pdep_links[i]))
+	// list module package dependencies
+	var mdeps = []
+	for (var i=0; i < mod.mdep_links.length; i++)
+		mdeps.push(link(mod.mdep_links[i]))
 
 	var tt = []
-	if (mod.source_link) tt.push(ahref(mod.source_link, 'source'))
-	if (mod.test_module) tt.push(ahref(mod.test_module_link, 'test'))
-	if (mod.demo_module) tt.push(ahref(mod.demo_module_link, 'demo'))
-	if (t.length > 0) tt.push('requires: ' + t.join(', '))
+	if (mod.source_link) tt.push(link(mod.source_link))
+	if (mod.test_link) tt.push(link(mod.test_link))
+	if (mod.demo_link) tt.push(link(mod.demo_link))
+	if (pdeps.length > 0) tt.push('<span title="package dependencies">depends: ' + pdeps.join(', ') + '</span>')
+	if (mdeps.length > 0) tt.push('<span title="module dependencies">requires: ' + mdeps.join(', ') + '</span>')
 	$('#module_info').html(tt.join(' | '))
 
 	/*
