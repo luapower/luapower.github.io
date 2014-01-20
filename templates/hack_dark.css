@@ -53,6 +53,7 @@ header h2 {color: #666;}
 .doc h6 {color: #999;}
 .doc li:before {color: #b5e853;}
 .doc blockquote {color: #aaa; border-left-color: #666;}
+.doc pre {background-color: #101010;}
 .doc th {border-bottom-color: #b5e853;}
 .doc tr {border-top-color: #333; border-bottom-color: #333;}
 .doc hr {border-bottom-color: #b5e853;}

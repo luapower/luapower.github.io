@@ -55,79 +55,85 @@
 			<section class="doc">
 				<span id="module_info">&nbsp;</span>
 				<h2 id="what">What?</h2>
-<p>A way to download and manage luapower packages using git.</p>
+<p>An automated way for downloading, managing and building luapower packages.</p>
 <h2 id="why-not-just-use-git-directly">Why not just use git directly?</h2>
-<p>Because looking for modules on github and copy-pasting git URLs into the command line is boring. And because luapower packages need to be overlaid over a single directory but git repositories want to have their own separate directories by default.</p>
+<p>Mainly because luapower packages need to be overlaid over a single directory (all Lua modules from all packages must be in the same directory) but git repositories want to have their own separate directories by default.</p>
 <h2 id="how">How?</h2>
-<pre><code>mkdir luapower
-cd luapower
-git clone ssh://git@github.com/luapower/luapower-git _git
-cd _git
-./known-packages.sh
-./clone.sh &lt;package&gt;
-...</code></pre>
-<p>This way the packages are all cloned into <code>luapower</code> (one dir above <code>_git</code>). They all share the same git worktree which is <code>luapower</code>, but they maintain a separate git dir, at <code>_git/&lt;package&gt;/.git</code>.</p>
+<p>First, let's git it:</p>
+<pre><code>git clone ssh://git@github.com/luapower/luapower-git luapower
+cd luapower</code></pre>
+<p>This gets us the <code>clone</code> command (among others) which allows us to clone luapower packages easily. Let's use it to clone the dependencies needed for the <code>luapower</code> command (described below):</p>
+<pre><code>clone lfs
+clone glue
+clone tuple</code></pre>
+<blockquote>
+<p>NOTE: In Linux, the command is <code>./clone.sh</code>.</p>
+</blockquote>
 <h2 id="package-management">Package management</h2>
 <table>
 <tbody>
 <tr class="odd">
-<td align="left">./known-packages.sh</td>
-<td align="left">list all available packages</td>
+<td align="left"><code>clone --list</code></td>
+<td align="left">list available (not cloned) packages</td>
 </tr>
 <tr class="even">
-<td align="left">./packages.sh</td>
+<td align="left"><code>clone &lt;package&gt;</code></td>
+<td align="left">clone a package</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>clone --all</code></td>
+<td align="left">clone all available packages</td>
+</tr>
+<tr class="even">
+<td align="left"><code>remove --list</code></td>
 <td align="left">list local (cloned) packages</td>
 </tr>
 <tr class="odd">
-<td align="left">./clone.sh <package></td>
-<td align="left">clone a package in the parent dir</td>
-</tr>
-<tr class="even">
-<td align="left">./clone-all.sh</td>
-<td align="left">clone all packages</td>
-</tr>
-<tr class="odd">
-<td align="left">./build-all.sh</td>
-<td align="left">build all C packages in the right order</td>
+<td align="left"><code>remove &lt;package&gt;</code></td>
+<td align="left">remove a package</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>NOTE: These shell scripts work in Windows too if you have MSYS in your PATH. Use the cmd wrappers then.</p>
-</blockquote>
+<h2 id="the-luapower-command">The <code>luapower</code> command</h2>
+<p>This is a powerful command that extracts and aggregates data from the luapower environment and gives detailed information about packages, modules and documentation. It can give accurate information about dependencies between modules and packages because it actually loads the module and tracks <code>require</code> calls, and then it integrates that information with the information about packages.</p>
+<p>It is also used for keeping the package database on luapower.com up to date, along with the navigation tree and the module/package dependency lists.</p>
+<p>So do check it out. Type <code>luapower</code> for usage.</p>
+<h2 id="building-all-the-c-libraries-in-one-shot">Building all the C libraries in one shot</h2>
+<pre><code>build-all</code></pre>
+<p>This builds all packages that have a build script in the right order.</p>
 <h2 id="module-development">Module development</h2>
-<p>Git commands can be invoked from the work tree by passing <code>--git-dir=_git/&lt;package&gt;/.git</code> to git, or by setting the environment variable <code>GIT_DIR</code>. To ease the pain, copy the scripts from <code>_worktree_tools</code> into the worktree and use those, you'll be much happier. Here's how they work:</p>
+<blockquote>
+<p>This section is only interesting if you wish to get involved in developing luapower modules.</p>
+</blockquote>
+<p>Git commands can be invoked from the work tree by passing <code>--git-dir=_git/&lt;package&gt;/.git</code> to git, or by setting the environment variable <code>GIT_DIR</code>. To ease the pain, the <code>proj</code> command can be used.</p>
 <table>
 <tbody>
 <tr class="odd">
-<td align="left">./proj.sh</td>
-<td align="left">list available repos (local repos)</td>
+<td align="left"><code>proj</code></td>
+<td align="left">list cloned repos</td>
 </tr>
 <tr class="even">
-<td align="left">./proj.sh <project></td>
-<td align="left">set <code>GIT_DIR</code> for a specific repo</td>
+<td align="left"><code>proj &lt;project&gt;</code></td>
+<td align="left">make git &quot;track&quot; a specific repo (i.e. set <code>GIT_DIR</code>)</td>
 </tr>
 <tr class="odd">
-<td align="left">./modified.sh</td>
+<td align="left"><code>modified</code></td>
 <td align="left">show modified files across all repos</td>
 </tr>
 <tr class="even">
-<td align="left">./unpushed.sh</td>
+<td align="left"><code>unpushed</code></td>
 <td align="left">show unpushed repos</td>
 </tr>
 <tr class="odd">
-<td align="left">./untracked.sh</td>
+<td align="left"><code>untracked</code></td>
 <td align="left">show untracked files (takes a while)</td>
 </tr>
 <tr class="even">
-<td align="left">./versions.sh</td>
-<td align="left">show current (local) version for all repos</td>
+<td align="left"><code>on-all &lt;cmd ...&gt;</code></td>
+<td align="left">execute a command for each repo, each time setting <code>GIT_DIR</code> (eg. <code>on-all git status</code>)</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>Again, use the cmd wrappers if you are on Windows and prefer the cmd shell over bash.</p>
-</blockquote>
 			</section>
 		</div>
 		<div class="container">

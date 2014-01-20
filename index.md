@@ -6,47 +6,36 @@ tagline:  Lua, JIT, batteries
 
 ![](luapower.png)
 
-  * Lua libraries and bindings with demos, documentation, separate github repos
+  * Lua libraries and bindings with demos, documentation and separate github repos
   * C libraries with sources, binaries and build scripts for Windows and Linux
   * LuaJIT executable
-  * all free
-
-<div style="display: none">
-pure Lua                                        Lua+ffi                                         Lua/C
------------------- ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
-[glue]             everyday functions           [md5]              MD5                          [lpeg]             PEGs
-[tuple]            real tuples                  [sha2]             SHA-256/384/512              [vararg]           varargs
-[coro]             symmetric coroutines         [zlib]             deflate, gzip                [struct]           structs
-[pp]               serialization                [minizip]          ZIP files                    [lanes]            threads
-[oo]               OOP                          [pmurhash]         murmurhash                   [socket]           sockets
-[utf8]             UTF-8                        [libb64]           base64                       [lfs]              file system
-[dlist]            doubly-linked lists          [expat]            XML parsing                  [cjson]            JSON
-[hmac]             HMAC hashing                 [genx]             XML creation
-[murmurhash3]      murmurhash                   [mysql]            mysql client
-[crc32]            CRC-32                       [fbclient]         firebird client
-[path]             2D geometry                  [winapi]           winapi for GUIs
-[affine2d]         2D transforms                [clipper]          polygon clipping
-[box2d]            2D rectangles                [cairo]            2D graphics
-[sg_cairo]         cairo scene graph            [openvg]           2D accel graphics
-[svg_parser]       SVG parser                   [freetype]         text rasterization
-[sg_gl]            OpenGL scene graph           [harfbuzz]         text shaping
-[sg_gl_mesh]       OpenGL meshes                [libunibreak]      line breaking
-[sg_gl_shape]      OpenGL shapes                [opengl]           OpenGL 1.1 & 2.1
-[obj_parser]       wavefront obj parser         [bitmap]           in-memory bitmaps
-[obj_loader]       obj loader                   [giflib]           read GIFs
-[sg_gl_obj]        obj scene graph              [libjpeg]          read JPEGs
-[cplayer]          procedural graphics          [libpng]           read PNGs
-[codedit]          code editor                  [nanojpeg]         read JPEGs
-[color]            HSL colors                   [libexif]          EXIF info
-[easing]           for tweening                 [chipmunk]         2D physics
-[eq2], [eq3]       equation solvers             [libvlc]           video playing
-                                                [hunspell]         spell checking
------------------- ---------------------------- ------------------ ---------------------------- ------------------ ----------------------------
-</div>
+  * everything free
 
 <div id="package_table" class="package_table"></div>
 
+
+## In Detail
+
+A selection of Lua and C libraries chosen for speed, portability, API stability and a free license.
+On top of that there's a growing collection of ffi bindings and Lua modules
+mostly written by me ([capr](https://github.com/capr)).
+My own code is in public domain (PD) as I do not support the copyright law.
+
+
+## Getting started
+
+The fastest route to running code is to download [luajit] and all the packages that you need
+and unzip them _over the same directory_ (that's fine and encouraged, there will be no name clashes, see below).
+This will give you an instantly portable luajit distro that will work reagardless of where you run it from.
+
+That being said, binaries can also be built from source if desired (see below).
+
+Or you can go the git way with [luapower-git], which gives you package management a la LuaRocks.
+
+
 ## Directory Layout
+
+Luapower packages follow strict conventions on where the files are and how they are named:
 
   * module: `<lib>.lua`
   * submodule: `<lib>_<sub>.lua` and sometimes `<lib>/<sub>.lua`
@@ -58,16 +47,62 @@ pure Lua                                        Lua+ffi                         
     * sources: `csrc/<lib>/*`
     * build scripts: `csrc/<lib>/build-<platform>.sh`
     * binaries: `bin/mingw32/<lib>.dll`, `bin/linux32/lib<lib>.so`
+	 * version file: `csrc</lib>/WHAT`
   * LuaJIT executable: `bin/<platform>/luajit`
 
-## In Detail
+As a result, downloaded packages can be safely unzipped over the same directory, and package management becomes
+easy to automate (see the [luapower command](luapower-git.html#the-luapower-command)).
 
-A selection of the best Lua and C libraries out there, chosen for speed, portability, API stability and a free license.
+The included luajit executable looks for Lua modules in `../..` relative to its own dir, so luapower modules
+will be found regardless of the directory which luajit is started in.
 
-Windows dlls are compiled with MinGW GCC 4.7 with `-O3 -s` and linked against msvcrt.dll,
-using one-liner build scripts which "just work" provided you have MinGW in your `PATH`.
 
-My own code is in public domain as I do not support copyright law. Most other libs are MIT.
+## Building the C libraries
 
-An updated list of packages, with versioning and license info is coming soon. Stay tuned.
+Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles).
+Build scripts are provided for each package/platform as `csrc/<package>/build-<platform>.sh`.
+C sources are also included so you can start right away. C binary dependencies are not built automatically.
+They are however listed in the WHAT file of the package at `csrc/<package>/WHAT`.
+
+CFLAGS and CXXFLAGS env. vars can be set to control the build process.
+
+A fully autmated one-shot build script for all packages is provided in [luapower-git].
+
+
+### On Windows
+
+Windows dlls were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.
+Below is the exact list of packages used to make a complete toolchain.
+The build scripts assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
+
+----
+[binutils-2.23.1-1-mingw32-bin](http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.23.1/binutils-2.23.1-1-mingw32-bin.tar.lzma/download)
+[mingwrt-3.20-2-mingw32-dev](http://sourceforge.net/projects/mingw/files/MinGW/Base/mingw-rt/mingwrt-3.20/mingwrt-3.20-2-mingw32-dev.tar.lzma/download)
+[mingwrt-3.20-2-mingw32-dll](http://sourceforge.net/projects/mingw/files/MinGW/Base/mingw-rt/mingwrt-3.20/mingwrt-3.20-2-mingw32-dll.tar.lzma/download)
+[w32api-3.17-2-mingw32-dev](http://sourceforge.net/projects/mingw/files/MinGW/Base/w32api/w32api-3.17/w32api-3.17-2-mingw32-dev.tar.lzma/)
+[mpc-0.8.1-1-mingw32-dev](http://sourceforge.net/projects/mingw/files/MinGW/Base/mpc/mpc-0.8.1-1/mpc-0.8.1-1-mingw32-dev.tar.lzma/)
+[libmpc-0.8.1-1-mingw32-dll-2](http://sourceforge.net/projects/mingw/files/MinGW/Base/mpc/mpc-0.8.1-1/libmpc-0.8.1-1-mingw32-dll-2.tar.lzma/)
+[mpfr-2.4.1-1-mingw32-dev](http://sourceforge.net/projects/mingw/files/MinGW/Base/mpfr/mpfr-2.4.1-1/mpfr-2.4.1-1-mingw32-dev.tar.lzma/)
+[libmpfr-2.4.1-1-mingw32-dll-1](http://sourceforge.net/projects/mingw/files/MinGW/Base/mpfr/mpfr-2.4.1-1/libmpfr-2.4.1-1-mingw32-dll-1.tar.lzma/)
+[gmp-5.0.1-1-mingw32-dev](http://sourceforge.net/projects/mingw/files/MinGW/Base/gmp/gmp-5.0.1-1/gmp-5.0.1-1-mingw32-dev.tar.lzma/)
+[libgmp-5.0.1-1-mingw32-dll-10](http://sourceforge.net/projects/mingw/files/MinGW/Base/gmp/gmp-5.0.1-1/libgmp-5.0.1-1-mingw32-dll-10.tar.lzma/)
+[pthreads-w32-2.9.0-mingw32-pre-20110507-2-dev](http://sourceforge.net/projects/mingw/files/MinGW/Base/pthreads-w32/pthreads-w32-2.9.0-pre-20110507-2/pthreads-w32-2.9.0-mingw32-pre-20110507-2-dev.tar.lzma/)
+[libpthreadgc-2.9.0-mingw32-pre-20110507-2-dll-2](http://sourceforge.net/projects/mingw/files/MinGW/Base/pthreads-w32/pthreads-w32-2.9.0-pre-20110507-2/libpthreadgc-2.9.0-mingw32-pre-20110507-2-dll-2.tar.lzma/)
+[libiconv-1.14-2-mingw32-dev](http://sourceforge.net/projects/mingw/files/MinGW/Base/libiconv/libiconv-1.14-2/libiconv-1.14-2-mingw32-dev.tar.lzma/)
+[libiconv-1.14-2-mingw32-dll-2](http://sourceforge.net/projects/mingw/files/MinGW/Base/libiconv/libiconv-1.14-2/libiconv-1.14-2-mingw32-dll-2.tar.lzma/)
+[libintl-0.18.1.1-2-mingw32-dll-8](http://sourceforge.net/projects/mingw/files/MinGW/Base/gettext/gettext-0.18.1.1-2/libintl-0.18.1.1-2-mingw32-dll-8.tar.lzma/)
+[libgomp-4.7.2-1-mingw32-dll-1](http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libgomp-4.7.2-1-mingw32-dll-1.tar.lzma/)
+[libssp-4.7.2-1-mingw32-dll-0](http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libssp-4.7.2-1-mingw32-dll-0.tar.lzma/)
+[libquadmath-4.7.2-1-mingw32-dll-0](http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libquadmath-4.7.2-1-mingw32-dll-0.tar.lzma/)
+[gcc-core-4.7.2-1-mingw32-bin](http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/gcc-core-4.7.2-1-mingw32-bin.tar.lzma/)
+[libgcc-4.7.2-1-mingw32-dll-1](http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libgcc-4.7.2-1-mingw32-dll-1.tar.lzma/)
+[gcc-c++-4.7.2-1-mingw32-bin](http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/gcc-c%2B%2B-4.7.2-1-mingw32-bin.tar.lzma/)
+[libstdc++-4.7.2-1-mingw32-dll-6](http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libstdc%2B%2B-4.7.2-1-mingw32-dll-6.tar.lzma/)
+[make-3.82-5-mingw32-bin](http://sourceforge.net/projects/mingw/files/MinGW/Extension/make/make-3.82-mingw32/make-3.82-5-mingw32-bin.tar.lzma/download)
+[ragel 6.8 (only used by harfbuzz)](http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z)
+----
+
+### On Linux
+
+GCC 4.x should build everything just fine. I used the stock Debian toolchain with no problems.
 
