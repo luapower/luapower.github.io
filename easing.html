@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> easing   - easing functions in Lua </title>
+		<title> easing   - easing functions </title>
 		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
@@ -31,7 +31,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> easing </h1>
-							<h2> easing functions in Lua </h2>
+							<h2> easing functions </h2>
 							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
@@ -56,8 +56,18 @@
 				<span id="module_info">&nbsp;</span>
 				<h2 id="local-easing-requireeasing"><code>local easing = require'easing'</code></h2>
 <p>Robert Penner's <a href="http://www.robertpenner.com/easing/">easing functions</a>.</p>
-<h2 id="easing.formulacurrent_time---start_time-0-1-fixed_duration---value-in-0..1"><code>easing.&lt;formula&gt;(current_time - start_time, 0, 1, fixed_duration) -&gt; value in 0..1</code></h2>
+<h2 id="easingformula_namet-b-c-d---value-in-b..c"><code>easing[formula_name](t, b, c, d) -&gt; value in b..c</code></h2>
 <p>The formulas map input <code>d</code> to output <code>r</code>, where <code>d</code> is in <code>0 .. t</code> and <code>r</code> is in <code>b + 0 .. c</code>.</p>
+<h2 id="usage-for-animation">Usage for animation</h2>
+<pre><code>easing[formula_name](t1 - t0, d0, d1, T) -&gt; d</code></pre>
+<ul>
+<li>t1 is the animation's current time</li>
+<li>t0 is the animation's start time</li>
+<li>d0 is the start value</li>
+<li>d1 is the end value</li>
+<li>T is the total animation duration</li>
+<li>d is the current value in d0..d1 corresponding to the current time</li>
+</ul>
 <p>Some formulas take additional parameters (see code).</p>
 			</section>
 		</div>

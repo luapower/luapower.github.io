@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> obj_loader   - wavefront OBJ loader </title>
+		<title> eq   - 3rd degree equation solver </title>
 		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
@@ -12,8 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			var DOCNAME = 'obj_loader'
-			var PROJECT = 'obj_parser'
+			var DOCNAME = 'eq'
+			var PROJECT = 'eq'
 			//set the lights before rendering starts
 			set_lights()
 		</script>
@@ -30,23 +30,23 @@
 								<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
-							<h1> obj_loader </h1>
-							<h2> wavefront OBJ loader </h2>
+							<h1> eq </h1>
+							<h2> 3rd degree equation solver </h2>
 							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
-								<a href="https://github.com/luapower/obj_parser" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/luapower/eq" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/luapower/obj_parser/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								<a href="https://github.com/luapower/eq/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/luapower/obj_parser/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								<a href="https://github.com/luapower/eq/zipball/master" class="btn btn-rightside">Download as .zip</a>
 								</td></tr></table>
 																				</td>
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/obj_parser/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/eq/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
@@ -54,13 +54,13 @@
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
 				<span id="module_info">&nbsp;</span>
-				<h2 id="local-obj_loader-requireobj_loader"><code>local obj_loader = require'obj_loader'</code></h2>
-<h2 id="obj_loader.loadfile-use_cache---mesh_object"><code>obj_loader.load(file[, use_cache]) -&gt; mesh_object</code></h2>
-<p>Loads an wavefront obj file into an OpenGL scene graph mesh object that can be rendered with <a href="sg_gl.html">sg_gl</a>.</p>
-<p>Supports groups with triangle and quad faces and textures with uv texcoords.</p>
-<p>The resulting VBO and IBO arrays and IBO partitions can be cached to a temp file for a small speed increase with <code>use_cache</code>.</p>
-<hr />
-<p>See also: <a href="obj_parser.html">obj_parser</a>, <a href="sg_gl_obj.html">sg_gl_obj</a></p>
+				<h2 id="local-eq-requireeq"><code>local eq = require'eq'</code></h2>
+<h2 id="eq.solve2a-b-c-epsilon---s1-s2"><code>eq.solve2(a, b, c[, epsilon]) -&gt; [s1[, s2]]</code></h2>
+<p>Solve the <a href="http://en.wikipedia.org/wiki/Quadratic_equation">2nd degree equation</a> <em>ax<sup>2</sup> + bx + c</em> and return all the real solutions.</p>
+<p>Epsilon controls the precision at which the solver converges on close enough solutions.</p>
+<h2 id="eq.solve3a-b-c-d-epsilon---s1-s2-s3"><code>eq.solve3(a, b, c, d[, epsilon]) -&gt; [s1[, s2[, s3]]]</code></h2>
+<p>Solve the <a href="http://en.wikipedia.org/wiki/Cubic_function">3rd degree equation</a> <em>ax<sup>3</sup> + bx<sup>2</sup> + cx + d</em> and return all the real solutions.</p>
+<p>Epsilon controls the precision at which the solver converges on close enough solutions.</p>
 			</section>
 		</div>
 		<div class="container">

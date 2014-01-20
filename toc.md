@@ -90,8 +90,7 @@
 	* [chipmunk]
 	* [libvlc]
 * Math
-	* [eq2]
-	* [eq3]
+	* [eq]
 * Support Packages
 	* [luajit]
 	* [wluajit]

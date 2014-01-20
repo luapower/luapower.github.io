@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> svg_parser   - svg parser to a cairo scene graph object </title>
+		<title> svg_parser   - SVG parser </title>
 		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
@@ -31,7 +31,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> svg_parser </h1>
-							<h2> svg parser to a cairo scene graph object </h2>
+							<h2> SVG parser </h2>
 							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
@@ -55,7 +55,9 @@
 			<section class="doc">
 				<span id="module_info">&nbsp;</span>
 				<h2 id="local-svg_parser-requiresvg_parser"><code>local svg_parser = require'svg_parser'</code></h2>
-<p>A SVG 1.1 parser implemented in Lua. There's a handy collection of svg files to test the parser with.</p>
+<p>A SVG 1.1 parser implemented in Lua.</p>
+<p>Unlike other parsers, this one generates a <a href="sg_cairo.html">cairo sceen graph object</a> instead of directly rendering the SVG file on a canvas, which allows for manipulation of the graphics objects.</p>
+<p>Included in the package is a handy collection of SVG files to test the parser with.</p>
 <p>Some notable features are not yet implemented:</p>
 <ul>
 <li>patterns</li>
@@ -72,7 +74,7 @@
 <li>css language</li>
 </ul>
 <h2 id="svg_parser.parsesource---object"><code>svg_parser.parse(source) -&gt; object</code></h2>
-<p>Parses a SVG into a cairo scene graph object that can be rendered with [sg_cairo sg_cairo]. <br></p>
+<p>Parses a SVG into a cairo scene graph object that can be rendered with <a href="sg_cairo.html">sg_cairo</a>.</p>
 <ul>
 <li><code>source</code> is an <a href="expat.html">expat</a> source.</li>
 </ul>

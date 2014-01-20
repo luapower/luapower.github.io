@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> sg_gl_obj   - OpenGL scene graph wavefront obj objects </title>
+		<title> sg_gl_obj   - OpenGL scene graph OBJ meshes </title>
 		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
 		<script src="templates/jquery-tablesorter.js"></script>
@@ -31,7 +31,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> sg_gl_obj </h1>
-							<h2> OpenGL scene graph wavefront obj objects </h2>
+							<h2> OpenGL scene graph OBJ meshes </h2>
 							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
@@ -55,7 +55,7 @@
 			<section class="doc">
 				<span id="module_info">&nbsp;</span>
 				<h2 id="requiresg_gl_obj"><code>require'sg_gl_obj'</code></h2>
-<p>Extends <a href="sg_gl.html">sg_gl</a> to render obj type objects. Uses <a href="obj_loader.html">obj_loader</a> to parse obj files into <a href="sg_gl_mesh.html">sg_gl_mesh mesh objects</a>.</p>
+<p>Extends <a href="sg_gl.html">sg_gl</a> to render wavefront OBJ files. Uses <a href="obj_loader.html">obj_loader</a> to parse obj files into <a href="sg_gl_mesh.html">sg_gl_mesh mesh objects</a>.</p>
 <h2 id="wavefront-obj-objects">Wavefront obj objects</h2>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="ot">&lt;</span><span class="kw">obj_object</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
   <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;obj&#39;</span><span class="ot">,</span>
