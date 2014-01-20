@@ -14,12 +14,12 @@ tagline:  Lua, JIT, batteries
 <div id="package_table" class="package_table"></div>
 
 
-## In Detail
+## The What
 
 A selection of Lua and C libraries chosen for speed, portability, API stability and a free license.
-On top of that there's a growing collection of ffi bindings and Lua modules
+On top of that, a growing collection of ffi bindings and Lua modules
 mostly written by me ([capr](https://github.com/capr)).
-My own code is in public domain (PD) as I do not support the copyright law.
+My code is in public domain (PD) as I do not support the copyright law. The rest is mostly free as-in non-viral.
 
 
 ## Getting started
@@ -30,7 +30,7 @@ This will give you an instantly portable luajit distro that will work reagardles
 
 That being said, binaries can also be built from source if desired (see below).
 
-Or you can go the git way with [luapower-git], which gives you package management a la LuaRocks.
+Or you can go the git way with [luapower-git], which gives you package management a la LuaRocks, but git-based.
 
 
 ## Directory Layout
