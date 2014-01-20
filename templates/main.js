@@ -66,10 +66,13 @@ function build_package_table() {
 
 		//platform icons: display and sorting order
 
+		var has_lua = t.type.indexOf('Lua') >= 0
+		var has_ffi = t.type.indexOf('ffi') >= 0
+
 		var imgs1 = ''
-		if (t.has_ffi)
+		if (has_ffi)
 			imgs1 += '<div title="LuaJIT" class="icon icon-luajit-enabled"></div>'
-		else if (t.has_lua)
+		else if (has_lua)
 			imgs1 += '<div title="Lua" class="icon icon-lua-enabled"></div>'
 		else
 			imgs1 += '<div class="icon"></div>'
@@ -91,10 +94,10 @@ function build_package_table() {
 		if (pn == 0) imgs = ''
 
 		// fix platforms sorting order
-		if (pn == 0 && t.has_lua)
-			pn = platforms.length + (t.has_ffi ? 1 : 2)
+		if (pn == 0 && has_lua)
+			pn = platforms.length + (has_ffi ? 1 : 2)
 		else if (pn > 0)
-			ps = (t.has_lua ? (t.has_ffi ? 1 : 2) : 0) + ';' + ps
+			ps = (has_lua ? (has_ffi ? 1 : 2) : 0) + ';' + ps
 
 		s = s + '<span style="display: none;">' + pn + ';' + ps + '</span>' // sort string for tablesorter
 		s = s + imgs1 + imgs
