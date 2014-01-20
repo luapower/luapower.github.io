@@ -14,28 +14,34 @@ tagline:  Lua, JIT, batteries
 <div id="package_table" class="package_table"></div>
 
 
-## The What
+## What?
 
 A selection of Lua and C libraries chosen for speed, portability, API stability and a free license.
-On top of that, a growing collection of ffi bindings and Lua modules
-mostly written by me ([capr](https://github.com/capr)).
+On top of that, a growing collection of ffi bindings and Lua modules mostly written by me ([capr]).
 My code is in public domain (PD) as I do not support the copyright law. The rest is mostly free as-in non-viral.
 
 
-## Getting started
+## Get Started
 
-The fastest route to running code is to download [luajit] and all the packages that you need
-and unzip them _over the same directory_ (that's fine and encouraged, there will be no name clashes, see below).
-This will give you an instantly portable luajit distro that will work reagardless of where you run it from.
-
-That being said, binaries can also be built from source if desired (see below).
+The fastest route to running code is to download the zip file for [luajit] and other the packages that you are
+interested in and unzip them _over the same directory_. This will give you an instantly **portable luajit distro**
+that will work reagardless of where you run it from. You will find the luajit executable in `bin/<your-platform>/`,
+already configured to look for Lua modules in `../..` (relative to the executable's dir,
+not dir you start the executable into). Binaries can then be rebuilt from source if so desired (see below).
 
 Or you can go the git way with [luapower-git], which gives you package management a la LuaRocks, but git-based.
+Using this method, you can (among other things) clone all packages in one shot, you can build all C libraries
+in one shot, and you can stay current with luapower by just pulling.
+
+You can also git-clone the packages yourself with git and no additional tools. The problem with that is that
+you can't easily clone multiple repos over the same directory structure with git. Git _does_ support overlaying
+multiple repos over a common directory structure but that's [not trivial][clone.cmd] to set up, which is
+where [luapower-git] comes handy.
 
 
 ## Directory Layout
 
-Luapower packages follow strict conventions on where the files are and how they are named:
+Luapower packages follow some conventions on where the files are and how they are named:
 
   * module: `<lib>.lua`
   * submodule: `<lib>_<sub>.lua` and sometimes `<lib>/<sub>.lua`
@@ -50,11 +56,8 @@ Luapower packages follow strict conventions on where the files are and how they 
 	 * version file: `csrc</lib>/WHAT`
   * LuaJIT executable: `bin/<platform>/luajit`
 
-As a result, downloaded packages can be safely unzipped over the same directory, and package management becomes
-easy to automate (see the [luapower command](luapower-git.html#the-luapower-command)).
-
-The included luajit executable looks for Lua modules in `../..` relative to its own dir, so luapower modules
-will be found regardless of the directory which luajit is started in.
+As a result, packages can be safely unzipped over the same directory, and package management
+can be [automated][luapower command].
 
 
 ## Building the C libraries
@@ -62,18 +65,22 @@ will be found regardless of the directory which luajit is started in.
 Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles).
 Build scripts are provided for each package/platform as `csrc/<package>/build-<platform>.sh`.
 C sources are also included so you can start right away. C binary dependencies are not built automatically.
-They are however listed in the WHAT file of the package at `csrc/<package>/WHAT`.
+They are however listed in the WHAT file of the package at `csrc/<package>/WHAT` (for a fully autmated
+one-shot build script for all packages, use [luapower-git]).
 
-CFLAGS and CXXFLAGS env. vars can be set to control the build process.
-
-A fully autmated one-shot build script for all packages is provided in [luapower-git].
+`CFLAGS` and `CXXFLAGS` env. vars can be used to control `gcc` and `g++` respectively.
 
 
 ### On Windows
 
-Windows dlls were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.
-Below is the exact list of packages used to make a complete toolchain.
-The build scripts assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
+The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
+
+Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.
+
+> `CFLAGS` used: `-O2 -s --static-libgcc` \
+> `CXXFLAGS` used: `-O2 -s --static-libstdc++`
+
+Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.
 
 ----
 [binutils-2.23.1-1-mingw32-bin](http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.23.1/binutils-2.23.1-1-mingw32-bin.tar.lzma/download)
@@ -102,7 +109,13 @@ The build scripts assume that both MSys and MinGW bin dirs (in this order) are i
 [ragel 6.8 (only for harfbuzz)](http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z)
 ----
 
+
 ### On Linux
 
-GCC 4.x should build everything just fine. I used the stock Debian toolchain with no problems.
+GCC 4.x should build everything just fine. I used the stock Debian toolchain.
+I will add more info here after the next Linux rebuild.
 
+
+[capr]:              https://github.com/capr
+[luapower command]:  luapower-git.html#the-luapower-command
+[clone.cmd]:         http://github.com/luapower/luapower-git/blob/master/clone.cmd

@@ -63,14 +63,14 @@
 <div id="package_table" class="package_table">
 
 </div>
-<h2 id="the-what">The What</h2>
-<p>A selection of Lua and C libraries chosen for speed, portability, API stability and a free license. On top of that, a growing collection of ffi bindings and Lua modules mostly written by me (<a href="https://github.com/capr">capr</a>). My code is in public domain (PD) as I do not support the copyright law. Other libs are free as-in non-viral.</p>
-<h2 id="getting-started">Getting started</h2>
-<p>The fastest route to running code is to download <a href="luajit.html">luajit</a> and all the packages that you need and unzip them <em>over the same directory</em> (that's fine and encouraged, there will be no name clashes, see below). This will give you an instantly portable luajit distro that will work reagardless of where you run it from.</p>
-<p>That being said, binaries can also be built from source if desired (see below).</p>
-<p>Or you can go the git way with <a href="luapower-git.html">luapower-git</a>, which gives you package management a la LuaRocks.</p>
+<h2 id="what">What?</h2>
+<p>A selection of Lua and C libraries chosen for speed, portability, API stability and a free license. On top of that, a growing collection of ffi bindings and Lua modules mostly written by me (<a href="https://github.com/capr">capr</a>). My code is in public domain (PD) as I do not support the copyright law. The rest is mostly free as-in non-viral.</p>
+<h2 id="get-started">Get Started</h2>
+<p>The fastest route to running code is to download the zip file for <a href="luajit.html">luajit</a> and other the packages that you are interested in and unzip them <em>over the same directory</em>. This will give you an instantly <strong>portable luajit distro</strong> that will work reagardless of where you run it from. You will find the luajit executable in <code>bin/&lt;your-platform&gt;/</code>, already configured to look for Lua modules in <code>../..</code> (relative to the executable's dir, not dir you start the executable into). Binaries can then be rebuilt from source if so desired (see below).</p>
+<p>Or you can go the git way with <a href="luapower-git.html">luapower-git</a>, which gives you package management a la LuaRocks, but git-based. Using this method, you can (among other things) clone all packages in one shot, you can build all C libraries in one shot, and you can stay current with luapower by just pulling.</p>
+<p>You can also git-clone the packages yourself with git and no additional tools. The problem with that is that you can't easily clone multiple repos over the same directory structure with git. Git <em>does</em> support overlaying multiple repos over a common directory structure but that's <a href="http://github.com/luapower/luapower-git/blob/master/clone.cmd">not trivial</a> to set up, which is where <a href="luapower-git.html">luapower-git</a> comes handy.</p>
 <h2 id="directory-layout">Directory Layout</h2>
-<p>Luapower packages follow strict conventions on where the files are and how they are named:</p>
+<p>Luapower packages follow some conventions on where the files are and how they are named:</p>
 <ul>
 <li>module: <code>&lt;lib&gt;.lua</code></li>
 <li>submodule: <code>&lt;lib&gt;_&lt;sub&gt;.lua</code> and sometimes <code>&lt;lib&gt;/&lt;sub&gt;.lua</code></li>
@@ -87,14 +87,17 @@
 </ul></li>
 <li>LuaJIT executable: <code>bin/&lt;platform&gt;/luajit</code></li>
 </ul>
-<p>As a result, downloaded packages can be safely unzipped over the same directory, and package management becomes easy to automate (see the <a href="luapower-git.html#the-luapower-command">luapower command</a>).</p>
-<p>The included luajit executable looks for Lua modules in <code>../..</code> relative to its own dir, so luapower modules will be found regardless of the directory which luajit is started in.</p>
+<p>As a result, packages can be safely unzipped over the same directory, and package management can be <a href="luapower-git.html#the-luapower-command">automated</a>.</p>
 <h2 id="building-the-c-libraries">Building the C libraries</h2>
-<p>Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles). Build scripts are provided for each package/platform as <code>csrc/&lt;package&gt;/build-&lt;platform&gt;.sh</code>. C sources are also included so you can start right away. C binary dependencies are not built automatically. They are however listed in the WHAT file of the package at <code>csrc/&lt;package&gt;/WHAT</code>.</p>
-<p>CFLAGS and CXXFLAGS env. vars can be set to control the build process.</p>
-<p>A fully autmated one-shot build script for all packages is provided in <a href="luapower-git.html">luapower-git</a>.</p>
+<p>Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles). Build scripts are provided for each package/platform as <code>csrc/&lt;package&gt;/build-&lt;platform&gt;.sh</code>. C sources are also included so you can start right away. C binary dependencies are not built automatically. They are however listed in the WHAT file of the package at <code>csrc/&lt;package&gt;/WHAT</code> (for a fully autmated one-shot build script for all packages, use <a href="luapower-git.html">luapower-git</a>).</p>
+<p><code>CFLAGS</code> and <code>CXXFLAGS</code> env. vars can be used to control <code>gcc</code> and <code>g++</code> respectively.</p>
 <h3 id="on-windows">On Windows</h3>
-<p>Windows dlls were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll. Below is the exact list of packages used to make a complete toolchain. The build scripts assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
+<p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
+<p>Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
+<blockquote>
+<p><code>CFLAGS</code> used: <code>-O2 -s --static-libgcc</code><br /><code>CXXFLAGS</code> used: <code>-O2 -s --static-libstdc++</code></p>
+</blockquote>
+<p>Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -167,12 +170,12 @@
 <td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Extension/make/make-3.82-mingw32/make-3.82-5-mingw32-bin.tar.lzma/download">make-3.82-5-mingw32-bin</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z">ragel 6.8 (only used by harfbuzz)</a></td>
+<td align="left"><a href="http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z">ragel 6.8 (only for harfbuzz)</a></td>
 </tr>
 </tbody>
 </table>
 <h3 id="on-linux">On Linux</h3>
-<p>GCC 4.x should build everything just fine. I used the stock Debian toolchain with no problems.</p>
+<p>GCC 4.x should build everything just fine. I used the stock Debian toolchain. I will add more info here after the next Linux rebuild.</p>
 			</section>
 		</div>
 		<div class="container">

@@ -57,15 +57,14 @@
 				<h2 id="what">What?</h2>
 <p>An automated way for downloading, managing and building luapower packages.</p>
 <h2 id="why-not-just-use-git-directly">Why not just use git directly?</h2>
-<p>Mainly because luapower packages need to be overlaid over a single directory (all Lua modules from all packages must be in the same directory) but git repositories want to have their own separate directories by default.</p>
+<p>Mainly because luapower packages need to be overlaid over a single directory (all Lua modules from all packages must be in the same directory) but git doesn't work like that by default, so it need to be made cooperative.</p>
 <h2 id="how">How?</h2>
 <p>First, let's git it:</p>
 <pre><code>git clone ssh://git@github.com/luapower/luapower-git luapower
 cd luapower</code></pre>
-<p>This gets us the <code>clone</code> command (among others) which allows us to clone luapower packages easily. Let's use it to clone the dependencies needed for the <code>luapower</code> command (described below):</p>
-<pre><code>clone lfs
-clone glue
-clone tuple</code></pre>
+<p>This gets us the <code>clone</code> command (among others) which allows us to clone luapower packages easily:</p>
+<pre><code>clone glue
+clone mysql</code></pre>
 <blockquote>
 <p>NOTE: In Linux, the command is <code>./clone.sh</code>.</p>
 </blockquote>
@@ -97,7 +96,15 @@ clone tuple</code></pre>
 <h2 id="the-luapower-command">The <code>luapower</code> command</h2>
 <p>This is a powerful command that extracts and aggregates data from the luapower environment and gives detailed information about packages, modules and documentation. It can give accurate information about dependencies between modules and packages because it actually loads the module and tracks <code>require</code> calls, and then it integrates that information with the information about packages.</p>
 <p>It is also used for keeping the package database on luapower.com up to date, along with the navigation tree and the module/package dependency lists.</p>
-<p>So do check it out. Type <code>luapower</code> for usage.</p>
+<p>The <code>luapower</code> command depends on <a href="lfs.html">lfs</a>, <a href="glue.html">glue</a> and <a href="tuple.html">tuple</a> so let's clone these first:</p>
+<pre><code>clone lfs
+clone glue
+clone tuple</code></pre>
+<p>Now let's see what it can do:</p>
+<pre><code>luapower</code></pre>
+<blockquote>
+<p>Again, In Linux, the command is <code>./luapower.sh</code>.</p>
+</blockquote>
 <h2 id="building-all-the-c-libraries-in-one-shot">Building all the C libraries in one shot</h2>
 <pre><code>build-all</code></pre>
 <p>This builds all packages that have a build script in the right order.</p>
@@ -127,10 +134,6 @@ clone tuple</code></pre>
 <tr class="odd">
 <td align="left"><code>untracked</code></td>
 <td align="left">show untracked files (takes a while)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>on-all &lt;cmd ...&gt;</code></td>
-<td align="left">execute a command for each repo, each time setting <code>GIT_DIR</code> (eg. <code>on-all git status</code>)</td>
 </tr>
 </tbody>
 </table>
