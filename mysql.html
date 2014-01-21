@@ -501,7 +501,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="features">Features:</h2>
+<h2 id="features">Features</h2>
 <ul>
 <li>covers all of the functionality provided by the mysql C API</li>
 <li>all data types are supported with options for conversion</li>
@@ -511,7 +511,7 @@
 <li>lightweight OOP-style API using only <code>ffi.metatype</code></li>
 <li>no external dependencies</li>
 </ul>
-<h2 id="example">Example:</h2>
+<h2 id="example">Example</h2>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> print_help<span class="ot">(</span><span class="kw">search</span><span class="ot">)</span>
    <span class="kw">local</span> <span class="kw">mysql</span> <span class="ot">=</span> require<span class="st">&#39;mysql&#39;</span>
 
@@ -540,25 +540,57 @@
 <span class="kw">end</span>
 
 print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
-<h1 id="connections">Connections</h1>
+<h2 id="connections">Connections</h2>
 <h2 id="mysql.connecthost-user-pass-db-charset-port---conn"><code>mysql.connect(host, [user], [pass], [db], [charset], [port]) -&gt; conn</code></h2>
 <h2 id="mysql.connectoptions_t---conn"><code>mysql.connect(options_t) -&gt; conn</code></h2>
 <p>Connect to a mysql server, optionally selecting a working database and charset.</p>
-<p>In the second form, <code>options_t</code> is a table that besides <code>host</code>, <code>user</code>, <code>pass</code>, <code>db</code>, <code>charset</code>, <code>port</code> can have the following fields: * <code>unix_socket</code>: specify a unix socket filename to connect to * <code>flags</code>: bit field corresponding to mysql <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-real-connect.html">client_flag</a> parameter * can be a table of form <code>{CLIENT_... = true | false, ...}</code>, or * a number of form <code>bit.bor(mysql.C.CLIENT_..., ...)</code> * <code>options</code>: a table of form <code>{MYSQL_OPT_... = value, ...}</code>, containing options per <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-options.html">mysql_options()</a> (values are properly converted from Lua types) * <code>attrs</code>: a table of form <code>{attr = value, ...}</code> containing attributes to be passed to the server per <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-options4.html">mysql_options4()</a> * <code>key</code>, <code>cert</code>, <code>ca</code>, <code>cpath</code>, <code>cipher</code>: parameters used to establish a <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-ssl-set.html">SSL connection</a></p>
+<p>In the second form, <code>options_t</code> is a table that besides <code>host</code>, <code>user</code>, <code>pass</code>, <code>db</code>, <code>charset</code>, <code>port</code> can have the following fields:</p>
+<ul>
+<li><code>unix_socket</code>: specify a unix socket filename to connect to</li>
+<li><code>flags</code>: bit field corresponding to mysql <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-real-connect.html">client_flag</a> parameter
+<ul>
+<li>can be a table of form <code>{CLIENT_... = true | false, ...}</code>, or</li>
+<li>a number of form <code>bit.bor(mysql.C.CLIENT_..., ...)</code></li>
+</ul></li>
+<li><code>options</code>: a table of form <code>{MYSQL_OPT_... = value, ...}</code>, containing options per <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-options.html">mysql_options()</a> (values are properly converted from Lua types)</li>
+<li><code>attrs</code>: a table of form <code>{attr = value, ...}</code> containing attributes to be passed to the server per <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-options4.html">mysql_options4()</a></li>
+<li><code>key</code>, <code>cert</code>, <code>ca</code>, <code>cpath</code>, <code>cipher</code>: parameters used to establish a <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-ssl-set.html">SSL connection</a></li>
+</ul>
 <h2 id="connclose"><code>conn:close()</code></h2>
 <p>Close a mysql connection freeing all associated resources (otherwise called when <code>conn</code> is garbage collected).</p>
-<h1 id="queries">Queries</h1>
+<h2 id="queries">Queries</h2>
 <h2 id="connquerys"><code>conn:query(s)</code></h2>
 <p>Execute a query. If the query string contains multiple statements, only the first statement is executed (see the section on multiple statements).</p>
 <h2 id="connescapes---s"><code>conn:escape(s) -&gt; s</code></h2>
 <p>Escape a value to be safely embedded in SQL queries. Assumes the current charset.</p>
-<h1 id="fetching-results">Fetching results</h1>
+<h2 id="fetching-results">Fetching results</h2>
 <h2 id="connstore_result---result"><code>conn:store_result() -&gt; result</code></h2>
 <p>Fetch all the rows in the current result set from the server and return a result object to read them one by one.</p>
 <h2 id="connuse_result---result"><code>conn:use_result() -&gt; result</code></h2>
 <p>Return a result object that will fetch the rows in the current result set from the server on demand.</p>
 <h2 id="resultfetchmode-row_t---true-v1-v2-...-row_t-nil"><code>result:fetch([mode[, row_t]]) -&gt; true, v1, v2, ... | row_t | nil</code></h2>
-<p>Fetch and return the next row of values from the current result set. Returns nil if there are no more rows to fetch. * the <code>mode</code> arg can contain any combination of the following letters: * <code>&quot;n&quot;</code> - return values in a table with numeric indices as keys. * <code>&quot;a&quot;</code> - return values in a table with field names as keys. * <code>&quot;s&quot;</code> - do not convert numeric and time values to Lua types. * the <code>row_t</code> arg is an optional table to store the row values in, instead of creating a new one on each fetch. * options &quot;a&quot; and &quot;n&quot; can be combined to get a table with both numeric and field name indices. * if <code>mode</code> is missing or if neither &quot;a&quot; nor &quot;n&quot; is specified, the values are returned to the caller unpacked, after a first value that is always true, to make it easy to distinguish between a valid <code>NULL</code> value in the first column and eof. * in &quot;n&quot; mode, the result table may contain <code>nil</code> values so <code>#row_t</code> and <code>ipairs(row_t)</code> are out; instead iterate from 1 to <code>result:field_count()</code>. * in &quot;a&quot; mode, for fields with duplicate names only the last field will be present. * if <code>mode</code> does not specify <code>&quot;s&quot;</code>, the following conversions are applied on the returned values: * integer types are returned as Lua numbers, except bigint which is returned as an <code>int64_t</code> cdata (or <code>uint64</code> if unsigned). * date/time types are returned as tables in the usual <code>os.date&quot;*t&quot;</code> format (date fields are missing for time-only types and viceversa). * decimal/numeric types are returned as Lua strings. * bit types are returned as Lua numbers, and as <code>uint64_t</code> for bit types larger than 48 bits. * enum and set types are always returned as strings.</p>
+<p>Fetch and return the next row of values from the current result set. Returns nil if there are no more rows to fetch.</p>
+<ul>
+<li>the <code>mode</code> arg can contain any combination of the following letters:
+<ul>
+<li><code>&quot;n&quot;</code> - return values in a table with numeric indices as keys.</li>
+<li><code>&quot;a&quot;</code> - return values in a table with field names as keys.</li>
+<li><code>&quot;s&quot;</code> - do not convert numeric and time values to Lua types.</li>
+</ul></li>
+<li>the <code>row_t</code> arg is an optional table to store the row values in, instead of creating a new one on each fetch.</li>
+<li>options &quot;a&quot; and &quot;n&quot; can be combined to get a table with both numeric and field name indices.</li>
+<li>if <code>mode</code> is missing or if neither &quot;a&quot; nor &quot;n&quot; is specified, the values are returned to the caller unpacked, after a first value that is always true, to make it easy to distinguish between a valid <code>NULL</code> value in the first column and eof.</li>
+<li>in &quot;n&quot; mode, the result table may contain <code>nil</code> values so <code>#row_t</code> and <code>ipairs(row_t)</code> are out; instead iterate from 1 to <code>result:field_count()</code>.</li>
+<li>in &quot;a&quot; mode, for fields with duplicate names only the last field will be present.</li>
+<li>if <code>mode</code> does not specify <code>&quot;s&quot;</code>, the following conversions are applied on the returned values:
+<ul>
+<li>integer types are returned as Lua numbers, except bigint which is returned as an <code>int64_t</code> cdata (or <code>uint64</code> if unsigned).</li>
+<li>date/time types are returned as tables in the usual <code>os.date&quot;*t&quot;</code> format (date fields are missing for time-only types and viceversa).</li>
+<li>decimal/numeric types are returned as Lua strings.</li>
+<li>bit types are returned as Lua numbers, and as <code>uint64_t</code> for bit types larger than 48 bits.</li>
+<li>enum and set types are always returned as strings.</li>
+</ul></li>
+</ul>
 <h2 id="resultrowsmode-row_t---iterator---row_num-val1-val2-..."><code>result:rows([mode[, row_t]]) -&gt; iterator() -&gt; row_num, val1, val2, ...</code></h2>
 <h2 id="resultrowsmode-row_t---iterator---row_num-row_t"><code>result:rows([mode[, row_t]]) -&gt; iterator() -&gt; row_num, row_t</code></h2>
 <p>Convenience iterator for fetching (or refetching) all the rows from the current result set. The <code>mode</code> arg is the same as for <code>result:fetch()</code>, with the exception that in unpacked mode, the first <code>true</code> value is not present.</p>
@@ -570,7 +602,7 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 <p>Check if there are no more rows to fetch. If <code>result:store_result()</code> was previously called, then all rows were already fetched, so <code>result:eof()</code> always returns <code>true</code> in this case.</p>
 <h2 id="resultseekrow_number"><code>result:seek(row_number)</code></h2>
 <p>Seek back to a particular row number to refetch the rows from there.</p>
-<h1 id="query-info">Query info</h1>
+<h2 id="query-info">Query info</h2>
 <h2 id="connfield_count---n"><code>conn:field_count() -&gt; n</code></h2>
 <h2 id="connaffected_rows---n"><code>conn:affected_rows() -&gt; n</code></h2>
 <h2 id="conninsert_id---n"><code>conn:insert_id() -&gt; n</code></h2>
@@ -579,26 +611,44 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 <h2 id="connwarning_count---n"><code>conn:warning_count() -&gt; n</code></h2>
 <h2 id="conninfo---s"><code>conn:info() -&gt; s</code></h2>
 <p>Return various pieces of information about the previously executed query.</p>
-<h1 id="field-info">Field info</h1>
+<h2 id="field-info">Field info</h2>
 <h2 id="resultfield_count---n"><code>result:field_count() -&gt; n</code></h2>
 <h2 id="resultfield_namefield_number---s"><code>result:field_name(field_number) -&gt; s</code></h2>
 <h2 id="resultfield_typefield_number---type-length-decimals-unsigned"><code>result:field_type(field_number) -&gt; type, length, decimals, unsigned</code></h2>
 <h2 id="resultfield_infofield_number---info_t"><code>result:field_info(field_number) -&gt; info_t</code></h2>
 <h2 id="resultfields---iterator---i-info_t"><code>result:fields() -&gt; iterator() -&gt; i, info_t</code></h2>
 <p>Return information about the fields (columns) in the current result set.</p>
-<h1 id="result-bookmarks">Result bookmarks</h1>
+<h2 id="result-bookmarks">Result bookmarks</h2>
 <h2 id="resulttell---bookmark"><code>result:tell() -&gt; bookmark</code></h2>
 <p>Get a bookmark to the current row to be later seeked into with <code>seek()</code>.</p>
 <h2 id="resultseekbookmark"><code>result:seek(bookmark)</code></h2>
 <p>Seek to a previous saved row bookmark, or to a specific row number, fetching more rows as needed.</p>
-<h1 id="multiple-statement-queries">Multiple statement queries</h1>
+<h2 id="multiple-statement-queries">Multiple statement queries</h2>
 <h2 id="connnext_result---true-false"><code>conn:next_result() -&gt; true | false</code></h2>
 <p>Skip over to the next result set in a multiple statement query, and make that the current result set. Return true if there more result sets after this one.</p>
 <h2 id="connmore_results---true-false"><code>conn:more_results() -&gt; true | false</code></h2>
 <p>Check if there are more result sets after this one.</p>
-<h1 id="prepared-statements">Prepared statements</h1>
-<p>Prepared statements are a way to run queries and retrieve results more efficiently from the database, in particular: * parametrized queries allow sending query parameters in their native format, avoiding having to convert values into strings and escaping those strings. * running the same query multiple times with different parameters each time allows the server to reuse the parsed query and possibly the query plan between runs. * fetching the result rows in preallocated buffers avoids dynamic allocation on each row fetch.</p>
-<p>The flow for prepared statements is like this: * call <code>conn:prepare()</code> to prepare a query and get a statement object. * call <code>stmt:bind_params()</code> and <code>stmt:bind_result()</code> to get the buffer objects for setting params and getting row values. * run the query multiple times; each time: * call <code>params:set()</code> for each param to set param values. * call <code>stmt:exec()</code> to run the query. * fetch the resulting rows one by one; for each row: * call <code>stmt:fetch()</code> to get the next row (it returns false if it was the last row). * call <code>fields:get()</code> to read the values of the fetched row. * call <code>stmt:close()</code> to free the statement object and all the associated resources from the server and client.</p>
+<h2 id="prepared-statements">Prepared statements</h2>
+<p>Prepared statements are a way to run queries and retrieve results more efficiently from the database, in particular:</p>
+<ul>
+<li>parametrized queries allow sending query parameters in their native format, avoiding having to convert values into strings and escaping those strings.</li>
+<li>running the same query multiple times with different parameters each time allows the server to reuse the parsed query and possibly the query plan between runs.</li>
+<li>fetching the result rows in preallocated buffers avoids dynamic allocation on each row fetch.</li>
+</ul>
+<p>The flow for prepared statements is like this:</p>
+<ul>
+<li>call <code>conn:prepare()</code> to prepare a query and get a statement object.</li>
+<li>call <code>stmt:bind_params()</code> and <code>stmt:bind_result()</code> to get the buffer objects for setting params and getting row values.</li>
+<li>run the query multiple times; each time:
+<ul>
+<li>call <code>params:set()</code> for each param to set param values.</li>
+<li>call <code>stmt:exec()</code> to run the query.</li>
+<li>fetch the resulting rows one by one; for each row:</li>
+<li>call <code>stmt:fetch()</code> to get the next row (it returns false if it was the last row).</li>
+<li>call <code>fields:get()</code> to read the values of the fetched row.</li>
+</ul></li>
+<li>call <code>stmt:close()</code> to free the statement object and all the associated resources from the server and client.</li>
+</ul>
 <h2 id="connpreparequery---stmt-params"><code>conn:prepare(query) -&gt; stmt, params</code></h2>
 <p>Prepare a query for multiple execution and return a statement object.</p>
 <h2 id="stmtexec"><code>stmt:exec()</code></h2>
@@ -628,16 +678,27 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 <h2 id="stmttell---bookmark"><code>stmt:tell() -&gt; bookmark</code></h2>
 <h2 id="stmtseekbookmark"><code>stmt:seek(bookmark)</code></h2>
 <p>Seek into the current result set.</p>
-<h1 id="prepared-statements-io">Prepared statements I/O</h1>
+<h2 id="prepared-statements-io">Prepared statements I/O</h2>
 <h2 id="stmtbind_paramstype1-...-types_t---params"><code>stmt:bind_params(type1, ... | types_t) -&gt; params</code></h2>
 <p>Bind query parameters according to a list of type definitions (which can be given either packed or unpacked). Return a binding buffer object to be used for setting parameters.</p>
-<p>The types must be valid, fully specified SQL types, eg. * <code>smallint unsigned</code> specifies a 16bit unsigned integer * <code>bit(32)</code> specifies a 32bit bit field * <code>varchar(200)</code> specifies a 200 byte varchar.</p>
+<p>The types must be valid, fully specified SQL types, eg.</p>
+<ul>
+<li><code>smallint unsigned</code> specifies a 16bit unsigned integer</li>
+<li><code>bit(32)</code> specifies a 32bit bit field</li>
+<li><code>varchar(200)</code> specifies a 200 byte varchar.</li>
+</ul>
 <h2 id="paramsseti-number-int64_t-uint64_t-true-false"><code>params:set(i, number | int64_t | uint64_t | true | false)</code></h2>
 <h2 id="paramsseti-s-size"><code>params:set(i, s[, size])</code></h2>
 <h2 id="paramsseti-cdata-size"><code>params:set(i, cdata, size)</code></h2>
 <h2 id="paramsseti-year-month-..."><code>params:set(i, {year=, month=, ...})</code></h2>
 <h2 id="paramsset_datei-year-month-day-hour-min-sec-frac"><code>params:set_date(i, [year], [month], [day], [hour], [min], [sec], [frac])</code></h2>
-<p>Set a parameter value. * the first form is for setting integers and bit fields. * the second and third forms are for setting variable-sized fields and decimal/numeric fields. * the last forms are for setting date/time/datetime/timestamp fields. * the null type cannot be set (raises an error if attempted).</p>
+<p>Set a parameter value.</p>
+<ul>
+<li>the first form is for setting integers and bit fields.</li>
+<li>the second and third forms are for setting variable-sized fields and decimal/numeric fields.</li>
+<li>the last forms are for setting date/time/datetime/timestamp fields.</li>
+<li>the null type cannot be set (raises an error if attempted).</li>
+</ul>
 <h2 id="stmtwriteparam_number-data-size"><code>stmt:write(param_number, data[, size])</code></h2>
 <p>Send a parameter value in chunks (for long, var-sized values).</p>
 <h2 id="stmtbind_resulttype1-...-types_t-maxsize---fields"><code>stmt:bind_result([type1, ... | types_t | maxsize]) -&gt; fields</code></h2>
@@ -649,9 +710,9 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 <p>Check if a value is null without having to get it if it's not.</p>
 <h2 id="fieldsis_truncatedi---true-false"><code>fields:is_truncated(i) -&gt; true | false</code></h2>
 <p>Check if a value was truncated due to insufficient buffer space.</p>
-<p>==<code>stmt:bind_result_types([maxsize]) -&gt; types_t</code></p>
+<h2 id="stmtbind_result_typesmaxsize---types_t"><code>stmt:bind_result_types([maxsize]) -&gt; types_t</code></h2>
 <p>Return the list of type definitions that describe the result of a prepared statement.</p>
-<h1 id="prepared-statements-settings">Prepared statements settings</h1>
+<h2 id="prepared-statements-settings">Prepared statements settings</h2>
 <h2 id="stmtupdate_max_length---true-false"><code>stmt:update_max_length() -&gt; true | false</code></h2>
 <h2 id="stmtset_update_max_lengthtrue-false"><code>stmt:set_update_max_length(true | false)</code></h2>
 <h2 id="stmtcursor_type---mysql.c.mysql_cursor_type_"><code>stmt:cursor_type() -&gt; mysql.C.MYSQL_CURSOR_TYPE_*</code></h2>
@@ -660,7 +721,7 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 <h2 id="stmtprefetch_rows---n"><code>stmt:prefetch_rows() -&gt; n</code></h2>
 <h2 id="stmtset_prefetch_rowsstmt-n"><code>stmt:set_prefetch_rows(stmt, n)</code></h2>
 <p>See <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a> for these.</p>
-<h1 id="connection-info">Connection info</h1>
+<h2 id="connection-info">Connection info</h2>
 <h2 id="connset_charsetcharset"><code>conn:set_charset(charset)</code></h2>
 <p>Change the current charset.</p>
 <h2 id="connselect_dbdbname"><code>conn:select_db(dbname)</code></h2>
@@ -683,18 +744,18 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 <h2 id="connproto_info---n"><code>conn:proto_info() -&gt; n</code></h2>
 <h2 id="connssl_cipher---s"><code>conn:ssl_cipher() -&gt; s</code></h2>
 <p>Return various pieces of information about the connection and server.</p>
-<h1 id="transactions">Transactions</h1>
+<h2 id="transactions">Transactions</h2>
 <h2 id="conncommit"><code>conn:commit()</code></h2>
 <h2 id="connrollback"><code>conn:rollback()</code></h2>
 <p>Commit/rollback the current transaction.</p>
 <h2 id="connset_autocommittrue-false"><code>conn:set_autocommit([true | false])</code></h2>
 <p>Set autocommit on the connection (set to true if no argument is given).</p>
-<h1 id="reflection">Reflection</h1>
+<h2 id="reflection">Reflection</h2>
 <h2 id="connlist_dbswildcard---result"><code>conn:list_dbs([wildcard]) -&gt; result</code></h2>
 <h2 id="connlist_tableswildcard---result"><code>conn:list_tables([wildcard]) -&gt; result</code></h2>
 <h2 id="connlist_processes---result"><code>conn:list_processes() -&gt; result</code></h2>
 <p>Return information about databases, tables and proceses as a stored result object that can be iterated etc. using the methods of result objects. The optional <code>wild</code> parameter may contain the wildcard characters <code>&quot;%&quot;</code> or <code>&quot;_&quot;</code>, similar to executing the query <code>SHOW DATABASES [LIKE wild]</code>.</p>
-<h1 id="remote-control">Remote control</h1>
+<h2 id="remote-control">Remote control</h2>
 <h2 id="connkillpid"><code>conn:kill(pid)</code></h2>
 <p>Kill a connection with a specific <code>pid</code>.</p>
 <h2 id="connshutdownlevel"><code>conn:shutdown([level])</code></h2>
@@ -703,7 +764,7 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 <p>Flush tables or caches, or resets replication server information. <code>RELOAD</code> priviledge needed. Options are either a table of form <code>{REFRESH_... = true | false, ...}</code> or a number of form <code>bit.bor(mysql.C.MYSQL_REFRESH_*, ...)</code> and they are as described in the <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-refresh.html">mysql manual</a>.</p>
 <h2 id="conndump_debug_info"><code>conn:dump_debug_info()</code></h2>
 <p>Instruct the server to dump debug info in the log file. <code>SUPER</code> priviledge needed.</p>
-<h1 id="client-library-info">Client library info</h1>
+<h2 id="client-library-info">Client library info</h2>
 <h2 id="mysql.thread_safe---true-false"><code>mysql.thread_safe() -&gt; true | false</code></h2>
 <h2 id="mysql.client_info---s"><code>mysql.client_info() -&gt; s</code></h2>
 <h2 id="mysql.client_version---n"><code>mysql.client_version() -&gt; n</code></h2>

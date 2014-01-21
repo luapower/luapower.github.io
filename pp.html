@@ -58,16 +58,16 @@
 <p>Fast, compact serialization producing portable Lua source code.</p>
 <p>Can serialize all Lua types except coroutines, userdata, cdata and C functions.</p>
 <p>Any type featuring the <code>__pwrite</code> metamethod can also be serialized.</p>
-<h3 id="output-characteristics">Output characteristics:</h3>
+<h2 id="output-characteristics">Output characteristics</h2>
 <ul>
-<li><em>compact</em>: no spaces, dot notation for identifier keys, minimal quoting of strings, implicit keys for the array part of tables.</li>
-<li><em>portable</em> between LuaJIT 2, Lua 5.1, Lua 5.2: dot key notation only for ascii identifiers, numbers are in decimal.</li>
-<li><em>portable</em> between Windows, Linux, Mac: quoting of and protects binary integrity when opening in text mode.</li>
-<li><em>embeddable</em>: can be copy-pasted into Lua source code: quoting of  and protects binary integrity with code editors.</li>
-<li><em>human readable</em>: indentation (optional, configurable); array part printed separately with implicit keys.</li>
-<li><em>stream-based</em>: the string bits are written with a writer function to minimize the amount of string concatenation and memory footprint.</li>
+<li><strong>compact</strong>: no spaces, dot notation for identifier keys, minimal quoting of strings, implicit keys for the array part of tables.</li>
+<li><strong>portable</strong> between LuaJIT 2, Lua 5.1, Lua 5.2: dot key notation only for ascii identifiers, numbers are in decimal.</li>
+<li><strong>portable</strong> between Windows, Linux, Mac: quoting of and protects binary integrity when opening in text mode.</li>
+<li><strong>embeddable</strong>: can be copy-pasted into Lua source code: quoting of  and protects binary integrity with code editors.</li>
+<li><strong>human readable</strong>: indentation (optional, configurable); array part printed separately with implicit keys.</li>
+<li><strong>stream-based</strong>: the string bits are written with a writer function to minimize the amount of string concatenation and memory footprint.</li>
 </ul>
-<h3 id="limitations">Limitations:</h3>
+<h2 id="limitations">Limitations</h2>
 <ul>
 <li>non-deterministic output: table keys are not sorted.</li>
 <li>recursive: stack-bound on depth.</li>
@@ -79,8 +79,14 @@
 <h2 id="pp.ppv1..."><code>pp.pp(v1,...)</code></h2>
 <p>Pretty-print the arguments to standard output. Cycle detection and indentation are enabled and unserializable values get a comment in place.</p>
 <h2 id="pp.pwritevwriteindentparentsquoteonerror"><code>pp.pwrite(v,write[,indent][,parents][,quote][,onerror])</code></h2>
-<p>Pretty-print a value using a supplied write function that takes a string. The other arguments are: * <code>indent</code> - enable indentation eg. <code>'\t'</code> indents by one tab (default is compact output with no whitespace) * <code>parents</code> - enable cycle detection eg. <code>{}</code> * <code>quote</code> - change string quoting eg. <code>'&quot;'</code> (default is &quot;'&quot;) * <code>onerror</code> - enable error handling eg. <code>function(err_type, v, depth) error(err_type..': '..tostring(v)) end</code></p>
-<p>Note: wrapping to_sink into a coroutine with <code>coroutine.wrap</code> and passing <code>coroutine.yield</code> as the write function turns the serialization process into an iterator.</p>
+<p>Pretty-print a value using a supplied write function that takes a string. The other arguments are:</p>
+<ul>
+<li><code>indent</code> - enable indentation eg. <code>'\t'</code> indents by one tab (default is compact output with no whitespace)</li>
+<li><code>parents</code> - enable cycle detection eg. <code>{}</code></li>
+<li><code>quote</code> - change string quoting eg. <code>'&quot;'</code> (default is &quot;'&quot;)</li>
+<li><code>onerror</code> - enable error handling eg. <code>function(err_type, v, depth) error(err_type..': '..tostring(v)) end</code></li>
+</ul>
+<p>Note: wrapping <code>to_sink</code> into a coroutine with <code>coroutine.wrap</code> and passing <code>coroutine.yield</code> as the write function turns the serialization process into an iterator.</p>
 <h2 id="pp.fwritefilevindentparentsquoteonerror"><code>pp.fwrite(file,v[,indent][,parents][,quote][,onerror])</code></h2>
 <p>Pretty-print a value to a file.</p>
 <h2 id="pp.pformatvindentparentsquoteonerror---s"><code>pp.pformat(v[,indent][,parents][,quote][,onerror]) -&gt; s</code></h2>

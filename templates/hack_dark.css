@@ -1,4 +1,4 @@
-body {background: #151515 url("hack_bg.png") 0 0; color: #eaeaea;}
+body {background: #151515 url("hack_bg.png") 0 0; color: #ddd;}
 header {background: rgba(0, 0, 0, 0.3); border-bottom-color: #663;}
 footer {border-top-color: #663;}
 .faint {color: #888;}
@@ -8,6 +8,8 @@ header h1 {
 	text-shadow: 2px 2px rgba(0, 0, 0, .6);
 }
 header h2 {color: #666;}
+
+.toc-selected {color: #fff;}
 
 .icon-mingw32-disabled   {background-image:url("icons/icon-mingw32-dark.png");}
 .icon-mingw64-disabled   {background-image:url("icons/icon-mingw64-dark.png");}
@@ -50,15 +52,15 @@ header h2 {color: #666;}
 .package_table th.tablesorter-headerAsc {background-image: url("asc_light.gif");}
 .package_table th.tablesorter-headerDesc {background-image: url("desc_light.gif");}
 
-.doc h6 {color: #999;}
+.doc h1, .doc h2, .doc h3, .doc h4 {color: #f3f3f3;}
 .doc li:before {color: #b5e853;}
 .doc blockquote {color: #aaa; border-left-color: #666;}
-.doc pre {background-color: #101010;}
-.doc th {border-bottom-color: #b5e853;}
+.doc pre {border: 1px solid #101010; background-color: #111;}
 .doc tr {border-top-color: #333; border-bottom-color: #333;}
-.doc hr {border-bottom-color: #b5e853;}
+.doc hr {border-bottom-color: #333;}
 .doc a {color: #63c0f5; text-decoration: none;}
 .doc a:hover {text-decoration: underline;}
+.doc code {color: #ff9;}
 
 .doc .sourceCode { color: #FFFFFF; }
 /*  KeyWordTok */

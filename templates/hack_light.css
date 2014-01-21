@@ -9,6 +9,8 @@ header h1 {
 }
 header h2 {color: #666;}
 
+.toc-selected {background-color: #d8d8d8;}
+
 .icon-mingw32-disabled   {background-image:url("icons/icon-mingw32-light.png");}
 .icon-mingw64-disabled   {background-image:url("icons/icon-mingw64-light.png");}
 .icon-linux32-disabled   {background-image:url("icons/icon-linux32-light.png");}
@@ -50,15 +52,15 @@ header h2 {color: #666;}
 .package_table th.tablesorter-headerAsc {background-image: url("asc_dark.gif");}
 .package_table th.tablesorter-headerDesc {background-image: url("desc_dark.gif");}
 
-.doc h6 {color: #333;}
+.doc h5, .doc h6 {color: #333;}
 .doc li:before {color: #364619;}
 .doc blockquote {color: #666; border-left-color: #666;}
 .doc pre {background-color: #d8d8d8;}
-.doc th {border-bottom-color: #b5e853;}
 .doc tr {border-top-color: #bbb; border-bottom-color: #bbb;}
-.doc hr {border-bottom-color: #364619;}
+.doc hr {border-bottom-color: #bbb;}
 .doc a {color: #00a; text-decoration: none;}
 .doc a:hover {text-decoration: underline;}
+.doc code {background-color: #d8d8d8;}
 
 .doc .sourceCode { color: #000; }
 /*  KeyWordTok */

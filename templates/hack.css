@@ -3,7 +3,11 @@
 body {
 	font-size: 12px;
 	line-height: 1.5;
-	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", monospace;
+}
+
+code {
+	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", monospace;
 }
 
 header {
@@ -162,10 +166,11 @@ header h2 { /* tagline */
 	letter-spacing: -0.03em;
 }
 
-.doc h1 {font-size: 30px;}
+.doc h1 {font-size: 24px; font-weight: normal;}
 .doc h2 {font-size: 18px;}
-.doc h3 {font-size: 16px;}
-.doc h4 {font-size: 14px;}
+.doc h2 code {font-size: 16px;}
+.doc h3 {font-size: 15px;}
+.doc h4 {font-size: 15px;font-weight: normal;}
 
 .doc h5 {
 	font-size: 12px;
@@ -213,11 +218,18 @@ header h2 { /* tagline */
 
 .doc pre {
 	padding: 10px;
-	font-size: 14px;
-	border-radius: 2px;
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 2px;
 }
+
+.doc code {
+	//padding-left: 0.3em;
+	//padding-right: 0.3em;
+}
+.doc h2 code,
+.doc h3 code,
+.doc h4 code,
+.doc pre code,
+.doc td code
+	{padding: 0; border: none; color: inherit; background-color: inherit;}
 
 .doc th {
 	text-align: left;
@@ -238,7 +250,7 @@ header h2 { /* tagline */
 }
 
 .doc hr {
-	border-bottom: 1px dashed;
+	border-bottom: 1px inset;
 }
 
 .doc a {

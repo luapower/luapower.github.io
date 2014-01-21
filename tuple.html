@@ -57,7 +57,7 @@
 				<h2 id="local-tuple-requiretuple"><code>local tuple = require'tuple'</code></h2>
 <p>Real tuples are immutable lists that can be used as table keys because they have value semantics, i.e. the tuple constructor returns the same identity for the exact same list of identities. If you don't need this property, [vararg vararg.pack()] is a faster and more memory efficient way to store small lists of values.</p>
 <h2 id="tuplee1...---t"><code>tuple(e1,...) -&gt; t</code></h2>
-<p>Create or find a tuple given a list of elements. Elements can be anything, including nil and <code>NaN</code>.</p>
+<p>Create or find a tuple given a list of elements. Elements can be anything, including nil and NaN.</p>
 <h2 id="t---e1..."><code>t() -&gt; e1,...</code></h2>
 <p>Access the elements of a tuple.</p>
 <p><em>Example:</em> <sub>~</sub>{.lua} local tuple = require'tuple'</p>

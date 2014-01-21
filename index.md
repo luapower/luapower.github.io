@@ -40,17 +40,17 @@ with git and no additional tools, but... read on [luapower-git] before trying th
 
 Luapower packages follow some conventions on where the files are and how they are named:
 
-  * module: `<lib>.lua`
+  * main module: `<lib>.lua`
   * submodule: `<lib>_<sub>.lua` and sometimes `<lib>/<sub>.lua`
-  * ffi cdef module: `<lib>_h.lua`
-  * test program: `<lib>_test.lua`
-  * demo: `<lib>_demo.lua`
-  * documentation: `<lib>.md`
+  * ffi cdef module: `<module>_h.lua`
+  * test program: `<module>_test.lua`
+  * demo: `<module>_demo.lua`
+  * documentation: `<module>.md`
   * C libs:
     * sources: `csrc/<lib>/*`
     * build scripts: `csrc/<lib>/build-<platform>.sh`
     * binaries: `bin/mingw32/<lib>.dll`, `bin/linux32/lib<lib>.so`
-	 * description: `csrc</lib>/WHAT`
+	 * description: `csrc/<lib>/WHAT`
   * LuaJIT executable: `bin/<platform>/luajit`
 
 As a result, packages can be safely unzipped over the same directory, and package management
@@ -69,7 +69,7 @@ For compiling Lua/C modules you also need [lua-headers] and, for Windows in part
 must be present at the time of building (that would be [luajit], but you can use the Lua binary too,
 they are ABI-compatible).
 
-`CFLAGS` and `CXXFLAGS` env. vars can be used to control `gcc` and `g++` respectively (they're
+`CFLAGS` and `CXXFLAGS` env. vars can be used to control gcc and g++ respectively (they're
 not set to anything by default, but consider at least `-O2`).
 
 

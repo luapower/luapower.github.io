@@ -217,6 +217,7 @@ jQuery(function() {
 		// DOCNAME is set in the html template by pandoc
 		var clink = $('#toc_container li > a[href="' + DOCNAME + '.html"], #toc_container li > a[href="' + DOCNAME + '"]')
 		clink.parents().show()
+		clink.parent().wrapInner('<span/>').find('span').addClass('toc-selected')
 		clink.replaceWith(clink.html())
 
 		toc_loaded = true

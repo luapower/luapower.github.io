@@ -77,18 +77,18 @@ manifest file: <a href="packages.lua">Lua</a> | <a href="packages.json">JSON</a>
 <h2 id="directory-layout">Directory Layout</h2>
 <p>Luapower packages follow some conventions on where the files are and how they are named:</p>
 <ul>
-<li>module: <code>&lt;lib&gt;.lua</code></li>
+<li>main module: <code>&lt;lib&gt;.lua</code></li>
 <li>submodule: <code>&lt;lib&gt;_&lt;sub&gt;.lua</code> and sometimes <code>&lt;lib&gt;/&lt;sub&gt;.lua</code></li>
-<li>ffi cdef module: <code>&lt;lib&gt;_h.lua</code></li>
-<li>test program: <code>&lt;lib&gt;_test.lua</code></li>
-<li>demo: <code>&lt;lib&gt;_demo.lua</code></li>
-<li>documentation: <code>&lt;lib&gt;.md</code></li>
+<li>ffi cdef module: <code>&lt;module&gt;_h.lua</code></li>
+<li>test program: <code>&lt;module&gt;_test.lua</code></li>
+<li>demo: <code>&lt;module&gt;_demo.lua</code></li>
+<li>documentation: <code>&lt;module&gt;.md</code></li>
 <li>C libs:
 <ul>
 <li>sources: <code>csrc/&lt;lib&gt;/*</code></li>
 <li>build scripts: <code>csrc/&lt;lib&gt;/build-&lt;platform&gt;.sh</code></li>
 <li>binaries: <code>bin/mingw32/&lt;lib&gt;.dll</code>, <code>bin/linux32/lib&lt;lib&gt;.so</code></li>
-<li>description: <code>csrc&lt;/lib&gt;/WHAT</code></li>
+<li>description: <code>csrc/&lt;lib&gt;/WHAT</code></li>
 </ul></li>
 <li>LuaJIT executable: <code>bin/&lt;platform&gt;/luajit</code></li>
 </ul>
@@ -96,7 +96,7 @@ manifest file: <a href="packages.lua">Lua</a> | <a href="packages.json">JSON</a>
 <h2 id="building-the-c-libraries">Building the C libraries</h2>
 <p>Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles). Build scripts are provided for each package/platform as <code>csrc/&lt;package&gt;/build-&lt;platform&gt;.sh</code>. C sources are also included so you can start right away. Dependencies are listed in the WHAT file <code>csrc/&lt;package&gt;/WHAT</code> -- you'll have to build those first (for a fully autmated one-shot build script for all packages, use <a href="luapower-git.html">luapower-git</a>).</p>
 <p>For compiling Lua/C modules you also need [lua-headers] and, for Windows in particular, <code>lua51.dll</code> must be present at the time of building (that would be <a href="luajit.html">luajit</a>, but you can use the Lua binary too, they are ABI-compatible).</p>
-<p><code>CFLAGS</code> and <code>CXXFLAGS</code> env. vars can be used to control <code>gcc</code> and <code>g++</code> respectively (they're not set to anything by default, but consider at least <code>-O2</code>).</p>
+<p><code>CFLAGS</code> and <code>CXXFLAGS</code> env. vars can be used to control gcc and g++ respectively (they're not set to anything by default, but consider at least <code>-O2</code>).</p>
 <h3 id="on-windows">On Windows</h3>
 <p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
 <p>Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
