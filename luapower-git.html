@@ -57,7 +57,7 @@
 				<h2 id="what">What?</h2>
 <p>An automated way for downloading, managing and building luapower packages.</p>
 <h2 id="why-not-just-use-git-directly">Why not just use git directly?</h2>
-<p>Mainly because luapower packages need to be overlaid over a single directory (all Lua modules from all packages must be in the same directory) but git doesn't work like that by default, so it need to be made cooperative.</p>
+<p>Mainly because luapower packages need to be overlaid over the same directory, and you can't easily clone multiple repos over the same directory with git. Git <em>does</em> support overlaying multiple repos over a common directory structure but that's <a href="http://github.com/luapower/luapower-git/blob/master/clone.cmd">not trivial</a> to set up, which is where <a href="luapower-git.html">luapower-git</a> comes handy.</p>
 <h2 id="how">How?</h2>
 <p>First, let's git it:</p>
 <pre><code>git clone ssh://git@github.com/luapower/luapower-git luapower

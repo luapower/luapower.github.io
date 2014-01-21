@@ -58,7 +58,7 @@
 <p>CPlayer is a procedural graphics player with an IMGUI toolkit. It can be used for anything from quick demos, prototyping graphics apps, to full-fledged apps and games.</p>
 <h2 id="features">Features</h2>
 <ul>
-<li>single rendering event receiving a cairo context to draw the frame with</li>
+<li>single rendering event receiving a cairo context to draw the frame on</li>
 <li>simplified access to keyboard and mouse state</li>
 <li>a bunch of very easy to use immediate mode GUI widgets for making interactive demos</li>
 <li>user-selectable color themes</li>
@@ -83,7 +83,7 @@
 <table>
 <tbody>
 <tr class="odd">
-<td align="left"><code>self.mousex</code> </td>
+<td align="left"><code>self.mousex</code></td>
 <td align="left">mouse coordinates in device space.</td>
 </tr>
 <tr class="even">
@@ -149,7 +149,9 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> one-shot means that the value is only available for the current frame, then it is cleared. With very slow framerates, some mouse or key events could be lost (for simplicity, there's no event queue).</p>
+<blockquote>
+<p>One-shot means that the value is only available for the current frame, then it is cleared. With very slow framerates, some mouse or key events could be lost (for simplicity, there's no event queue).</p>
+</blockquote>
 <h3 id="wall-clock">Wall clock</h3>
 <p>A wall clock in milliseconds is available as <code>self.clock</code>. Interpolating your animations over clock deltas will result in framerate-independent animations. Currently, it is used to blink the editbox caret.</p>
 <h3 id="mouse-cursor">Mouse cursor</h3>

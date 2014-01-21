@@ -67,8 +67,10 @@
 <p>A selection of Lua and C libraries chosen for speed, portability, API stability and a free license. On top of that, a growing collection of ffi bindings and Lua modules mostly written by me (<a href="https://github.com/capr">capr</a>). My code is in public domain (PD) as I do not support the copyright law. The rest is mostly free as-in non-viral.</p>
 <h2 id="get-started">Get Started</h2>
 <p>The fastest route to running code is to download the zip file for <a href="luajit.html">luajit</a> and other the packages that you are interested in and unzip them <em>over the same directory</em>. This will give you an instantly <strong>portable luajit distro</strong> that will work reagardless of where you run it from. You will find the luajit executable in <code>bin/&lt;your-platform&gt;/</code>, already configured to look for Lua modules in <code>../..</code> (relative to the executable's dir, not dir you start the executable into). Binaries can then be rebuilt from source if so desired (see below).</p>
-<p>Or you can go the git way with <a href="luapower-git.html">luapower-git</a>, which gives you package management a la LuaRocks, but git-based. Using this method, you can (among other things) clone all packages in one shot, you can build all C libraries in one shot, and you can stay current with luapower by just pulling.</p>
-<p>You can also git-clone the packages yourself with git and no additional tools. The problem with that is that you can't easily clone multiple repos over the same directory structure with git. Git <em>does</em> support overlaying multiple repos over a common directory structure but that's <a href="http://github.com/luapower/luapower-git/blob/master/clone.cmd">not trivial</a> to set up, which is where <a href="luapower-git.html">luapower-git</a> comes handy.</p>
+<p>Or you can go the git way with <a href="luapower-git.html">luapower-git</a>, which gives you package management a la LuaRocks, but git-based. Using this method, you can (among other things) clone all packages in one shot, you can build all C libraries in one shot, and you can stay current with luapower by just pulling. You can also git-clone the packages yourself with git and no additional tools, but... read on <a href="luapower-git.html">luapower-git</a> before trying that.</p>
+<blockquote>
+<p>NOTE: some unit tests (<code>*_test.lua</code> files) need <a href="https://github.com/luapower/unit">unit</a>.</p>
+</blockquote>
 <h2 id="directory-layout">Directory Layout</h2>
 <p>Luapower packages follow some conventions on where the files are and how they are named:</p>
 <ul>
@@ -83,91 +85,92 @@
 <li>sources: <code>csrc/&lt;lib&gt;/*</code></li>
 <li>build scripts: <code>csrc/&lt;lib&gt;/build-&lt;platform&gt;.sh</code></li>
 <li>binaries: <code>bin/mingw32/&lt;lib&gt;.dll</code>, <code>bin/linux32/lib&lt;lib&gt;.so</code></li>
-<li>version file: <code>csrc&lt;/lib&gt;/WHAT</code></li>
+<li>description: <code>csrc&lt;/lib&gt;/WHAT</code></li>
 </ul></li>
 <li>LuaJIT executable: <code>bin/&lt;platform&gt;/luajit</code></li>
 </ul>
 <p>As a result, packages can be safely unzipped over the same directory, and package management can be <a href="luapower-git.html#the-luapower-command">automated</a>.</p>
 <h2 id="building-the-c-libraries">Building the C libraries</h2>
-<p>Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles). Build scripts are provided for each package/platform as <code>csrc/&lt;package&gt;/build-&lt;platform&gt;.sh</code>. C sources are also included so you can start right away. C binary dependencies are not built automatically. They are however listed in the WHAT file of the package at <code>csrc/&lt;package&gt;/WHAT</code> (for a fully autmated one-shot build script for all packages, use <a href="luapower-git.html">luapower-git</a>).</p>
-<p><code>CFLAGS</code> and <code>CXXFLAGS</code> env. vars can be used to control <code>gcc</code> and <code>g++</code> respectively.</p>
+<p>Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles). Build scripts are provided for each package/platform as <code>csrc/&lt;package&gt;/build-&lt;platform&gt;.sh</code>. C sources are also included so you can start right away. Dependencies are listed in the WHAT file <code>csrc/&lt;package&gt;/WHAT</code> -- you'll have to build those first (for a fully autmated one-shot build script for all packages, use <a href="luapower-git.html">luapower-git</a>).</p>
+<p>For compiling Lua/C modules you also need [lua-headers] and, for Windows in particular, <code>lua51.dll</code> must be present at the time of building (that would be <a href="luajit.html">luajit</a>, but you can use the Lua binary too, they are ABI-compatible).</p>
+<p><code>CFLAGS</code> and <code>CXXFLAGS</code> env. vars can be used to control <code>gcc</code> and <code>g++</code> respectively (they're not set to anything by default, but consider at least <code>-O2</code>).</p>
 <h3 id="on-windows">On Windows</h3>
 <p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
 <p>Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
 <blockquote>
-<p><code>CFLAGS</code> used: <code>-O2 -s --static-libgcc</code><br /><code>CXXFLAGS</code> used: <code>-O2 -s --static-libstdc++</code></p>
+<p><code>CFLAGS</code> used: <code>-O2 -s -static-libgcc</code> (level 2 optimization, stripped binary, embed libc)<br /><code>CXXFLAGS</code> used: <code>-O2 -s -static-libstdc++</code> (level 2 optimization, stripped binary, embed libstdc++)</p>
 </blockquote>
 <p>Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.</p>
 <table>
 <tbody>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.23.1/binutils-2.23.1-1-mingw32-bin.tar.lzma/download">binutils-2.23.1-1-mingw32-bin</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.23.1/binutils-2.23.1-1-mingw32-bin.tar.lzma">binutils-2.23.1-1-mingw32-bin</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mingw-rt/mingwrt-3.20/mingwrt-3.20-2-mingw32-dev.tar.lzma/download">mingwrt-3.20-2-mingw32-dev</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mingw-rt/mingwrt-3.20/mingwrt-3.20-2-mingw32-dev.tar.lzma">mingwrt-3.20-2-mingw32-dev</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mingw-rt/mingwrt-3.20/mingwrt-3.20-2-mingw32-dll.tar.lzma/download">mingwrt-3.20-2-mingw32-dll</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mingw-rt/mingwrt-3.20/mingwrt-3.20-2-mingw32-dll.tar.lzma">mingwrt-3.20-2-mingw32-dll</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/w32api/w32api-3.17/w32api-3.17-2-mingw32-dev.tar.lzma/">w32api-3.17-2-mingw32-dev</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/w32api/w32api-3.17/w32api-3.17-2-mingw32-dev.tar.lzma">w32api-3.17-2-mingw32-dev</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mpc/mpc-0.8.1-1/mpc-0.8.1-1-mingw32-dev.tar.lzma/">mpc-0.8.1-1-mingw32-dev</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mpc/mpc-0.8.1-1/mpc-0.8.1-1-mingw32-dev.tar.lzma">mpc-0.8.1-1-mingw32-dev</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mpc/mpc-0.8.1-1/libmpc-0.8.1-1-mingw32-dll-2.tar.lzma/">libmpc-0.8.1-1-mingw32-dll-2</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mpc/mpc-0.8.1-1/libmpc-0.8.1-1-mingw32-dll-2.tar.lzma">libmpc-0.8.1-1-mingw32-dll-2</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mpfr/mpfr-2.4.1-1/mpfr-2.4.1-1-mingw32-dev.tar.lzma/">mpfr-2.4.1-1-mingw32-dev</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mpfr/mpfr-2.4.1-1/mpfr-2.4.1-1-mingw32-dev.tar.lzma">mpfr-2.4.1-1-mingw32-dev</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mpfr/mpfr-2.4.1-1/libmpfr-2.4.1-1-mingw32-dll-1.tar.lzma/">libmpfr-2.4.1-1-mingw32-dll-1</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/mpfr/mpfr-2.4.1-1/libmpfr-2.4.1-1-mingw32-dll-1.tar.lzma">libmpfr-2.4.1-1-mingw32-dll-1</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gmp/gmp-5.0.1-1/gmp-5.0.1-1-mingw32-dev.tar.lzma/">gmp-5.0.1-1-mingw32-dev</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gmp/gmp-5.0.1-1/gmp-5.0.1-1-mingw32-dev.tar.lzma">gmp-5.0.1-1-mingw32-dev</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gmp/gmp-5.0.1-1/libgmp-5.0.1-1-mingw32-dll-10.tar.lzma/">libgmp-5.0.1-1-mingw32-dll-10</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gmp/gmp-5.0.1-1/libgmp-5.0.1-1-mingw32-dll-10.tar.lzma">libgmp-5.0.1-1-mingw32-dll-10</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/pthreads-w32/pthreads-w32-2.9.0-pre-20110507-2/pthreads-w32-2.9.0-mingw32-pre-20110507-2-dev.tar.lzma/">pthreads-w32-2.9.0-mingw32-pre-20110507-2-dev</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/pthreads-w32/pthreads-w32-2.9.0-pre-20110507-2/pthreads-w32-2.9.0-mingw32-pre-20110507-2-dev.tar.lzma">pthreads-w32-2.9.0-mingw32-pre-20110507-2-dev</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/pthreads-w32/pthreads-w32-2.9.0-pre-20110507-2/libpthreadgc-2.9.0-mingw32-pre-20110507-2-dll-2.tar.lzma/">libpthreadgc-2.9.0-mingw32-pre-20110507-2-dll-2</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/pthreads-w32/pthreads-w32-2.9.0-pre-20110507-2/libpthreadgc-2.9.0-mingw32-pre-20110507-2-dll-2.tar.lzma">libpthreadgc-2.9.0-mingw32-pre-20110507-2-dll-2</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/libiconv/libiconv-1.14-2/libiconv-1.14-2-mingw32-dev.tar.lzma/">libiconv-1.14-2-mingw32-dev</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/libiconv/libiconv-1.14-2/libiconv-1.14-2-mingw32-dev.tar.lzma">libiconv-1.14-2-mingw32-dev</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/libiconv/libiconv-1.14-2/libiconv-1.14-2-mingw32-dll-2.tar.lzma/">libiconv-1.14-2-mingw32-dll-2</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/libiconv/libiconv-1.14-2/libiconv-1.14-2-mingw32-dll-2.tar.lzma">libiconv-1.14-2-mingw32-dll-2</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gettext/gettext-0.18.1.1-2/libintl-0.18.1.1-2-mingw32-dll-8.tar.lzma/">libintl-0.18.1.1-2-mingw32-dll-8</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gettext/gettext-0.18.1.1-2/libintl-0.18.1.1-2-mingw32-dll-8.tar.lzma">libintl-0.18.1.1-2-mingw32-dll-8</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libgomp-4.7.2-1-mingw32-dll-1.tar.lzma/">libgomp-4.7.2-1-mingw32-dll-1</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libgomp-4.7.2-1-mingw32-dll-1.tar.lzma">libgomp-4.7.2-1-mingw32-dll-1</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libssp-4.7.2-1-mingw32-dll-0.tar.lzma/">libssp-4.7.2-1-mingw32-dll-0</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libssp-4.7.2-1-mingw32-dll-0.tar.lzma">libssp-4.7.2-1-mingw32-dll-0</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libquadmath-4.7.2-1-mingw32-dll-0.tar.lzma/">libquadmath-4.7.2-1-mingw32-dll-0</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libquadmath-4.7.2-1-mingw32-dll-0.tar.lzma">libquadmath-4.7.2-1-mingw32-dll-0</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/gcc-core-4.7.2-1-mingw32-bin.tar.lzma/">gcc-core-4.7.2-1-mingw32-bin</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/gcc-core-4.7.2-1-mingw32-bin.tar.lzma">gcc-core-4.7.2-1-mingw32-bin</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libgcc-4.7.2-1-mingw32-dll-1.tar.lzma/">libgcc-4.7.2-1-mingw32-dll-1</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libgcc-4.7.2-1-mingw32-dll-1.tar.lzma">libgcc-4.7.2-1-mingw32-dll-1</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/gcc-c%2B%2B-4.7.2-1-mingw32-bin.tar.lzma/">gcc-c++-4.7.2-1-mingw32-bin</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/gcc-c%2B%2B-4.7.2-1-mingw32-bin.tar.lzma">gcc-c++-4.7.2-1-mingw32-bin</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libstdc%2B%2B-4.7.2-1-mingw32-dll-6.tar.lzma/">libstdc++-4.7.2-1-mingw32-dll-6</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Base/gcc/Version4/gcc-4.7.2-1/libstdc%2B%2B-4.7.2-1-mingw32-dll-6.tar.lzma">libstdc++-4.7.2-1-mingw32-dll-6</a></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Extension/make/make-3.82-mingw32/make-3.82-5-mingw32-bin.tar.lzma/download">make-3.82-5-mingw32-bin</a></td>
+<td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Extension/make/make-3.82-mingw32/make-3.82-5-mingw32-bin.tar.lzma">make-3.82-5-mingw32-bin</a></td>
 </tr>
 <tr class="even">
 <td align="left"><a href="http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z">ragel 6.8 (only for harfbuzz)</a></td>
@@ -175,7 +178,7 @@
 </tbody>
 </table>
 <h3 id="on-linux">On Linux</h3>
-<p>GCC 4.x should build everything just fine. I used the stock Debian toolchain. I will add more info here after the next Linux rebuild.</p>
+<p>GCC 4.4.5 was used (stock Debian 6 gcc toolchain + nasm and ragel) with the same CFLAGS and CXXFLAGS as above.</p>
 			</section>
 		</div>
 		<div class="container">
