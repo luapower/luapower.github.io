@@ -12,7 +12,7 @@ tagline:  Lua, JIT, batteries
   * everything free
 
 <div id="package_table" class="package_table"></div>
-
+<div style="width: 100%; text-align: right; font-size: 80%">manifest file: [Lua](packages.lua) | [JSON](packages.json)</div>
 
 ## What?
 

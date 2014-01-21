@@ -107,6 +107,7 @@ function build_package_table() {
 		s = s + '</tr>'
 	})
 	s = s + '</tbody></table>'
+
 	$('#package_table').html(s)
 	$('#package_table_table').tablesorter({
 		cancelSelection: true,
