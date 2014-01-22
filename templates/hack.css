@@ -161,6 +161,10 @@ header h2 { /* tagline */
 
 /* Document */
 
+.doc td strong {
+	font-size: 16px;
+}
+
 .doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6,
 .doc p, .doc hr, .doc table, .doc pre {
 	margin-top: 20px;

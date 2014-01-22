@@ -3,15 +3,19 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> windesigner   - winapi-based window designer </title>
-				<script src="templates/jquery.js"></script>
+		<script src="templates/jquery.js"></script>
 		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/jquery-tablesorter.js"></script>
 		<script src="templates/strftime.js"></script>
 		<script src="templates/main.js"></script>
 		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			set_lights() //set the lights before rendering starts
+			var DOCNAME = 'windesigner'
+			var PROJECT = 'windesigner'
+			//set the lights before rendering starts
+			set_lights()
 		</script>
 	</head>
 	<body>
@@ -28,6 +32,7 @@
 						<td style="vertical-align: middle;" width="100%">
 							<h1> windesigner </h1>
 							<h2> winapi-based window designer </h2>
+							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -48,6 +53,7 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
+				<span id="module_info">&nbsp;</span>
 				<h3 id="status">Status</h3>
 <p>In development, see <a href="http://github.com/luapower/windesigner/blob/master/TODO.txt">todo</a>. Not active.</p>
 <h2 id="features-implemented-so-far">Features implemented so far</h2>
@@ -65,14 +71,6 @@
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
-		<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		  ga('create', 'UA-10841867-16', 'luapower.com');
-		  ga('send', 'pageview');
-		</script>
 	</body>
 </html>
 
