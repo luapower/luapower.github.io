@@ -30,7 +30,7 @@ header h2 {color: #666;}
 .icon-lua-enabled        {background-image:url("icons/icon-lua-light.png");}
 .icon-luajit-enabled     {background-image:url("icons/icon-luajit-light.png");}
 
-.pd-logo-image {background: url("pd.png") 0 0;}
+.pd-logo-image {background-image: url("pd.png");}
 .btn {
 	color: #bbb;
 	text-shadow: 0 0 1px rgba(0, 0, 0, 0.75);
