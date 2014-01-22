@@ -81,7 +81,6 @@ header h2 { /* tagline */
 
 .pd-logo {
 	position: relative; left: 150px; top: 1200px; width: 460px; height: 460px;
-	opacity: 0.2;
 	background-repeat: no repeat;
 	background-size: 100% auto
 }
