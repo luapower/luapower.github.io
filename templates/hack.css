@@ -80,9 +80,23 @@ header h2 { /* tagline */
 }
 
 .pd-logo {
-	position: relative; left: 150px; top: 1200px; width: 460px; height: 460px;
-	background-repeat: no repeat;
-	background-size: 100% auto
+	position: absolute;
+	left: 150px; top: 1200px; width: 460px; height: 460px;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	background-image: url("pd.png");
+	opacity: 0.3;
+	z-index:-1;
+}
+
+.splash-logo {
+	position: absolute;
+	left: -300px; top: 100px; width: 1400px; height: 1400px;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	background-image: url("splash.png");
+	opacity: 0.08;
+	z-index:-1;
 }
 
 /* Buttons */

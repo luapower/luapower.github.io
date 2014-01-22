@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> glue </h1>
@@ -55,6 +56,9 @@
 			<section class="doc">
 				<span id="module_info">&nbsp;</span>
 				<h2 id="local-glue-requireglue"><code>local glue = require'glue'</code></h2>
+<div class="splash-logo">
+
+</div>
 <table>
 <tbody>
 <tr class="odd">
@@ -229,13 +233,13 @@
    <span class="fu">print</span><span class="ot">(</span><span class="kw">k</span><span class="ot">,</span><span class="kw">v</span><span class="ot">)</span>
 <span class="kw">end</span></code></pre>
 <p>Output:</p>
-<pre><code>day 6
-sec 37
-wday    1
-min 49
-year    1994
-month   11
-hour    8</code></pre>
+<pre><code>day   6
+sec   37
+wday  1
+min   49
+year  1994
+month 11
+hour  8</code></pre>
 <p>Copy-paste a bunch of defines from a C header file and create an inverse lookup table to find the name of a value at runtime.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--from ibase.h</span>
 <span class="kw">info_end_codes</span> <span class="ot">=</span> <span class="ot">{</span>
@@ -417,7 +421,7 @@ hour    8</code></pre>
 
 <span class="kw">LoggedRequest</span>:perform<span class="st">&#39;http://lua.org/&#39;</span>
 
-<span class="ot">&gt;</span> <span class="kw">Requesting</span>    <span class="kw">http</span>:<span class="ot">//</span><span class="kw">lua</span><span class="ot">.</span><span class="kw">org</span><span class="ot">/</span> <span class="ot">...</span></code></pre>
+<span class="ot">&gt;</span> <span class="kw">Requesting</span>   <span class="kw">http</span>:<span class="ot">//</span><span class="kw">lua</span><span class="ot">.</span><span class="kw">org</span><span class="ot">/</span>   <span class="ot">...</span></code></pre>
 <p>Defining a module in Lua 5.2</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">_ENV</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>inherit<span class="ot">({},</span><span class="kw">_G</span><span class="ot">)</span>
 <span class="ot">...</span></code></pre>
@@ -553,4 +557,3 @@ require<span class="st">&#39;foo&#39;</span> <span class="co">--looking for `foo
 		</div>
 	</body>
 </html>
-

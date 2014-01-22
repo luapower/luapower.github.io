@@ -11,6 +11,7 @@ tagline:  Lua, JIT, batteries
   * LuaJIT executable
   * everything free
 
+<div class="pd-logo"></div>
 <div id="package_table" class="package_table"></div>
 <div style="width: 100%; text-align: right; font-size: 80%">manifest file: [Lua](packages.lua) | [JSON](packages.json)</div>
 
