@@ -8,6 +8,7 @@ header h1 {
 	text-shadow: 1px 1px rgba(1, 1, 1, .1);
 }
 header h2 {color: #666;}
+hr {border-bottom-color: #bbb;}
 
 .toc-selected {background-color: #d8d8d8;}
 
@@ -59,7 +60,6 @@ header h2 {color: #666;}
 .doc blockquote {color: #666; border-left-color: #666;}
 .doc pre {background-color: #d8d8d8;}
 .doc tr {border-top-color: #bbb; border-bottom-color: #bbb;}
-.doc hr {border-bottom-color: #bbb;}
 .doc a {color: #00a; text-decoration: none;}
 .doc a:hover {text-decoration: underline;}
 .doc code {background-color: #d8d8d8;}

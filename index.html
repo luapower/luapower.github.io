@@ -53,9 +53,8 @@
 <img src="luapower.png" />
 </div>
 <ul>
-<li>Lua libraries and bindings with demos, documentation and separate github repos</li>
-<li>C libraries with sources, binaries and build scripts for Windows and Linux</li>
-<li>LuaJIT executable</li>
+<li>portable LuaJIT binary &amp; source distribution with demos, documentation, and separate github projects</li>
+<li>Lua and C libraries with sources, binaries and build scripts for Windows and Linux</li>
 <li>everything free</li>
 </ul>
 <div class="pd-logo">
@@ -73,7 +72,7 @@ manifest file: <a href="packages.lua">Lua</a> | <a href="packages.json">JSON</a>
 <p>The fastest route to running code is to download the zip file for <a href="luajit.html">luajit</a> and other the packages that you are interested in and unzip them <em>over the same directory</em>. This will give you an instantly <strong>portable luajit distro</strong> that will work reagardless of where you run it from. You will find the luajit executable in <code>bin/&lt;your-platform&gt;/</code>, already configured to look for Lua modules in <code>../..</code> (relative to the executable's dir, not dir you start the executable into). Binaries can then be <a href="building.html">rebuilt</a> from source if so desired.</p>
 <p>Or you can go the git way with <a href="luapower-git.html">luapower-git</a>, which gives you package management a la LuaRocks, but git-based. Using this method, you can (among other things) clone all packages in one shot, you can build all C libraries in one shot, and you can stay current with luapower by just pulling. You can also git-clone the packages yourself with git and no additional tools, but... read on <a href="luapower-git.html">luapower-git</a> before trying that.</p>
 <blockquote>
-<p>Some unit tests also need <a href="https://github.com/luapower/unit">unit</a>.</p>
+<p>Some unit tests also need <a href="https://github.com/luapower/unit">unit</a>. Some unit tests also need <a href="https://github.com/luapower/unit">unit</a>.</p>
 </blockquote>
 <h2 id="directory-layout">Directory Layout</h2>
 <p>Luapower packages follow some conventions on where the files are and how they are named:</p>
@@ -99,7 +98,7 @@ manifest file: <a href="packages.lua">Lua</a> | <a href="packages.json">JSON</a>
 		<div class="container">
 			<footer>
 				<div id="disqus_thread"></div>
-				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
+				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
 			</footer>
 		</div>
 	</body>

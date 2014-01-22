@@ -16,6 +16,10 @@ header {
 	margin-bottom: 30px;
 }
 
+hr {
+	border-bottom: 1px solid;
+}
+
 #header_table {
 	height: 140px;
 }
@@ -36,7 +40,7 @@ section {
 footer {
 	width: 100%;
 	border-top: 1px solid;
-	padding-top: 2px;
+	padding-top: 10px;
 	margin-top: 40px;
 	margin-bottom: 20px;
 }
@@ -266,10 +270,6 @@ header h2 { /* tagline */
 	width: 1%;
 	padding-top: 4px;
 	padding-bottom: 4px;
-}
-
-.doc hr {
-	border-bottom: 1px solid;
 }
 
 .doc a {
