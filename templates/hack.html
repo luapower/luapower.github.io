@@ -24,6 +24,7 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
+				$if(homepage)$$else$
 				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
@@ -77,10 +78,10 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
-		<div id="disqus_thread"></div>
 	</body>
 </html>
 $endif$
