@@ -248,6 +248,10 @@ function doc_ready() {
 		})
 	}
 	*/
+}
+
+// add disqus comments
+jQuery(function() {
 
 	// don't load when viewing the documentation offline
 	if (window.location.protocol == 'file:')
@@ -259,11 +263,6 @@ function doc_ready() {
 	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-
-}
-
-// add disqus comments
-jQuery(function() {
 
 })
 
