@@ -229,16 +229,12 @@ header h2 { /* tagline */
 	padding: 10px;
 }
 
-.doc code {
-	//padding-left: 0.3em;
-	//padding-right: 0.3em;
-}
 .doc h2 code,
 .doc h3 code,
 .doc h4 code,
 .doc pre code,
 .doc td code
-	{padding: 0; border: none; color: inherit; background-color: inherit;}
+	{color: inherit; background-color: inherit;}
 
 .doc th {
 	text-align: left;

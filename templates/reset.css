@@ -46,8 +46,6 @@ select, input, textarea {font: 99% sans-serif;}
 pre, code, kbd, samp {font-family: monospace, sans-serif;}
 pre {
 	white-space: pre; /* CSS2 */
-	white-space: pre-wrap; /* CSS 2.1 */
-	white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
 	word-wrap: break-word; /* IE */
 }
 h1, h2, h3, h4, h5, h6 {font-weight: bold;}

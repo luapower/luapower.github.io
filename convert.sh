@@ -27,6 +27,6 @@ for f in *.html; do
 done
 # include external references
 cat external-refs.md.inc
-) | pandoc -r markdown -w html --data-dir="$out_dir" --template="$template" --variable="docname:$docname" $opt > "$out_file"
+) | pandoc --tab-stop=3 -r markdown -w html --data-dir="$out_dir" --template="$template" --variable="docname:$docname" $opt > "$out_file"
 
 echo "$out_file"
