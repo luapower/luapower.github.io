@@ -130,44 +130,36 @@
 <td align="left"><a href="#collect">collect iterated values into a list</a></td>
 </tr>
 <tr class="odd">
-<td align="left">glue.ipcall(iterator<v1,v2,...>) -&gt; iterator<ok,v1,v2,...></td>
-<td align="left"><a href="#ipcall">iterator pcall</a></td>
-</tr>
-<tr class="even">
 <td align="left"><strong>closures</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.pass(...) -&gt; ...</td>
 <td align="left"><a href="#pass">does nothing, returns back all arguments</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>metatables</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.inherit(t,parent) -&gt; t</td>
 <td align="left"><a href="#inherit">set or clear inheritance</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>i/o</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.fileexists(file) -&gt; true | false</td>
 <td align="left"><a href="#fileexists">check if a file exists and it's readable</a></td>
 </tr>
-<tr class="even">
-<td align="left">glue.readfile(file[format]) -&gt; s</td>
+<tr class="odd">
+<td align="left">glue.readfile(file[,format]) -&gt; s</td>
 <td align="left"><a href="#readfile">read the contents of a file into a string</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.writefile(file,s[,format])</td>
 <td align="left"><a href="#writefile">write a string to a file</a></td>
-</tr>
-<tr class="even">
-<td align="left">glue.bin</td>
-<td align="left"><a href="#bin">get the script's directory</a></td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>errors</strong></td>
@@ -200,6 +192,18 @@
 <tr class="even">
 <td align="left">glue.autoload(t, submodule_t) -&gt; t</td>
 <td align="left"><a href="#autoload">autoload table keys from submodules</a></td>
+</tr>
+<tr class="odd">
+<td align="left">glue.bin</td>
+<td align="left"><a href="#bin">get the script's directory</a></td>
+</tr>
+<tr class="even">
+<td align="left">glue.luapath(path[, index[, ext]])</td>
+<td align="left"><a href="#luapath">insert a path in package.path</a></td>
+</tr>
+<tr class="odd">
+<td align="left">glue.cpath(path[, index])</td>
+<td align="left"><a href="#cpath">insert a path in package.cpath</a></td>
 </tr>
 </tbody>
 </table>
@@ -381,14 +385,9 @@ hour    8</code></pre>
 <h3 id="design-notes-2">Design notes:</h3>
 <p>Alt. name: <code>ipack</code> - like pack but for iterators; collect is better at suggesting a process done in steps.</p>
 <hr />
-<h2 id="glue.ipcalliteratorv1...---iteratortruev1...falseerror"><code id="ipcall">glue.ipcall(iterator&lt;v1,...&gt;) -&gt; iterator&lt;true,v1,...|false,error&gt;</code></h2>
-<p>Wraps an iterator such that each iteration is wrapped in a pcall.</p>
-<h3 id="uses-4">Uses:</h3>
-<p>Iterators that can break with an error (eg. database fetch iterators).</p>
-<hr />
 <h2 id="glue.pass...---..."><code id="pass">glue.pass(...) -&gt; ...</code></h2>
 <p>The identity function. Does nothing, returns back all arguments.</p>
-<h3 id="uses-5">Uses:</h3>
+<h3 id="uses-4">Uses:</h3>
 <p>Default value for optional callback arguments:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> urlopen<span class="ot">(</span><span class="kw">url</span><span class="ot">,</span> <span class="kw">callback</span><span class="ot">,</span> <span class="kw">errback</span><span class="ot">)</span>
    <span class="kw">callback</span> <span class="ot">=</span> <span class="kw">callback</span> <span class="kw">or</span> <span class="kw">glue</span><span class="ot">.</span><span class="kw">pass</span>
@@ -449,20 +448,10 @@ hour    8</code></pre>
 </ul>
 <p>See also: <a href="#readfile">glue.readfile</a>.</p>
 <hr />
-<h2 id="glue.bin"><code id="bin">glue.bin</code></h2>
-<p>Gets the script's directory, based on <a href="https://github.com/davidm/lua-find-bin">lua-find-bin</a> by David Manura. This allows finding files in the script's directory regardless of the directory that Lua is started in.</p>
-<h3 id="example">Example:</h3>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">foobar</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>readfile<span class="ot">(</span><span class="kw">glue</span><span class="ot">.</span><span class="kw">bin</span> <span class="ot">..</span> <span class="st">&#39;/&#39;</span> <span class="ot">..</span> <span class="kw">file_near_this_script</span><span class="ot">)</span></code></pre>
-<h3 id="caveats">Caveats:</h3>
-<p>This only works if glue itself can already be found and required (chicken/egg catch22 and the rest). The path is relative to the current directory, it stops working if the current directory is changed. The assumption is that if you can do <code>chdir()</code> then you can also do <code>getfullpath()</code> or at least <code>getcurrentdir()</code>, and thus correct <code>glue.bin</code> in time with:</p>
-<pre><code>glue.bin = getfullpath(glue.bin)</code></pre>
-<p>or</p>
-<pre><code>glue.bin = getcurrentdir() .. &#39;/&#39; .. glue.bin</code></pre>
-<hr />
 <h2 id="glue.assertv-message-format_args..."><code id="assert">glue.assert(v[, message[, format_args...]])</code></h2>
 <p>Like <code>assert</code> but supports formatting of the error message using string.format.</p>
 <p>This is better than <code>assert(string.format(message, format_args...))</code> because it avoids creating the message string when the assertion is true.</p>
-<h3 id="example-1">Example:</h3>
+<h3 id="example">Example:</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">glue</span><span class="ot">.</span>assert<span class="ot">(</span><span class="kw">depth</span> <span class="ot">&lt;=</span> <span class="kw">maxdepth</span><span class="ot">,</span> <span class="st">&#39;maximum depth %d exceeded&#39;</span><span class="ot">,</span> <span class="kw">maxdepth</span><span class="ot">)</span></code></pre>
 <hr />
 <h2 id="glue.unprotectokresult...---result...-nilresult..."><code id="unprotect">glue.unprotect(ok,result,...) -&gt; result,... | nil,result,...</code></h2>
@@ -501,7 +490,7 @@ hour    8</code></pre>
 <p>The <code>submodules</code> argument is a table of form <code>{key = module_name | load_function}</code> specifying the corresponding Lua module (or load function) that make each key available to <code>t</code>.</p>
 <h3 id="motivation">Motivation:</h3>
 <p>Module autoloading allows you to split the implementation of a module in many submodules containing optional, self-contained functionality, without having to make this visible in the user API. This effectively separates how you split your APIs from how you split the implementation, allowing you to change the way the implementation is split at a later time while keeping the API intact.</p>
-<h3 id="example-2">Example:</h3>
+<h3 id="example-1">Example:</h3>
 <p><strong>main module (foo.lua):</strong></p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">function</span> bar<span class="ot">()</span> <span class="co">--function implemented in the main module</span>
   <span class="ot">...</span>
@@ -525,15 +514,35 @@ hour    8</code></pre>
 
 <span class="kw">foo</span><span class="ot">.</span>baz<span class="ot">(...)</span> <span class="co">-- foo_extra was now loaded automatically</span></code></pre>
 <hr />
-<h3 id="tips">Tips</h3>
+<h2 id="glue.bin"><code id="bin">glue.bin</code></h2>
+<p>Get the script's directory, based on <a href="https://github.com/davidm/lua-find-bin">lua-find-bin</a> by David Manura. This allows finding files in the script's directory regardless of the directory that Lua is started in.</p>
+<h3 id="example-2">Example:</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">foobar</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>readfile<span class="ot">(</span><span class="kw">glue</span><span class="ot">.</span><span class="kw">bin</span> <span class="ot">..</span> <span class="st">&#39;/&#39;</span> <span class="ot">..</span> <span class="kw">file_near_this_script</span><span class="ot">)</span></code></pre>
+<h3 id="caveats">Caveats:</h3>
+<p>This only works if glue itself can already be found and required (chicken/egg catch22 and the rest). The path is relative to the current directory, it stops working if the current directory is changed. The assumption is that if you can do chdir() then you can also do getfullpath() or at least getcurrentdir(), and thus correct <code>glue.bin</code> in time with:</p>
+<pre><code>glue.bin = getfullpath(glue.bin)</code></pre>
+<p>or</p>
+<pre><code>glue.bin = getcurrentdir() .. &#39;/&#39; .. glue.bin</code></pre>
+<hr />
+<h2 id="glue.luapathpath-index-ext"><code id="luapath">glue.luapath(path[, index[, ext]])</code></h2>
+<p>Insert a Lua search pattern in <code>package.path</code> such that <code>require</code> will be able to load Lua modules from that path. The optional <code>index</code> arg specifies the insert position (default is 1, that is, before all existing paths; can be negative, to start counting from the end; can be the string 'after', which is the same as 0). The optional <code>ext</code> arg specifies the file extension to use (default is &quot;lua&quot;).</p>
+<h2 id="glue.cpathpath-index"><code id="cpath">glue.cpath(path[, index])</code></h2>
+<p>Insert a Lua search pattern in <code>package.cpath</code> such that <code>require</code> will be able to load Lua/C modules from that path. The <code>index</code> arg has the same meaning as with <code>glue.luapath</code>.</p>
+<h3 id="example-3">Example:</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">glue</span><span class="ot">.</span>luapath<span class="ot">(</span><span class="kw">glue</span><span class="ot">.</span><span class="kw">bin</span><span class="ot">)</span>
+<span class="kw">glue</span><span class="ot">.</span>cpath<span class="ot">(</span><span class="kw">glue</span><span class="ot">.</span><span class="kw">bin</span><span class="ot">)</span>
+
+require<span class="st">&#39;foo&#39;</span> <span class="co">--looking for `foo` in the same directory as the running script first</span></code></pre>
+<hr />
+<h2 id="tips">Tips</h2>
 <p>String functions are also in the <code>glue.string</code> table. You can extend the Lua <code>string</code> namespace:</p>
 <pre><code>glue.update(string, glue.string)</code></pre>
 <p>so you can use them as string methods:</p>
 <pre><code>s = s:trim()</code></pre>
-<h3 id="keywords">Keywords</h3>
+<h2 id="keywords">Keywords</h2>
 <p><em>for syntax highlighting</em></p>
-<p>glue.index, glue.keys, glue.update, glue.merge, glue.extend, glue.append, glue.shift, glue.gsplit, glue.trim, glue.escape, glue.collect, glue.ipcall, glue.pass, glue.inherit, glue.fileexists, glue.readfile, glue.writefile, glue.assert, glue.unprotect, glue.pcall, glue.fpcall, glue.fcall, glue.autoload</p>
-<h3 id="design">Design</h3>
+<p>glue.index, glue.keys, glue.update, glue.merge, glue.extend, glue.append, glue.shift, glue.gsplit, glue.trim, glue.escape, glue.collect, glue.pass, glue.inherit, glue.fileexists, glue.readfile, glue.writefile, glue.assert, glue.unprotect, glue.pcall, glue.fpcall, glue.fcall, glue.autoload, glue.bin, glue.luapath, glue.cpath</p>
+<h2 id="design">Design</h2>
 <p><a href="glue_design.html">glue_design</a></p>
 			</section>
 		</div>
