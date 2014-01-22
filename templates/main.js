@@ -258,6 +258,8 @@ jQuery(function() {
 		return
 
 	var disqus_shortname = 'luapower';
+	var disqus_identifier = '/' + DOCNAME; //discussion identifier (when a page will be renamed, the comments will be gone!)
+
 	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
