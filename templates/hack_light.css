@@ -1,5 +1,5 @@
 body {background: #f0f0f0; color: #000;}
-header {background: #fff; border-bottom-color: #663;}
+header {background: rgba(255, 255, 255, 1); border-bottom-color: #663;}
 footer {border-top-color: #bbb;}
 .faint {color: #888;}
 .faint a:hover {color: white;}
@@ -32,7 +32,7 @@ hr {border-bottom-color: #bbb;}
 .icon-luajit-enabled     {background-image:url("icons/icon-luajit-dark.png");}
 
 .pd-logo {opacity: 0.8;}
-.splash-logo {opacity: 0.2;}
+.splash-logo {top: -300px; left: 700px; opacity: 0.3;}
 
 .btn {
 	color: #bbb;

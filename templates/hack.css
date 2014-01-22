@@ -89,7 +89,6 @@ header h2 { /* tagline */
 	background-repeat: no-repeat;
 	background-size: 100% auto;
 	background-image: url("pd.png");
-	opacity: 0.3;
 	z-index:-1;
 }
 
@@ -99,7 +98,6 @@ header h2 { /* tagline */
 	background-repeat: no-repeat;
 	background-size: 100% auto;
 	background-image: url("splash.png");
-	opacity: 0.08;
 	z-index:-1;
 }
 

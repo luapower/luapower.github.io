@@ -31,6 +31,9 @@ hr {border-bottom-color: #333;}
 .icon-lua-enabled        {background-image:url("icons/icon-lua-light.png");}
 .icon-luajit-enabled     {background-image:url("icons/icon-luajit-light.png");}
 
+.pd-logo {opacity: 0.3;}
+.splash-logo {opacity: 0.08;}
+
 .btn {
 	color: #bbb;
 	text-shadow: 0 0 1px rgba(0, 0, 0, 0.75);
