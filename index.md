@@ -26,15 +26,15 @@ My code is in public domain (PD) as I do not support the copyright law. The rest
 The fastest route to running code is to download the zip file for [luajit] and other the packages that you are
 interested in and unzip them _over the same directory_. This will give you an instantly **portable luajit distro**
 that will work reagardless of where you run it from. You will find the luajit executable in `bin/<your-platform>/`,
-already configured to look for Lua modules in `../..` (relative to the executable's dir,
-not dir you start the executable into). Binaries can then be rebuilt from source if so desired (see below).
+already configured to look for Lua modules in `../..` (relative to the executable's dir, not dir you start the
+executable into). Binaries can then be rebuilt from source if so desired (see below).
 
 Or you can go the git way with [luapower-git], which gives you package management a la LuaRocks, but git-based.
 Using this method, you can (among other things) clone all packages in one shot, you can build all C libraries
 in one shot, and you can stay current with luapower by just pulling. You can also git-clone the packages yourself
 with git and no additional tools, but... read on [luapower-git] before trying that.
 
-> NOTE: some unit tests (`*_test.lua` files) need [unit].
+> Some unit tests also need [unit].
 
 ## Directory Layout
 
