@@ -6,8 +6,7 @@ tagline:  Lua, JIT, batteries
 ![](luapower.png)
 
   * portable LuaJIT binary & source distribution
-  with demos, documentation, and separate github projects
-  * Lua and C libraries with sources, binaries and build scripts for Windows and Linux
+  * sources, binaries, build scripts, demos, documentation, separate github projects, Windows and Linux
   * everything free
 
 <div class="pd-logo"></div>
