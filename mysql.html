@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> mysql </h1>
@@ -643,9 +644,11 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 <ul>
 <li>call <code>params:set()</code> for each param to set param values.</li>
 <li>call <code>stmt:exec()</code> to run the query.</li>
-<li>fetch the resulting rows one by one; for each row:</li>
+<li>fetch the resulting rows one by one; for each row:
+<ul>
 <li>call <code>stmt:fetch()</code> to get the next row (it returns false if it was the last row).</li>
 <li>call <code>fields:get()</code> to read the values of the fetched row.</li>
+</ul></li>
 </ul></li>
 <li>call <code>stmt:close()</code> to free the statement object and all the associated resources from the server and client.</li>
 </ul>
@@ -779,9 +782,9 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-

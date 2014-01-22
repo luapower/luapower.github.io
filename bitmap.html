@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> bitmap </h1>
@@ -344,14 +345,14 @@
 <p>Return an API for getting and setting individual pixels of a bitmap object: * <code>getpixel(x, y) -&gt; a, b, c, ...</code> * <code>setpixel(x, y, a, b, c, ...)</code> where a, b, c are the individual color channels, converted to the specified colortype or in the colortype of the bitmap (i.e. r, g, b, a for the 'rgba' colortype, etc.).</p>
 <h3 id="example">Example:</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">function</span> darken<span class="ot">(</span><span class="kw">r</span><span class="ot">,</span> <span class="kw">g</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">a</span><span class="ot">)</span>
-    <span class="kw">return</span> <span class="kw">r</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">g</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">a</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">)</span> <span class="co">--make 2x darker</span>
+   <span class="kw">return</span> <span class="kw">r</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">g</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">a</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">)</span> <span class="co">--make 2x darker</span>
 <span class="kw">end</span>
 
 <span class="kw">local</span> <span class="kw">getpixel</span><span class="ot">,</span> <span class="kw">setpixel</span> <span class="ot">=</span> pixel_interface<span class="ot">(</span><span class="kw">bmp</span><span class="ot">)</span>
 <span class="kw">for</span> <span class="kw">y</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">h</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
-    <span class="kw">for</span> <span class="kw">x</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">w</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
-        setpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">,</span> darken<span class="ot">(</span>getpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)))</span>
-    <span class="kw">end</span>
+   <span class="kw">for</span> <span class="kw">x</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">w</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
+      setpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">,</span> darken<span class="ot">(</span>getpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)))</span>
+   <span class="kw">end</span>
 <span class="kw">end</span>
 
 <span class="co">--the above has the same effect as:</span>
@@ -401,9 +402,9 @@ convert<span class="ot">(</span><span class="kw">bmp</span><span class="ot">,</s
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-

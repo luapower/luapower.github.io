@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> path_arc_3p </h1>
@@ -59,12 +60,12 @@
 <pre><code>x1, y1, xp, yp, x2, y2</code></pre>
 <p>where <code>(x1, y1)</code>, <code>(xp, yp)</code> and <code>(x2, y2)</code> are the arc's endpoints.</p>
 <pre><code>arc_3p.to_arc(x1, y1, xp, yp, x2, y2) -&gt;
-    cx, cy, rx, ry, start_angle, sweep_angle, rotation, x2, y2</code></pre>
+   cx, cy, rx, ry, start_angle, sweep_angle, rotation, x2, y2</code></pre>
 <p>Convert a 3-point arc an <a href="path_arc.html">elliptic arc</a>.</p>
 <p>If the endpoints conicide are collinear then the parametrization is invalid and nothing is returned.</p>
 <pre><code>arc_3p.split(t, x1, y1, xp, yp, x2, y2) -&gt;
-    x11, y11, x1p, y1p, x22, y22
-    x21, y21, x2p, y2p, x22, y22</code></pre>
+   x11, y11, x1p, y1p, x22, y22
+   x21, y21, x2p, y2p, x22, y22</code></pre>
 <p>Split a 3-point arc at time <code>t</code> into two arcs.</p>
 <hr />
 <p>See also: <a href="path_arc.html">path_arc</a></p>
@@ -72,9 +73,9 @@
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-

@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> sg_gl_mesh </h1>
@@ -63,59 +64,59 @@
 <p>In particular, you can have vertex, normal, texcoord and color information in separate arrays (called VBOs), or you can have it all packed in a single array (called interleaved VBO), or you can have vertex and normals packed together in one interleaved array and texcoords in a separate array, or any combination thereof.</p>
 <p>Also, you can choose to render all the vertices in the VBO (this is the default), or you can pick only specific vertices from the VBO to be rendered by way of an array of VBO indices (called IBO). This allows you to pack multiple 3D objects into one big shared VBO and render them individually using IBOs, but more usually, it allows you to bind different textures to different parts of the VBO.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="ot">&lt;</span><span class="kw">mesh_object</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
-    <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;mesh&#39;</span><span class="ot">,</span>
-    <span class="kw">vbo_v</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--required, vertices</span>
-    <span class="kw">vbo_n</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, normals</span>
-    <span class="kw">vbo_t</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, texcoords</span>
-    <span class="kw">vbo_c</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, colors</span>
-    <span class="kw">ibo</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">ibo</span><span class="ot">&gt;,</span>
-    <span class="kw">ibo_partitions</span> <span class="ot">=</span> <span class="ot">{&lt;</span><span class="kw">partition1</span><span class="ot">&gt;,...},</span> <span class="co">--optional</span>
-    <span class="kw">texture</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">texture</span><span class="ot">&gt;,</span> <span class="co">--optional</span>
-    <span class="kw">mode</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;,</span>       <span class="co">--optional only if there are partitions and they all specify a mode</span>
+   <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;mesh&#39;</span><span class="ot">,</span>
+   <span class="kw">vbo_v</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--required, vertices</span>
+   <span class="kw">vbo_n</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, normals</span>
+   <span class="kw">vbo_t</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, texcoords</span>
+   <span class="kw">vbo_c</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;,</span> <span class="co">--optional, colors</span>
+   <span class="kw">ibo</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">ibo</span><span class="ot">&gt;,</span>
+   <span class="kw">ibo_partitions</span> <span class="ot">=</span> <span class="ot">{&lt;</span><span class="kw">partition1</span><span class="ot">&gt;,...},</span> <span class="co">--optional</span>
+   <span class="kw">texture</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">texture</span><span class="ot">&gt;,</span> <span class="co">--optional</span>
+   <span class="kw">mode</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;,</span>       <span class="co">--optional only if there are partitions and they all specify a mode</span>
 <span class="ot">}</span>
 
 <span class="ot">&lt;</span><span class="kw">vbo</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
-    <span class="kw">layout</span> <span class="ot">=</span> <span class="kw">S</span><span class="ot">,</span> <span class="co">--any combination of letters &#39;v&#39;, &#39;n&#39;, &#39;t&#39;, and &#39;c&#39; in any order</span>
-    <span class="kw">data</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">size</span> <span class="ot">=</span> <span class="kw">N</span> | <span class="kw">values</span> <span class="ot">=</span> <span class="ot">{</span><span class="kw">N</span><span class="ot">,...},</span>
-    <span class="kw">usage</span> <span class="ot">=</span> <span class="st">&#39;static&#39;</span> | <span class="st">&#39;dynamic&#39;</span> | <span class="st">&#39;stream&#39;</span> <span class="ot">(</span><span class="kw">static</span><span class="ot">),</span>
+   <span class="kw">layout</span> <span class="ot">=</span> <span class="kw">S</span><span class="ot">,</span> <span class="co">--any combination of letters &#39;v&#39;, &#39;n&#39;, &#39;t&#39;, and &#39;c&#39; in any order</span>
+   <span class="kw">data</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">size</span> <span class="ot">=</span> <span class="kw">N</span> | <span class="kw">values</span> <span class="ot">=</span> <span class="ot">{</span><span class="kw">N</span><span class="ot">,...},</span>
+   <span class="kw">usage</span> <span class="ot">=</span> <span class="st">&#39;static&#39;</span> | <span class="st">&#39;dynamic&#39;</span> | <span class="st">&#39;stream&#39;</span> <span class="ot">(</span><span class="kw">static</span><span class="ot">),</span>
 <span class="ot">}</span>
 
 <span class="ot">&lt;</span><span class="kw">ibo</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
-    <span class="ot">&lt;</span><span class="kw">ibo_cdata_size</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_cdata_count</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_values</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_create</span><span class="ot">&gt;</span>
+   <span class="ot">&lt;</span><span class="kw">ibo_cdata_size</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_cdata_count</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_values</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">ibo_create</span><span class="ot">&gt;</span>
 
-    <span class="kw">usage</span> <span class="ot">=</span> <span class="st">&#39;static&#39;</span> | <span class="st">&#39;dynamic&#39;</span> | <span class="st">&#39;stream&#39;</span> <span class="ot">(</span><span class="kw">static</span><span class="ot">),</span>
+   <span class="kw">usage</span> <span class="ot">=</span> <span class="st">&#39;static&#39;</span> | <span class="st">&#39;dynamic&#39;</span> | <span class="st">&#39;stream&#39;</span> <span class="ot">(</span><span class="kw">static</span><span class="ot">),</span>
 <span class="ot">}</span>
 
 <span class="ot">&lt;</span><span class="kw">ibo_cdata_size</span><span class="ot">&gt;</span> <span class="ot">=</span>
-    <span class="kw">cdata</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">size</span> <span class="ot">=</span> <span class="kw">N</span>
+   <span class="kw">cdata</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">size</span> <span class="ot">=</span> <span class="kw">N</span>
 <span class="ot">&lt;</span><span class="kw">ibo_cdata_count</span><span class="ot">&gt;</span> <span class="ot">=</span>
-    <span class="kw">cdata</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span>
+   <span class="kw">cdata</span> <span class="ot">=</span> <span class="kw">CDATA</span><span class="ot">,</span> <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span>
 <span class="ot">&lt;</span><span class="kw">ibo_values</span><span class="ot">&gt;</span> <span class="ot">=</span>
-    <span class="ot">{</span><span class="kw">N</span><span class="ot">,...}</span>
+   <span class="ot">{</span><span class="kw">N</span><span class="ot">,...}</span>
 <span class="ot">&lt;</span><span class="kw">ibo_create</span><span class="ot">&gt;</span> <span class="ot">=</span>
-    <span class="kw">from</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span>
+   <span class="kw">from</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span>
 
 <span class="ot">&lt;</span><span class="kw">partition</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
-    <span class="kw">texture</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">texture</span><span class="ot">&gt;,</span> <span class="co">--optional, defaults to mesh_object.texture</span>
-    <span class="kw">mode</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;,</span>       <span class="co">--optional if mesh_object specifies a mode</span>
-    <span class="kw">from</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--</span>
-    <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span>
-    <span class="kw">transparent</span> <span class="ot">=</span> <span class="kw">true</span> | <span class="kw">false</span> <span class="ot">(</span><span class="kw">false</span><span class="ot">)</span>
+   <span class="kw">texture</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">texture</span><span class="ot">&gt;,</span> <span class="co">--optional, defaults to mesh_object.texture</span>
+   <span class="kw">mode</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;,</span>       <span class="co">--optional if mesh_object specifies a mode</span>
+   <span class="kw">from</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--</span>
+   <span class="kw">count</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span>
+   <span class="kw">transparent</span> <span class="ot">=</span> <span class="kw">true</span> | <span class="kw">false</span> <span class="ot">(</span><span class="kw">false</span><span class="ot">)</span>
 <span class="ot">}</span>
 
 <span class="ot">&lt;</span><span class="kw">texture</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="ot">{</span>
-    <span class="ot">&lt;</span><span class="kw">image_texture</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">surface_texture</span><span class="ot">&gt;</span>
+   <span class="ot">&lt;</span><span class="kw">image_texture</span><span class="ot">&gt;</span> | <span class="ot">&lt;</span><span class="kw">surface_texture</span><span class="ot">&gt;</span>
 <span class="ot">}</span>
 
 <span class="ot">&lt;</span><span class="kw">image_texture</span><span class="ot">&gt;</span> <span class="ot">=</span>
-    <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;image&#39;</span><span class="ot">,</span>
-    <span class="kw">file</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">imagefile</span> <span class="kw">source</span><span class="ot">&gt;,</span> <span class="co">--see imagefile</span>
+   <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;image&#39;</span><span class="ot">,</span>
+   <span class="kw">file</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">imagefile</span> <span class="kw">source</span><span class="ot">&gt;,</span> <span class="co">--see imagefile</span>
 
 <span class="ot">&lt;</span><span class="kw">surface_texture</span><span class="ot">&gt;</span> <span class="ot">=</span>
-    <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;surface&#39;</span><span class="ot">,</span>
-    <span class="kw">w</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--width</span>
-    <span class="kw">h</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--height</span>
-    <span class="kw">object</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">cairo</span> <span class="kw">scene</span> <span class="kw">graph</span> <span class="kw">object</span><span class="ot">&gt;</span>
+   <span class="fu">type</span> <span class="ot">=</span> <span class="st">&#39;surface&#39;</span><span class="ot">,</span>
+   <span class="kw">w</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--width</span>
+   <span class="kw">h</span> <span class="ot">=</span> <span class="kw">N</span><span class="ot">,</span> <span class="co">--height</span>
+   <span class="kw">object</span> <span class="ot">=</span> <span class="ot">&lt;</span><span class="kw">cairo</span> <span class="kw">scene</span> <span class="kw">graph</span> <span class="kw">object</span><span class="ot">&gt;</span>
 
 
 <span class="ot">&lt;</span><span class="kw">mode</span><span class="ot">&gt;</span> <span class="ot">=</span> <span class="st">&#39;points&#39;</span> | <span class="st">&#39;line_strip&#39;</span> | <span class="st">&#39;line_loop&#39;</span> | <span class="st">&#39;lines&#39;</span> | <span class="st">&#39;triangles&#39;</span> |
@@ -170,9 +171,9 @@
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-

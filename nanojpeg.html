@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> nanojpeg </h1>
@@ -68,10 +69,12 @@
 <ul>
 <li><code>t</code> is a table specifying:
 <ul>
-<li>where to read the data from (one of the following):</li>
+<li>where to read the data from (one of the following):
+<ul>
 <li><code>path</code>: read data from a file given its filename</li>
 <li><code>string</code>: read data from a string</li>
 <li><code>cdata</code>, <code>size</code>: read data from a buffer</li>
+</ul></li>
 </ul></li>
 </ul>
 <p>The returned image object is a table with the fields:</p>
@@ -87,9 +90,9 @@
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-

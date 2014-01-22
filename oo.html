@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> oo </h1>
@@ -58,28 +59,40 @@
 <p>Object system with virtual properties and method overriding hooks.</p>
 <h2 id="features">Features</h2>
 <ul>
-<li>single, dynamic inheritance by default:</li>
+<li>single, dynamic inheritance by default:
+<ul>
 <li><code>oo.class([superclass]) -&gt; class</code></li>
 <li><code>class() -&gt; instance</code></li>
 <li><code>instance.super -&gt; class</code></li>
 <li><code>class.super -&gt; superclass</code></li>
-<li>static, multiple inheritance by request:</li>
+</ul></li>
+<li>static, multiple inheritance by request:
+<ul>
 <li><code>self:inherit(other[,override])</code> - statically inherit properties of <code>other</code>, optionally overriding existing properties.</li>
 <li><code>self:detatch()</code> - detach from the parent class, in other words statically inherit <code>self.super</code>.</li>
-<li>virtual properties with getter and setter:</li>
+</ul></li>
+<li>virtual properties with getter and setter:
+<ul>
 <li>reading <code>self.foo</code> calls <code>self:get_foo()</code> to get the value.</li>
 <li>assignment to <code>self.foo</code> calls <code>self:set_foo(value)</code>.</li>
 <li>missing the setter, the property is read-only and assignment fails.</li>
-<li>stored properties (no getter):</li>
+</ul></li>
+<li>stored properties (no getter):
+<ul>
 <li>assignment to <code>self.foo</code> calls <code>self:set_foo(value)</code> and sets <code>self.state.foo</code>.</li>
 <li>reading <code>self.foo</code> reads back <code>self.state.foo</code>.</li>
-<li>before/after method hooks:</li>
+</ul></li>
+<li>before/after method hooks:
+<ul>
 <li><code>self:before_m()</code> installs a before-hook for <code>self:m()</code>.</li>
 <li><code>self:after_m()</code> installs an after-hook for <code>self:m()</code>.</li>
-<li>introspection:</li>
+</ul></li>
+<li>introspection:
+<ul>
 <li><code>self:allpairs() -&gt; iterator() -&gt; name, value, source</code> - iterate all properties, including inherited <em>and overriden</em> ones.</li>
 <li><code>self:properties()</code> -&gt; get a table of all current properties and values, including inherited ones.</li>
 <li><code>self:inspect()</code> - inspect the class/instance structure and contents in detail.</li>
+</ul></li>
 </ul>
 <h2 id="in-detail">In detail</h2>
 <p><strong>Classes are created</strong> with <code>oo.class([super])</code>, where <code>super</code> is usually another class, but can also be an instance, which is useful for creating polymorphic &quot;views&quot; on existing instances.</p>
@@ -156,9 +169,9 @@
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-

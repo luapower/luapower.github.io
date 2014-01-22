@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> path_svgarc </h1>
@@ -67,12 +68,12 @@
 </ul>
 <p>The two flags are needed because with just the endpoints and the ellipse radii, there can be 2 possible ellipses and thus 4 possible arcs that can be represented. The flags help narrow it down to one arc.</p>
 <pre><code>svgarc.to_arc(x1, y1, rx, ry, rotation, large_arc_flag, sweep_flag, x2, y2, ...) -&gt;
-    cx, cy, rx, ry, start_angle, sweep_angle, rotation, ...</code></pre>
+   cx, cy, rx, ry, start_angle, sweep_angle, rotation, ...</code></pre>
 <p>Convert an elliptic arc from endpoint parametrization to <a href="path_arc.html">center parametrization</a>.</p>
 <p>If the endpoints conicide or rx or ry is 0, the parametrization is invalid and nothing is returned.</p>
 <pre><code>svgarc.split(t, x1, y1, rx, ry, rotation, large_arc_flag, sweep_flag, x2, y2) -&gt;
-    x11, y11, rx1, ry1, rotation1, large_arc_flag1, sweep_flag1, x22, y22
-    x21, y21, rx2, ry2, rotation2, large_arc_flag2, sweep_flag2, x22, y22</code></pre>
+   x11, y11, rx1, ry1, rotation1, large_arc_flag1, sweep_flag1, x22, y22
+   x21, y21, rx2, ry2, rotation2, large_arc_flag2, sweep_flag2, x22, y22</code></pre>
 <p>Split a svg elliptic arc at time <code>t</code> into two svg arcs.</p>
 <hr />
 <p>See also: <a href="path_arc.html">path_arc</a>.</p>
@@ -80,9 +81,9 @@
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-

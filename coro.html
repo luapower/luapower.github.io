@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> coro </h1>
@@ -74,19 +75,19 @@
 <p>Similar to <code>coroutine.wrap</code> for symmetric coroutines. Useful for creating iterators in an environment of symmetric coroutines in which simply calling <code>coroutine.yield</code> is not an option:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">parent</span> <span class="ot">=</span> <span class="kw">coro</span><span class="ot">.</span><span class="kw">current</span>
 <span class="kw">local</span> <span class="kw">iter</span> <span class="ot">=</span> <span class="kw">coro</span><span class="ot">.</span>wrap<span class="ot">(</span><span class="kw">function</span><span class="ot">()</span>
-    <span class="kw">local</span> <span class="kw">function</span> yield<span class="ot">(</span><span class="kw">val</span><span class="ot">)</span>
-        <span class="kw">coro</span><span class="ot">.</span>transfer<span class="ot">(</span><span class="kw">parent</span><span class="ot">,</span> <span class="kw">val</span><span class="ot">)</span>
-    <span class="kw">end</span>
-    <span class="ot">...</span>
-    yield<span class="ot">(</span><span class="kw">val</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">function</span> yield<span class="ot">(</span><span class="kw">val</span><span class="ot">)</span>
+      <span class="kw">coro</span><span class="ot">.</span>transfer<span class="ot">(</span><span class="kw">parent</span><span class="ot">,</span> <span class="kw">val</span><span class="ot">)</span>
+   <span class="kw">end</span>
+   <span class="ot">...</span>
+   yield<span class="ot">(</span><span class="kw">val</span><span class="ot">)</span>
 <span class="kw">end</span><span class="ot">)</span></code></pre>
 			</section>
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-

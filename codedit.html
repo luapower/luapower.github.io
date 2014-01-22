@@ -24,10 +24,11 @@
 				<div class="btn-container btn-lights-container">
 					<a href="#" class="btn btn-lights" id="lights">lights</a>
 				</div>
-								<div class="btn-container btn-home-container">
+				<div class="btn-container btn-home-container">
 					<a href="/" class="btn btn-home">luapower</a>
 				</div>
-								<table id="header_table">
+				
+				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> codedit </h1>
@@ -69,12 +70,16 @@
 <ul>
 <li><em>Buffers</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_buffer.lua">code</a>)
 <ul>
-<li><em>File format autodetection</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_detect.lua">code</a>)</li>
+<li><em>File format autodetection</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_detect.lua">code</a>)
+<ul>
 <li>loading files with mixed line endings</li>
 <li>detecting the most common line ending used in the file and using that when saving the file</li>
-<li><em>Normalization</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_normal.lua">code</a>)</li>
+</ul></li>
+<li><em>Normalization</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_normal.lua">code</a>)
+<ul>
 <li>removing spaces past end-of-line before saving</li>
 <li>removing empty lines at end-of-file before saving, or ensuring that the file ends with at least one empty line before saving</li>
+</ul></li>
 <li>undo/redo stack (<a href="https://github.com/luapower/codedit/blob/master/codedit_undo.lua">code</a>)</li>
 </ul></li>
 <li><em>Selections</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_selction.lua">code</a>)
@@ -95,8 +100,10 @@
 <ul>
 <li>syntax highlighting using <a href="http://foicica.com/scintillua/">scintillua</a> lexers</li>
 <li>simple rendering and measuring API for monospace fonts (<a href="https://github.com/luapower/codedit/blob/master/codedit_metrics.lua">code</a>)</li>
-<li>user-defined margins (<a href="https://github.com/luapower/codedit/blob/master/codedit_margin.lua">code</a>)</li>
+<li>user-defined margins (<a href="https://github.com/luapower/codedit/blob/master/codedit_margin.lua">code</a>)
+<ul>
 <li>line numbers margin (<a href="https://github.com/luapower/codedit/blob/master/codedit_line_numbers.lua">code</a>)</li>
+</ul></li>
 </ul></li>
 <li><em>Controller</em> (<a href="https://github.com/luapower/codedit/blob/master/codedit_editor.lua">code</a>)
 <ul>
@@ -122,13 +129,13 @@ local glue = require&#39;glue&#39;
 local myeditor = glue.inherit({}, codedit) --use glue.update() for static inheritance
 
 function myeditor:draw_char(x, y, c, color)
-    --implement drawing a utf8 character at (x, y) coordinates.
-    --the coordinates are relative to the editor&#39;s client area.
-    --the color is always &#39;text&#39; (it will be &#39;number&#39;, &#39;string&#39; etc. when syntax highlighting will be implemented).
+   --implement drawing a utf8 character at (x, y) coordinates.
+   --the coordinates are relative to the editor&#39;s client area.
+   --the color is always &#39;text&#39; (it will be &#39;number&#39;, &#39;string&#39; etc. when syntax highlighting will be implemented).
 end
 
 function myeditor:draw_rect(x, y, w, h, color)
-    --draw a rectangle. the color can be &#39;selection&#39;, &#39;cursor&#39;, &#39;background&#39;.
+   --draw a rectangle. the color can be &#39;selection&#39;, &#39;cursor&#39;, &#39;background&#39;.
 end
 
 --create an editor instance
@@ -466,9 +473,9 @@ local editor = codedit:new{option = value, ...}</code></pre>
 		</div>
 		<div class="container">
 			<footer>
+				<div id="disqus_thread"></div>
 				<span class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></span>
 			</footer>
 		</div>
 	</body>
 </html>
-
