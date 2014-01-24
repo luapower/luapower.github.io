@@ -55,9 +55,8 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
-				<span id="module_info">&nbsp;</span>
-				<p><a href="winapi.html">back</a></p>
-<h2 id="structure">Structure</h2>
+				<span id="module_info"></span>
+				<h2 id="structure">Structure</h2>
 <p>The library publishes a procedural API that mimics the windows API and an object API for creating windows and controls. Both APIs share the same namespace, which is the table returned by <code>require'winapi'</code>.</p>
 <p>Interactivity (windows message processing) is handled in the object layer since it requires keeping state. Dispatching of messages to child controls is implemented in the object layer. The object layer also provides additional features like anchor-based layouting, so there's little reason to use the procedural API directly except for say, implementing a different object API.</p>
 <h2 id="scope">Scope</h2>

@@ -55,89 +55,134 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
-				<span id="module_info">&nbsp;</span>
-				<h2 id="what">What?</h2>
-<p>An automated way for downloading, managing and building luapower packages.</p>
+				<span id="module_info"></span>
+				<h2 id="what">What</h2>
+<p>Downloading and managing luapower packages the git way.</p>
 <h2 id="why-not-just-use-git-directly">Why not just use git directly?</h2>
 <p>Mainly because luapower packages need to be overlaid over the same directory, but you can't just git-clone multiple repos over the same directory with git (for no reason- git-clone could and should totally allow you to do that). Git <em>does</em> support overlaying multiple repos over a common directory structure but that's <a href="http://github.com/luapower/luapower-git/blob/master/clone.cmd">not trivial</a> to set up, and that is where <a href="luapower-git.html">luapower-git</a> comes in.</p>
-<h2 id="how">How?</h2>
+<h2 id="how">How</h2>
 <p>First, let's git it:</p>
-<pre><code>git clone ssh://git@github.com/luapower/luapower-git luapower
-cd luapower</code></pre>
-<p>This gets us the <code>clone</code> command (among others) which allows us to clone luapower packages easily:</p>
-<pre><code>clone glue
-clone mysql
+<pre><code>&gt; git clone ssh://git@github.com/luapower/luapower-git luapower
+&gt; cd luapower</code></pre>
+<p>This brings in the <code>clone</code> and <code>remove</code> commands:</p>
+<pre><code>&gt; clone
+
+USAGE:
+   clone &lt;package&gt; [remote | url]    clone a package
+   clone --list                      list uncloned packages
+   clone --all                       clone all packages</code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> In Linux, the command is <code>./clone.sh</code>. They're all like that.</p>
+</blockquote>
+<blockquote>
+<p>Tip: You can clone repos from any location, as long as they have the proper file/directory layout. In case you have many repos in a common remote location, write the base url of that location (without trailing slash) in a file called <code>_git/foo.remote</code> and then clone using <code>clone &lt;package&gt; foo</code>.</p>
+</blockquote>
+<pre><code>&gt; remove
+
+USAGE:
+   remove &lt;package&gt;       remove a cloned package completely from the disk
+   remove --list          list cloned packages</code></pre>
+<p>The rest is done via git, using the <code>proj</code> command to set the context (repo) in which git should operate.</p>
+<pre><code>&gt; proj foo
+[foo] &gt; git ls-files
+
+foo.lua
+foo.md
+
+[foo] &gt; proj bar
+[bar] &gt; git pull
+...
+[bar] &gt; proj baz
+[baz] &gt; git pull
 ...</code></pre>
 <blockquote>
-<p>In Linux, the command is <code>./clone.sh</code></p>
+<p><code>proj</code> is but a glorified wrapper for setting the env var <code>GIT_DIR=_git/&lt;package&gt;/.git</code>, which allows us to use git as normal without leaving the work-tree.</p>
 </blockquote>
-<h2 id="package-management">Package management</h2>
-<table>
-<tbody>
-<tr class="odd">
-<td align="left"><code>clone --list</code></td>
-<td align="left">list available (not cloned) packages</td>
-</tr>
-<tr class="even">
-<td align="left"><code>clone &lt;package&gt;</code></td>
-<td align="left">clone a package</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>clone --all</code></td>
-<td align="left">clone all available packages</td>
-</tr>
-<tr class="even">
-<td align="left"><code>remove --list</code></td>
-<td align="left">list local (cloned) packages</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>remove &lt;package&gt;</code></td>
-<td align="left">remove a package</td>
-</tr>
-</tbody>
-</table>
 <h2 id="the-luapower-command">The <code>luapower</code> command</h2>
 <p>This is a powerful command that extracts and aggregates data from the luapower environment and gives detailed information about packages, modules and documentation. It can give accurate information about dependencies between modules and packages because it actually loads the module and tracks <code>require</code> calls, and then it integrates that information with the information about packages.</p>
-<p>It is also used for keeping the package database on luapower.com up to date, along with the navigation tree and the module/package dependency lists.</p>
+<p>It is also used for generating the package database on luapower.com, along with the the dependency lists you see on each module's page.</p>
 <p>The <code>luapower</code> command is a Lua script that depends on <a href="luajit.html">luajit</a>, <a href="lfs.html">lfs</a>, <a href="glue.html">glue</a> and <a href="tuple.html">tuple</a> so let's clone these first:</p>
-<pre><code>clone luajit
-clone lfs
-clone glue
-clone tuple</code></pre>
+<pre><code>&gt; clone luajit
+&gt; clone lfs
+&gt; clone glue
+&gt; clone tuple</code></pre>
 <p>The rest you can learn from the tool itself:</p>
-<pre><code>luapower</code></pre>
-<blockquote>
-<p>Again, In Linux, the command is <code>./luapower.sh</code></p>
-</blockquote>
-<h2 id="building-all-the-c-libraries-in-one-shot">Building all the C libraries in one shot</h2>
-<pre><code>build-all</code></pre>
-<p>This builds all packages that have a build script in the right order. You still need a gcc toolchain of course, see <a href="building.html">building</a>.</p>
+<pre><code>&gt; luapower
+
+USAGE: luapower &lt;command&gt; ...
+
+HELP
+
+   help                           this screen
+
+PACKAGES
+
+   packages                       list installed packages
+   known                          list all known package
+   left                           list not yet installed packages
+
+PACKAGE INFO
+
+   describe &lt;package&gt;             describe a package
+   type [package]                 package type
+   ver [package]                  current git version
+   tags [package]                 git tags
+   tag [package]                  current git tag
+   files [package]                tracked files
+   docs [package]                 docs
+   modules [package]              modules
+   scripts [package]              scripts
+   mtree [package]                module tree
+   mtags [package [module]]       module info
+   platforms [package]            supported platforms
+   ctags [package]                C package info
+
+CHECKS
+
+   check [package]                consistency checks
+   trackable                      trackable files
+   multitracked                   files tracked by multiple packages
+   untracked                      files not tracked by any package
+
+DATABASE
+
+   update-db [package]            update _site/packages.json
+   update-toc [package]           update _site/toc.md
+   update [package]               update both _site/packages.json and _site/toc.md
+
+DEPENDENCIES
+
+   requires &lt;module&gt;              direct module requires
+   rall &lt;module&gt;                  direct and indirect module requires
+   rtree &lt;module&gt;                 module require log tree
+   rext &lt;module&gt;                  direct-external module requires
+   pall &lt;module&gt;                  direct and indirect package dependencies
+   pext &lt;module&gt;                  direct-external package dependencies
+   ppall [package]                direct and indirect package dependencies
+   ppext [package]                direct-external package dependencies
+   cdeps [package]                direct and indirect C dependencies
+   rrev &lt;module&gt;                  all modules that require a module
+
+The `package` arg defaults to the env var PROJECT, as set by the `proj` command,
+and if that is not set, it defaults to `--all`, meaning all packages.</code></pre>
+<h2 id="building-all-c-libraries">Building all C libraries</h2>
+<pre><code>&gt; build-all</code></pre>
+<p>This builds all packages that have a build script in the right order (pretty fast too).</p>
 <h2 id="module-development">Module development</h2>
-<blockquote>
-<p>This section is only interesting if you wish to get involved in developing luapower modules.</p>
-</blockquote>
-<p>Git commands can be invoked from the work tree by passing <code>--git-dir=_git/&lt;package&gt;/.git</code> to git, or by setting the environment variable <code>GIT_DIR</code>. To ease the pain, the <code>proj</code> command can be used.</p>
+<p>Some handy git wrappers for tracking changes across the entire repo collection:</p>
 <table>
 <tbody>
 <tr class="odd">
-<td align="left"><code>proj</code></td>
-<td align="left">list cloned repos</td>
+<td align="left"><code>&gt; modified</code></td>
+<td align="left">list modified files across all repos</td>
 </tr>
 <tr class="even">
-<td align="left"><code>proj &lt;project&gt;</code></td>
-<td align="left">make git &quot;track&quot; a specific repo (i.e. set <code>GIT_DIR</code>)</td>
+<td align="left"><code>&gt; unpushed</code></td>
+<td align="left">list unpushed repos</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>modified</code></td>
-<td align="left">show modified files across all repos</td>
-</tr>
-<tr class="even">
-<td align="left"><code>unpushed</code></td>
-<td align="left">show unpushed repos</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>untracked</code></td>
-<td align="left">show untracked files (takes a while)</td>
+<td align="left"><code>&gt; untracked</code></td>
+<td align="left">list untracked files (takes a while)</td>
 </tr>
 </tbody>
 </table>

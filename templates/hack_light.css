@@ -1,5 +1,5 @@
 body {background: #f0f0f0; color: #000;}
-header {background: rgba(255, 255, 255, 1); border-bottom-color: #663;}
+header {background: #fff; border-bottom-color: #663;}
 footer {border-top-color: #bbb;}
 .faint {color: #888;}
 .faint a:hover {color: white;}
@@ -16,8 +16,8 @@ hr {border-bottom-color: #bbb;}
 .icon-mingw64-disabled   {background-image:url("icons/icon-mingw64-light.png");}
 .icon-linux32-disabled   {background-image:url("icons/icon-linux32-light.png");}
 .icon-linux64-disabled   {background-image:url("icons/icon-linux64-light.png");}
-.icon-macosx32-disabled  {background-image:url("icons/icon-macosx32-light.png");}
-.icon-macosx64-disabled  {background-image:url("icons/icon-macosx64-light.png");}
+.icon-osx32-disabled     {background-image:url("icons/icon-osx32-light.png");}
+.icon-osx64-disabled     {background-image:url("icons/icon-osx64-light.png");}
 .icon-android-disabled   {background-image:url("icons/icon-android-light.png");}
 .icon-lua-disabled       {background-image:url("icons/icon-lua-light.png");}
 .icon-luajit-disabled    {background-image:url("icons/icon-luajit-light.png");}
@@ -25,14 +25,15 @@ hr {border-bottom-color: #bbb;}
 .icon-mingw64-enabled    {background-image:url("icons/icon-mingw64-dark.png");}
 .icon-linux32-enabled    {background-image:url("icons/icon-linux32-dark.png");}
 .icon-linux64-enabled    {background-image:url("icons/icon-linux64-dark.png");}
-.icon-macosx32-enabled   {background-image:url("icons/icon-macosx32-dark.png");}
-.icon-macosx64-enabled   {background-image:url("icons/icon-macosx64-dark.png");}
+.icon-osx32-enabled      {background-image:url("icons/icon-osx32-dark.png");}
+.icon-osx64-enabled      {background-image:url("icons/icon-osx64-dark.png");}
 .icon-android-enabled    {background-image:url("icons/icon-android-dark.png");}
 .icon-lua-enabled        {background-image:url("icons/icon-lua-dark.png");}
 .icon-luajit-enabled     {background-image:url("icons/icon-luajit-dark.png");}
 
-.pd-logo {opacity: 0.8;}
-.splash-logo {top: -300px; left: 700px; opacity: 0.3;}
+.bg-pd {opacity: 0.8;}
+.bg-splash {opacity: 0.3;}
+.bg-i-want-you {opacity: 0.2;}
 
 .btn {
 	color: #bbb;

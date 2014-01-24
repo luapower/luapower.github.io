@@ -6,9 +6,9 @@ tagline: Lua & LuaJIT tricks and idioms
 ### Quick Lua cheat sheet
 
 ------------------------------------------- -------------------------------------------
-*logic*
+__logic__
 `not a == not b`                            both or none
-*numbers*
+__numbers__
 math.min(math.max(x, min), max)             clamp x
 `x ~= x`                                    number is NaN
 `1/0`                                       inf
@@ -24,13 +24,13 @@ math.min(math.max(x, min), max)             clamp x
 `x >= 0 and 1 or -1`                        sign
 `y0 + (x-x0) * ((y1-y0) / (x1 - x0))`       linear interpolation
 `math.fmod(angle, 2*math.pi)`               normalize an angle
-*tables*
+__tables__
 `next(t) == nil`                            table is empty
-*strings*
+__strings__
 `s:match'^something'`                       starts with
 `s:match'something$'`                       ends with
 `s:match'["\'](.-)%1'`                      match pairs of single or double quotes
-*i/o*
+__i/o__
 `f:read(4096, '*l')`                        read lines efficiently
 ------------------------------------------- -------------------------------------------
 
@@ -38,16 +38,13 @@ math.min(math.max(x, min), max)             clamp x
 
 Pointer to number conversion that turns into a no-op when compiled:
 
-~~~{.lua}
-tonumber(ffi.cast('intptr_t', ffi.cast('void *', ptr)))
-~~~
+	tonumber(ffi.cast('intptr_t', ffi.cast('void *', ptr)))
 
 Switching endianness of a 64bit integer (to use in conjunction with `ffi.abi'le'` and `ffi.abi'be'`):
 
-~~~{.lua}
-local p = ffi.cast('uint32*', int64_buffer)
-p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])
-~~~
+	local p = ffi.cast('uint32*', int64_buffer)
+	p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])
+
 
 ### Assumptions about LuaJIT
 
@@ -68,5 +65,6 @@ The above are assumptions I use throughout my code, so if any of them are wrong,
 ### LuaJIT gotchas
 
   * `array[i], array[j] = array[j], array[i]` doesn't work as you would expect (swapping) when the array elements are structs.
-  * `ptr == nil` evaluates to true for a nil pointer, but `if ptr then` doesn't.
+  * `ptr == nil` evaluates to true for a nil pointer, but `if ptr then` doesn't. The former, as innocent as it looks
+  is actually a language extension, so it's best avoided if compatibility with Lua ffi is a concern.
 

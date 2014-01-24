@@ -45,15 +45,15 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
-				<span id="module_info">&nbsp;</span>
-				<p>Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles). Build scripts are provided for each package/platform as <code>csrc/&lt;package&gt;/build-&lt;platform&gt;.sh</code>. C sources are also included so you can start right away. Dependencies are listed in the WHAT file <code>csrc/&lt;package&gt;/WHAT</code> -- you'll have to build those first (for a fully autmated one-shot build script for all packages, use <a href="luapower-git.html">luapower-git</a>).</p>
-<p>For compiling Lua/C modules you also need <a href="https://github.com/luapower/lua-headers">lua-headers</a> and, for Windows in particular, <code>lua51.dll</code> must be present at the time of building (that would be <a href="luajit.html">luajit</a>, but you can use the Lua binary too, they are ABI-compatible).</p>
-<p><code>CFLAGS</code> and <code>CXXFLAGS</code> env. vars can be used to control gcc and g++ respectively (they're not set to anything by default, but consider at least <code>-O2</code>).</p>
+				<span id="module_info"></span>
+				<h2 id="overview">Overview</h2>
+<p>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles). Each package/platform has a separate script in its <code>csrc</code> dir. Stripped C sources are also included so you can start right away. Dependencies are listed in the <code>WHAT</code> file -- download/build them first.</p>
+<p>For compiling Lua/C modules you also need <a href="https://github.com/luapower/lua-headers">lua-headers</a> and, for Windows in particular, lua51.dll must be available at the time of building, so you'll need <a href="luajit.html">luajit</a> too.</p>
 <h3 id="on-windows">On Windows</h3>
 <p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
 <p>Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
 <blockquote>
-<p><code>CFLAGS</code> used: <code>-O2 -s -static-libgcc</code> (level 2 optimization, stripped binary, embed libc)<br /><code>CXXFLAGS</code> used: <code>-O2 -s -static-libstdc++</code> (level 2 optimization, stripped binary, embed libstdc++)</p>
+<p>gcc flags used throughout: <code>-O2 -s -static-libgcc</code> (level 2 optimization, stripped binary, static libc)<br />g++ flags used throughout: <code>-O2 -s -static-libstdc++</code> (level 2 optimization, stripped binary, static libstdc++)</p>
 </blockquote>
 <p>Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.</p>
 <table>
@@ -132,8 +132,14 @@
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>Don't use GCC 4.8 to build luajit. And with all due respect, don't bug me about build scripts not working if you're using a different toolchain. I don't like building things any more than anyone with a soul does.</p>
+</blockquote>
 <h3 id="on-linux">On Linux</h3>
-<p>GCC 4.4.5 was used (stock Debian 6 gcc toolchain + nasm and ragel) with the same CFLAGS and CXXFLAGS as above.</p>
+<p>GCC 4.4.5 was used (stock Debian 6 gcc toolchain + nasm and ragel) with the same gcc and g++ flags.</p>
+<blockquote>
+<p>There's no good reason for using this particular gcc version other than the fact that in Debian, upgrading the toolchain is actually harder than it is in Windows (look at what you had to do in Windows and prove me wrong).</p>
+</blockquote>
 			</section>
 		</div>
 		<div class="container">

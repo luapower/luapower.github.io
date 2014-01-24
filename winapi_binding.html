@@ -55,9 +55,8 @@
 		<div class="container">
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
-				<span id="module_info">&nbsp;</span>
-				<p><a href="winapi.html">back</a></p>
-<h2 id="how-to-use-the-ffi-layer">How to use the ffi layer</h2>
+				<span id="module_info"></span>
+				<h2 id="how-to-use-the-ffi-layer">How to use the ffi layer</h2>
 <p>Wrap winapi calls in <code>callnz</code>, <code>callh</code> and friends according to what constitutes an error in the result: you get automatic error handling and clear code.</p>
 <p>Use <code>own(object, finalizer)</code> on all newly created objects but call <code>disown(object)</code> right after any successful api call that assigns that object an owner responsible for freeing it, and use <code>own()</code> again every time a call leaves an object without an owner. Doing this consistently will complicate the implementation sometimes but it prevents leaks and you get automatic object lifetime management (for what is worth, given the non-deterministic nature of the gc).</p>
 <p>Avoid surfacing ABI boilerplate like buffers, buffer sizes and internal data structures. Sometimes you may want to reuse a buffer to avoid heap trashing especially on a function you know it could be called repeatedly many times. In this case add the buffer as an optional trailing argument - if given it will be used, if not an internal buffer will be created. If there's a need to pass state around beyond this, make a class (that is, do it in the object layer).</p>

@@ -83,23 +83,18 @@ header h2 { /* tagline */
 	background-position: center center;
 }
 
-.pd-logo {
+.bg {
 	position: absolute;
-	left: 150px; top: 1200px; width: 460px; height: 460px;
 	background-repeat: no-repeat;
 	background-size: 100% auto;
-	background-image: url("pd.png");
+	opacity: 0;
+	overflow: hidden;
 	z-index:-1;
 }
 
-.splash-logo {
-	position: absolute;
-	left: -300px; top: 100px; width: 1400px; height: 1400px;
-	background-repeat: no-repeat;
-	background-size: 100% auto;
-	background-image: url("splash.png");
-	z-index:-1;
-}
+.bg-pd {left: 150px; top: 1200px; width: 460px; height: 460px; background-image: url("pd.png");}
+.bg-splash {top: -300px; left: 700px; width: 1400px; height: 1400px; background-image: url("splash.png");}
+.bg-i-want-you {left: 800px; top: 100px; width: 400px; height: 400px; background-image: url("i_want_you.png");}
 
 /* Buttons */
 
@@ -173,6 +168,8 @@ header h2 { /* tagline */
 
 .doc .package_table td {
 	vertical-align: middle;
+	padding-left: 4px;
+	padding-right: 4px;
 }
 
 /* Document */
@@ -182,19 +179,24 @@ header h2 { /* tagline */
 }
 
 .doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6,
-.doc p, .doc hr, .doc table, .doc pre {
+.doc p, .doc hr, .doc table, .doc pre, .doc blockquote {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
 .doc h1, .doc h2, .doc h3, .doc h4 {
 	letter-spacing: -0.03em;
+	text-transform: uppercase;
+}
+
+.doc h1 code, .doc h2 code, .doc h3 code, .doc h4 code {
+	text-transform: none;
 }
 
 .doc h1 {font-size: 24px; font-weight: normal;}
 .doc h2 {font-size: 18px;}
 .doc h2 code {font-size: 16px;}
-.doc h3 {font-size: 15px;}
+.doc h3 {font-size: 16px;}
 .doc h4 {font-size: 15px;font-weight: normal;}
 
 .doc h5 {

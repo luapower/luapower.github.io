@@ -98,3 +98,7 @@
 * Notes
 	* [design of glue][glue_design]
 	* [tricks][lua_tricks]
+* Meta
+	* [luapower-git]
+   * [building]
+	* [get involved][get-involved]

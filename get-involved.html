@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> get involved   - I want YOU for LUA POWER </title>
+		<script src="templates/jquery.js"></script>
+		<script src="templates/jquery-cookie.js"></script>
+		<script src="templates/jquery-tablesorter.js"></script>
+		<script src="templates/strftime.js"></script>
+		<script src="templates/main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'get-involved'
+			var PROJECT = ''
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> get involved </h1>
+							<h2> I want YOU for LUA POWER </h2>
+							<span class="doc" id="package_info">&nbsp;</span>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																											</td>
+					</tr>
+				</table>
+															</div>
+		</header>
+		<div class="container">
+			<div id="toc_container" class="toc_container doc"></div>
+			<section class="doc">
+				<span id="module_info"></span>
+				<div class="bg bg-i-want-you">
+
+</div>
+<p>The way you add modules to luapower is you make a git repo that resembles a luapower package and send in a pull request.</p>
+<blockquote>
+<p>Or if that's too formal for you, add an issue, comment, whatever. Adding modules to luapower should be <em>easy</em>.</p>
+</blockquote>
+<h2 id="anatomy-of-a-package">Anatomy of a package</h2>
+<p>You probably got it already if you looked at a few different packages, but let's make it ceremonial. Here's how you should lay down your files:</p>
+<ul>
+<li>main module: <code>foo.lua</code></li>
+<li>submodule: <code>foo_bar.lua</code> and sometimes <code>foo/bar.lua</code></li>
+<li>ffi cdef module: <code>foo_h.lua</code></li>
+<li>test program: <code>foo_test.lua</code></li>
+<li>demo: <code>foo_demo.lua</code></li>
+<li>documentation: <code>foo.md</code></li>
+<li>C libs &amp; Lua/C libs:
+<ul>
+<li>sources: <code>csrc/foo/*</code></li>
+<li>build scripts: <code>csrc/foo/build-&lt;platform&gt;.sh</code>
+<ul>
+<li>platforms: mingw32, mingw64, linux32, linux64, osx32, osx64, android.</li>
+</ul></li>
+<li>binaries:
+<ul>
+<li>C libraries: <code>bin/mingw32/foo.dll</code>, <code>bin/linux32/libfoo.so</code></li>
+<li>Lua/C libraries: <code>bin/&lt;platform&gt;/clib/foo[.dll|.so]</code></li>
+</ul></li>
+<li>description: <code>csrc/foo/WHAT</code></li>
+</ul></li>
+<li>LuaJIT executable: <code>bin/&lt;platform&gt;/luajit[.exe]</code></li>
+</ul>
+<p>The first line of the WHAT file can be parsed if it has the form <code>&quot;&lt;name&gt; &lt;version&gt; from &lt;browse-url&gt; (&lt;license&gt;)&quot;</code>. The second line too, if it says <code>requires: package1, package2, ...</code>, which is where you list <em>binary</em> dependencies (reading the dll dependencies and figuring it out from there is a project for another winter day). After the first two lines you can type in additional notes, whatever, they aren't parsed.</p>
+<p>Your docs should start with the usual yaml header with at least the <code>package</code> field defined. You should also include a <code>platforms</code> field for any package that is platform-specific. For packages with a C component just adding the build scripts is enough to figure out the supported platforms.</p>
+<p>These conventions allow packages to be safely unzipped over a common directory, and it makes it possible to extract package information and build the package database.</p>
+<p>If using <a href="luapower-git.html">luapower-git</a>, the package must be added to the list of known packages by way of an exclude file, which is a <code>.gitignore</code>-type file used for excluding files between packages so that packageA's files don't show up as untracked in packageB.</p>
+<blockquote>
+<p>Tip: The luapower command from <a href="luapower-git.html">luapower-git</a> can check on some of these conventions and report inconsistencies. Check it out.</p>
+</blockquote>
+<h2 id="what-to-add">What to add</h2>
+<p>It might be that your idea of a good package to add to luapower wildly diverges from mine, in which case I would politely refuse to add your package to luapower. But here's where you can have your cake and eat it too.</p>
+<h2 id="fork-luapower-itself">Fork luapower itself</h2>
+<p>Luapower is a completely static website hosted on github with a Lua script behind to manage it, plus a few shell scripts for working with git. Which means that with a few forks and a few tweaks you can have your own luapower clone with your own modules on it. You won't have to fork the original modules to your account either, since you can clone packages from multiple remote locations with no problems.</p>
+			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<div id="disqus_thread"></div>
+				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+			</footer>
+		</div>
+	</body>
+</html>
+

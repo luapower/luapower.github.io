@@ -46,22 +46,22 @@ function build_package_table() {
 
 	var s = '<table id="package_table_table" width="100%"><thead>' +
 			'<tr>' +
-				'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Lib</th>' +
 				'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Type</th>' +
-				'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Version</th>' +
-				'<th style="width: 20%;" data-sorter="false">What</th>' +
+				'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Package</th>' +
+				'<th style="width: 20%;" data-sorter="false" class="header" >What</th>' +
+				'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Tag</th>' +
 				'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">Platforms</th>' +
 				'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">License</th>' +
 			'</tr></thead><tbody>'
 
-	var platforms = ['mingw32', 'linux32', 'macosx32', 'android']
+	var platforms = ['mingw32', 'linux32', 'osx32', 'android']
 
 	$.each(packages, function(k, t) {
 		s = s + '<tr>'
-		s = s + '<td>' + link(t.link) + '</td>'
 		s = s + '<td>' + t.type + '</td>'
-		s = s + '<td>' + t.git_tag + '</td>'
+		s = s + '<td>' + link(t.link) + '</td>'
 		s = s + '<td>' + (t.tagline || '') + '</td>'
+		s = s + '<td>' + (t.git_tag || '') + '</td>'
 		s = s + '<td style="min-width: 136px;" >'
 
 		//platform icons: display and sorting order
@@ -111,7 +111,7 @@ function build_package_table() {
 	$('#package_table').html(s)
 	$('#package_table_table').tablesorter({
 		cancelSelection: true,
-		sortList: [[0,0]],
+		sortList: [[1,0]],
 	})
 }
 

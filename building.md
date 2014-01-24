@@ -3,18 +3,15 @@ title:    building luapower
 tagline:  building the C libraries
 ---
 
-Building is based on mostly one-liner shell scripts that invoke gcc directly (no makefiles).
-Build scripts are provided for each package/platform as `csrc/<package>/build-<platform>.sh`.
-C sources are also included so you can start right away. Dependencies are listed in the WHAT file
-`csrc/<package>/WHAT` -- you'll have to build those first (for a fully autmated one-shot build script
-for all packages, use [luapower-git]).
+## Overview
 
-For compiling Lua/C modules you also need [lua-headers] and, for Windows in particular, `lua51.dll`
-must be present at the time of building (that would be [luajit], but you can use the Lua binary too,
-they are ABI-compatible).
+Building is based on one-liner shell scripts that invoke gcc directly (no makefiles).
+Each package/platform has a separate script in its `csrc` dir.
+Stripped C sources are also included so you can start right away. Dependencies are listed in the `WHAT` file --
+download/build them first.
 
-`CFLAGS` and `CXXFLAGS` env. vars can be used to control gcc and g++ respectively (they're
-not set to anything by default, but consider at least `-O2`).
+For compiling Lua/C modules you also need [lua-headers] and, for Windows in particular, lua51.dll
+must be available at the time of building, so you'll need [luajit] too.
 
 
 ### On Windows
@@ -23,8 +20,8 @@ The build scripts for Windows assume that both MSys and MinGW bin dirs (in this 
 
 Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.
 
-> `CFLAGS` used: `-O2 -s -static-libgcc` (level 2 optimization, stripped binary, embed libc) \
-> `CXXFLAGS` used: `-O2 -s -static-libstdc++` (level 2 optimization, stripped binary, embed libstdc++)
+> gcc flags used throughout: `-O2 -s -static-libgcc` (level 2 optimization, stripped binary, static libc) \
+> g++ flags used throughout: `-O2 -s -static-libstdc++` (level 2 optimization, stripped binary, static libstdc++)
 
 Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.
 
@@ -55,10 +52,16 @@ Below is the exact list of MinGW packages used to make a complete C/C++ toolchai
 [ragel 6.8 (only for harfbuzz)](http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z)
 ----
 
+> Don't use GCC 4.8 to build luajit. And with all due respect, don't bug me about build scripts not working
+if you're using a different toolchain. I don't like building things any more than anyone with a soul does.
+
 
 ### On Linux
 
-GCC 4.4.5 was used (stock Debian 6 gcc toolchain + nasm and ragel) with the same CFLAGS and CXXFLAGS as above.
+GCC 4.4.5 was used (stock Debian 6 gcc toolchain + nasm and ragel) with the same gcc and g++ flags.
 
+> There's no good reason for using this particular gcc version other than the fact that in Debian,
+upgrading the toolchain is actually harder than it is in Windows (look at what you had to do in
+Windows and prove me wrong).
 
 [lua-headers]:  https://github.com/luapower/lua-headers
