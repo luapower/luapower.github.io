@@ -38,10 +38,11 @@ Binaries can then be [rebuilt][building] if desired.
 Alternatively you can go the git way with [luapower-git] which allows you to clone/build everything in one shot
 and you keep your modules in sync by pulling.
 
-> NOTE: Dependencies are not listed anywhere for demos and test units, so I'll just tell you now:
+> NOTE: Dependencies are not listed anywhere for demos and test units, so I better tell you now:
 some test units need [unit], and most demos need [cplayer] and [glue].
 
-> NOTE: Packages marked `dev` are _realy_ in development. Try at your own risk.
+> NOTE: Packages marked `dev` are either in active development or are planned for more development in the future.
+In any case, they are not yet ready for public consumption. Poke around of course, just don't expect stability.
 
 ## Get Involved
 
