@@ -5,6 +5,10 @@ tagline:  \"and here's where I keep assorted lengths of wire\" - HJF
 
 > This episode is a big fat rant, you have been warned.
 
+Luapower is a custom selection of C libraries chosen for speed, portability, API stability and a free license.
+On top of that, a growing collection of ffi bindings and Lua modules, all packaged to minimize the friction
+in putting together Lua/LuaJIT environment.
+
 ## What is the problem that luapower is trying to solve?
 
   * PORTABLE: git-tree == work-tree == deploy-tree
