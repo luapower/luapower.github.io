@@ -234,7 +234,7 @@
 <span class="kw">for</span> <span class="kw">k</span><span class="ot">,</span><span class="kw">v</span> <span class="kw">in</span> <span class="fu">pairs</span><span class="ot">(</span>rfc850date<span class="st">&#39;Sunday, 06-Nov-94 08:49:37 GMT&#39;</span><span class="ot">)</span> <span class="kw">do</span>
    <span class="fu">print</span><span class="ot">(</span><span class="kw">k</span><span class="ot">,</span><span class="kw">v</span><span class="ot">)</span>
 <span class="kw">end</span></code></pre>
-<p>Output:</p>
+<p>Output</p>
 <pre><code>day   6
 sec   37
 wday  1
@@ -253,7 +253,7 @@ hour  8</code></pre>
 <span class="ot">}</span>
 <span class="kw">info_end_code_names</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>index<span class="ot">(</span><span class="kw">info_end_codes</span><span class="ot">)</span>
 <span class="fu">print</span><span class="ot">(</span><span class="kw">info_end_code_names</span><span class="ot">[</span><span class="dv">64</span><span class="ot">])</span></code></pre>
-<p>Output:</p>
+<p>Output</p>
 <pre><code>isc_info_svc_timeout</code></pre>
 <hr />
 <h2 id="glue.keyst-sorted-cmp---dt"><code id="keys">glue.keys(t[, sorted | cmp]) -&gt; dt</code></h2>
@@ -334,7 +334,7 @@ hour  8</code></pre>
 <span class="ot">&gt;</span> <span class="st">&quot;Spam eggs&quot;</span>
 <span class="ot">&gt;</span> <span class="st">&quot;&quot;</span>
 <span class="ot">&gt;</span> <span class="st">&quot;and ham&quot;</span></code></pre>
-<h3 id="design-notes">Design notes:</h3>
+<h3 id="design-notes">Design notes</h3>
 <ul>
 <li>name choice: associate with <code>gmatch</code> and <code>gsub</code></li>
 <li>allowing captures in <code>sep</code> doesn't have very readable semantics</li>
@@ -354,7 +354,7 @@ hour  8</code></pre>
 <li>workaround for lack of pattern syntax for &quot;this part of a match is an arbitrary string&quot;</li>
 <li>workaround for lack of a case-insensitive flag in pattern matching functions</li>
 </ul>
-<h3 id="design-notes-1">Design notes:</h3>
+<h3 id="design-notes-1">Design notes</h3>
 <p>Test the performance of the case-insensitive hack to see if it's feasible.</p>
 <hr />
 <h2 id="glue.tohexsupper---s"><code id="tohex">glue.tohex(s[,upper]) -&gt; s</code></h2>
@@ -388,7 +388,7 @@ hour  8</code></pre>
 <span class="ot">&gt;</span> <span class="kw">a</span>
 <span class="ot">&gt;</span> <span class="kw">b</span>
 <span class="ot">&gt;</span> <span class="kw">c</span></code></pre>
-<h3 id="design-notes-2">Design notes:</h3>
+<h3 id="design-notes-2">Design notes</h3>
 <p>Alt. name: <code>ipack</code> - like pack but for iterators; collect is better at suggesting a process done in steps.</p>
 <hr />
 <h2 id="glue.pass...---..."><code id="pass">glue.pass(...) -&gt; ...</code></h2>
@@ -432,7 +432,7 @@ hour  8</code></pre>
 <li>to get the effect of static (single or multiple) inheritance, use <a href="#update">glue.update</a>.</li>
 <li>when setting inheritance, you can pass in a function.</li>
 </ul>
-<h3 id="design-notes-3">Design notes:</h3>
+<h3 id="design-notes-3">Design notes</h3>
 <p><code>t = setmetatable({},{__index=parent})</code> is not much longer and it's idiomatic, but doesn't shout inheritance at you (you have to process the indirection, like with functional idioms) and you can't use it to change the parent (a minor quibble nevertheless).</p>
 <p>Overriding of methods needs an easy way to access the &quot;parent&quot; or to invoke a method on the parent. A top-level class could provide this simply by defining <code>function Object:parent() return getmetatable(self).__index end</code>.</p>
 <hr />
@@ -494,7 +494,7 @@ hour  8</code></pre>
 <h2 id="glue.autoloadt-submodules---t"><code id="autoload">glue.autoload(t, submodules) -&gt; t</code></h2>
 <p>Assign a metatable to <code>t</code> such that when a missing key is accessed, the module said to contain that key is require'd automatically.</p>
 <p>The <code>submodules</code> argument is a table of form <code>{key = module_name | load_function}</code> specifying the corresponding Lua module (or load function) that make each key available to <code>t</code>.</p>
-<h3 id="motivation">Motivation:</h3>
+<h3 id="motivation">Motivation</h3>
 <p>Module autoloading allows you to split the implementation of a module in many submodules containing optional, self-contained functionality, without having to make this visible in the user API. This effectively separates how you split your APIs from how you split the implementation, allowing you to change the way the implementation is split at a later time while keeping the API intact.</p>
 <h3 id="example-2">Example</h3>
 <p><strong>main module (foo.lua):</strong></p>
@@ -524,7 +524,7 @@ hour  8</code></pre>
 <p>Get the script's directory, based on <a href="https://github.com/davidm/lua-find-bin">lua-find-bin</a> by David Manura. This allows finding files in the script's directory regardless of the directory that Lua is started in.</p>
 <h3 id="example-3">Example</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">foobar</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>readfile<span class="ot">(</span><span class="kw">glue</span><span class="ot">.</span><span class="kw">bin</span> <span class="ot">..</span> <span class="st">&#39;/&#39;</span> <span class="ot">..</span> <span class="kw">file_near_this_script</span><span class="ot">)</span></code></pre>
-<h3 id="caveats">Caveats:</h3>
+<h3 id="caveats">Caveats</h3>
 <p>This only works if glue itself can already be found and required (chicken/egg catch22 and the rest). The path is relative to the current directory, it stops working if the current directory is changed. The assumption is that if you can do chdir() then you can also do getfullpath() or at least getcurrentdir(), and thus correct <code>glue.bin</code> in time with:</p>
 <pre><code>glue.bin = getfullpath(glue.bin)</code></pre>
 <p>or</p>

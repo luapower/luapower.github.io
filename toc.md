@@ -101,3 +101,4 @@
 * Meta
 	* [luapower-git]
 	* [get involved][get-involved]
+   * [problem-solution]

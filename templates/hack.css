@@ -184,7 +184,7 @@ header h2 { /* tagline */
 	margin-bottom: 20px;
 }
 
-.doc h1, .doc h2, .doc h3, .doc h4 {
+.doc h1, .doc h2, .doc h3 {
 	letter-spacing: -0.03em;
 	text-transform: uppercase;
 }
