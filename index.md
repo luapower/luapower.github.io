@@ -30,7 +30,7 @@ The rest is mostly free as-in non-viral, but licenses are listed so you can choo
 ## Get Started
 
   1. download [luajit]
-  2. choose/download packages along with their listed dependencies
+  2. choose/download wanted packages along with their listed dependencies
   3. unzip all _over a single directory_
   4. (optional) [rebuild][building] binaries
 
