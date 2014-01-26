@@ -42,7 +42,44 @@ function link(link, attrs) {
 	return ahref(link[1], link[0], attrs)
 }
 
-function build_package_table() {
+function build_concise_package_table() {
+	//sorted list of categories and item count
+	var cats = {}
+	var n = 0
+	$.each(packages, function(pkg, t) {
+		cats[t.category] = {}
+		n = n + 1
+	})
+	var cat_list = Object.keys(cats).sort()
+	n = n + cat_list.length
+	//attach packages to their categories
+	$.each(packages, function(pkg, t) {
+		cats[t.category][pkg] = t
+	})
+	//build the final list of categories and packages
+	var name_list = []
+	$.each(cat_list, function(i, cat) {
+		name_list.push('<td><strong style="font-size: 100%; text-transform: uppercase; font-weight: normal;">' +
+								cat + '</strong></td>')
+		$.each(Object.keys(cats[cat]).sort(), function(i, pkg) {
+			var t = cats[cat][pkg]
+			name_list.push('<td>' + (t.link && link(t.link) || pkg)  + '</td>')
+		})
+	})
+	//distribute name_list over a n-col table in top-to-bottom-then-left-to-right order
+	var s = '<table width="100%">'
+	var cols = 5
+	var rows = Math.ceil(n / cols)
+	for(var i = 0; i < rows; i++) {
+		s = s + '<tr>'
+		for(var j = 0; j < cols; j++)
+			s = s + name_list[j * rows + i] || '<td></td>'
+		s = s + '</tr>'
+	}
+	$('#package_table').html(s)
+}
+
+function build_long_package_table() {
 
 	var s = '<table id="package_table_table" width="100%"><thead>' +
 			'<tr>' +
@@ -115,6 +152,12 @@ function build_package_table() {
 	})
 }
 
+function build_package_table() {
+	if ($('#package_table').length == 0) return
+	//build_concise_package_table()
+	build_long_package_table()
+}
+
 function set_doc_page() {
 	if (!PROJECT) return
 	var pkg = packages[PROJECT]
@@ -173,12 +216,8 @@ jQuery(function() {
 
 		window.packages = packages; // set as global
 
-		if ($('#package_table').length > 0)
-			// we're on the homepage
-			build_package_table()
-		else
-			// we're on a doc page
-			set_doc_page()
+		build_package_table()
+		set_doc_page()
 
 		package_db_loaded = true
 		check_ready()
@@ -237,17 +276,6 @@ function doc_ready() {
 	//fix homepage links for file:/// access
 	if (window.location.protocol == 'file:')
 		$('a[href="/"]').attr('href', 'index.html')
-
-	/* TODO
-	//remove .html from links if loading from the web
-	if (window.location.protocol != 'file:') {
-		$('a').each(function() {
-			var s = $(this).attr('href')
-			if (s.indexOf('/') == -1 && s.indexOf('.html') != -1)
-				$(this).attr('href', s.substring(0, s.length - 5))
-		})
-	}
-	*/
 }
 
 // add disqus comments
@@ -256,9 +284,10 @@ jQuery(function() {
 	// don't load when viewing the documentation offline
 	if (window.location.protocol == 'file:')
 		return
+	if (!disqus_shortname)
+		return
 
-	var disqus_shortname = 'luapower';
-	var disqus_identifier = '/' + DOCNAME; //discussion identifier (when a page will be renamed, the comments will be gone!)
+	var disqus_identifier = DOCNAME; //discussion identifier (when a page will be renamed, the comments will be gone!)
 
 	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
@@ -272,6 +301,8 @@ jQuery(function() {
 	// don't load when viewing the documentation offline
 	if (window.location.protocol == 'file:')
 		return
+	if (!analytics_id || !analytics_website)
+		return
 
 	(function(i,s,o,g,r,a,m) {
 		i['GoogleAnalyticsObject']=r;
@@ -284,7 +315,7 @@ jQuery(function() {
 		a.src=g;
 		m.parentNode.insertBefore(a,m)
 	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-	ga('create', 'UA-10841867-16', 'luapower.com');
+	ga('create', analytics_id, analytics_website);
 	ga('send', 'pageview');
 
 })

@@ -21,4 +21,4 @@ chrome="C:\Program Files\Google\Chrome\Application\chrome.exe"
 	--enable-file-cookies \
 	"$out_file"
 
-# to view with firefox use: "X:\trash\firefox\firefox.exe" "file:///$out_file"
+# to view with firefox use: "<path-to-firefox>\firefox.exe" "file:///$out_file"

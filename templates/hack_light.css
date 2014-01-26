@@ -31,7 +31,7 @@ hr {border-bottom-color: #bbb;}
 .icon-lua-enabled        {background-image:url("icons/icon-lua-dark.png");}
 .icon-luajit-enabled     {background-image:url("icons/icon-luajit-dark.png");}
 
-.bg-pd {opacity: 0.8;}
+.bg-pd {opacity: 1;}
 .bg-splash {opacity: 0.3;}
 .bg-i-want-you {opacity: 0.2;}
 

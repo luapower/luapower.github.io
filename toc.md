@@ -100,5 +100,4 @@
 	* [tricks][lua_tricks]
 * Meta
 	* [luapower-git]
-   * [building]
 	* [get involved][get-involved]

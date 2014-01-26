@@ -3,11 +3,12 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> tuple   - real tuples </title>
-		<script src="templates/jquery.js"></script>
-		<script src="templates/jquery-cookie.js"></script>
-		<script src="templates/jquery-tablesorter.js"></script>
-		<script src="templates/strftime.js"></script>
-		<script src="templates/main.js"></script>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
 		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
@@ -62,9 +63,18 @@
 <p>Create or find a tuple given a list of elements. Elements can be anything, including nil and NaN.</p>
 <h2 id="t---e1..."><code>t() -&gt; e1,...</code></h2>
 <p>Access the elements of a tuple.</p>
-<p><em>Example:</em> <sub>~</sub>{.lua} local tuple = require'tuple'</p>
-<p>local tup = tuple('a',0/0,2,nil) local t = {[tup] = 'here'} assert(t[tuple('a',0/0,2,nil)] == 'here') assert(t[tuple('a',0/0,2)] == nil) print(tup()) &gt; a nan 2 nil <sub>~</sub></p>
-<p><em><em>Implementation note</em>: all the tuple elements of all the tuples created with this function are indexed internally with a global weak hash tree. This means that creating a tuple takes N hash lookups and M table creations, where N+M is the number of elements of the tuple. Lookup time depends on how dense the tree is on the search path, which depends on how many existing tuples share a first sequence of elements with the tuple being created. In particular, creating tuples out of all permutations of a certain set of values hits the worst case for hash lookup time, but creates the minimum amount of tables relative to the number of tuples.</em></p>
+<h3 id="example">Example</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">tuple</span> <span class="ot">=</span> require<span class="st">&#39;tuple&#39;</span>
+
+<span class="kw">local</span> <span class="kw">tup</span> <span class="ot">=</span> tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span><span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="kw">nil</span><span class="ot">)</span>
+<span class="kw">local</span> <span class="kw">t</span> <span class="ot">=</span> <span class="ot">{[</span><span class="kw">tup</span><span class="ot">]</span> <span class="ot">=</span> <span class="st">&#39;here&#39;</span><span class="ot">}</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">t</span><span class="ot">[</span>tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span><span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="kw">nil</span><span class="ot">)]</span> <span class="ot">==</span> <span class="st">&#39;here&#39;</span><span class="ot">)</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">t</span><span class="ot">[</span>tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span><span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span><span class="dv">2</span><span class="ot">)]</span> <span class="ot">==</span> <span class="kw">nil</span><span class="ot">)</span>
+<span class="fu">print</span><span class="ot">(</span>tup<span class="ot">())</span>
+<span class="ot">&gt;</span> <span class="kw">a</span>   <span class="kw">nan</span>   <span class="dv">2</span>  <span class="kw">nil</span></code></pre>
+<blockquote>
+<p><strong>NOTE:</strong> all the tuple elements of all the tuples created with this function are indexed internally with a global weak hash tree. This means that creating a tuple takes N hash lookups and M table creations, where N+M is the number of elements of the tuple. Lookup time depends on how dense the tree is on the search path, which depends on how many existing tuples share a first sequence of elements with the tuple being created. In particular, creating tuples out of all permutations of a certain set of values hits the worst case for hash lookup time, but creates the minimum amount of tables relative to the number of tuples.</p>
+</blockquote>
 			</section>
 		</div>
 		<div class="container">

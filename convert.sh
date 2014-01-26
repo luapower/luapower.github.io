@@ -4,7 +4,7 @@
 in_file="$1"
 out_dir="$(cd "$(dirname "$0")"; echo "$PWD")"
 
-[ "$in_file" ] || { echo "usage: $0 <input-file>"; exit 1; }
+[ "$in_file" ] || { echo "USAGE: $0 <input-file>"; exit 1; }
 
 s="${in_file##*/}"  # strip path (linux)
 s="${s##*\\}"       # strip path (windows)
