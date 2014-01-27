@@ -33,6 +33,7 @@ The rest is mostly free as-in non-viral, but licenses are listed so you can choo
   2. choose/download wanted packages along with their listed dependencies
   3. unzip all _over a single directory_
   4. (optional) [rebuild][building] binaries
+  5. run a demo: `luajit ..._demo.lua`
 
 This will give you an instantly **portable luajit distro** that will work reagardless of where you run it from.
 The luajit binary is in `bin/<your-platform>/` (cmd and sh wrappers are in the root dir).
