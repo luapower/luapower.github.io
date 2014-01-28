@@ -198,11 +198,10 @@ function set_doc_page() {
 	// show commit log
 	// -----------------------------------------------------------------
 
-	function get_commit_line(commit, index) {
-		var date = commit.committer.date
-		var date = strftime('%b %d, %Y', new Date(date))
-		var message = commit.message
-		var url = commit.url
+	function get_commit_line(t, index) {
+		var date = strftime('%b %d, %Y', new Date(t.commit.committer.date))
+		var message = t.commit.message
+		var url = 'https://github.com/luapower/' + PROJECT + '/commit/' + t.sha
 		return ahref(url, ellipsis(message, 30) + ' ' + date,
 			' target="_blank"' +
 			' title="' + message + '"' +
@@ -212,7 +211,7 @@ function set_doc_page() {
 	github_api('repos/luapower/' + PROJECT + '/commits', function(json) {
 		var t = []
 		for(var i=0; i < 4 && json.data.length > i; i++)
-			t.push(get_commit_line(json.data[i].commit, i))
+			t.push(get_commit_line(json.data[i], i))
 		$('#commit_log').html('<hr id="package_info_hr">' + t.join('<br>'))
 	})
 

@@ -1,8 +1,8 @@
 body {background: #f0f0f0; color: #000;}
 header {background: #fff; border-bottom-color: #663;}
 footer {border-top-color: #bbb;}
-.faint {color: #888; }
-.faint a:hover {color: #000;}
+.faint, .faint a, .faint a:visited {color: #888 !important;}
+.faint a:hover {color: #000 !important;}
 header h1 {
 	color: #364619;
 	text-shadow: 1px 1px rgba(1, 1, 1, .1);
