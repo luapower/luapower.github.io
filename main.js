@@ -162,6 +162,16 @@ function ellipsis(s, maxlen) {
 	return s.substring(0, maxlen-1) + (s.length <= maxlen ? '' : '...')
 }
 
+function github_api(url, success) {
+	$.ajax({
+		url: 'https://api.github.com/' + url + '?callback=?',
+		cache: true,  // because of github's aggressive throttling policies
+		dataType: 'jsonp',
+		jsonpCallback:'jQuery',
+		success: success,
+	})
+}
+
 function set_doc_page() {
 	if (!PROJECT) return
 	var pkg = packages[PROJECT]
@@ -183,34 +193,26 @@ function set_doc_page() {
 	//for (var i=0; i < pkg.pdep_links.length; i++)
 	//	tt.push(link(pkg.pdep_links[i]))
 	if (tt.length > 0) t.push('depends: ' + tt.join(', '))
-
 	$('#package_info').html(t.join(' | '))
 
 	// show commit log
 	// -----------------------------------------------------------------
 
-	var url
-	if (window.location.protocol == 'file:')
-		url = PROJECT + '-commits.json'
-	else
-		url = 'https://api.github.com/repos/luapower/' + PROJECT + '/commits?callback=?'
-
-	function get_commit_line(t, index) {
-		var date = t.commit.committer.date
+	function get_commit_line(commit, index) {
+		var date = commit.committer.date
 		var date = strftime('%b %d, %Y', new Date(date))
-		var message = t.commit.message
-		var url = 'https://github.com/luapower/' + PROJECT + '/commit/' + t.sha
+		var message = commit.message
+		var url = commit.url
 		return ahref(url, ellipsis(message, 30) + ' ' + date,
 			' target="_blank"' +
 			' title="' + message + '"' +
-			(index >= 0 ? ' class="faint"' : '')
-		)
+			' class="faint"')
 	}
 
-	$.getJSON(url, function(json) {
+	github_api('repos/luapower/' + PROJECT + '/commits', function(json) {
 		var t = []
 		for(var i=0; i < 4 && json.data.length > i; i++)
-			t.push(get_commit_line(json.data[i], i))
+			t.push(get_commit_line(json.data[i].commit, i))
 		$('#commit_log').html('<hr id="package_info_hr">' + t.join('<br>'))
 	})
 
