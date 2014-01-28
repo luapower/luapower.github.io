@@ -1,8 +1,8 @@
 body {background: #151515 url("hack_bg.png") 0 0; color: #ddd;}
 header {background: #111; border-bottom-color: #663;}
 footer {border-top-color: #333;}
-.faint {color: #888;}
-.faint a:hover {color: white;}
+.faint, .faint a, .faint a:visited {color: #888 !important;}
+.faint a:hover {color: #fff !important;}
 header h1 {
 	color: #669900;
 	text-shadow: 2px 2px rgba(0, 0, 0, .6);

@@ -24,11 +24,28 @@ hr {
 	height: 140px;
 }
 
+#package_info_container {
+	position: absolute;
+	float: left;
+}
+
 #package_info {
 	position: relative;
-	float: right;
-	left: -20px;
-	top: -80px;
+	left: -630px;
+	width: 600px;
+	text-align: right;
+}
+
+#package_info_hr {
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+#commit_log {
+	position: relative;
+	left: -630px;
+	width: 600px;
+	text-align: right;
 }
 
 section {
@@ -58,9 +75,7 @@ footer {
 	left: -200px;
 }
 
-.faint {}
 .faint a, .faint a:visited {color: inherit;}
-.faint a:hover {}
 
 header h1 { /* page title */
 	font-size: 30px;

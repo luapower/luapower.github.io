@@ -35,7 +35,6 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 						<td style="vertical-align: middle;" width="100%">
 							<h1>$if(title)$ $title$ $else$ $docname$ $endif$</h1>
 							<h2>$if(tagline)$ $tagline$ $else$ &nbsp; $endif$</h2>
-							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 							$if(homepage)$
@@ -49,6 +48,10 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 							$else$
 							$if(project)$
 								<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
 								<a href="https://github.com/luapower/$project$" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
 								<a href="https://github.com/luapower/$project$/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>

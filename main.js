@@ -158,24 +158,64 @@ function build_package_table() {
 	build_long_package_table()
 }
 
+function ellipsis(s, maxlen) {
+	return s.substring(0, maxlen-1) + (s.length <= maxlen ? '' : '...')
+}
+
 function set_doc_page() {
 	if (!PROJECT) return
 	var pkg = packages[PROJECT]
 	if (!pkg) return
 
 	// list package dependencies
+	// -----------------------------------------------------------------
+
 	var t = []
+
+	// package C tags
+	t.push(pkg.git_tag)
+	t.push(pkg.type)
+	if(pkg.c_link) t.push(link(pkg.c_link) + ' (' + pkg.c_license + ')')
+
+	// package package dependencies
+	var tt = []
 	//...not anymore: turns out that these are not very relevant in the context of the whole package.
 	//for (var i=0; i < pkg.pdep_links.length; i++)
-	//	t.push(link(pkg.pdep_links[i]))
+	//	tt.push(link(pkg.pdep_links[i]))
+	if (tt.length > 0) t.push('depends: ' + tt.join(', '))
 
-	var tt = []
-	tt.push(pkg.git_tag)
-	tt.push(pkg.type)
-	if(pkg.c_link) tt.push(link(pkg.c_link) + ' (' + pkg.c_license + ')')
-	if (t.length > 0) tt.push('depends: ' + t.join(', '))
+	$('#package_info').html(t.join(' | '))
 
-	$('#package_info').html(tt.join(' | '))
+	// show commit log
+	// -----------------------------------------------------------------
+
+	var url
+	if (window.location.protocol == 'file:')
+		url = PROJECT + '-commits.json'
+	else
+		url = 'https://api.github.com/repos/luapower/' + PROJECT + '/commits?callback=?'
+
+	function get_commit_line(t, index) {
+		var date = t.commit.committer.date
+		var date = strftime('%b %d, %Y', new Date(date))
+		var message = t.commit.message
+		var url = 'https://github.com/luapower/' + PROJECT + '/commit/' + t.sha
+		return ahref(url, ellipsis(message, 30) + ' ' + date,
+			' target="_blank"' +
+			' title="' + message + '"' +
+			(index >= 0 ? ' class="faint"' : '')
+		)
+	}
+
+	$.getJSON(url, function(json) {
+		var t = []
+		for(var i=0; i < 4 && json.data.length > i; i++)
+			t.push(get_commit_line(json.data[i], i))
+		$('#commit_log').html('<hr id="package_info_hr">' + t.join('<br>'))
+	})
+
+	// list module dependencies
+	// -----------------------------------------------------------------
 
 	var mod = pkg.modules[DOCNAME]
 	if (!mod) return
@@ -196,16 +236,6 @@ function set_doc_page() {
 	if (pdeps.length > 0) tt.push('<span title="package dependencies">depends: ' + pdeps.join(', ') + '</span>')
 	if (mdeps.length > 0) tt.push('<span title="module dependencies">requires: ' + mdeps.join(', ') + '</span>')
 	$('#module_info').html(tt.join(' | '))
-
-	/*
-	// TODO: add file view link to all "require'<module>'" occurences between <code> tags.
-	$('code:contains("require\'")').each(function() {
-		var html = $(this).html().replace(/require'([^']+)'/,
-			'require\'<a href="' + file_view_url('$1.lua') + '">' + '$1' + '</a>\'')
-		console.log(html)
-		$(this).html(html)
-	})
-	*/
 
 }
 
