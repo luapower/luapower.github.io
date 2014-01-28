@@ -6,7 +6,7 @@ tagline:  Lua, JIT, batteries
 ![](luapower.png)
 
   * LuaJIT binary + source distribution and module repository
-  * platform for distributing and publishing Lua modules
+  * platform for publishing Lua modules
 
 <div class="bg bg-pd"></div>
 <div id="package_table" class="package_table"></div>

@@ -18,9 +18,9 @@ on the OS ones, and making sure that Lua loads the local ones over the system on
 
 It also means putting together all binaries for all platforms in the same tree (no branches).
 If space is really a problem (android) then deleting other platform directories just before packaging
-the app is easier than checking out per-platform "binary" branches for each module and thus needed multiple work trees.
+the app is easier than checking out per-platform "binary" branches for each module and thus needing multiple work trees.
 
-Finally, zero deployment means the work tree also works as deployment tree.
+Finally the work tree also works as deployment tree, thus there's no deployment step, unless you really want to.
 
 ## MODULAR
 
@@ -35,8 +35,8 @@ Github is just one way to lower that barrier for coding.
 ## NO DIRECTORIES
 
 This is a hard sell, I admit, but I stand by it. Directories are evil. Not so much because of semantics (hierarchies),
-but because of the tools we use (file browsers, code editors, IDEs) suck at working with them. You don't have
-instant search in most of them (sublime text excepted), but you have to "navigate" them instead.
+but because of the tools we use (file browsers, code editors, IDEs, command line) suck at working with them.
+You don't have instant search in most of them (sublime text excepted), but you have to "navigate" them instead.
 Also, one of the major reasons for directory hierarchies is structuring information for human consumption (learning).
 In the case of a module distribution, the structure of a package is the same for all packages, thus juxtaposition
 of files doesn't add any complexity to the structure. If you feel uneasy about a long flat list of files,
