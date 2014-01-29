@@ -1,37 +1,36 @@
+// luapower.com (Cosmin Apreutesei, public domain)
 
-function lights_state() {
-	return jQuery.cookie('lights') == 'on'
+// helpers
+// -----------------------------------------------------------------------------------------------------------------------
+
+var LOCAL = window.location.protocol == 'file:'
+
+function current_package(packages) {
+	return PROJECT && packages[PROJECT]
 }
 
-function update_lights_button() {
-	jQuery('#lights').html('lights ' + (!lights_state() ? 'on' : 'off'))
+function current_module(packages) {
+	var pkg = current_package(packages)
+	if (!pkg) return
+	return pkg.modules[DOCNAME]
 }
 
-function set_lights(on) {
-	if (on !== true && on !== false)
-		on = lights_state()
-	var css = on ? 'light' : 'dark'
-	jQuery('#lights_css').attr('href', 'templates/hack_' + css + '.css')
-	jQuery.cookie('lights', on ? 'on' : 'off')
-	update_lights_button()
+function ellipsis(s, maxlen) {
+	return s.substring(0, maxlen-1) + (s.length <= maxlen ? '' : '...')
 }
 
-// setup lights
-jQuery(function() {
-	//there was no button to set when the lights was set so we set it now
-	update_lights_button()
-
-	$('#lights').click(function() {
-		set_lights(!lights_state())
-		return false
+function github_api(url, success) {
+	$.ajax({
+		url: 'https://api.github.com/' + url + '?callback=?',
+		cache: true,  // because of github's aggressive throttling policies
+		dataType: 'jsonp',
+		jsonpCallback:'jQuery',
+		success: success,
 	})
-})
+}
 
-var package_db_loaded = false
-var toc_loaded = false
-function check_ready() {
-	if(package_db_loaded && toc_loaded)
-		doc_ready()
+function github_date(date) {
+	return strftime('%b %d, %Y', new Date(date))
 }
 
 function ahref(href, text, attrs) {
@@ -42,7 +41,42 @@ function link(link, attrs) {
 	return ahref(link[1], link[0], attrs)
 }
 
-function build_concise_package_table() {
+// lights
+// -----------------------------------------------------------------------------------------------------------------------
+
+function get_lights_state() { return jQuery.cookie('lights') == 'on' }
+function set_lights_state(on) { jQuery.cookie('lights', on ? 'on' : 'off') }
+
+function set_lights_button_text(on) {
+	jQuery('#lights').html('lights ' + (on ? 'off' : 'on'))
+}
+
+function set_lights(on) {
+	if (on !== true && on !== false)
+		on = get_lights_state()
+
+	var css = on ? 'light' : 'dark'
+	jQuery('#lights_css').attr('href', 'templates/hack_' + css + '.css')
+	set_lights_state(on)
+	set_lights_button_text(on)
+}
+
+function set_lights_button() {
+	// there was no button to set when the lights was set so we set it now
+	set_lights_button_text(get_lights_state())
+	$('#lights').click(function() {
+		set_lights(!get_lights_state())
+		return false
+	})
+}
+
+// package db
+// -----------------------------------------------------------------------------------------------------------------------
+
+// package tables
+
+function set_concise_package_table(packages) {
+
 	//sorted list of categories and item count
 	var cats = {}
 	var n = 0
@@ -52,10 +86,12 @@ function build_concise_package_table() {
 	})
 	var cat_list = Object.keys(cats).sort()
 	n = n + cat_list.length
+
 	//attach packages to their categories
 	$.each(packages, function(pkg, t) {
 		cats[t.category][pkg] = t
 	})
+
 	//build the final list of categories and packages
 	var name_list = []
 	$.each(cat_list, function(i, cat) {
@@ -66,6 +102,7 @@ function build_concise_package_table() {
 			name_list.push('<td>' + (t.link && link(t.link) || pkg)  + '</td>')
 		})
 	})
+
 	//distribute name_list over a n-col table in top-to-bottom-then-left-to-right order
 	var s = '<table width="100%">'
 	var cols = 5
@@ -76,10 +113,11 @@ function build_concise_package_table() {
 			s = s + name_list[j * rows + i] || '<td></td>'
 		s = s + '</tr>'
 	}
+
 	$('#package_table').html(s)
 }
 
-function build_long_package_table() {
+function set_long_package_table(packages) {
 
 	var s = '<table id="package_table_table" width="100%"><thead>' +
 			'<tr>' +
@@ -146,79 +184,59 @@ function build_long_package_table() {
 	s = s + '</tbody></table>'
 
 	$('#package_table').html(s)
+
 	$('#package_table_table').tablesorter({
 		cancelSelection: true,
-		sortList: [[1,0]],
+		sortList: [[1,0]], //initial sort by name
 	})
 }
 
-function build_package_table() {
+function get_table_type_state() { return $.cookie('table_type') || 'long' }
+function set_table_type_state(type) { $.cookie('table_type', type) }
+
+function set_package_table(packages) {
 	if ($('#package_table').length == 0) return
-	//build_concise_package_table()
-	build_long_package_table()
+
+	var table_type = get_table_type_state()
+	if (table_type == 'concise')
+		set_concise_package_table(packages)
+	else if (table_type == 'long')
+		set_long_package_table(packages)
 }
 
-function ellipsis(s, maxlen) {
-	return s.substring(0, maxlen-1) + (s.length <= maxlen ? '' : '...')
+// current package & current module info
+
+function get_package_dependencies(pkg) {
+	return //disabled
+	if (pkg.pdep_links.length == 0) return
+	var t = []
+	for (var i=0; i < pkg.pdep_links.length; i++)
+		t.push(link(pkg.pdep_links[i]))
+	return t.join(', ')
 }
 
-function github_api(url, success) {
-	$.ajax({
-		url: 'https://api.github.com/' + url + '?callback=?',
-		cache: true,  // because of github's aggressive throttling policies
-		dataType: 'jsonp',
-		jsonpCallback:'jQuery',
-		success: success,
-	})
-}
+function set_package_info(packages) {
+	if ($('#package_info').length == 0) return
 
-function set_doc_page() {
-	if (!PROJECT) return
-	var pkg = packages[PROJECT]
+	var pkg = current_package(packages)
 	if (!pkg) return
 
-	// list package dependencies
-	// -----------------------------------------------------------------
-
 	var t = []
-
-	// package C tags
 	t.push(pkg.git_tag)
 	t.push(pkg.type)
-	if(pkg.c_link) t.push(link(pkg.c_link) + ' (' + pkg.c_license + ')')
+	if(pkg.c_link)
+		t.push(link(pkg.c_link) + ' (' + pkg.c_license + ')')
+	var deps = get_package_dependencies(pkg)
+	if (deps)
+		t.push('depends: ' + deps)
 
-	// package package dependencies
-	var tt = []
-	//...not anymore: turns out that these are not very relevant in the context of the whole package.
-	//for (var i=0; i < pkg.pdep_links.length; i++)
-	//	tt.push(link(pkg.pdep_links[i]))
-	if (tt.length > 0) t.push('depends: ' + tt.join(', '))
 	$('#package_info').html(t.join(' | '))
+}
 
-	// show commit log
-	// -----------------------------------------------------------------
+function set_module_info(packages) {
+	if ($('#module_info').length == 0) return
 
-	function get_commit_line(t, index) {
-		var date = strftime('%b %d, %Y', new Date(t.commit.committer.date))
-		var message = t.commit.message
-		var url = 'https://github.com/luapower/' + PROJECT + '/commit/' + t.sha
-		return ahref(url, ellipsis(message, 30) + ' ' + date,
-			' target="_blank"' +
-			' title="' + message + '"' +
-			' class="faint"')
-	}
-
-	github_api('repos/luapower/' + PROJECT + '/commits', function(json) {
-		var t = []
-		for(var i=0; i < 4 && json.data.length > i; i++)
-			t.push(get_commit_line(json.data[i], i))
-		$('#commit_log').html('<hr id="package_info_hr">' + t.join('<br>'))
-	})
-
-	// list module dependencies
-	// -----------------------------------------------------------------
-
-	var mod = pkg.modules[DOCNAME]
+	var mod = current_module(packages)
 	if (!mod) return
 
 	// list module module dependencies
@@ -236,104 +254,216 @@ function set_doc_page() {
 	if (mod.demo_link) tt.push(link(mod.demo_link))
 	if (pdeps.length > 0) tt.push('<span title="package dependencies">depends: ' + pdeps.join(', ') + '</span>')
 	if (mdeps.length > 0) tt.push('<span title="module dependencies">requires: ' + mdeps.join(', ') + '</span>')
-	$('#module_info').html(tt.join(' | '))
 
+	$('#module_info').html(tt.join(' | '))
 }
 
-//load package db
-jQuery(function() {
+function load_package_db() {
+	if ($('#package_table,#package_info,#module_info').length == 0) {
+		package_db_loaded()
+		return
+	}
 
 	$.getJSON('packages.json', function(packages) {
-
-		window.packages = packages; // set as global
-
-		build_package_table()
-		set_doc_page()
-
-		package_db_loaded = true
-		check_ready()
+		set_package_table(packages)
+		set_package_info(packages)
+		set_module_info(packages)
+		load_github_events(packages)
+		package_db_loaded()
 	})
-})
+}
 
-// load TOC
-jQuery(function() {
+// toc file
+// -----------------------------------------------------------------------------------------------------------------------
 
-	$("#toc_container" ).load("toc.html", function() {
+function set_toc_tree() {
+	// find list items representing TOC items and style them accordingly.
+	// also, turn them into links that can expand/collapse the tree leaf.
+	$('#toc_container li > ul').each(function(i) {
 
-		// find list items representing TOC items and style them accordingly.
-		// also, turn them into links that can expand/collapse the tree leaf.
-		$('#toc_container li > ul').each(function(i) {
+		// find this list's parent list item.
+		var parent_li = $(this).parent('li')
 
-			// find this list's parent list item.
-			var parent_li = $(this).parent('li')
+		// style the list item as folder.
+		parent_li.addClass('folder')
 
-			// style the list item as folder.
-			parent_li.addClass('folder')
-
-			// temporarily remove the list from the parent list item,
-			// wrap the remaining text in an anchor, then reattach it.
-			var sub_ul = $(this).remove()
-			parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
-				// Make the anchor toggle the leaf display.
-				sub_ul.toggle()
-			})
-			parent_li.append(sub_ul)
+		// temporarily remove the list from the parent list item,
+		// wrap the remaining text in an anchor, then reattach it.
+		var sub_ul = $(this).remove()
+		parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
+			// Make the anchor toggle the leaf display.
+			sub_ul.toggle()
 		})
+		parent_li.append(sub_ul)
+	})
 
-		// hide all lists except the outermost.
-		$('#toc_container ul ul').hide()
+	// hide all lists except the outermost.
+	$('#toc_container ul ul').hide()
 
-		// expand the list containing the element that links to the current page
-		// DOCNAME is set in the html template by pandoc
-		var clink = $('#toc_container li > a[href="' + DOCNAME + '.html"], #toc_container li > a[href="' + DOCNAME + '"]')
+	// expand the list containing the element that links to the current page
+	// DOCNAME is set in the html template by pandoc
+	var clink = $('#toc_container li > a[href="' + DOCNAME + '.html"], #toc_container li > a[href="' + DOCNAME + '"]')
+	if (clink.length > 0) {
 		clink.parents().show()
 		clink.parent().wrapInner('<span/>').find('span').addClass('toc-selected')
 		clink.replaceWith(clink.html())
+	}
+}
 
-		toc_loaded = true
-		check_ready()
+function load_toc_file() {
+	if ($('#toc_container').length == 0) {
+		toc_file_loaded()
+		return
+	}
+
+	$('#toc_container').load('toc.html', function() {
+		set_toc_tree()
+		toc_file_loaded()
 	})
+}
 
-})
+// doc-ready
+// -----------------------------------------------------------------------------------------------------------------------
 
-function doc_ready() {
-
-	// make extenral links open in new window
+// make extenral links open in new window
+function fix_external_links() {
 	$("a[href^='http']").not('.btn').each(function() {
 		if (this.hostname != location.hostname)
 			$(this).attr('target', '_blank')
 	})
+}
 
-	//fix homepage links for file:/// access
-	if (window.location.protocol == 'file:')
+//fix homepage links for file:/// access
+function fix_homepage_links() {
+	if (LOCAL)
 		$('a[href="/"]').attr('href', 'index.html')
 }
 
-// add disqus comments
-jQuery(function() {
+// doc-ready dispatcher
 
-	// don't load when viewing the documentation offline
-	if (window.location.protocol == 'file:')
-		return
-	if (!disqus_shortname)
-		return
+var _package_db_loaded = false
+var _toc_file_loaded = false
+
+function package_db_loaded() {_package_db_loaded = true; check_ready() }
+function toc_file_loaded() { _toc_file_loaded = true; check_ready() }
+function check_ready() { if (_package_db_loaded && _toc_file_loaded) doc_ready() }
+
+function doc_ready() {
+	fix_external_links()
+	fix_homepage_links()
+}
+
+// github commit log
+// -----------------------------------------------------------------------------------------------------------------------
+
+function get_commit_log_line(entry) {
+	var date = github_date(entry.commit.committer.date)
+	var message = entry.commit.message
+	var url = 'https://github.com/luapower/' + PROJECT + '/commit/' + entry.sha
+	return ahref(url, ellipsis(message, 26) + ' ' + date,
+		' title="' + message + '"' +
+		' class="faint"')
+}
+
+function set_commit_log(commits) {
+	var t = []
+	for(var i=0; i < 4 && commits.data.length > i; i++)
+		t.push(get_commit_log_line(commits.data[i]))
+
+	$('#package_info').html($('#package_info').html() + '<hr id="package_info_hr">') // TODO: not repeatable!
+	$('#commit_log').html(t.join('<br>'))
+	fix_external_links()
+}
+
+function load_commit_log() {
+	if ($('#commit_log').length == 0) return
+	github_api('repos/luapower/' + PROJECT + '/commits', set_commit_log)
+}
+
+// github events
+// -----------------------------------------------------------------------------------------------------------------------
+
+function get_repo_link(repo, packages) {
+	var plink
+	var project
+	if (repo.match(/^luapower\//)) { // it's a luapower repo
+		var project = repo.replace(/^luapower\//, '')
+		if (project in packages)
+			plink = link(packages[project].link)
+	}
+	// we're not interested in news for non-packages (if we were, we would do the following)
+	// if(!plink) plink = ahref('https://github.com/' + repo, project || repo)
+	return plink
+}
+
+function add_news_rows(rows, event, packages) {
+	var maxrows = 10
+
+	var plink = get_repo_link(event.repo.name, packages)
+	if (!plink) return
+
+	var s = '<td style="width: 15%">' + github_date(event.created_at) +
+				'</td><td style="width: 20%">' + plink + '</td><td style="width: 65%">'
+
+	if (event.type == 'PushEvent') {
+		for (var i = 0; i < event.payload.commits.length; i++) {
+			var commit = event.payload.commits[i]
+			if (rows.length > maxrows) return
+			rows.push(s + commit.message + '</td>')
+		}
+	} else if (event.type == 'CreateEvent' && event.payload.ref_type == 'tag') {
+		if (rows.length > maxrows) return
+		var url = 'https://github.com/' + event.repo.name + '/tree/' + event.payload.ref
+		rows.push(s + 'New tag: <b>' + ahref(url, event.payload.ref) + '</b>' + '</td>')
+	} else if (event.type == 'IssuesEvent') {
+		if (rows.length > maxrows) return
+		var url = 'https://github.com/' + event.repo.name + '/issues/' + event.payload.issue.number
+		rows.push(s + 'issue <b>' + event.payload.action + '</b>: ' +
+						ahref(url, event.payload.issue.title) + '</td>')
+	}
+}
+
+function set_news_table(events, packages) {
+	var s = '<table width="100%">'
+
+	var rows = []
+	for(var i=0; i < events.data.length; i++) {
+		add_news_rows(rows, events.data[i], packages)
+	}
+	s = s + '<tr>' + rows.join('</tr><tr>') + '</tr>'
+	s = s + '</table>'
+
+	$('#news_table').html(s)
+	fix_external_links()
+}
+
+function load_github_events(packages) {
+	if ($('#news_table').length == 0) return
+	github_api('orgs/luapower/events', function(events) {
+		set_news_table(events, packages)
+	})
+}
+
+// disqus
+// -----------------------------------------------------------------------------------------------------------------------
+
+function load_disqus() {
+	if (LOCAL) return // don't load offline
+	if (!disqus_shortname) return //disabled
 
 	var disqus_identifier = DOCNAME; //discussion identifier (when a page will be renamed, the comments will be gone!)
 
 	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}
 
-})
+// analytics
+// -----------------------------------------------------------------------------------------------------------------------
 
-// load analytics
-jQuery(function() {
-
-	// don't load when viewing the documentation offline
-	if (window.location.protocol == 'file:')
-		return
-	if (!analytics_id || !analytics_website)
-		return
+function load_analytics() {
+	if (LOCAL) return //don't load offline
+	if (!analytics_id || !analytics_website) return //disabled
 
 	(function(i,s,o,g,r,a,m) {
 		i['GoogleAnalyticsObject']=r;
@@ -348,5 +478,14 @@ jQuery(function() {
 	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 	ga('create', analytics_id, analytics_website);
 	ga('send', 'pageview');
+}
 
-})
+// main
+// -----------------------------------------------------------------------------------------------------------------------
+
+jQuery(set_lights_button)
+jQuery(load_package_db)
+jQuery(load_toc_file)
+jQuery(load_commit_log)
+jQuery(load_disqus)
+jQuery(load_analytics)

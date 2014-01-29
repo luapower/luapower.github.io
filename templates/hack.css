@@ -27,6 +27,7 @@ hr {
 #package_info_container {
 	position: absolute;
 	float: left;
+	width: 0;
 }
 
 #package_info {
@@ -43,8 +44,8 @@ hr {
 
 #commit_log {
 	position: relative;
-	left: -630px;
-	width: 600px;
+	left: -430px;
+	width: 400px;
 	text-align: right;
 }
 
@@ -171,7 +172,7 @@ header h2 { /* tagline */
 
 /* Package table */
 
-.package_table th.header {
+#package_table th.header {
 	cursor: pointer;
 	background-repeat: no-repeat;
 	background-position: center right;
@@ -179,9 +180,9 @@ header h2 { /* tagline */
 	padding-left: 2px;
 }
 
-.package_table th.header:hover {text-decoration: underline;}
+#package_table th.header:hover {text-decoration: underline;}
 
-.doc .package_table td {
+#package_table td {
 	vertical-align: middle;
 	padding-left: 4px;
 	padding-right: 4px;

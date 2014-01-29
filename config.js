@@ -1,3 +1,4 @@
+// luapower.com config file
 
 // your disqus account (comment to disable)
 var disqus_shortname = 'luapower';

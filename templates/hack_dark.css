@@ -52,9 +52,9 @@ hr {border-bottom-color: #333;}
 .btn-discuss {color: #fff; background: #4586AC;}
 .btn-discuss:hover {color: #fff; background: #82CDF7;}
 
-.package_table th.header:hover {color: #fff;}
-.package_table th.tablesorter-headerAsc {background-image: url("asc_light.gif");}
-.package_table th.tablesorter-headerDesc {background-image: url("desc_light.gif");}
+#package_table th.header:hover {color: #fff;}
+#package_table th.tablesorter-headerAsc {background-image: url("asc_light.gif");}
+#package_table th.tablesorter-headerDesc {background-image: url("desc_light.gif");}
 
 .doc h1, .doc h2, .doc h3, .doc h4 {color: #f3f3f3;}
 .doc li:before {color: #b5e853;}
