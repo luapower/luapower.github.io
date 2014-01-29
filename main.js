@@ -398,6 +398,7 @@ function get_repo_link(repo, packages) {
 
 function add_news_rows(rows, event, packages) {
 	var maxrows = 10
+	var maxtext = 50
 
 	var plink = get_repo_link(event.repo.name, packages)
 	if (!plink) return
@@ -409,7 +410,8 @@ function add_news_rows(rows, event, packages) {
 		for (var i = 0; i < event.payload.commits.length; i++) {
 			var commit = event.payload.commits[i]
 			if (rows.length > maxrows) return
-			rows.push(s + commit.message + '</td>')
+			var url = 'https://github.com/' + event.repo.name + '/commit/' + commit.sha
+			rows.push(s + ahref(url, ellipsis(commit.message, maxtext)) + '</td>')
 		}
 	} else if (event.type == 'CreateEvent' && event.payload.ref_type == 'tag') {
 		if (rows.length > maxrows) return
@@ -418,8 +420,9 @@ function add_news_rows(rows, event, packages) {
 	} else if (event.type == 'IssuesEvent') {
 		if (rows.length > maxrows) return
 		var url = 'https://github.com/' + event.repo.name + '/issues/' + event.payload.issue.number
-		rows.push(s + 'issue <b>' + event.payload.action + '</b>: ' +
-						ahref(url, event.payload.issue.title) + '</td>')
+		var text = 'issue <b>' + event.payload.action + '</b>: ' +
+						ahref(url, ellipsis(event.payload.issue.title, maxtext - 15))
+		rows.push(s + text + '</td>')
 	}
 }
 
