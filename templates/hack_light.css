@@ -1,5 +1,5 @@
-body {background: #f0f0f0; color: #000;}
-header {background: #fff; border-bottom-color: #663;}
+body {background: #fff; color: #000;}
+header {background: #f0f0f0; border-bottom-color: #663;}
 footer {border-top-color: #bbb;}
 .faint, .faint a, .faint a:visited {color: #888 !important;}
 .faint a:hover {color: #000 !important;}
@@ -14,8 +14,8 @@ hr {border-bottom-color: #bbb;}
 
 .icon-mingw32-disabled   {background-image:url("icons/icon-mingw32-light.png");}
 .icon-mingw64-disabled   {background-image:url("icons/icon-mingw64-light.png");}
-.icon-linux32-disabled   {background-image:url("icons/icon-linux32-light.png");}
-.icon-linux64-disabled   {background-image:url("icons/icon-linux64-light.png");}
+.icon-linux32-disabled   {background-image:url("icons/icon-linux32-light.png"); opacity: 0.6;}
+.icon-linux64-disabled   {background-image:url("icons/icon-linux64-light.png"); opacity: 0.6;}
 .icon-osx32-disabled     {background-image:url("icons/icon-osx32-light.png");}
 .icon-osx64-disabled     {background-image:url("icons/icon-osx64-light.png");}
 .icon-android-disabled   {background-image:url("icons/icon-android-light.png");}
@@ -39,15 +39,15 @@ hr {border-bottom-color: #bbb;}
 	color: #bbb;
 	text-shadow: 0 1px 0 rgba(1, 1, 1, .1);
 	box-shadow:
-		0 1px 1px rgba(0, 0, 0, .3),
-		0 0 5px rgba(181, 181, 181, .0);
+		0 1px 1px rgba(0, 0, 0, .1),
+		1px 1px 2px rgba(1, 1, 1, .1);
 }
 .btn:hover {color: #fff;}
-.btn-rightside {color: #fff; background: #aaa;}
+.btn-rightside {color: #fff; background: #888;}
 .btn-rightside:hover {background: #444;}
 .btn-home {color: #fff; background: #00aa00}
 .btn-home:hover {background: #33ee33}
-.btn-lights {color: #fff; background: #aaa;}
+.btn-lights {color: #fff; background: #888;}
 .btn-lights:hover {color: #fff; background: #000;}
 .btn-discuss {color: #fff; background: #63c0f5;}
 .btn-discuss:hover {color: #fff; background: #82CDF7;}
@@ -58,12 +58,14 @@ hr {border-bottom-color: #bbb;}
 
 .doc h5, .doc h6 {color: #333;}
 .doc li:before {color: #364619;}
-.doc blockquote {color: #666; border-left-color: #666;}
 .doc pre {background-color: #d8d8d8;}
 .doc tr {border-top-color: #bbb; border-bottom-color: #bbb;}
 .doc a {color: #00a; text-decoration: none;}
 .doc a:hover {text-decoration: underline;}
-.doc code {background-color: #d8d8d8;}
+.doc code {color: #000; background-color: #eee;}
+.doc blockquote {color: #666; border-left-color: #444;}
+.doc blockquote code {color: #666; background-color: #eee;}
+.doc blockquote a {color: #228;}
 
 .doc .sourceCode { color: #000; }
 /*  KeyWordTok */

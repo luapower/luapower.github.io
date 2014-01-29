@@ -66,8 +66,11 @@
 <p>Mainly because luapower packages need to be overlaid over the same directory, but you can't just git-clone multiple repos over the same directory with git (for no reason- git-clone could and should totally allow you to do that). Git <em>does</em> support overlaying multiple repos over a common directory structure but that's <a href="http://github.com/luapower/luapower-git/blob/master/clone.cmd">not trivial</a> to set up, and that is where <a href="luapower-git.html">luapower-git</a> comes in.</p>
 <h2 id="how">How</h2>
 <p>First, let's git it:</p>
-<pre><code>&gt; git clone ssh://git@github.com/luapower/luapower-git luapower
+<pre><code>&gt; git clone https://github.com/luapower/luapower-git luapower
 &gt; cd luapower</code></pre>
+<blockquote>
+<p>The SSH url is <code>ssh://git@github.com/luapower/luapower-git</code></p>
+</blockquote>
 <p>This brings in the <code>clone</code> and <code>remove</code> commands:</p>
 <pre><code>&gt; clone
 
@@ -79,7 +82,13 @@ USAGE:
 <p><strong>NOTE:</strong> In Linux, the command is <code>./clone.sh</code>. They're all like that.</p>
 </blockquote>
 <blockquote>
-<p>Tip: You can clone repos from any location, as long as they have the proper file/directory layout. In case you have many repos in a common remote location, write the base url of that location (with trailing slash) in a file called <code>_git/foo.baseurl</code> and then clone using <code>clone &lt;package&gt; foo</code>.</p>
+<p><strong>NOTE:</strong> To clone packages via SSH instead, edit <code>_git/luapower.baseurl</code> and replace the url there with <code>ssh://git@github.com/luapower/</code></p>
+</blockquote>
+<blockquote>
+<p><strong>Tip:</strong> You can clone repos from any location, as long as they have the proper <a href="get-involved.html">directory layout</a>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Tip:</strong> Remote origins can be labeled to avoid typing the full url every time when cloning. Create a file named <code>_git/foo.baseurl</code>, write the base url (with traling slash) in it, and then clone with <code>clone &lt;package&gt; foo</code>.</p>
 </blockquote>
 <pre><code>&gt; remove
 
