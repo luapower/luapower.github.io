@@ -12,11 +12,11 @@ tagline:  Lua, JIT, batteries
 
 ## News
 
-<div id="news_table"></div>
+<div id="news_table">loading...</div>
 
-## Packages
+## Modules
 
-<div id="package_table"></div>
+<div id="package_table">loading...</div>
 <div style="width: 100%; text-align: right; font-size: 80%">manifest file: [Lua](packages.lua) | [JSON](packages.json)</div>
 
 ## LUA POWER IS
