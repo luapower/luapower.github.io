@@ -35,7 +35,9 @@ return {
 			'expat.html'
 		},
 		platforms={
-			mingw32=true
+			mingw32=true,
+			linux32=true,
+			linux64=true
 		},
 		name='expat',
 		type='Lua+ffi',
@@ -43,7 +45,7 @@ return {
 		c_license='MIT',
 		c_link={
 			'expat 2.1.0',
-			'http://expat.sourceforge.net/'
+			'http://sourceforge.net/projects/expat/files/expat/'
 		}
 	},
 	luajit={
@@ -56,8 +58,10 @@ return {
 			'luajit.html'
 		},
 		platforms={
+			mingw32=true,
+			osx64=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='luajit',
 		type='C',
@@ -340,8 +344,9 @@ return {
 			'pmurhash.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='pmurhash',
 		type='Lua+ffi',
@@ -368,6 +373,7 @@ return {
 			'cjson.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -408,6 +414,7 @@ return {
 			'sha2.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -444,8 +451,9 @@ return {
 			'hunspell.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='hunspell',
 		type='Lua+ffi',
@@ -623,6 +631,7 @@ return {
 			'libpng.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -694,6 +703,7 @@ return {
 			'harfbuzz.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -715,6 +725,7 @@ return {
 			'https://github.com/luapower/blur'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -812,6 +823,10 @@ return {
 				mdep_links={
 				},
 				pdep_links={
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/vararg/blob/master/vararg_test.lua'
 				}
 			}
 		},
@@ -820,8 +835,9 @@ return {
 			'vararg.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='vararg',
 		type='Lua/C',
@@ -860,8 +876,9 @@ return {
 			'zlib.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='zlib',
 		type='Lua+ffi',
@@ -900,6 +917,7 @@ return {
 			'md5.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -1030,8 +1048,9 @@ return {
 			'libb64.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='libb64',
 		type='Lua+ffi',
@@ -1202,8 +1221,9 @@ return {
 			'lfs.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='lfs',
 		type='Lua/C',
@@ -1296,6 +1316,7 @@ return {
 			'hpdf.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -1343,16 +1364,17 @@ return {
 			'pixman.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='pixman',
 		type='C',
 		git_tag='r2',
 		c_license='MIT',
 		c_link={
-			'pixman HEAD-2013-02-04',
-			'http://anongit.freedesktop.org/git/pixman.git'
+			'pixman 0.32.4',
+			'http://cairographics.org/releases/'
 		}
 	},
 	cplayer={
@@ -1719,6 +1741,10 @@ return {
 				mdep_links={
 				},
 				pdep_links={
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/struct/blob/master/struct_test.lua'
 				}
 			}
 		},
@@ -1999,8 +2025,9 @@ return {
 			'cairo.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='cairo',
 		type='Lua+ffi',
@@ -2008,7 +2035,7 @@ return {
 		c_license='LGPL',
 		c_link={
 			'cairo 1.12.16',
-			'git://anongit.freedesktop.org/git/cairo'
+			'http://cairographics.org/releases/'
 		}
 	},
 	socket={
@@ -2031,8 +2058,9 @@ return {
 			'socket.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='socket',
 		type='Lua/C',
@@ -2071,6 +2099,7 @@ return {
 			'libunibreak.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -2111,8 +2140,9 @@ return {
 			'chipmunk.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='chipmunk',
 		type='Lua+ffi',
@@ -2178,6 +2208,7 @@ return {
 			'libjpeg.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -2187,7 +2218,7 @@ return {
 		c_license='BSD',
 		c_link={
 			'libjpeg-turbo 1.3.0',
-			'http://libjpeg-turbo.virtualgl.org/'
+			'http://downloads.sourceforge.net/project/libjpeg-turbo/'
 		}
 	},
 	fbclient={
@@ -2295,6 +2326,7 @@ return {
 			'giflib.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -2335,6 +2367,7 @@ return {
 			'clipper.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -2408,8 +2441,9 @@ return {
 			'fribidi.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='fribidi',
 		type='Lua+ffi',
@@ -2444,6 +2478,7 @@ return {
 			'ucdn.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -2480,8 +2515,9 @@ return {
 			'libexif.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='libexif',
 		type='Lua+ffi',
@@ -2512,6 +2548,7 @@ return {
 			'lpeg.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -2544,6 +2581,7 @@ return {
 			'lanes.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -2642,8 +2680,9 @@ return {
 			'nanojpeg.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='nanojpeg',
 		type='Lua+ffi',
@@ -2725,8 +2764,9 @@ return {
 			'freetype.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
 		name='freetype',
 		type='Lua+ffi',
@@ -2781,6 +2821,7 @@ return {
 			'minizip.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
@@ -2858,6 +2899,7 @@ return {
 			'genx.html'
 		},
 		platforms={
+			linux64=true,
 			linux32=true,
 			mingw32=true
 		},
