@@ -129,7 +129,7 @@ function set_long_package_table(packages) {
 				'<th title="Hold Shift to sort by multiple columns" class="header" style="width: 1%;">License</th>' +
 			'</tr></thead><tbody>'
 
-	var platforms = ['mingw32', 'linux32', 'osx32', 'android']
+	var platforms = ['mingw32', 'linux32', 'osx64', 'android']
 
 	$.each(packages, function(k, t) {
 		s = s + '<tr>'
