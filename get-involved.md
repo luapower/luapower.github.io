@@ -68,6 +68,7 @@ Example:
 	!/foo/               ; include the directory in root named `foo`
 	!/foo/**             ; include the contents of the directory named `foo`, recursively
 
+> NOTE: Double-asterisk patterns are Git 1.8.2+.
 
 ### The Code
 
