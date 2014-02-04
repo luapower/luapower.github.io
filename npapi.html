@@ -62,7 +62,25 @@
 				<span id="module_info"></span>
 				<h2 id="overview">Overview</h2>
 <p>A framework for writing NPAPI-based browser plugins in Lua.</p>
-<h2 id="howto">HOWTO</h2>
+<p><strong>This is only an experiment.</strong> It was only superficially tested with Chrome and Firefox on Windows XP SP3.</p>
+<h2 id="get-started">Get started</h2>
+<ol style="list-style-type: decimal">
+<li>Edit <code>csrc/npapi/mozilla_install.reg</code> and change the <code>Path</code> key in there to <code>&lt;your-luapower-dir&gt;/bin/mingw32/npcplayer.dll</code> so that the browser can find and load the npapi &quot;bootstrap&quot; plugin.</li>
+</ol>
+<blockquote>
+<p>This allows you to develop plugins directly from your luapower work tree, without any deployment step necessary, so that you can have the usual edit-save-refresh iteration cycle.</p>
+</blockquote>
+<ol start="2" style="list-style-type: decimal">
+<li>Refresh this page. The demo below should load.</li>
+</ol>
+<embed type="application/x-npcplayer" width="800" height="400"></embed>
+
+<ol start="3" style="list-style-type: decimal">
+<li>Check <code>npapi-log*.txt</code> for errors.</li>
+</ol>
+<h2 id="how-its-put-together">How it's put together</h2>
+<p>The bootstrap plugin (npcplayer.dll) is driven by the browser which calls the plugin's <code>NP_*</code> functions whenever it needs to create or destroy a plugin instance. Upon the first call to <code>NP_Initialize</code>, the plugin finds its own directory, and then it makes a Lua state and loads <code>../../npapi.lua</code> relative to that directory. <code>npapi.lua</code> returns a &quot;forwarder&quot; function. The plugin then forwards the <code>NP_Initialize</code> call through that function. Further <code>NP_</code> calls will go through that same Lua state and &quot;forwarder&quot; function. That's where the C part ends. The rest is done in Lua. The <code>npapi</code> module creates and destroys <code>npapi_instance</code> objects for each plugin instance that the browser wants to create. The npapi instance object uses <a href="lanes.html">lanes</a> and <a href="winapi.html">winapi</a> to create a thread and a message loop, and then it creates a <a href="cplayer.html">cplayer</a> window as a child of the browser-provided window for the plugin.</p>
+<h2 id="npapi-tips">NPAPI Tips</h2>
 <ul>
 <li>get NPAPI headers from https://code.google.com/p/npapi-sdk/
 <ul>
