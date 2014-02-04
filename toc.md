@@ -102,3 +102,5 @@
 	* [luapower-git]
 	* [get involved][get-involved]
    * [problem-solution]
+* Experiments
+	* [npapi]
