@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> npapi   - write browser plugins in Lua </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'npapi'
+			var PROJECT = 'npapi'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> npapi </h1>
+							<h2> write browser plugins in Lua </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/npapi" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/npapi/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/npapi/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/npapi/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="container">
+			<div id="toc_container" class="toc_container doc"></div>
+			<section class="doc">
+				<span id="module_info"></span>
+				<h2 id="overview">Overview</h2>
+<p>A framework for writing NPAPI-based browser plugins in Lua.</p>
+<h2 id="howto">HOWTO</h2>
+<ul>
+<li>get NPAPI headers from https://code.google.com/p/npapi-sdk/
+<ul>
+<li>I stripped them of cruft (they were mostly cruft)</li>
+</ul></li>
+<li>dll exported functions must be __stdcall
+<ul>
+<li>gcc mangles __stdcall names
+<ul>
+<li>pass -Wl,--kill-at to demangle</li>
+</ul></li>
+</ul></li>
+<li>firefox loads a plugin either from a xpi package or from known locations.
+<ul>
+<li>known locations are either %APPDATA%or they are specified in the registry
+<ul>
+<li>for loading from %APPDATA%, link the .rc file that declares the name and the mime type in dll's VERSIONINFO.
+<ul>
+<li>BLOCK &quot;040904E4&quot; and &quot;Translation&quot; 0x0409, 0x04E4 must be hardcoded like that or the plugin won't install.</li>
+<li>the dll must be named np*.dll or it won't be found.</li>
+<li>the &quot;MIMEType&quot; value must be declared or the plugin won't install.</li>
+</ul></li>
+<li>for loading via registry, run the .reg file that declares the name, location and the mime types for the plugin.</li>
+</ul></li>
+<li>for xpi loading see the xpi dir and the build script that creates the xpi file.</li>
+<li>to check if plugin loads use:
+<ul>
+<li>about:plugins</li>
+<li><p>use javascript:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> mimetype = <span class="ot">navigator</span>.<span class="fu">mimeTypes</span>[<span class="st">&quot;application/x-npcplayer&quot;</span>]
+<span class="kw">var</span> plugin = <span class="ot">mimetype</span>.<span class="fu">enabledPlugin</span>
+<span class="ot">console</span>.<span class="fu">log</span>(<span class="ot">plugin</span>.<span class="fu">name</span>)
+<span class="ot">console</span>.<span class="fu">log</span>(<span class="ot">plugin</span>.<span class="fu">description</span>)</code></pre></li>
+<li><p>use html: <code>&lt;embed type=&quot;application/x-npcplayer&quot; width=&quot;1300&quot; height=&quot;700&quot;&gt;&lt;/embed&gt;</code></p></li>
+</ul></li>
+</ul></li>
+</ul>
+			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<div id="disqus_thread"></div>
+				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+			</footer>
+		</div>
+	</body>
+</html>
+
