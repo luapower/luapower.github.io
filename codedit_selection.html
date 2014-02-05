@@ -64,8 +64,13 @@
 
 </div>
 <h2 id="local-selection-requirecodedit_selection"><code>local selection = require'codedit_selection'</code></h2>
-<p>Selecting contiguous text between two line,col pairs -- line1,col1 is the first selected char and line2,col2 is the char immediately after the last selected char.</p>
-<h2 id="properties">Properties</h2>
+<p>Selecting contiguous text between two char positions, (line1, col1, line2, col2), where:</p>
+<ul>
+<li>(line1, col1) is the first selected char</li>
+<li>(line2, col2) is the char immediately after the last selected char.</li>
+</ul>
+<p>As far as the API for changing the selection, one on the end points is considered to be the &quot;anchor point&quot;, and the other the &quot;free point&quot;.</p>
+<h3 id="properties">Properties</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--view overrides</span>
 <span class="kw">background_color</span> <span class="ot">=</span> <span class="kw">nil</span>
 <span class="kw">text_color</span> <span class="ot">=</span> <span class="kw">nil</span>
@@ -85,11 +90,11 @@
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:isempty() -&gt; true | false</code></td>
-<td align="left">is it?</td>
+<td align="left">check if it's empty</td>
 </tr>
 <tr class="even">
 <td align="left"><code>sel:isforward() -&gt; true | false</code></td>
-<td align="left">goes top-down and left-to-rigth?</td>
+<td align="left">does it go top-down and left-to-rigth?</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:endpoints() -&gt; line1, col1, line2, col2</code></td>
@@ -100,7 +105,7 @@
 <td align="left">column range of one selection line</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>sel:next_line(line) -&gt; line, col1, col2</code></td>
+<td align="left"><code>sel:next_line(line) -&gt; line+1, col1, col2</code></td>
 <td align="left">next line boundaries</td>
 </tr>
 <tr class="even">
@@ -113,11 +118,11 @@
 </tr>
 <tr class="even">
 <td align="left"><code>sel:select() -&gt; lines_t</code></td>
-<td align="left">select text as list of lines</td>
+<td align="left">select text as a list of lines</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:contents() -&gt; s</code></td>
-<td align="left">select text</td>
+<td align="left">select text using buffer's line terminator setting</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>changing the selection</strong></td>
@@ -125,7 +130,7 @@
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:reset(line, col)</code></td>
-<td align="left">empty and re-anchor the selection</td>
+<td align="left">empty and re-anchor to a position</td>
 </tr>
 <tr class="even">
 <td align="left"><code>sel:extend(line, col)</code></td>
@@ -141,23 +146,23 @@
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:select_all()</code></td>
-<td align="left"></td>
+<td align="left">extend selection to span the entire document</td>
 </tr>
 <tr class="even">
 <td align="left"><code>sel:reset_to_cursor(cur)</code></td>
-<td align="left"></td>
+<td align="left">reset to a cursor position</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:extend_to_cursor(cur)</code></td>
-<td align="left"></td>
+<td align="left">extend to a cursor position</td>
 </tr>
 <tr class="even">
 <td align="left"><code>sel:set_to_selection(sel)</code></td>
-<td align="left"></td>
+<td align="left">set to match another selection</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:set_to_line_range()</code></td>
-<td align="left"></td>
+<td align="left">extend to contain all its lines in full</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>selection-based editing</strong></td>
@@ -165,31 +170,31 @@
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:remove()</code></td>
-<td align="left"></td>
+<td align="left">remove selected text from the buffer</td>
 </tr>
 <tr class="even">
 <td align="left"><code>sel:indent(use_tab)</code></td>
-<td align="left"></td>
+<td align="left">extend to line range and indent</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>sel:outdent()</code></td>
-<td align="left"></td>
+<td align="left">extend to line range and outdent</td>
 </tr>
 <tr class="even">
-<td align="left"><code>sel:move_up()</code></td>
-<td align="left"></td>
+<td align="left"><code>sel:move_up()</code><br /><code>sel:move_down()</code></td>
+<td align="left">extend to line range and move up/down in buffer</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>sel:move_down()</code></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
 <td align="left"><code>sel:reflow(line_width, tabsize, align, wrap)</code></td>
+<td align="left">reflow text in selection</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>hit testing</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"><strong>hit testing</strong> <code>sel:hit_test(x, y) -&gt; true | false</code></td>
-<td align="left"></td>
+<td align="left"><code>sel:hit_test(x, y) -&gt; true | false</code></td>
+<td align="left">hit test</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>TODO</strong></td>
@@ -198,6 +203,28 @@
 <tr class="odd">
 <td align="left"><code>sel:invalidate()</code></td>
 <td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="block-selections">Block Selections</h2>
+<h2 id="local-block_selection-requirecodedit_blocksel"><code>local block_selection = require'codedit_blocksel'</code></h2>
+<p>Extended selection object for selecting vertically aligned text between two arbitrary cursor positions (line1, col1, line2, col2), where line1,line2 are the horizontal boundaries and col1,col2 are the vertical boundaries of the rectangle.</p>
+<p>The methods are the same as for normal selections, except that operate on blocks. Also, indenting and outdenting doesn't extend the selection to line range. Other differences are as follows:</p>
+<table>
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>block_selection:new(buffer, view, visible) -&gt; blocksel</code></td>
+<td align="left">create a new block selection object</td>
+</tr>
+<tr class="even">
+<td align="left"><code>blocksel.block -&gt; true</code></td>
+<td align="left">this is to distinguish from a normal selection</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>blocksel:extend_to_last_col()</code></td>
+<td align="left">extend selection to the right to contain all the available text</td>
 </tr>
 </tbody>
 </table>

@@ -315,8 +315,8 @@
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left"><code>buf:reflow_lines(line1, line2, line_width, tabsize, align, wrap)</code></td>
-<td align="left">reflow the text between two lines. return the position after the last inserted character.</td>
+<td align="left"><code>buf:reflow_lines(line1, line2, line_width, tabsize, align, wrap) -&gt; line2, col2</code></td>
+<td align="left">reflow the text between two lines. return the position after the last inserted character. align can be 'left', 'right', 'justify'. wrap can be 'greedy', or 'knuth'.</td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>saving to disk</strong></td>
@@ -365,6 +365,78 @@
 <tr class="odd">
 <td align="left"><code>buf:redo()</code></td>
 <td align="left">exec the last redo group, recording a undo group</td>
+</tr>
+</tbody>
+</table>
+<h2 id="normalization">Normalization</h2>
+<h2 id="requirecodedit_normal"><code>require'codedit_normal'</code></h2>
+<p>Extends the buffer class with properties and methods for text normalization.</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">buffer</span><span class="ot">.</span><span class="kw">eol_spaces</span> <span class="ot">=</span> <span class="st">&#39;remove&#39;</span> <span class="co">--leave, remove.</span>
+<span class="kw">buffer</span><span class="ot">.</span><span class="kw">eof_lines</span> <span class="ot">=</span> <span class="st">&#39;leave&#39;</span> <span class="co">--leave, remove, ensure, or a number.</span>
+<span class="kw">buffer</span><span class="ot">.</span><span class="kw">convert_indent</span> <span class="ot">=</span> <span class="st">&#39;tabs&#39;</span> <span class="co">--tabs, spaces, leave: convert indentation to tabs or spaces based on tabsize</span></code></pre>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>buf:remove_eol_spaces()</code></td>
+<td align="left">remove any spaces past eol</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:ensure_eof_line()</code></td>
+<td align="left">add an empty line at eof if there is none</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:remove_eof_lines()</code></td>
+<td align="left">remove any empty lines at eof, except the first line</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:convert_indent_to_tabs()</code></td>
+<td align="left">indent to tabs</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:convert_indent_to_spaces()</code></td>
+<td align="left">indent to spaces</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:normalize()</code></td>
+<td align="left">normalize based on properties</td>
+</tr>
+</tbody>
+</table>
+<h2 id="text-blocks">Text Blocks</h2>
+<h2 id="requirecodedit_blocks"><code>require'codedit_blocks'</code></h2>
+<p>Extends the buffer class with methods for selecting and editing text blocks, i.e. vertically aligned text between two subsequent text positions.</p>
+<p>Blocks are defined as (line1, col1, line2, col2), where line1 and line2 must be valid, subsequent lines in the buffer, and col1 and col2 can be anything.</p>
+<table>
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>buf:block_cols(line, line1, col1, line2, col2) -&gt; s</code></td>
+<td align="left">clamped line segment on a line that intersects the rectangle formed by two arbitrary text positions.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:select_block(line1, col1, line2, col2) -&gt; lines_t</code></td>
+<td align="left">select the block between two subsequent text positions as a multi-line string.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:insert_block(line1, col1, s) -&gt; line2, col2</code></td>
+<td align="left">insert a multi-line string as a block at some position in the text. return the position after the string.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:remove_block(line1, col1, line2, col2)</code></td>
+<td align="left">remove the block between two subsequent positions in the text</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:indent_block(line1, col1, line2, col2, use_tab) -&gt; n</code></td>
+<td align="left">indent the block between two subsequent positions in the text returns max(visual-length(added-text)).</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:outdent_block(line1, col1, line2, col2)</code></td>
+<td align="left">outdent the block between two subsequent positions in the text</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:reflow_block(line1, col1, line2, col2, line_width, tabsize, align, wrap)</code></td>
+<td align="left">reflow a block to its width. return the position after the last inserted character.</td>
 </tr>
 </tbody>
 </table>
