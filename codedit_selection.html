@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> codedit_selection   - text selection </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'codedit_selection'
+			var PROJECT = 'codedit'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> codedit_selection </h1>
+							<h2> text selection </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/codedit" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/codedit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="container">
+			<div id="toc_container" class="toc_container doc"></div>
+			<section class="doc">
+				<span id="module_info"></span>
+				<h2 id="local-selection-requirecodedit_selection"><code>local selection = require'codedit_selection'</code></h2>
+<p>Selecting contiguous text between two line,col pairs -- line1,col1 is the first selected char and line2,col2 is the char immediately after the last selected char.</p>
+<h2 id="properties">Properties</h2>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--view overrides</span>
+<span class="kw">background_color</span> <span class="ot">=</span> <span class="kw">nil</span>
+<span class="kw">text_color</span> <span class="ot">=</span> <span class="kw">nil</span>
+<span class="kw">line_rect</span> <span class="ot">=</span> <span class="kw">nil</span> <span class="co">--line_rect(line) -&gt; x, y, w, h</span></code></pre>
+<h3 id="methods">Methods</h3>
+<table>
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>selection:new(buffer, view, visible) -&gt; sel</code></td>
+<td align="left">create a selection object</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>boundaries</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:isempty() -&gt; true | false</code></td>
+<td align="left">is it?</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:isforward() -&gt; true | false</code></td>
+<td align="left">goes top-down and left-to-rigth?</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:endpoints() -&gt; line1, col1, line2, col2</code></td>
+<td align="left">endpoints, ordered</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:cols(line) -&gt; col1, col2</code></td>
+<td align="left">column range of one selection line</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:next_line(line) -&gt; line, col1, col2</code></td>
+<td align="left">next line boundaries</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:lines() -&gt; iter() -&gt; line, col1, col2</code></td>
+<td align="left">iterate over the boundaries</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:line_range() -&gt; line1, line2</code></td>
+<td align="left">the range of lines that the selection covers fully or partially</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:select() -&gt; lines_t</code></td>
+<td align="left">select text as list of lines</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:contents() -&gt; s</code></td>
+<td align="left">select text</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>changing the selection</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:reset(line, col)</code></td>
+<td align="left">empty and re-anchor the selection</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:extend(line, col)</code></td>
+<td align="left">move selection's free endpoint</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:reverse()</code></td>
+<td align="left">reverse selection's direction</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:set(line1, col1, line2, col2, forward)</code></td>
+<td align="left">set selection endpoints, preserving or setting its direction</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:select_all()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:reset_to_cursor(cur)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:extend_to_cursor(cur)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:set_to_selection(sel)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:set_to_line_range()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>selection-based editing</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:remove()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:indent(use_tab)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:outdent()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:move_up()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:move_down()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:reflow(line_width, tabsize, align, wrap)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>hit testing</strong> <code>sel:hit_test(x, y) -&gt; true | false</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>TODO</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>sel:invalidate()</code></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<div id="disqus_thread"></div>
+				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+			</footer>
+		</div>
+	</body>
+</html>
+

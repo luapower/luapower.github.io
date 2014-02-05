@@ -82,6 +82,9 @@
 * GUI
 	* [cplayer]
 	* [codedit]
+		* [codedit_buffer]
+		* [codedit_selection]
+		* [codedit_cursor]
 	* [box2d]
 * Colors
 	* [color]

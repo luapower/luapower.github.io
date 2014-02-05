@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> codedit_buffer   - text manipulation </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'codedit_buffer'
+			var PROJECT = 'codedit'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> codedit_buffer </h1>
+							<h2> text manipulation </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/codedit" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/codedit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="container">
+			<div id="toc_container" class="toc_container doc"></div>
+			<section class="doc">
+				<span id="module_info"></span>
+				<h2 id="local-buffer-requirecodedit_buffer"><code>local buffer = require'codedit_buffer'</code></h2>
+<p>Buffers are the core of text editing. A buffer stores the text as a list of lines and contains methods for analyzing, navigating, selecting and editing the text at a logical level, independent of how the text is rendered. The buffer contains methods that deal with text at various levels of abstraction.</p>
+<ol style="list-style-type: decimal">
+<li><p>At the bottom we have lines of utf8 codepoints (chars), let's call that the binary space.</p></li>
+<li><p>Over that there's the char space, the space of lines and columns, where each char has a (line, col) pair. Since the chars are stored as utf8, the correspondence between char space and binary space is not linear. We don't deal much in binary space, only in char space (we use the utf8 library to traverse the codepoints).</p></li>
+<li><p>The space outside of the available text is called the unclamped char space. We cannot select text from this space, but we can navigate it as if it was made of empty lines.</p></li>
+<li><p>Higher up there's the visual space, which is how the text looks after tab expansion, for a fixed tab size. Again, the correspondence between char space (let's call it real space) and visual space is not linear.</p></li>
+</ol>
+<blockquote>
+<p>Since we don't support automatic line wrapping, lines have a 1:1 correspondence between all these spaces, only the columns are different.</p>
+</blockquote>
+<h2 id="properties">Properties</h2>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">buffer</span><span class="ot">.</span><span class="kw">line_terminator</span> <span class="ot">=</span> <span class="kw">nil</span> <span class="co">--line terminator to use when retrieving lines as a string. nil means autodetect.</span>
+<span class="kw">buffer</span><span class="ot">.</span><span class="kw">default_line_terminator</span> <span class="ot">=</span> <span class="st">&#39;</span><span class="ot">\n</span><span class="st">&#39;</span> <span class="co">--line terminator to use when autodetection fails.</span>
+<span class="co">--view overrides</span>
+<span class="kw">buffer</span><span class="ot">.</span><span class="kw">background_color</span> <span class="ot">=</span> <span class="kw">nil</span>
+<span class="kw">buffer</span><span class="ot">.</span><span class="kw">text_color</span> <span class="ot">=</span> <span class="kw">nil</span>
+<span class="kw">buffer</span><span class="ot">.</span><span class="kw">line_highlight_color</span> <span class="ot">=</span> <span class="kw">nil</span></code></pre>
+<h2 id="methods">Methods</h2>
+<table>
+<col width="53%" />
+<col width="46%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>buffer:new(editor, view, [text]) -&gt; buf</code></td>
+<td align="left">create a buffer object</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buffer:detect_line_terminator(text) -&gt; term</code></td>
+<td align="left">get the most common line terminator in a string</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>text boundaries</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:last_line() -&gt; line</code></td>
+<td align="left">last line number (also the number of lines)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:getline(line) -&gt; s</code></td>
+<td align="left">line contents (without line terminator)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:contents([lines_t]) -&gt; s</code></td>
+<td align="left">array of lines to text, using current line terminator</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>line-level editing</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:insert_line(line, s)</code></td>
+<td align="left">insert a line</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:remove_line(line)</code></td>
+<td align="left">remove a line</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:set_line(line, s)</code></td>
+<td align="left">replace a line</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:move_line(line1, line2)</code></td>
+<td align="left">switch lines</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>line boundaries</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:last_col(line) -&gt; col</code></td>
+<td align="left">last column (char index) on a valid line</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:end_pos() -&gt; last_line, last_col</code></td>
+<td align="left">the position right after the last char in the text</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:next_char_pos(line, col, [restrict_eol]) -&gt; line, col</code></td>
+<td align="left">position after some char, unclamped</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:prev_char_pos(line, col, [restrict_eol]) -&gt; line, col</code></td>
+<td align="left">position before some char, unclamped</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:near_char_pos(line, col, chars, [restrict_eol]) -&gt; line, col</code></td>
+<td align="left">position that is a number of chars after or before some char, unclamped</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:clamp_pos(line, col) -&gt; line, col</code></td>
+<td align="left">clamp a position to the available text</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>selecting</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:sub(line, col1, col2) -&gt; s</code></td>
+<td align="left">line slice between two columns on a valid line</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:select_string(line1, col1, line2, col2) -&gt; s</code></td>
+<td align="left">select the string between two valid, subsequent positions in the text</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>editing</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:extend(line, col)</code></td>
+<td align="left">extend the buffer up to (line,col-1) with newlines and spaces so we can edit there.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:insert_string(line, col, s) -&gt; line, col</code></td>
+<td align="left">insert a multiline string at a specific position in the text, returning the position after the last character. if the position is outside the text, the buffer is extended. return the position after the string.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:remove_string(line1, col1, line2, col2)</code></td>
+<td align="left">remove the string between two arbitrary, subsequent positions in the text. line2,col2 is the position after the last character to be removed.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>tab expansion</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:tab_width(vcol) -&gt; w</code></td>
+<td align="left">how many spaces till the next tabstop</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:next_tabstop(vcol) -&gt; vcol</code></td>
+<td align="left">visual col of the next tabstop</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:prev_tabstop(vcol) -&gt; vcol</code></td>
+<td align="left">visual col of the prev. tabstop</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:visual_col(line, col) -&gt; vcol</code></td>
+<td align="left">real col -&gt; visual col. outside eof visual columns have the same width as real columns.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:real_col(line, vcol) -&gt; col</code></td>
+<td align="left">visual col -&gt; char col. outside eof visual columns have the same width as real columns.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:aligned_col(target_line, line, col) -&gt; col</code></td>
+<td align="left">real col on a line that is vertically aligned (in the visual space) to the same col on a different line.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:max_visual_col() -&gt; vcol</code></td>
+<td align="left">number of columns needed to fit the entire text (for computing the client area for horizontal scrolling)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:istab(line, col) -&gt; true | false</code></td>
+<td align="left">is that a tab?</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:next_tabstop_col(line, col) -&gt; col</code></td>
+<td align="left">real col on the next tabstop</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:prev_tabstop_col(line, col) -&gt; col</code></td>
+<td align="left">real col on the prev tabstop</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>selecting text based on tab expansion</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:select_indent(line, [col]) -&gt; s</code></td>
+<td align="left">the indent of the line, optionally up to some column</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:indent(line, col, use_tab) -&gt; line, col</code></td>
+<td align="left">insert a tab or spaces from a position up to the next tabstop. return the cursor at the tabstop, where the indented text is.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:indent_line(line, use_tab) -&gt; line, col</code></td>
+<td align="left">insert a tab or spaces at col 1</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:tabs_and_spaces(vcol1, vcol2) -&gt; tabs, spaces</code></td>
+<td align="left">find the maximum number of tabs and minimum of spaces that fit between two visual columns</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:gen_whitespace(vcol1, vcol2, use_tabs) -&gt; s</code></td>
+<td align="left">generate whitespace (tabs and spaces or just spaces, depending on the use_tabs flag) between two vcols.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:insert_whitespace(line, col, vcol2, use_tabs)</code></td>
+<td align="left">insert whitespace on a line, from a position up to (but excluding) a visual col on the same line.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:next_nonspace_col(line, col)</code><br /><code>buf:prev_nonspace_col(line, col)</code></td>
+<td align="left">find non-space boundaries (jump any whitespace)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:isempty(line)</code></td>
+<td align="left">check if a line is either invalid, empty or made entirely of whitespace</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:indenting(line, col) -&gt; true | false</code></td>
+<td align="left">check if a position is before the first non-space char, that is, in the indentation area.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:next_tabful_col(line, col, restrict_eol) -&gt; col</code></td>
+<td align="left">find tabful boundaries. a tabful is the whitespace between two tabstops. the tabful column after of some char is either the next tabstop or the first non-space char after the prev. char or the char after the last col, whichever comes first, and if after the given char.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:prev_tabful_col(line, col) -&gt; col</code></td>
+<td align="left">the tabful column before some char, which is either the prev. tabstop or the char after the prev. non-space char, whichever comes last, and if before the given char.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>editing based on tabfuls</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:outdent(line, col)</code></td>
+<td align="left">remove the space up to the next tabstop or non-space char, in other words, remove a tabful.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:outdent_line(line)</code></td>
+<td align="left">outdent at col 1.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>word boundaries</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:next_word_break_col(line, col, word_chars) -&gt; col</code></td>
+<td align="left">word breaking semantics per [codedit_str]</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:prev_word_break_col(line, col, word_chars) -&gt; col</code></td>
+<td align="left">word breaking semantics per [codedit_str]</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:word_cols(line, col, word_chars) -&gt; col1, col2</code></td>
+<td align="left">word boundaries surrounding a char position</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:next_list_aligned_vcol(line, col, [restrict_eol]) -&gt; vcol</code></td>
+<td align="left">find the visual col that is aligned with the next word on the line above</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:next_args_aligned_vcol(line, col, [restrict_eol) -&gt; vcol</code></td>
+<td align="left">find the visual col that is aligned with the next open bracket on the line above</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>paragraph boundaries</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:reflow_lines(line1, line2, line_width, tabsize, align, wrap)</code></td>
+<td align="left">reflow the text between two lines. return the position after the last inserted character.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>saving to disk</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:save_to_file(filename)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>TODO</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:invalidate()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:detect_indent()</code></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="requirecodedit_undo"><code>require'codedit_undo'</code></h2>
+<p>Undo/redo command stack, as an extension to codedit_buffer.</p>
+<p>The undo stack is a stack of undo groups. An undo group is a list of editor commands to be executed in reverse order in order to perform a single undo operation. Consecutive undo groups of the same type are merged together. The undo commands in the group can be any editor method with any arguments.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>buf:start_undo_group(group_type)</code></td>
+<td align="left">auto-close the current undo group and start a new one</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:end_undo_group()</code></td>
+<td align="left">close and commit the current undo group</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:undo_command(...)</code></td>
+<td align="left">add an undo command to the current undo group, if any</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buf:undo()</code></td>
+<td align="left">exec the last undo group, recording a redo group</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>buf:redo()</code></td>
+<td align="left">exec the last redo group, recording a undo group</td>
+</tr>
+</tbody>
+</table>
+			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<div id="disqus_thread"></div>
+				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+			</footer>
+		</div>
+	</body>
+</html>
+

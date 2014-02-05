@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> codedit_cursor   - text navigation </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'codedit_cursor'
+			var PROJECT = 'codedit'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> codedit_cursor </h1>
+							<h2> text navigation </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/codedit" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/codedit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="container">
+			<div id="toc_container" class="toc_container doc"></div>
+			<section class="doc">
+				<span id="module_info"></span>
+				<h2 id="local-cursor-requirecodedit_cursor"><code>local cursor = require'codedit_cursor'</code></h2>
+<p>Selecting contiguous text between two line,col pairs -- line1,col1 is the first selected char and line2,col2 is the char immediately after the last selected char.</p>
+<h2 id="properties">Properties</h2>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--navigation options</span>
+<span class="kw">restrict_eol</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--don&#39;t allow caret past end-of-line</span>
+<span class="kw">restrict_eof</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--don&#39;t allow caret past end-of-file</span>
+<span class="kw">land_bof</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--go at bof if cursor goes up past it</span>
+<span class="kw">land_eof</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--go at eof if cursor goes down past it</span>
+<span class="kw">word_chars</span> <span class="ot">=</span> <span class="st">&#39;^[a-zA-Z]&#39;</span><span class="ot">,</span> <span class="co">--for jumping between words</span>
+<span class="kw">move_tabfuls</span> <span class="ot">=</span> <span class="st">&#39;indent&#39;</span><span class="ot">,</span> <span class="co">--&#39;indent&#39;, &#39;never&#39;; where to move the cursor between tabfuls instead of individual spaces.</span>
+<span class="co">--editing state</span>
+<span class="kw">insert_mode</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--insert or overwrite when typing characters</span>
+<span class="co">--editing options</span>
+<span class="kw">auto_indent</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--pressing enter copies the indentation of the current line over to the following line</span>
+<span class="kw">insert_tabs</span> <span class="ot">=</span> <span class="st">&#39;indent&#39;</span><span class="ot">,</span> <span class="co">--never, indent, always: where to insert a tab instead of enough spaces that make up a tab.</span>
+<span class="kw">insert_align_list</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--insert whitespace up to the next word on the above line</span>
+<span class="kw">insert_align_args</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--insert whitespace up to after &#39;(&#39; on the above line</span>
+<span class="co">--view overrides</span>
+<span class="kw">thickness</span> <span class="ot">=</span> <span class="kw">nil</span><span class="ot">,</span>
+<span class="kw">color</span> <span class="ot">=</span> <span class="kw">nil</span><span class="ot">,</span>
+<span class="kw">line_highlight_color</span> <span class="ot">=</span> <span class="kw">nil</span><span class="ot">,</span></code></pre>
+<h3 id="methods">Methods</h3>
+<table>
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>cursor:new(buffer, view, visible) -&gt; cur</code></td>
+<td align="left">create a cursor object</td>
+</tr>
+<tr class="even">
+<td align="left">--navigation</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">--move to a specific position, restricting the fina <code>cur:move(line, col, keep_vcol)</code></td>
+<td align="left">l position according to navigation policies</td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:prev_pos() -&gt; line, col</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cur:move_prev_pos()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:next_pos(restrict_eol) return line, col</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cur:move_next_pos()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">--navigate vertically, using the stored visual colu <code>cur:move_vert(lines)</code></td>
+<td align="left">mn as target column</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cur:move_up()</code> <code>cur:move_down()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:move_home()</code> <code>cur:move_bol()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cur:move_end()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:move_eol()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cur:move_up_page()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:move_down_page()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cur:move_prev_word_break()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:move_next_word_break()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cur:move_to_selection(sel)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:move_to_coords(x, y)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">--editing</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">--insert a string at cursor and move the cursor to <code>cur:insert_string(s)</code></td>
+<td align="left">after the string</td>
+</tr>
+<tr class="odd">
+<td align="left">--insert a string block at cursor. --does not move the cursor, but returns the positio <code>cur:insert_block(s)</code></td>
+<td align="left">n after the text.</td>
+</tr>
+<tr class="even">
+<td align="left">--insert or overwrite a char at cursor, depending o <code>cur:insert_char(c)</code></td>
+<td align="left">n insert mode</td>
+</tr>
+<tr class="odd">
+<td align="left">--delete the text up to the next cursor position <code>cur:delete_pos(restrict_eol)</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">--add a new line, optionally copying the indent of <code>cur:insert_newline()</code></td>
+<td align="left">the current line, and carry the cursor over</td>
+</tr>
+<tr class="odd">
+<td align="left">--insert a tab character, expanding it according to <code>cur:insert_tab()</code></td>
+<td align="left">tab expansion policies</td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:outdent_line()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>cur:move_line_up()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:move_line_down()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">--scrolling</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>cur:make_visible()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>TODO</strong></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<div id="disqus_thread"></div>
+				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+			</footer>
+		</div>
+	</body>
+</html>
+
