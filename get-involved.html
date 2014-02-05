@@ -50,6 +50,14 @@
 
 </div>
 <h2 id="anatomy-of-a-package">Anatomy of a package</h2>
+<p>There are 5 types of luapower packages:</p>
+<ul>
+<li><strong>Lua module</strong>: written in Lua, compatible with LuaJIT2, Lua 5.1 and optionally Lua 5.2</li>
+<li><strong>Lua/C module</strong>: written in C using the Lua C API, compatible with LuaJIT2, Lua 5.1 and optionally Lua 5.2</li>
+<li><strong>Lua+ffi module</strong>: written in Lua using the LuaJIT ffi extension, compatible with LuaJIT2 and optionally with Lua ffi; the C library it binds to is included in the package in source and binary form</li>
+<li><strong>C module</strong>: binary dependency or support library for other module; source and binary included</li>
+<li><strong>other</strong>: none of the above: media/support files, etc.</li>
+</ul>
 <h3 id="the-layout">The Layout</h3>
 <ul>
 <li>main module: <code>foo.lua</code></li>

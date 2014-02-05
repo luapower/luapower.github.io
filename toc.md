@@ -98,12 +98,15 @@
 	* [luajit]
 	* [wluajit]
 	* [pixman]
+* Experiments
+	* [npapi]
+
+----
+
 * Notes
 	* [design of glue][glue_design]
-	* [tricks][lua_tricks]
+	* [lua & luajit tricks][lua_tricks]
 * Meta
 	* [luapower-git]
 	* [get involved][get-involved]
    * [problem-solution]
-* Experiments
-	* [npapi]

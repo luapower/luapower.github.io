@@ -3,7 +3,7 @@ title:   tricks
 tagline: Lua & LuaJIT tricks and idioms
 ---
 
-### Quick Lua cheat sheet
+## Quick Lua cheat sheet
 
 ------------------------------------------- -------------------------------------------
 __logic__
@@ -34,7 +34,7 @@ __i/o__
 `f:read(4096, '*l')`                        read lines efficiently
 ------------------------------------------- -------------------------------------------
 
-### LuaJIT tricks
+## LuaJIT tricks
 
 Pointer to number conversion that turns into a no-op when compiled:
 
@@ -46,7 +46,7 @@ Switching endianness of a 64bit integer (to use in conjunction with `ffi.abi'le'
 	p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])
 
 
-### Assumptions about LuaJIT
+## Assumptions about LuaJIT
 
   * LuaJIT hoists table accesses with constant keys (so module functions) out of loops, so no point caching those in locals.
   * LuaJIT hoists constant branches out of loops so it's ok to specialize loop kernels with if/else or and/or inside the loops.
@@ -62,9 +62,20 @@ Switching endianness of a 64bit integer (to use in conjunction with `ffi.abi'le'
 
 The above are assumptions I use throughout my code, so if any of them are wrong, please correct me.
 
-### LuaJIT gotchas
+## LuaJIT gotchas
 
-  * `array[i], array[j] = array[j], array[i]` doesn't work as you would expect (swapping) when the array elements are structs.
-  * `ptr == nil` evaluates to true for a nil pointer, but `if ptr then` doesn't. The former, as innocent as it looks
-  is actually a language extension, so it's best avoided if compatibility with Lua ffi is a concern.
+### `null_ptr == nil`
+
+`ptr == nil` evaluates to true for a nil pointer. As innocent as this looks, this is actually a language extension
+  because it breaks the Lua semantics for `==` which says that objects of different types can't ever be equal
+  (in this case `cdata` == `nil`).
+
+This has two implications:
+
+  * Lua ffi cannot implement this, so compatibility with that cannot be acheived if this idiom is used.
+  * the `if ptr then` idiom doesn't work, although you'd expect that anything that `== nil` to pass the `if` test too.
+
+### `array[i], array[j] = array[j], array[i]`
+
+This idiom doesn't work as you would expect (swapping) when the array elements are structs.
 

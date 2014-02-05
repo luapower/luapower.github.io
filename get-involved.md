@@ -7,6 +7,15 @@ tagline:  I want YOU for LUA POWER
 
 ## Anatomy of a package
 
+There are 5 types of luapower packages:
+
+  * __Lua module__: written in Lua, compatible with LuaJIT2, Lua 5.1 and optionally Lua 5.2
+  * __Lua/C module__: written in C using the Lua C API, compatible with LuaJIT2, Lua 5.1 and optionally Lua 5.2
+  * __Lua+ffi module__: written in Lua using the LuaJIT ffi extension, compatible with LuaJIT2
+  and optionally with Lua ffi; the C library it binds to is included in the package in source and binary form
+  * __C module__: binary dependency or support library for other module; source and binary included
+  * __other__: none of the above: media/support files, etc.
+
 ### The Layout
 
   * main module: `foo.lua`

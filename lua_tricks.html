@@ -46,7 +46,7 @@
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
 				<span id="module_info"></span>
-				<h3 id="quick-lua-cheat-sheet">Quick Lua cheat sheet</h3>
+				<h2 id="quick-lua-cheat-sheet">Quick Lua cheat sheet</h2>
 <table>
 <tbody>
 <tr class="odd">
@@ -155,13 +155,13 @@
 </tr>
 </tbody>
 </table>
-<h3 id="luajit-tricks">LuaJIT tricks</h3>
+<h2 id="luajit-tricks">LuaJIT tricks</h2>
 <p>Pointer to number conversion that turns into a no-op when compiled:</p>
 <pre><code>tonumber(ffi.cast(&#39;intptr_t&#39;, ffi.cast(&#39;void *&#39;, ptr)))</code></pre>
 <p>Switching endianness of a 64bit integer (to use in conjunction with <code>ffi.abi'le'</code> and <code>ffi.abi'be'</code>):</p>
 <pre><code>local p = ffi.cast(&#39;uint32*&#39;, int64_buffer)
 p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])</code></pre>
-<h3 id="assumptions-about-luajit">Assumptions about LuaJIT</h3>
+<h2 id="assumptions-about-luajit">Assumptions about LuaJIT</h2>
 <ul>
 <li>LuaJIT hoists table accesses with constant keys (so module functions) out of loops, so no point caching those in locals.</li>
 <li>LuaJIT hoists constant branches out of loops so it's ok to specialize loop kernels with if/else or and/or inside the loops.</li>
@@ -172,11 +172,16 @@ p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])</code></pre>
 <li>the <code>%</code> operator is slow (it's implemented in terms of <code>math.floor()</code> and division) and really kills hot loops; <code>math.fmod()</code> is even slower; I don't have a solution for this (except for <code>x % 2^n</code> which can be made with bit ops).</li>
 </ul>
 <p>The above are assumptions I use throughout my code, so if any of them are wrong, please correct me.</p>
-<h3 id="luajit-gotchas">LuaJIT gotchas</h3>
+<h2 id="luajit-gotchas">LuaJIT gotchas</h2>
+<h3 id="null_ptr-nil"><code>null_ptr == nil</code></h3>
+<p><code>ptr == nil</code> evaluates to true for a nil pointer. As innocent as this looks, this is actually a language extension because it breaks the Lua semantics for <code>==</code> which says that objects of different types can't ever be equal (in this case <code>cdata</code> == <code>nil</code>).</p>
+<p>This has two implications:</p>
 <ul>
-<li><code>array[i], array[j] = array[j], array[i]</code> doesn't work as you would expect (swapping) when the array elements are structs.</li>
-<li><code>ptr == nil</code> evaluates to true for a nil pointer, but <code>if ptr then</code> doesn't. The former, as innocent as it looks is actually a language extension, so it's best avoided if compatibility with Lua ffi is a concern.</li>
+<li>Lua ffi cannot implement this, so compatibility with that cannot be acheived if this idiom is used.</li>
+<li>the <code>if ptr then</code> idiom doesn't work, although you'd expect that anything that <code>== nil</code> to pass the <code>if</code> test too.</li>
 </ul>
+<h3 id="arrayi-arrayj-arrayj-arrayi"><code>array[i], array[j] = array[j], array[i]</code></h3>
+<p>This idiom doesn't work as you would expect (swapping) when the array elements are structs.</p>
 			</section>
 		</div>
 		<div class="container">

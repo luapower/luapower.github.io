@@ -70,10 +70,15 @@ footer {
 	position: relative;
 }
 
-.toc_container {
+#toc_container {
 	position: absolute;
 	float: left;
 	left: -200px;
+}
+
+#toc_container hr {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .faint a, .faint a:visited {color: inherit;}
