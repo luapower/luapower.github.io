@@ -24,7 +24,7 @@ function github_api(url, success) {
 		url: 'https://api.github.com/' + url + '?callback=?',
 		cache: true,  // because of github's aggressive throttling policies
 		dataType: 'jsonp',
-		jsonpCallback:'jQuery',
+		jsonpCallback:'ghajpc', // a global function will be created so careful what you name here
 		success: success,
 	})
 }
