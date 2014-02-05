@@ -285,8 +285,10 @@ header h2 { /* tagline */
 
 .doc td {
 	width: 1%;
-	padding-top: 4px;
+	padding: 4px;
 	padding-bottom: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
 }
 
 .doc a {

@@ -80,8 +80,8 @@
 <span class="kw">buffer</span><span class="ot">.</span><span class="kw">line_highlight_color</span> <span class="ot">=</span> <span class="kw">nil</span></code></pre>
 <h2 id="methods">Methods</h2>
 <table>
-<col width="53%" />
-<col width="46%" />
+<col width="50%" />
+<col width="50%" />
 <tbody>
 <tr class="odd">
 <td align="left"><code>buffer:new(editor, view, [text]) -&gt; buf</code></td>
@@ -268,8 +268,8 @@
 <td align="left">check if a position is before the first non-space char, that is, in the indentation area.</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>buf:next_tabful_col(line, col, restrict_eol) -&gt; col</code></td>
-<td align="left">find tabful boundaries. a tabful is the whitespace between two tabstops. the tabful column after of some char is either the next tabstop or the first non-space char after the prev. char or the char after the last col, whichever comes first, and if after the given char.</td>
+<td align="left"><code>buf:next_tabful_col(line, col, [restrict_eol]) -&gt; col</code></td>
+<td align="left">find tabful boundaries. a tabful is the whitespace</td>
 </tr>
 <tr class="even">
 <td align="left"><code>buf:prev_tabful_col(line, col) -&gt; col</code></td>
@@ -292,58 +292,55 @@
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"><code>buf:next_word_break_col(line, col, word_chars) -&gt; col</code></td>
+<td align="left"><code>buf:next_word_break_col(line, col, [word_chars]) -&gt; col</code><br /><code>buf:prev_word_break_col(line, col, [word_chars]) -&gt; col</code></td>
 <td align="left">word breaking semantics per [codedit_str]</td>
 </tr>
 <tr class="even">
-<td align="left"><code>buf:prev_word_break_col(line, col, word_chars) -&gt; col</code></td>
-<td align="left">word breaking semantics per [codedit_str]</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>buf:word_cols(line, col, word_chars) -&gt; col1, col2</code></td>
+<td align="left"><code>buf:word_cols(line, col, [word_chars]) -&gt; col1, col2</code></td>
 <td align="left">word boundaries surrounding a char position</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:next_list_aligned_vcol(line, col, [restrict_eol]) -&gt; vcol</code></td>
 <td align="left">find the visual col that is aligned with the next word on the line above</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:next_args_aligned_vcol(line, col, [restrict_eol) -&gt; vcol</code></td>
 <td align="left">find the visual col that is aligned with the next open bracket on the line above</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>paragraph boundaries</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:reflow_lines(line1, line2, line_width, tabsize, align, wrap)</code></td>
 <td align="left">reflow the text between two lines. return the position after the last inserted character.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>saving to disk</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:save_to_file(filename)</code></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>TODO</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:invalidate()</code></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:detect_indent()</code></td>
 <td align="left"></td>
 </tr>
 </tbody>
 </table>
+<h2 id="undoredo-stack">Undo/redo stack</h2>
 <h2 id="requirecodedit_undo"><code>require'codedit_undo'</code></h2>
-<p>Undo/redo command stack, as an extension to codedit_buffer.</p>
-<p>The undo stack is a stack of undo groups. An undo group is a list of editor commands to be executed in reverse order in order to perform a single undo operation. Consecutive undo groups of the same type are merged together. The undo commands in the group can be any editor method with any arguments.</p>
+<p>Extends the buffer class with methods for undo/redo.</p>
+<p>The undo stack is a stack of undo groups. An undo group is a list of editor commands to be executed in reverse order, which together perform what the user perceives as a single undo operation. Consecutive undo groups of the same group type are merged together. The undo commands in the group can be any editor method with any arguments.</p>
 <table>
 <tbody>
 <tr class="odd">

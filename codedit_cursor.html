@@ -64,23 +64,23 @@
 <p>Selecting contiguous text between two line,col pairs -- line1,col1 is the first selected char and line2,col2 is the char immediately after the last selected char.</p>
 <h2 id="properties">Properties</h2>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--navigation options</span>
-<span class="kw">restrict_eol</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--don&#39;t allow caret past end-of-line</span>
-<span class="kw">restrict_eof</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--don&#39;t allow caret past end-of-file</span>
-<span class="kw">land_bof</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--go at bof if cursor goes up past it</span>
-<span class="kw">land_eof</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--go at eof if cursor goes down past it</span>
-<span class="kw">word_chars</span> <span class="ot">=</span> <span class="st">&#39;^[a-zA-Z]&#39;</span><span class="ot">,</span> <span class="co">--for jumping between words</span>
-<span class="kw">move_tabfuls</span> <span class="ot">=</span> <span class="st">&#39;indent&#39;</span><span class="ot">,</span> <span class="co">--&#39;indent&#39;, &#39;never&#39;; where to move the cursor between tabfuls instead of individual spaces.</span>
+<span class="kw">restrict_eol</span> <span class="ot">=</span> <span class="kw">true</span> <span class="co">--don&#39;t allow caret past end-of-line</span>
+<span class="kw">restrict_eof</span> <span class="ot">=</span> <span class="kw">true</span> <span class="co">--don&#39;t allow caret past end-of-file</span>
+<span class="kw">land_bof</span> <span class="ot">=</span> <span class="kw">true</span> <span class="co">--go at bof if cursor goes up past it</span>
+<span class="kw">land_eof</span> <span class="ot">=</span> <span class="kw">true</span> <span class="co">--go at eof if cursor goes down past it</span>
+<span class="kw">word_chars</span> <span class="ot">=</span> <span class="st">&#39;^[a-zA-Z]&#39;</span> <span class="co">--for jumping between words</span>
+<span class="kw">move_tabfuls</span> <span class="ot">=</span> <span class="st">&#39;indent&#39;</span> <span class="co">--&#39;indent&#39;, &#39;never&#39;; where to move the cursor between tabfuls instead of individual spaces.</span>
 <span class="co">--editing state</span>
-<span class="kw">insert_mode</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--insert or overwrite when typing characters</span>
+<span class="kw">insert_mode</span> <span class="ot">=</span> <span class="kw">true</span> <span class="co">--insert or overwrite when typing characters</span>
 <span class="co">--editing options</span>
-<span class="kw">auto_indent</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--pressing enter copies the indentation of the current line over to the following line</span>
-<span class="kw">insert_tabs</span> <span class="ot">=</span> <span class="st">&#39;indent&#39;</span><span class="ot">,</span> <span class="co">--never, indent, always: where to insert a tab instead of enough spaces that make up a tab.</span>
-<span class="kw">insert_align_list</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--insert whitespace up to the next word on the above line</span>
-<span class="kw">insert_align_args</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span> <span class="co">--insert whitespace up to after &#39;(&#39; on the above line</span>
+<span class="kw">auto_indent</span> <span class="ot">=</span> <span class="kw">true</span> <span class="co">--pressing enter copies the indentation of the current line over to the following line</span>
+<span class="kw">insert_tabs</span> <span class="ot">=</span> <span class="st">&#39;indent&#39;</span> <span class="co">--never, indent, always: where to insert a tab instead of enough spaces that make up a tab.</span>
+<span class="kw">insert_align_list</span> <span class="ot">=</span> <span class="kw">true</span> <span class="co">--insert whitespace up to the next word on the above line</span>
+<span class="kw">insert_align_args</span> <span class="ot">=</span> <span class="kw">true</span> <span class="co">--insert whitespace up to after &#39;(&#39; on the above line</span>
 <span class="co">--view overrides</span>
-<span class="kw">thickness</span> <span class="ot">=</span> <span class="kw">nil</span><span class="ot">,</span>
-<span class="kw">color</span> <span class="ot">=</span> <span class="kw">nil</span><span class="ot">,</span>
-<span class="kw">line_highlight_color</span> <span class="ot">=</span> <span class="kw">nil</span><span class="ot">,</span></code></pre>
+<span class="kw">thickness</span> <span class="ot">=</span> <span class="kw">nil</span>
+<span class="kw">color</span> <span class="ot">=</span> <span class="kw">nil</span>
+<span class="kw">line_highlight_color</span> <span class="ot">=</span> <span class="kw">nil</span></code></pre>
 <h3 id="methods">Methods</h3>
 <table>
 <col width="50%" />
@@ -91,115 +91,91 @@
 <td align="left">create a cursor object</td>
 </tr>
 <tr class="even">
-<td align="left">--navigation</td>
+<td align="left"><strong>navigation</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">--move to a specific position, restricting the fina <code>cur:move(line, col, keep_vcol)</code></td>
-<td align="left">l position according to navigation policies</td>
+<td align="left"><code>cur:move(line, col, [keep_vcol])</code></td>
+<td align="left">move to a wanted position, restricting the final position according to navigation policies. also store the visual col of the cursor to be used as the wanted landing col by <code>move_vert()</code>, unless <code>keep_vcol</code> is true</td>
 </tr>
 <tr class="even">
-<td align="left"><code>cur:prev_pos() -&gt; line, col</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:move_vert(lines)</code></td>
+<td align="left">navigate vertically, using the visual column that resulted from horizontal navigation, as target column</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>cur:move_prev_pos()</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:prev_pos() -&gt; line, col</code><br /><code>cur:next_pos([restrict_eol]) -&gt; line, col</code></td>
+<td align="left">position before or after the cursor</td>
 </tr>
 <tr class="even">
-<td align="left"><code>cur:next_pos(restrict_eol) return line, col</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:move_prev_pos()</code><br /><code>cur:move_next_pos()</code></td>
+<td align="left">horizontal navigation</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>cur:move_next_pos()</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:move_up()</code><br /><code>cur:move_down()</code></td>
+<td align="left">vertical navigation</td>
 </tr>
 <tr class="even">
-<td align="left">--navigate vertically, using the stored visual colu <code>cur:move_vert(lines)</code></td>
-<td align="left">mn as target column</td>
+<td align="left"><code>cur:move_home()</code><br /><code>cur:move_end()</code></td>
+<td align="left">navigation to document boundaries</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>cur:move_up()</code> <code>cur:move_down()</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:move_bol()</code><br /><code>cur:move_eol()</code></td>
+<td align="left">navigation to line boundaries</td>
 </tr>
 <tr class="even">
-<td align="left"><code>cur:move_home()</code> <code>cur:move_bol()</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:move_up_page()</code><br /><code>cur:move_down_page()</code></td>
+<td align="left">navigation to view boundaries</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>cur:move_end()</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:move_prev_word_break()</code><br /><code>cur:move_next_word_break()</code></td>
+<td align="left">navigation to word boundaries</td>
 </tr>
 <tr class="even">
-<td align="left"><code>cur:move_eol()</code></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cur:move_up_page()</code></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>cur:move_down_page()</code></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cur:move_prev_word_break()</code></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>cur:move_next_word_break()</code></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
 <td align="left"><code>cur:move_to_selection(sel)</code></td>
-<td align="left"></td>
+<td align="left">navigation to selection boundaries</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>cur:move_to_coords(x, y)</code></td>
+<td align="left">navigation to pixel coordinates</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>editing</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">--editing</td>
-<td align="left"></td>
+<td align="left"><code>cur:insert_string(s)</code></td>
+<td align="left">insert a string at cursor and move the cursor to after the string</td>
 </tr>
 <tr class="even">
-<td align="left">--insert a string at cursor and move the cursor to <code>cur:insert_string(s)</code></td>
-<td align="left">after the string</td>
+<td align="left"><code>cur:insert_block(s) -&gt; line2, col2</code></td>
+<td align="left">insert a string block at cursor. does not move the cursor, but returns the position after the text.</td>
 </tr>
 <tr class="odd">
-<td align="left">--insert a string block at cursor. --does not move the cursor, but returns the positio <code>cur:insert_block(s)</code></td>
-<td align="left">n after the text.</td>
+<td align="left"><code>cur:insert_char(c)</code></td>
+<td align="left">insert or overwrite a char at cursor, depending on the insert mode</td>
 </tr>
 <tr class="even">
-<td align="left">--insert or overwrite a char at cursor, depending o <code>cur:insert_char(c)</code></td>
-<td align="left">n insert mode</td>
+<td align="left"><code>cur:delete_pos(restrict_eol)</code></td>
+<td align="left">delete the text up to the next cursor position</td>
 </tr>
 <tr class="odd">
-<td align="left">--delete the text up to the next cursor position <code>cur:delete_pos(restrict_eol)</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:insert_newline()</code></td>
+<td align="left">add a new line, optionally copying the indent of the current line, and carry the cursor over</td>
 </tr>
 <tr class="even">
-<td align="left">--add a new line, optionally copying the indent of <code>cur:insert_newline()</code></td>
-<td align="left">the current line, and carry the cursor over</td>
+<td align="left"><code>cur:insert_tab()</code></td>
+<td align="left">insert a tab character, expanding it according to tab expansion policies</td>
 </tr>
 <tr class="odd">
-<td align="left">--insert a tab character, expanding it according to <code>cur:insert_tab()</code></td>
-<td align="left">tab expansion policies</td>
-</tr>
-<tr class="even">
 <td align="left"><code>cur:outdent_line()</code></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>cur:move_line_up()</code></td>
-<td align="left"></td>
+<td align="left">outdent current line</td>
 </tr>
 <tr class="even">
-<td align="left"><code>cur:move_line_down()</code></td>
-<td align="left"></td>
+<td align="left"><code>cur:move_line_up()</code><br /><code>cur:move_line_down()</code></td>
+<td align="left">move the contents of the current line up and down in the text</td>
 </tr>
 <tr class="odd">
-<td align="left">--scrolling</td>
+<td align="left"><strong>scrolling</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
