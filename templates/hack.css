@@ -104,6 +104,12 @@ header h2 { /* tagline */
 	background-position: center center;
 }
 
+/* hack: allows abs. pos. divs to go out of the page without scrollbars appearing */
+body {
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
 .bg {
 	position: absolute;
 	background-repeat: no-repeat;
@@ -116,6 +122,7 @@ header h2 { /* tagline */
 .bg-pd {left: 150px; top: 1200px; width: 460px; height: 460px; background-image: url("pd.png");}
 .bg-splash {top: -300px; left: 700px; width: 1400px; height: 1400px; background-image: url("splash.png");}
 .bg-i-want-you {left: 800px; top: 100px; width: 400px; height: 400px; background-image: url("i_want_you.png");}
+.bg-matrix {left: 900px; top: -100px; width: 800px; height: 568px; background-image: url("matrix.png");}
 
 /* Buttons */
 
@@ -195,8 +202,11 @@ header h2 { /* tagline */
 
 /* Document */
 
+/* hack: use <strong> in a table means a header */
 .doc td strong {
 	font-size: 16px;
+	margin-top: 6px;
+	display: inline-block;
 }
 
 .doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6,

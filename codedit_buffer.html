@@ -60,11 +60,14 @@
 			<div id="toc_container" class="toc_container doc"></div>
 			<section class="doc">
 				<span id="module_info"></span>
-				<h2 id="local-buffer-requirecodedit_buffer"><code>local buffer = require'codedit_buffer'</code></h2>
+				<div class="bg bg-matrix">
+
+</div>
+<h2 id="local-buffer-requirecodedit_buffer"><code>local buffer = require'codedit_buffer'</code></h2>
 <p>Buffers are the core of text editing. A buffer stores the text as a list of lines and contains methods for analyzing, navigating, selecting and editing the text at a logical level, independent of how the text is rendered. The buffer contains methods that deal with text at various levels of abstraction.</p>
 <ol style="list-style-type: decimal">
-<li><p>At the bottom we have lines of utf8 codepoints (chars), let's call that the binary space.</p></li>
-<li><p>Over that there's the char space, the space of lines and columns, where each char has a (line, col) pair. Since the chars are stored as utf8, the correspondence between char space and binary space is not linear. We don't deal much in binary space, only in char space (we use the utf8 library to traverse the codepoints).</p></li>
+<li><p>At the bottom we have lines of bytes, let's call that the binary space.</p></li>
+<li><p>Over that there's the char space, the space of lines and columns, where each char has a (line, col) pair. Since the chars are utf8 codepoints, the correspondence between char space and binary space is not linear. We don't deal much in binary space, only in char space (we use the utf8 library to traverse the codepoints).</p></li>
 <li><p>The space outside of the available text is called the unclamped char space. We cannot select text from this space, but we can navigate it as if it was made of empty lines.</p></li>
 <li><p>Higher up there's the visual space, which is how the text looks after tab expansion, for a fixed tab size. Again, the correspondence between char space (let's call it real space) and visual space is not linear.</p></li>
 </ol>

@@ -10,7 +10,7 @@ dl, dt, dd,                                             /* structured content: d
 table, td, tr, caption, tbody, tfoot, thead,            /* structured content: tables */
 form, fieldset, label, legend, button, input, select, textarea, /* forms */
 a, abbr,                                                /* hypertext: links */
-img, iframe, object, audio, video                       /* hypertext: media */
+img, iframe, object, embed, audio, video                /* hypertext: media */
 {
 	margin: 0;
 	padding: 0;
