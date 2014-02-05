@@ -290,10 +290,11 @@ function set_toc_tree() {
 		// temporarily remove the list from the parent list item,
 		// wrap the remaining text in an anchor, then reattach it.
 		var sub_ul = $(this).remove()
-		parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
-			// Make the anchor toggle the leaf display.
-			sub_ul.toggle()
-		})
+		if (parent_li.find('a').length == 0)
+			parent_li.wrapInner('<a/>').find('a').attr('href', 'javascript:void(0)').click(function() {
+				// Make the anchor toggle the leaf display.
+				sub_ul.toggle()
+			})
 		parent_li.append(sub_ul)
 	})
 
@@ -304,7 +305,8 @@ function set_toc_tree() {
 	// DOCNAME is set in the html template by pandoc
 	var clink = $('#toc_container li > a[href="' + DOCNAME + '.html"], #toc_container li > a[href="' + DOCNAME + '"]')
 	if (clink.length > 0) {
-		clink.parents().show()
+		clink.parents().show() //expand parents
+		clink.parent().find('ul').show() //expand children
 		clink.parent().wrapInner('<span/>').find('span').addClass('toc-selected')
 		clink.replaceWith(clink.html())
 	}
