@@ -6,22 +6,20 @@ tagline:  building the C libraries
 ## Overview
 
 Building is based on one-liner shell scripts that invoke gcc directly (no makefiles).
-Each package/platform has a separate script in its `csrc` dir.
-Stripped C sources are also included so you can start right away. Dependencies are listed in the `WHAT` file --
-download/build them first.
+Each package has a separate script in its `csrc` dir, for each supported platform.
+C sources are also included in the package so you can start right away.
+Dependencies are listed in the `WHAT` file -- download and build them first.
 
 For compiling Lua/C modules you also need [lua-headers] and, for Windows in particular, lua51.dll
 must be available at the time of building, so you'll need [luajit] too.
 
+The build scripts will build `-O2`-optimized, stripped binaries with static linking of libgcc and libstdc++.
 
-### On Windows
+## Building on Windows for Windows
 
 The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
 
 Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.
-
-> gcc flags used throughout: `-O2 -s -static-libgcc` (level 2 optimization, stripped binary, static libc) \
-> g++ flags used throughout: `-O2 -s -static-libstdc++` (level 2 optimization, stripped binary, static libstdc++)
 
 Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.
 
@@ -56,12 +54,49 @@ Below is the exact list of MinGW packages used to make a complete C/C++ toolchai
 if you're using a different toolchain. I don't like building things any more than anyone with a soul does.
 
 
-### On Linux
+## Building on Linux for Linux
 
-GCC 4.4.5 was used (stock Debian 6 gcc toolchain + nasm and ragel) with the same gcc and g++ flags.
+You probably have gcc and make installed already. If you have GCC 4.7+ that's even better.
+Just run the appropriate build scripts for your architecture (32bit or 64bit).
 
-> There's no good reason for using this particular gcc version other than the fact that in Debian,
-upgrading the toolchain is actually harder than it is in Windows (look at what you had to do in
-Windows and prove me wrong).
+## Building on Windows for Linux
 
-[lua-headers]:  https://github.com/luapower/lua-headers
+If you are on Windows and you want to compile for Linux and don't want to mess with a cross-compiler,
+here is a quick method to build binaries for Linux from a Windows environment.
+
+* Grab VirtualBox
+* Grab TinyCore
+	* 32bit: [Core-5.2.iso] (10 MB!)
+	* 64bit: [CorePure64-5.2.iso] (10 MB!)
+* Make a VM, set up like this:
+	* give it 512M RAM or more
+	* add a network card for Internet access
+	* a disk is not necessary, tinycore runs entirely from RAM, if you have enough
+	* enable PAE under System -> Processor
+	* enable VT-x and Nested Paging under System -> Acceleration (if your CPU supports it)
+		* if you are on a 32bit Windows and you want to run a 64bit Linux, your CPU _must_ have hardware acceleration
+* Boot it up
+* Get gear (git and toolchain)
+	* `$ tce-load -wi git compiletc`
+* Get luapower
+	* `$ git clone https://github.com/luapower/luapower-git luapower`
+	* `$ cd luapower`
+* Get all luapower packages
+	* `$ ./clone.sh --all`
+* Build all luapower packages (it will only build for your platform, either 32bit or 64bit)
+	* `$ cd csrc`
+	* `$ ./build.sh --all`
+* Or, get and compile packages individually
+	* `$ ./clone.sh --list`
+	* `$ ./clone.sh foobar`
+	* `$ cd csrc/foobar`
+	* `$ ./build-linux32.sh` or `./build-linux64.sh` depending on what ISO you used
+
+## Building on OSX / for OSX
+
+Stay tuned.
+
+
+[lua-headers]:        https://github.com/luapower/lua-headers
+[Core-5.2.iso]:       http://distro.ibiblio.org/tinycorelinux/5.x/x86/release/Core-5.2.iso
+[CorePure64-5.2.iso]: http://distro.ibiblio.org/tinycorelinux/5.x/x86_64/release/CorePure64-5.2.iso
