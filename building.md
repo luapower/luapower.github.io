@@ -15,7 +15,7 @@ must be available at the time of building, so you'll need [luajit] too.
 
 The build scripts will build `-O2`-optimized, stripped binaries with static linking of libgcc and libstdc++.
 
-## Building on Windows for Windows
+## Building on Windows for Windows (32bit)
 
 The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
 
@@ -53,13 +53,16 @@ Below is the exact list of MinGW packages used to make a complete C/C++ toolchai
 > Don't use GCC 4.8 to build luajit. And with all due respect, don't bug me about build scripts not working
 if you're using a different toolchain. I don't like building things any more than anyone with a soul does.
 
+## Building on Windows for Windows (64bit)
 
-## Building on Linux for Linux
+Stay tuned.
+
+## Building on Linux for Linux (32bit and 64bit)
 
 You probably have gcc and make installed already. If you have GCC 4.7+ that's even better.
 Just run the appropriate build scripts for your architecture (32bit or 64bit).
 
-## Building on Windows for Linux
+## Building on Windows for Linux (32bit and 64bit)
 
 If you are on Windows and you want to compile for Linux and don't want to mess with a cross-compiler,
 here is a quick method to build binaries for Linux from a Windows environment.
@@ -92,7 +95,7 @@ here is a quick method to build binaries for Linux from a Windows environment.
 	* `$ cd csrc/foobar`
 	* `$ ./build-linux32.sh` or `./build-linux64.sh` depending on what ISO you used
 
-## Building on OSX / for OSX
+## Building on OSX for OSX (64bit)
 
 Stay tuned.
 

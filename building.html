@@ -50,7 +50,7 @@
 <p>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles). Each package has a separate script in its <code>csrc</code> dir, for each supported platform. C sources are also included in the package so you can start right away. Dependencies are listed in the <code>WHAT</code> file -- download and build them first.</p>
 <p>For compiling Lua/C modules you also need <a href="https://github.com/luapower/lua-headers">lua-headers</a> and, for Windows in particular, lua51.dll must be available at the time of building, so you'll need <a href="luajit.html">luajit</a> too.</p>
 <p>The build scripts will build <code>-O2</code>-optimized, stripped binaries with static linking of libgcc and libstdc++.</p>
-<h2 id="building-on-windows-for-windows">Building on Windows for Windows</h2>
+<h2 id="building-on-windows-for-windows-32bit">Building on Windows for Windows (32bit)</h2>
 <p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
 <p>Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
 <p>Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.</p>
@@ -133,9 +133,11 @@
 <blockquote>
 <p>Don't use GCC 4.8 to build luajit. And with all due respect, don't bug me about build scripts not working if you're using a different toolchain. I don't like building things any more than anyone with a soul does.</p>
 </blockquote>
-<h2 id="building-on-linux-for-linux">Building on Linux for Linux</h2>
+<h2 id="building-on-windows-for-windows-64bit">Building on Windows for Windows (64bit)</h2>
+<p>Stay tuned.</p>
+<h2 id="building-on-linux-for-linux-32bit-and-64bit">Building on Linux for Linux (32bit and 64bit)</h2>
 <p>You probably have gcc and make installed already. If you have GCC 4.7+ that's even better. Just run the appropriate build scripts for your architecture (32bit or 64bit).</p>
-<h2 id="building-on-windows-for-linux">Building on Windows for Linux</h2>
+<h2 id="building-on-windows-for-linux-32bit-and-64bit">Building on Windows for Linux (32bit and 64bit)</h2>
 <p>If you are on Windows and you want to compile for Linux and don't want to mess with a cross-compiler, here is a quick method to build binaries for Linux from a Windows environment.</p>
 <ul>
 <li>Grab VirtualBox</li>
@@ -182,7 +184,7 @@
 <li><code>$ ./build-linux32.sh</code> or <code>./build-linux64.sh</code> depending on what ISO you used</li>
 </ul></li>
 </ul>
-<h2 id="building-on-osx-for-osx">Building on OSX / for OSX</h2>
+<h2 id="building-on-osx-for-osx-64bit">Building on OSX for OSX (64bit)</h2>
 <p>Stay tuned.</p>
 			</section>
 		</div>
