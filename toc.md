@@ -108,5 +108,6 @@
 	* [lua & luajit tricks][lua_tricks]
 * Meta
 	* [luapower-git]
+	* [building luapower][building]
 	* [get involved][get-involved]
    * [problem-solution]

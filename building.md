@@ -6,7 +6,7 @@ tagline:  building the C libraries
 ## Overview
 
 Building is based on one-liner shell scripts that invoke gcc directly (no makefiles).
-Each package has a separate script in its `csrc` dir, for each supported platform.
+Each package has a separate build script in its `csrc` dir, for each supported platform.
 C sources are also included in the package so you can start right away.
 Dependencies are listed in the `WHAT` file -- download and build them first.
 
@@ -93,7 +93,7 @@ here is a quick method to build binaries for Linux from a Windows environment.
 	* `$ ./clone.sh --list`
 	* `$ ./clone.sh foobar`
 	* `$ cd csrc/foobar`
-	* `$ ./build-linux32.sh` or `./build-linux64.sh` depending on what ISO you used
+	* `$ ./build-linux32.sh` or `./build-linux64.sh`, depending on what ISO you used
 
 ## Building on OSX for OSX (64bit)
 

@@ -179,7 +179,8 @@ DEPENDENCIES
 The `package` arg defaults to the env var PROJECT, as set by the `proj` command,
 and if that is not set, it defaults to `--all`, meaning all packages.</code></pre>
 <h2 id="building-all-c-libraries">Building all C libraries</h2>
-<pre><code>&gt; build-all</code></pre>
+<pre><code>&gt; cd csrc
+&gt; build --all</code></pre>
 <p>This builds all packages that have a build script in the right order (pretty fast too).</p>
 <h2 id="module-development">Module development</h2>
 <p>Some handy git wrappers for tracking changes across the entire repo collection:</p>
