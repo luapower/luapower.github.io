@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> codedit_buffer   - text manipulation </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'codedit_view'
+			var PROJECT = 'codedit'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> codedit_buffer </h1>
+							<h2> text manipulation </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/codedit" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/codedit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="container">
+			<div id="toc_container" class="toc_container doc"></div>
+			<section class="doc">
+				<span id="module_info"></span>
+				<div class="bg bg-matrix">
+
+</div>
+<h2 id="local-view_class-requirecodedit_view"><code>local view_class = require'codedit_view'</code></h2>
+<p>Codedit views deal with measuring, layouting, rendering and hit testing of codedit buffers. Rendering is done in terms of a set of primitive drawing methods, which in codedit_view are just stubs. You'll have to subclass codedit_view and implement these methods in order to have a working view.</p>
+<p><strong>NOTE:</strong> codedit_view assumes a monospace font and a fixed line height.</p>
+<h2 id="properties">Properties</h2>
+<pre><code>--tab expansion
+tabsize = 3
+--font metrics
+line_h = 16
+char_w = 8
+char_baseline = 13
+--cursor metrics
+cursor_xoffset = -1     --cursor x offset from a char&#39;s left corner
+cursor_xoffset_col1 = 0 --cursor x offset for the first column
+cursor_thickness = 2
+--scrolling
+cursor_margins = {top = 16, left = 0, right = 0, bottom = 16},
+--rendering
+highlight_cursor_lines = true
+lang = nil --lexer to use for syntax highlighting. nil means no highlighting.
+--reflowing
+line_width = 72</code></pre>
+<h2 id="methods">Methods</h2>
+<table>
+<col width="50%" />
+<col width="50%" />
+<tbody>
+<tr class="odd">
+<td align="left"><code>view_class:new(buffer) -&gt; view</code></td>
+<td align="left">create a view for a buffer</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>rendering</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:add_selection(sel)</code></td>
+<td align="left">add a selection to the set of objects to render</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:add_cursor(cur)</code></td>
+<td align="left">add a cursor to the set of objects to render</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:add_margin(margin, pos)</code></td>
+<td align="left">add a margin to the set of objects to render</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:render()</code></td>
+<td align="left">render the added objects</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>rendering stubs</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:draw_char(x, y, s, i, color)</code></td>
+<td align="left">draw a colored utf-8 char. the char to be drawn is the utf-8 codepoint at byte index <code>i</code> in string <code>s</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:draw_rect(x, y, w, h, color)</code></td>
+<td align="left">draw a colored rectangle</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:clip(x, y, w, h)</code></td>
+<td align="left">create a clipping rectangle so that all subsequent drawing operations will be clipped by it</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:draw_scrollbox(x, y, w, h, cx, cy, cw, ch) -&gt; cx, cy, clip_x, clip_y, clip_w, clip_h</code></td>
+<td align="left">draw a scrollbox widget with (x, y, w, h) outside rect and (cx, cy, cw, ch) client rect. return the new cx, cy, adjusted from user input and other scrollbox constraints, followed by the clipping rect. the client rect is relative to the clipping rect of the scrollbox (which can be different than it's outside rect). this stub implementation is equivalent to a scrollbox that takes no user input, has no margins, and has invisible scrollbars.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>hit testing</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:selection_hit_test(sel, x, y) -&gt; true | false</code></td>
+<td align="left">hit test a selection</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:margin_hit_test(margin, x, y) -&gt; true | false</code></td>
+<td align="left">hit test a margin</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:client_hit_test(x, y) -&gt; true | false</code></td>
+<td align="left">hit test the client area</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>scrolling</strong><sup><a href="#fn1" class="footnoteRef" id="fnref1">1</a></sup></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:scroll_by(x, y)</code></td>
+<td align="left">scroll the view, in pixels</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:scroll_up()</code><br /><code>view:scroll_down()</code></td>
+<td align="left">scroll one screen up or down</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:make_rect_visible(x, y, w, h)</code></td>
+<td align="left">scroll to make a specific rectangle visible</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:cursor_make_visible(cur)</code></td>
+<td align="left">scroll to make the char under cursor visible</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>measurements in text space</strong><sup><a href="#fn2" class="footnoteRef" id="fnref2">2</a></sup></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:char_coords(line, vcol) -&gt; x, y</code></td>
+<td align="left">visual char position in text space</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:char_at(x, y) -&gt; line, vcol</code></td>
+<td align="left">visual char at text space coordinates</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:char_rect(line1, vcol1, line2, vcol2) -&gt; x, y, w, h</code></td>
+<td align="left">the rectangle surrounding a block of text</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:selection_line_rect(sel, line) -&gt; x, y, w, h</code></td>
+<td align="left">selection line shape in text space</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:cursor_rect(cursor) -&gt; x, y, w, h</code></td>
+<td align="left">cursor shape in text space</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:pagesize() -&gt; n</code></td>
+<td align="left">how many lines of text are in the clipping rect</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>measurements in screen space</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:client_size() -&gt; w, h</code></td>
+<td align="left">size of the text space (also called client rectangle in the context of layouting) as limited by the available text and any out-of-text cursors.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:margins_width() -&gt; w</code></td>
+<td align="left">width of all margins combined</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:margin_x(margin) -&gt; x</code></td>
+<td align="left">x coord of a margin in screen space</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>clipping rectangles</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:clip_rect() -&gt; x, y, w, h</code></td>
+<td align="left">clip rect of the client area, in screen space, as obtained from drawing the scrollbox</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:margin_clip_rect(margin) -&gt; x, y, w, h</code></td>
+<td align="left">clip rect of a margin area, in screen space</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:line_clip_rect(line) -&gt; x, y, w, h</code></td>
+<td align="left">clip rect of a line of text, in screen space</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>clipping in visual char space</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:visible_lines() -&gt; line1, line2</code></td>
+<td align="left">which lines are partially or entirely visibile</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:visible_cols() -&gt; col1, col2</code></td>
+<td align="left">which visual columns are partially or entirely visibile</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>view:line_is_visible(line) -&gt; true | false</code></td>
+<td align="left">is line visibile?</td>
+</tr>
+<tr class="even">
+<td align="left"><code>view:screen_to_client(x, y)</code><br /><code>view:client_to_screen(x, y)</code><br /><code>view:screen_to_margin_client(margin, x, y)</code> <code>view:margin_client_to_screen(margin, x, y)</code></td>
+<td align="left">point translation from screen space to client (text) space and back</td>
+</tr>
+</tbody>
+</table>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>scrolling means adjusting the position of the client rectangle relative to the clipping rectangle<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>coordinates in text space are relative to the client rectangle<a href="#fnref2">↩</a></p></li>
+</ol>
+</div>
+			</section>
+		</div>
+		<div class="container">
+			<footer>
+				<div id="disqus_thread"></div>
+				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+			</footer>
+		</div>
+	</body>
+</html>
+

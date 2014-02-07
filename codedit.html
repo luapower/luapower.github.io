@@ -65,10 +65,16 @@
 </div>
 <h2 id="this-is-work-in-progress-nothing-to-see-here-yet">THIS IS WORK IN PROGRESS / NOTHING TO SEE HERE (YET)</h2>
 <h2 id="local-codedit-requirecodedit"><code>local codedit = require'codedit'</code></h2>
-<p>Codedit is a source code editor engine written in Lua.</p>
-<p>Codedit exposes the logic of source code editing with all its intricacies in a set of highly compartimentalized APIs, making it easy to explore, understand and extend.</p>
-<p>Being made in pure Lua, it runs on all the platforms that Lua runs on. If you have the means to display a character on the screen at certain coordinates, and to process keyboard and mouse events inside your Lua environment, then that's all you need to add text/code editing capability to your app.</p>
-<p>Codedit also comes with some cool features out-of-the-box, including a minimalist code editor based on <a href="cplayer.html">cplayer</a>.</p>
+<p>Codedit is a source code editor engine written in Lua. Codedit exposes the logic of source code editing with all its intricacies in a set of highly compartimentalized APIs, making it easy to explore, understand and extend.</p>
+<p>Being made in pure Lua, it runs on all the platforms that Lua runs on. If, inside your Lua environment, you have the means to:</p>
+<ul>
+<li>display a character at certain coordinates</li>
+<li>display a filled rectangle at certain coordinates</li>
+<li>rectangle clipping</li>
+<li>process keyboard and mouse events</li>
+</ul>
+<p>then you can hook up codedit and add code editing capabilities to your app.</p>
+<p>Codedit comes with a minimalist code editor based on <a href="cplayer.html">cplayer</a>.</p>
 <h2 id="highlights">Highlights</h2>
 <ul>
 <li>utf8-ready, using a small <a href="https://github.com/luapower/codedit/blob/master/codedit_str.lua">string module</a> over <a href="utf8.html">utf8</a>.</li>

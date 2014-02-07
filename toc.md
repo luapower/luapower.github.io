@@ -85,6 +85,7 @@
 		* [codedit_buffer]
 		* [codedit_selection]
 		* [codedit_cursor]
+		* [codedit_view]
 	* [box2d]
 * Colors
 	* [color]

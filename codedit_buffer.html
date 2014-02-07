@@ -88,254 +88,254 @@
 <tbody>
 <tr class="odd">
 <td align="left"><code>buffer:new(editor, view, [text]) -&gt; buf</code></td>
-<td align="left">create a buffer object</td>
+<td align="left">create a buffer object, optionally filled with an initial text.</td>
 </tr>
 <tr class="even">
 <td align="left"><code>buffer:detect_line_terminator(text) -&gt; term</code></td>
 <td align="left">get the most common line terminator in a string</td>
 </tr>
 <tr class="odd">
+<td align="left"><code>buf:detect_indent()</code></td>
+<td align="left">detect indentation and set tabsize</td>
+</tr>
+<tr class="even">
 <td align="left"><strong>text boundaries</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:last_line() -&gt; line</code></td>
 <td align="left">last line number (also the number of lines)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:getline(line) -&gt; s</code></td>
 <td align="left">line contents (without line terminator)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:contents([lines_t]) -&gt; s</code></td>
 <td align="left">array of lines to text, using current line terminator</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>line-level editing</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:insert_line(line, s)</code></td>
 <td align="left">insert a line</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:remove_line(line)</code></td>
 <td align="left">remove a line</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:set_line(line, s)</code></td>
 <td align="left">replace a line</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:move_line(line1, line2)</code></td>
 <td align="left">switch lines</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>line boundaries</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:last_col(line) -&gt; col</code></td>
 <td align="left">last column (char index) on a valid line</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:end_pos() -&gt; last_line, last_col</code></td>
 <td align="left">the position right after the last char in the text</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:next_char_pos(line, col, [restrict_eol]) -&gt; line, col</code></td>
 <td align="left">position after some char, unclamped</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:prev_char_pos(line, col, [restrict_eol]) -&gt; line, col</code></td>
 <td align="left">position before some char, unclamped</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:near_char_pos(line, col, chars, [restrict_eol]) -&gt; line, col</code></td>
 <td align="left">position that is a number of chars after or before some char, unclamped</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:clamp_pos(line, col) -&gt; line, col</code></td>
 <td align="left">clamp a position to the available text</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>selecting</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:sub(line, col1, col2) -&gt; s</code></td>
 <td align="left">line slice between two columns on a valid line</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:select_string(line1, col1, line2, col2) -&gt; s</code></td>
 <td align="left">select the string between two valid, subsequent positions in the text</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>editing</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:extend(line, col)</code></td>
 <td align="left">extend the buffer up to (line,col-1) with newlines and spaces so we can edit there.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:insert_string(line, col, s) -&gt; line, col</code></td>
 <td align="left">insert a multiline string at a specific position in the text, returning the position after the last character. if the position is outside the text, the buffer is extended. return the position after the string.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:remove_string(line1, col1, line2, col2)</code></td>
 <td align="left">remove the string between two arbitrary, subsequent positions in the text. line2,col2 is the position after the last character to be removed.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>tab expansion</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:tab_width(vcol) -&gt; w</code></td>
 <td align="left">how many spaces till the next tabstop</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:next_tabstop(vcol) -&gt; vcol</code></td>
 <td align="left">visual col of the next tabstop</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:prev_tabstop(vcol) -&gt; vcol</code></td>
 <td align="left">visual col of the prev. tabstop</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:visual_col(line, col) -&gt; vcol</code></td>
 <td align="left">real col -&gt; visual col. outside eof visual columns have the same width as real columns.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:real_col(line, vcol) -&gt; col</code></td>
 <td align="left">visual col -&gt; char col. outside eof visual columns have the same width as real columns.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:aligned_col(target_line, line, col) -&gt; col</code></td>
 <td align="left">real col on a line that is vertically aligned (in the visual space) to the same col on a different line.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:max_visual_col() -&gt; vcol</code></td>
 <td align="left">number of columns needed to fit the entire text (for computing the client area for horizontal scrolling)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:istab(line, col) -&gt; true | false</code></td>
 <td align="left">is that a tab?</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:next_tabstop_col(line, col) -&gt; col</code></td>
 <td align="left">real col on the next tabstop</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:prev_tabstop_col(line, col) -&gt; col</code></td>
 <td align="left">real col on the prev tabstop</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>selecting text based on tab expansion</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:select_indent(line, [col]) -&gt; s</code></td>
 <td align="left">the indent of the line, optionally up to some column</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:indent(line, col, use_tab) -&gt; line, col</code></td>
 <td align="left">insert a tab or spaces from a position up to the next tabstop. return the cursor at the tabstop, where the indented text is.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:indent_line(line, use_tab) -&gt; line, col</code></td>
 <td align="left">insert a tab or spaces at col 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:tabs_and_spaces(vcol1, vcol2) -&gt; tabs, spaces</code></td>
 <td align="left">find the maximum number of tabs and minimum of spaces that fit between two visual columns</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:gen_whitespace(vcol1, vcol2, use_tabs) -&gt; s</code></td>
 <td align="left">generate whitespace (tabs and spaces or just spaces, depending on the use_tabs flag) between two vcols.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:insert_whitespace(line, col, vcol2, use_tabs)</code></td>
 <td align="left">insert whitespace on a line, from a position up to (but excluding) a visual col on the same line.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:next_nonspace_col(line, col)</code><br /><code>buf:prev_nonspace_col(line, col)</code></td>
 <td align="left">find non-space boundaries (jump any whitespace)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:isempty(line)</code></td>
 <td align="left">check if a line is either invalid, empty or made entirely of whitespace</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:indenting(line, col) -&gt; true | false</code></td>
 <td align="left">check if a position is before the first non-space char, that is, in the indentation area.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:next_tabful_col(line, col, [restrict_eol]) -&gt; col</code></td>
 <td align="left">find tabful boundaries. a tabful is the whitespace</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:prev_tabful_col(line, col) -&gt; col</code></td>
 <td align="left">the tabful column before some char, which is either the prev. tabstop or the char after the prev. non-space char, whichever comes last, and if before the given char.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>editing based on tabfuls</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:outdent(line, col)</code></td>
 <td align="left">remove the space up to the next tabstop or non-space char, in other words, remove a tabful.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:outdent_line(line)</code></td>
 <td align="left">outdent at col 1.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>word boundaries</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:next_word_break_col(line, col, [word_chars]) -&gt; col</code><br /><code>buf:prev_word_break_col(line, col, [word_chars]) -&gt; col</code></td>
 <td align="left">word breaking semantics per [codedit_str]</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:word_cols(line, col, [word_chars]) -&gt; col1, col2</code></td>
 <td align="left">word boundaries surrounding a char position</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>buf:next_list_aligned_vcol(line, col, [restrict_eol]) -&gt; vcol</code></td>
 <td align="left">find the visual col that is aligned with the next word on the line above</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:next_args_aligned_vcol(line, col, [restrict_eol) -&gt; vcol</code></td>
 <td align="left">find the visual col that is aligned with the next open bracket on the line above</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>paragraph boundaries</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:reflow_lines(line1, line2, line_width, tabsize, align, wrap) -&gt; line2, col2</code></td>
 <td align="left">reflow the text between two lines. return the position after the last inserted character. align can be 'left', 'right', 'justify'. wrap can be 'greedy', or 'knuth'.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>saving to disk</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>buf:save_to_file(filename)</code></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>TODO</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
-<td align="left"><code>buf:invalidate()</code></td>
-<td align="left"></td>
-</tr>
 <tr class="odd">
-<td align="left"><code>buf:detect_indent()</code></td>
+<td align="left"><code>buf:invalidate()</code></td>
 <td align="left"></td>
 </tr>
 </tbody>
