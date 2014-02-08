@@ -413,7 +413,8 @@ function add_news_rows(rows, event, packages) {
 			var commit = event.payload.commits[i]
 			if (rows.length > maxrows) return
 			var url = 'https://github.com/' + event.repo.name + '/commit/' + commit.sha
-			rows.push(s + ahref(url, ellipsis(commit.message, maxtext)) + '</td>')
+			if (commit.message != 'unimportant')
+				rows.push(s + ahref(url, ellipsis(commit.message, maxtext)) + '</td>')
 		}
 	} else if (event.type == 'CreateEvent' && event.payload.ref_type == 'tag') {
 		if (rows.length > maxrows) return
