@@ -67,24 +67,36 @@ $if(bare)$$body$$else$<!DOCTYPE html>
 				$else$
 				$if(project)$
 				<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/$project$/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/$project$/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 				$endif$
 				$endif$
 			</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				$body$
-			</section>
+		<div class="bg-container">
+			<div class="bg-center-container">
+				$if(project)$
+					<div class="bg bg-$project$" style="background-image: url('bg/$project$.png');"></div>
+				$else$
+					<div class="bg bg-$docname$" style="background-image: url('bg/$docname$.png');"></div>
+				$endif$
+			</div>
 		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					$body$
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

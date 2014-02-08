@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> path_circle_3p   - 3-point parametrization of circles </title>
+		<title> lpeg2   - parsing expression grammars </title>
 		<script src="jquery.js"></script>
 		<script src="jquery-cookie.js"></script>
 		<script src="jquery-tablesorter.js"></script>
@@ -13,8 +13,8 @@
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
 		<script>
-			var DOCNAME = 'path_circle_3p'
-			var PROJECT = 'path2d'
+			var DOCNAME = 'lpeg2'
+			var PROJECT = 'lpeg2'
 			//set the lights before rendering starts
 			set_lights()
 		</script>
@@ -33,8 +33,8 @@
 				<table id="header_table">
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
-							<h1> path_circle_3p </h1>
-							<h2> 3-point parametrization of circles </h2>
+							<h1> lpeg2 </h1>
+							<h2> parsing expression grammars </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -42,24 +42,24 @@
 									<div id="package_info">&nbsp;</div>
 									<div id="commit_log">&nbsp;</div>
 								</div>
-								<a href="https://github.com/luapower/path2d" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								<a href="https://github.com/luapower/lpeg2" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/luapower/path2d/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								<a href="https://github.com/luapower/lpeg2/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
 								</td></tr><tr><td>
-								<a href="https://github.com/luapower/path2d/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								<a href="https://github.com/luapower/lpeg2/zipball/master" class="btn btn-rightside">Download as .zip</a>
 								</td></tr></table>
 																				</td>
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/path2d/issues/new" target="_blank"
+					<a href="https://github.com/luapower/lpeg2/issues/new" target="_blank"
 						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
 		<div class="bg-container">
 			<div class="bg-center-container">
-									<div class="bg bg-path2d" style="background-image: url('bg/path2d.png');"></div>
+									<div class="bg bg-lpeg2" style="background-image: url('bg/lpeg2.png');"></div>
 							</div>
 		</div>
 		<div class="under-header">
@@ -67,11 +67,11 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<h2 id="local-circle_3p-requirepath_circle_3p"><code>local circle_3p = require'path_circle_3p'</code></h2>
-<h3 id="circle_3p.to_circlex1-y1-x2-y2-x3-y3---cx-cy-r"><code>circle_3p.to_circle(x1, y1, x2, y2, x3, y3) -&gt; cx, cy, r</code></h3>
-<p>Find the unique circle that passes through 3 points. If the points are collinear or any two points are coincidental, nothing is returned.</p>
-<hr />
-<p>See also: <a href="path_arc_3p.html">path_arc_3p</a></p>
+					<h2 id="local-lpeg2-requirelpeg2"><code>local lpeg2 = require'lpeg2'</code></h2>
+<p>Roberto's <a href="http://www.inf.puc-rio.br/~roberto/lpeg/">LPeg</a> v0.12.</p>
+<p>Renamed to lpeg2 because it's not backwards compatible with lpeg 0.10. In particular, scintillua lexers only work with lpeg 0.10 as of Feb 08, 2014.</p>
+<h2 id="local-re-requirelpeg2.re"><code>local re = require'lpeg2.re'</code></h2>
+<p><a href="http://www.inf.puc-rio.br/~roberto/lpeg/re.html">lpeg.re doc</a></p>
 				</section>
 			</div>
 			<div class="container">

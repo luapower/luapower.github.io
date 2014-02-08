@@ -8,8 +8,6 @@ tagline:  Lua, JIT, batteries
   * LuaJIT binary + source distribution and module repository
   * platform for publishing Lua modules
 
-<div class="bg bg-pd"></div>
-
 ## News
 
 <div id="news_table">loading...</div>

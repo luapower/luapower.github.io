@@ -5,7 +5,7 @@
 	* [pp]
 	* [oo]
 	* [struct]
-	* [lpeg]
+	* [lpeg], [lpeg2]
 	* [vararg]
 	* [dlist]
 * Basic OS

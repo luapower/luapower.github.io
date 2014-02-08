@@ -3,8 +3,6 @@ title:    get involved
 tagline:  I want YOU for LUA POWER
 ---
 
-<div class="bg bg-i-want-you"></div>
-
 ## Anatomy of a package
 
 There are 5 types of luapower packages:

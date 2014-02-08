@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/glue/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/glue/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="scope">Scope</h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-glue" style="background-image: url('bg/glue.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="scope">Scope</h2>
 <p>A small, highly useful bag of tricks.</p>
 <p>This API must be <em>compact, not complete</em>. This is the one API that should fit comfortably in someone's head. Adding rarely used or too specialized functions is thus harmful.</p>
 <p><em>Every</em> function should come with compelling real-world examples in its defense. In fact, the library should only be permitted to grow from real-world examples which should be used to document and justify the inclusions.</p>
@@ -82,13 +89,14 @@
 <h2 id="implementation">Implementation</h2>
 <p>Keep the code readable (didactically when possible) and compact. Code changes that compromise these qualities for optimization should come with a benchmark to justify them.</p>
 <p>Document the limits of the algorithms involved with respect to input, like when does it have non-linear performance and how it is stack bound. Performance characteristics are not an implementation detail.</p>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

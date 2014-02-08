@@ -42,11 +42,17 @@
 				</table>
 															</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="overview">Overview</h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-building" style="background-image: url('bg/building.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="overview">Overview</h2>
 <p>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles). Each package has a separate build script in its <code>csrc</code> dir, for each supported platform. C sources are also included in the package so you can start right away. Dependencies are listed in the <code>WHAT</code> file -- download and build them first.</p>
 <p>For compiling Lua/C modules you also need <a href="https://github.com/luapower/lua-headers">lua-headers</a> and, for Windows in particular, lua51.dll must be available at the time of building, so you'll need <a href="luajit.html">luajit</a> too.</p>
 <p>The build scripts will build <code>-O2</code>-optimized, stripped binaries with static linking of libgcc and libstdc++.</p>
@@ -181,18 +187,19 @@
 <li><code>$ ./clone.sh --list</code></li>
 <li><code>$ ./clone.sh foobar</code></li>
 <li><code>$ cd csrc/foobar</code></li>
-<li><code>$ ./build-linux32.sh</code> or <code>./build-linux64.sh</code> depending on what ISO you used</li>
+<li><code>$ ./build-linux32.sh</code> or <code>./build-linux64.sh</code>, depending on what ISO you used</li>
 </ul></li>
 </ul>
 <h2 id="building-on-osx-for-osx-64bit">Building on OSX for OSX (64bit)</h2>
 <p>Stay tuned.</p>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

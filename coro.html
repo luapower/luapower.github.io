@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/coro/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/coro/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="local-coro-requirecoro"><code>local coro = require'coro'</code></h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-coro" style="background-image: url('bg/coro.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-coro-requirecoro"><code>local coro = require'coro'</code></h2>
 <p>Symmetric coroutines are coroutines that allow you to transfer control to a specific coroutine, unlike Lua's standard coroutines which only allow you to suspend execution to the calling coroutine.</p>
 <p>This is the implementation from the paper <a href="http://www.inf.puc-rio.br/~roberto/docs/corosblp.pdf">Coroutines in Lua</a>.</p>
 <p>Changes from the paper:</p>
@@ -86,13 +93,14 @@
    <span class="ot">...</span>
    yield<span class="ot">(</span><span class="kw">val</span><span class="ot">)</span>
 <span class="kw">end</span><span class="ot">)</span></code></pre>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

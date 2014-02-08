@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/libpng/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/libpng/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="note-work-in-progress-version-1.0-coming-soon">NOTE: work-in-progress (version 1.0 coming soon)</h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-libpng" style="background-image: url('bg/libpng.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="note-work-in-progress-version-1.0-coming-soon">NOTE: work-in-progress (version 1.0 coming soon)</h2>
 <h2 id="local-libpng-requirelibpng"><code>local libpng = require'libpng'</code></h2>
 <p>A ffi binding of the ubiquitous <a href="http://www.libpng.org/pub/png/libpng.html">libpng</a>.</p>
 <h2 id="libpng.loadt---image"><code>libpng.load(t) -&gt; image</code></h2>
@@ -115,13 +122,14 @@
 <li>jit is turned off because we can't call error() from a ffi callback called from C; and yet we must not return control to C on errors. is there a way around it?</li>
 <li>the read callback cannot yield since it is called from C code. this means coroutine-based socket schedulers are out, so much for progressive loading. is there a way around it?</li>
 </ul>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

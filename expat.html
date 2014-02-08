@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/expat/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/expat/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="local-expat-requireexpat"><code>local expat = require'expat'</code></h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-expat" style="background-image: url('bg/expat.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-expat-requireexpat"><code>local expat = require'expat'</code></h2>
 <p>A ffi binding for the <a href="http://expat.sourceforge.net/">Expat XML parser</a>.</p>
 <h2 id="expat.parsesource-callbacks"><code>expat.parse(source, callbacks)</code></h2>
 <p>Parse a XML from a string, cdata, file, or reader function, calling a callback for each piece of the XML parsed.</p>
@@ -94,16 +101,17 @@
 <h2 id="expat.treeparsesource-known_tags---root_node"><code>expat.treeparse(source, [known_tags]) -&gt; root_node</code></h2>
 <p>Parse a XML to a tree of nodes. known_tags filters the output so that only the tags that known_tags indexes are returned.</p>
 <p>Nodes look like this:</p>
-<pre><code>node = {tag=, attrs={&lt;k&gt;=v}, children={node1,...}, tags={&lt;tag&gt; = node}, cdata=}</code></pre>
+<pre><code>node = {tag=, attrs={&lt;k&gt;=v}, children={node1,...}, tags={&lt;tag&gt; = node}, cdata=, parent=}</code></pre>
 <h2 id="expat.childrennode-tag---iter---node"><code>expat.children(node, tag) -&gt; iter() -&gt; node</code></h2>
 <p>Iterate a node's children that have a specific tag.</p>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

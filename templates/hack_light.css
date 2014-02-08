@@ -31,10 +31,10 @@ hr {border-bottom-color: #bbb;}
 .icon-lua-enabled        {background-image:url("icons/icon-lua-dark.png");}
 .icon-luajit-enabled     {background-image:url("icons/icon-luajit-dark.png");}
 
-.bg-pd {opacity: 1;}
-.bg-splash {opacity: 0.3;}
-.bg-i-want-you {opacity: 0.2;}
-.bg-matrix {opacity: 0.7;}
+.bg-index {opacity: 0.8;}
+.bg-get-involved {opacity: 0.2;}
+.bg-glue {opacity: 0.4;}
+.bg-codedit {opacity: 0.7;}
 
 .btn {
 	color: #bbb;

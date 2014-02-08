@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/sg/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/sg/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="local-sg-requiresg_cairo"><code>local SG = require'sg_cairo'</code></h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-sg" style="background-image: url('bg/sg.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-sg-requiresg_cairo"><code>local SG = require'sg_cairo'</code></h2>
 <h2 id="local-sg-sgnewsurfacecache"><code>local sg = SG:new(surface[,cache])</code></h2>
 <p>Create a new scene graph renderer that can draw scene graph objects on a cairo surface. A cache object can be passed so you can share cached resources like fonts and images with other renderers, otherwise a private cache object will be created.</p>
 <h2 id="sgrenderobject"><code>sg:render(object)</code></h2>
@@ -196,13 +203,14 @@
 <p>See the <a href="path.html">path</a> module for how to specify path_objects.</p>
 <hr />
 <p>See also: <a href="sg_gl.html">sg_gl</a></p>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

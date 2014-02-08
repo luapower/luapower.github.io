@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/libunibreak/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/libunibreak/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="local-ub-requirelibunibreak"><code>local ub = require'libunibreak'</code></h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-libunibreak" style="background-image: url('bg/libunibreak.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-ub-requirelibunibreak"><code>local ub = require'libunibreak'</code></h2>
 <p>A ffi binding to <a href="http://vimgadgets.sourceforge.net/libunibreak/">libunibreak</a>, a C library implementing the <a href="http://www.unicode.org/reports/tr14/">unicode line breaking algorithm</a> and word breaking from <a href="http://www.unicode.org/reports/tr29/">unicode text segmentation</a>.</p>
 <h2 id="line-breaking">Line breaking</h2>
 <pre><code>ub.linebreaks_utf8(s[,size[,lang]]) -&gt; line_breaks
@@ -117,13 +124,14 @@ ub.chars_utf32(s) -&gt; iter() -&gt; i, codepoint</code></pre>
 ub.len_utf16(s[,size]) -&gt; len
 ub.len_utf32(s[,size]) -&gt; len</code></pre>
 <p>Get the number of codepoints in string.</p>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/luapower-git/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/luapower-git/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="what">What</h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-luapower-git" style="background-image: url('bg/luapower-git.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="what">What</h2>
 <p>Downloading and managing luapower packages the git way.</p>
 <h2 id="why-not-just-use-git-directly">Why not just use git directly?</h2>
 <p>Mainly because luapower packages need to be overlaid over the same directory, but you can't just git-clone multiple repos over the same directory with git (for no reason- git-clone could and should totally allow you to do that). Git <em>does</em> support overlaying multiple repos over a common directory structure but that's <a href="http://github.com/luapower/luapower-git/blob/master/clone.cmd">not trivial</a> to set up, and that is where <a href="luapower-git.html">luapower-git</a> comes in.</p>
@@ -200,13 +207,14 @@ and if that is not set, it defaults to `--all`, meaning all packages.</code></pr
 </tr>
 </tbody>
 </table>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

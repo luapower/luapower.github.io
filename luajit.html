@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/luajit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/luajit/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="overview">Overview</h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-luajit" style="background-image: url('bg/luajit.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="overview">Overview</h2>
 <p>LuaJIT binary.</p>
 <h2 id="build-notes">Build Notes</h2>
 <p>Makefile was modified to build with <code>-msse -msse2</code> (not enabled by default).</p>
@@ -76,13 +83,14 @@
 <h3 id="going-further">Going further</h3>
 <p>The above only solves the problem of finding luapower modules. To find other files, like media files, etc. relative to the directory of the running script, use <a href="glue.html#bin">glue.bin</a>.</p>
 <p>To add more paths to package.path and package.cpath use <a href="glue.html#luapath">glue.luapath</a> and <a href="glue.html#cpath">glue.cpath</a>.</p>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

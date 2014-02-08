@@ -52,18 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/codedit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/codedit/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<div class="bg bg-matrix">
-
-</div>
-<h2 id="local-cursor-requirecodedit_cursor"><code>local cursor = require'codedit_cursor'</code></h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-codedit" style="background-image: url('bg/codedit.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-cursor-requirecodedit_cursor"><code>local cursor = require'codedit_cursor'</code></h2>
 <p>Cursor object, providing caret-based navigation and editing.</p>
 <h2 id="properties">Properties</h2>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--navigation options</span>
@@ -90,7 +94,7 @@
 <col width="50%" />
 <tbody>
 <tr class="odd">
-<td align="left"><code>cursor:new(buffer, view, visible) -&gt; cur</code></td>
+<td align="left"><code>cursor:new(buffer, [view], visible) -&gt; cur</code></td>
 <td align="left">create a cursor object</td>
 </tr>
 <tr class="even">
@@ -139,7 +143,7 @@
 </tr>
 <tr class="odd">
 <td align="left"><code>cur:move_to_coords(x, y)</code></td>
-<td align="left">navigation to pixel coordinates</td>
+<td align="left">navigation to view coordinates</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>editing</strong></td>
@@ -187,13 +191,14 @@
 </tr>
 </tbody>
 </table>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

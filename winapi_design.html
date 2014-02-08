@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/winapi/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/winapi/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="structure">Structure</h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-winapi" style="background-image: url('bg/winapi.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="structure">Structure</h2>
 <p>The library publishes a procedural API that mimics the windows API and an object API for creating windows and controls. Both APIs share the same namespace, which is the table returned by <code>require'winapi'</code>.</p>
 <p>Interactivity (windows message processing) is handled in the object layer since it requires keeping state. Dispatching of messages to child controls is implemented in the object layer. The object layer also provides additional features like anchor-based layouting, so there's little reason to use the procedural API directly except for say, implementing a different object API.</p>
 <h2 id="scope">Scope</h2>
@@ -85,13 +92,14 @@
 <p>Boilerplate like a struct's mask field or a struct/buffer/string size, etc. are hidden from the API. In general, stuff that doesn't relate to actual functionality but it's an artifact of the ABI is considered an unnecessary distraction and so is hidden away.</p>
 <p>The API doesn't mimic winapi perfectly. Object constructors like <code>CreateWindow</code> take a table with named arguments instead of a list of arguments like in winapi. Argument positions are sometimes reversed to make less-used arguments optional, and so on. Struct fields are renamed to hide away the crazy hungarian notation, etc.</p>
 <p>The procedural API is implemented with the aid of a set of utilities dealing with bitmasks, utf-8 conversion, etc. See the <a href="winapi_binding.html">dev doc</a> for more on that.</p>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

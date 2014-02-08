@@ -52,38 +52,42 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/codedit/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/codedit/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<div class="bg bg-matrix">
-
-</div>
-<h2 id="local-view_class-requirecodedit_view"><code>local view_class = require'codedit_view'</code></h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-codedit" style="background-image: url('bg/codedit.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-view_class-requirecodedit_view"><code>local view_class = require'codedit_view'</code></h2>
 <p>Codedit views deal with measuring, layouting, rendering and hit testing of codedit buffers. Rendering is done in terms of a set of primitive drawing methods, which in codedit_view are just stubs. You'll have to subclass codedit_view and implement these methods in order to have a working view.</p>
 <p><strong>NOTE:</strong> codedit_view assumes a monospace font and a fixed line height.</p>
 <h2 id="properties">Properties</h2>
-<pre><code>--tab expansion
-tabsize = 3
---font metrics
-line_h = 16
-char_w = 8
-char_baseline = 13
---cursor metrics
-cursor_xoffset = -1     --cursor x offset from a char&#39;s left corner
-cursor_xoffset_col1 = 0 --cursor x offset for the first column
-cursor_thickness = 2
---scrolling
-cursor_margins = {top = 16, left = 0, right = 0, bottom = 16},
---rendering
-highlight_cursor_lines = true
-lang = nil --lexer to use for syntax highlighting. nil means no highlighting.
---reflowing
-line_width = 72</code></pre>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--tab expansion</span>
+<span class="kw">tabsize</span> <span class="ot">=</span> <span class="dv">3</span>
+<span class="co">--font metrics</span>
+<span class="kw">line_h</span> <span class="ot">=</span> <span class="dv">16</span>
+<span class="kw">char_w</span> <span class="ot">=</span> <span class="dv">8</span>
+<span class="kw">char_baseline</span> <span class="ot">=</span> <span class="dv">13</span>
+<span class="co">--cursor metrics</span>
+<span class="kw">cursor_xoffset</span> <span class="ot">=</span> <span class="ot">-</span><span class="dv">1</span>     <span class="co">--cursor x offset from a char&#39;s left corner</span>
+<span class="kw">cursor_xoffset_col1</span> <span class="ot">=</span> <span class="dv">0</span> <span class="co">--cursor x offset for the first column</span>
+<span class="kw">cursor_thickness</span> <span class="ot">=</span> <span class="dv">2</span>
+<span class="co">--scrolling</span>
+<span class="kw">cursor_margins</span> <span class="ot">=</span> <span class="ot">{</span><span class="kw">top</span> <span class="ot">=</span> <span class="dv">16</span><span class="ot">,</span> <span class="kw">left</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">right</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bottom</span> <span class="ot">=</span> <span class="dv">16</span><span class="ot">},</span>
+<span class="co">--rendering</span>
+<span class="kw">highlight_cursor_lines</span> <span class="ot">=</span> <span class="kw">true</span>
+<span class="kw">lang</span> <span class="ot">=</span> <span class="kw">nil</span> <span class="co">--lexer to use for syntax highlighting. nil means no highlighting.</span>
+<span class="co">--reflowing</span>
+<span class="kw">line_width</span> <span class="ot">=</span> <span class="dv">72</span></code></pre>
 <h2 id="methods">Methods</h2>
 <table>
 <col width="50%" />
@@ -258,13 +262,14 @@ line_width = 72</code></pre>
 <li id="fn2"><p>coordinates in text space are relative to the client rectangle<a href="#fnref2">↩</a></p></li>
 </ol>
 </div>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

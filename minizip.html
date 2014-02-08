@@ -52,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/minizip/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/minizip/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="local-zip-requireminizip"><code>local zip = require'minizip'</code></h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-minizip" style="background-image: url('bg/minizip.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-zip-requireminizip"><code>local zip = require'minizip'</code></h2>
 <p>Supports creating, reading, writing, appending, and listing a ZIP file. Advanced use of this module requires an understanding of the <a href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">ZIP file format</a>.</p>
 <h2 id="features">Features</h2>
 <ul>
@@ -136,13 +143,14 @@
 <p>List files in archive, returning the file info table for each file. On each iteration, the file is set as the current file so <code>z:open_file()</code> can be used to read the file contents.</p>
 <h2 id="zextractfilepath---s"><code>z:extract(filepath) -&gt; s</code></h2>
 <p>Extract a file from the ZIP archive and return its contents as a string. This is a shortcut for the sequence <code>z:open_file()</code>, <code>z:read()</code>, <code>z:close_file()</code>.</p>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

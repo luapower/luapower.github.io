@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> codedit_editor   - controller </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'codedit_editor'
+			var PROJECT = 'codedit_editor'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> codedit_editor </h1>
+							<h2> controller </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/codedit_editor" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit_editor/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/codedit_editor/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/codedit_editor/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-codedit_editor" style="background-image: url('bg/codedit_editor.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="editor_class-requirecodedit_editor"><code>editor_class = require'codedit_editor'</code></h2>
+<h2 id="properties">Properties</h2>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--subclasses</span>
+<span class="kw">buffer</span> <span class="ot">=</span> <span class="kw">buffer</span><span class="ot">,</span>
+<span class="kw">line_selection</span> <span class="ot">=</span> <span class="kw">line_selection</span><span class="ot">,</span>
+<span class="kw">block_selection</span> <span class="ot">=</span> <span class="kw">block_selection</span><span class="ot">,</span>
+<span class="kw">cursor</span> <span class="ot">=</span> <span class="kw">cursor</span><span class="ot">,</span>
+<span class="kw">line_numbers_margin</span> <span class="ot">=</span> <span class="kw">line_numbers_margin</span><span class="ot">,</span>
+<span class="kw">blame_margin</span> <span class="ot">=</span> <span class="kw">blame_margin</span><span class="ot">,</span>
+<span class="kw">view</span> <span class="ot">=</span> <span class="kw">view</span><span class="ot">,</span>
+<span class="co">--margins</span>
+<span class="kw">line_numbers</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">,</span>
+<span class="kw">blame</span> <span class="ot">=</span> <span class="kw">false</span><span class="ot">,</span>
+<span class="co">--keyboard state</span>
+<span class="kw">next_reflow_mode</span> <span class="ot">=</span> <span class="ot">{</span><span class="kw">left</span> <span class="ot">=</span> <span class="st">&#39;justify&#39;</span><span class="ot">,</span> <span class="kw">justify</span> <span class="ot">=</span> <span class="st">&#39;left&#39;</span><span class="ot">},</span>
+<span class="kw">default_reflow_mode</span> <span class="ot">=</span> <span class="st">&#39;left&#39;</span><span class="ot">,</span></code></pre>
+<h2 id="constructor">Constructor</h2>
+<h3 id="editor-editor_classnewoptions"><code>editor = editor_class:new(options)</code></h3>
+<h2 id="key-processing">Key Processing</h2>
+<h3 id="requireeditor_keys"><code>require'editor_keys'</code></h3>
+<p>Extends the editor with a default list of key bindings and a method of executing an editor method given its key combination.</p>
+<h3 id="editor.key_bindings---shortcut-method_name"><code>editor.key_bindings -&gt; {[shortcut] = method_name]}</code></h3>
+<p>The default list of key bindings. They map directly to editor method names. The key modifiers are <code>ctrl</code>, <code>alt</code> and <code>shift</code> and must appear in this order. For the full list of key names see <a href="cplayer.html">cplayer</a>.</p>
+<h3 id="editorperform_shortcutshortcut"><code>editor:perform_shortcut(shortcut)</code></h3>
+<p>Execute an editor method by its key binding.</p>
+<h2 id="key-bindings">Key Bindings</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>navigation</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">editor:scroll_up()</td>
+<td align="left">ctrl+up</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:scroll_down()</td>
+<td align="left">ctrl+down</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_prev_pos()</td>
+<td align="left">left</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_next_pos()</td>
+<td align="left">right</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_prev_pos_unrestricted()</td>
+<td align="left">alt+left</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_next_pos_unrestricted()</td>
+<td align="left">alt+right</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_up()</td>
+<td align="left">up</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_down()</td>
+<td align="left">down</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_prev_word_break()</td>
+<td align="left">ctrl+left</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_next_word_break()</td>
+<td align="left">ctrl+right</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_bol()</td>
+<td align="left">home</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_eol()</td>
+<td align="left">end</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_home()</td>
+<td align="left">ctrl+home</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_end()</td>
+<td align="left">ctrl+end</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_up_page()</td>
+<td align="left">pageup</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_down_page()</td>
+<td align="left">pagedown</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>navigation + selection</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_prev_pos()</td>
+<td align="left">shift+left</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_next_pos()</td>
+<td align="left">shift+right</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_up()</td>
+<td align="left">shift+up</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_down()</td>
+<td align="left">shift+down</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_prev_word_break()</td>
+<td align="left">ctrl+shift+left</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_next_word_break()</td>
+<td align="left">ctrl+shift+right</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_bol()</td>
+<td align="left">shift+home</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_eol()</td>
+<td align="left">shift+end</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_home()</td>
+<td align="left">ctrl+shift+home</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_end()</td>
+<td align="left">ctrl+shift+end</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_up_page()</td>
+<td align="left">shift+pageup</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_down_page()</td>
+<td align="left">shift+pagedown</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>navigation + block selection</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_block_prev_pos()</td>
+<td align="left">alt+shift+left</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_block_next_pos()</td>
+<td align="left">alt+shift+right</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_block_up()</td>
+<td align="left">alt+shift+up</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_block_down()</td>
+<td align="left">alt+shift+down</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_block_prev_word_break()</td>
+<td align="left">ctrl+alt+shift+left</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_block_next_word_break()</td>
+<td align="left">ctrl+alt+shift+right</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_block_bol()</td>
+<td align="left">alt+shift+home</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_block_eol()</td>
+<td align="left">alt+shift+end</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_block_home()</td>
+<td align="left">ctrl+alt+shift+home</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_block_end()</td>
+<td align="left">ctrl+alt+shift+end</td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_block_up_page()</td>
+<td align="left">alt+shift+pageup</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:select_block_down_page()</td>
+<td align="left">alt+shift+pagedown</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>additional navigation</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_up_page()</td>
+<td align="left">alt+up</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_down_page()</td>
+<td align="left">alt+down</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>bookmarks (TODO)</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">editor:toggle_bookmark()</td>
+<td align="left">ctrl+f2</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_next_bookmark()</td>
+<td align="left">f2</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_prev_bookmark()</td>
+<td align="left">shift+f2</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>additional selection</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">editor:select_all()</td>
+<td align="left">ctrl+A</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>editing</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">editor:toggle_insert_mode()</td>
+<td align="left">insert</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:delete_prev_pos()</td>
+<td align="left">backspace</td>
+</tr>
+<tr class="even">
+<td align="left">editor:delete_prev_pos()</td>
+<td align="left">shift+backspace</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:delete_pos()</td>
+<td align="left">delete</td>
+</tr>
+<tr class="even">
+<td align="left">editor:newline()</td>
+<td align="left">return</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:indent()</td>
+<td align="left">tab</td>
+</tr>
+<tr class="even">
+<td align="left">editor:outdent()</td>
+<td align="left">shift+tab</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:move_lines_up()</td>
+<td align="left">ctrl+shift+up</td>
+</tr>
+<tr class="even">
+<td align="left">editor:move_lines_down()</td>
+<td align="left">ctrl+shift+down</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:undo()</td>
+<td align="left">ctrl+Z</td>
+</tr>
+<tr class="even">
+<td align="left">editor:redo()</td>
+<td align="left">ctrl+Y</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>reflowing</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">editor:reflow()</td>
+<td align="left">ctrl+R</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>copy/pasting</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">editor:cut()</td>
+<td align="left">ctrl+X</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:copy()</td>
+<td align="left">ctrl+C</td>
+</tr>
+<tr class="even">
+<td align="left">editor:paste()</td>
+<td align="left">ctrl+V</td>
+</tr>
+<tr class="odd">
+<td align="left">editor:paste_block()</td>
+<td align="left">ctrl+alt+V</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>saving</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">editor:save()</td>
+<td align="left">ctrl+S</td>
+</tr>
+</tbody>
+</table>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+
