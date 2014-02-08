@@ -57,7 +57,7 @@ hr {border-bottom-color: #333;}
 #package_table th.tablesorter-headerAsc {background-image: url("asc_light.gif");}
 #package_table th.tablesorter-headerDesc {background-image: url("desc_light.gif");}
 
-.doc h1, .doc h2, .doc h3, .doc h4 {color: #f3f3f3;}
+.doc h1, .doc h2, .doc h3, .doc h4, .doc dt {color: #f3f3f3;}
 .doc li:before {color: #b5e853;}
 .doc pre {background-color: #111;}
 .doc tr {border-top-color: #333; border-bottom-color: #333;}
@@ -67,6 +67,7 @@ hr {border-bottom-color: #333;}
 .doc blockquote {color: #999; border-left-color: #666;}
 .doc blockquote code {color: #996;}
 .doc blockquote a {color: #4586ac;}
+.doc dt {border-top-color: #333;}
 
 .doc .sourceCode { color: #FFFFFF; }
 /*  KeyWordTok */

@@ -217,6 +217,7 @@ header h2 { /* tagline */
 
 .doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6,
 .doc p, .doc hr, .doc table, .doc pre, .doc blockquote,
+.doc dd, .doc dt,
 .doc embed, .doc object {
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -329,6 +330,17 @@ header h2 { /* tagline */
 
 .doc a:hover {
 	text-decoration: underline;
+}
+
+.doc dt {
+	font-size: 14px;
+	font-style: normal;
+	border-top: 1px solid;
+	padding-top: 20px;
+}
+
+.doc dd {
+	text-indent: 2em;
 }
 
 /* Syntax highlighting */

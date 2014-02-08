@@ -67,6 +67,7 @@ hr {border-bottom-color: #bbb;}
 .doc blockquote {color: #666; border-left-color: #444;}
 .doc blockquote code {color: #666; background-color: #eee;}
 .doc blockquote a {color: #228;}
+.doc dt {border-top-color: #bbb;}
 
 .doc .sourceCode { color: #000; }
 /*  KeyWordTok */
