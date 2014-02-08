@@ -54,7 +54,7 @@
 					<span id="module_info"></span>
 					<h2 id="overview">Overview</h2>
 <p>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles). Each package has a separate build script in its <code>csrc</code> dir, for each supported platform. C sources are also included in the package so you can start right away. Dependencies are listed in the <code>WHAT</code> file -- download and build them first.</p>
-<p>For compiling Lua/C modules you also need <a href="https://github.com/luapower/lua-headers">lua-headers</a> and, for Windows in particular, lua51.dll must be available at the time of building, so you'll need <a href="luajit.html">luajit</a> too.</p>
+<p>For compiling Lua/C modules you also need <a href="lua-headers.html">lua-headers</a> and, for Windows in particular, lua51.dll must be available at the time of building, so you'll need <a href="luajit.html">luajit</a> too.</p>
 <p>The build scripts will build <code>-O2</code>-optimized, stripped binaries with static linking of libgcc and libstdc++.</p>
 <h2 id="building-on-windows-for-windows-32bit">Building on Windows for Windows (32bit)</h2>
 <p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>

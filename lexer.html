@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> lexer   - scintilua lexers </title>
+		<title> lexer   - scintillua lexer </title>
 		<script src="jquery.js"></script>
 		<script src="jquery-cookie.js"></script>
 		<script src="jquery-tablesorter.js"></script>
@@ -34,7 +34,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> lexer </h1>
-							<h2> scintilua lexers </h2>
+							<h2> scintillua lexer </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -67,7 +67,619 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					
+					<p>This is scintillua 3.3.9-1 from http://foicica.com/scintillua/download (MIT license)</p>
+<blockquote>
+<p><strong>NOTE:</strong> What follows is an experiment in integrating documentation from external projects into luapower.<br />Check out the <a href="http://foicica.com/scintillua/api/lexer.html">original document</a>.</p>
+</blockquote>
+<h2 id="local-lexer-requirelexer"><code>local lexer = require'lexer'</code></h2>
+<h2 id="overview">Overview</h2>
+<p>Lexers highlight the syntax of source code. Scintilla (the editing component behind <a href="http://foicica.com/textadept">Textadept</a> and <a href="http://scintilla.org/SciTE.html">SciTE</a>) traditionally uses static, compiled C++ lexers which are notoriously difficult to create and/or extend. On the other hand, Lua makes it easy to to rapidly create new lexers, extend existing ones, and embed lexers within one another. Lua lexers tend to be more readable than C++ lexers too.</p>
+<p>Lexers are Parsing Expression Grammars, or PEGs, composed with the Lua <a href="http://www.inf.puc-rio.br/~roberto/lpeg/lpeg.html">LPeg library</a>. The following table comes from the LPeg documentation and summarizes all you need to know about constructing basic LPeg patterns. This module provides convenience functions for creating and working with other more advanced patterns and concepts.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Operator</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>lpeg.P(string)</code></td>
+<td align="left">Matches <code>string</code> literally.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>lpeg.P(</code><em><code>n</code></em><code>)</code></td>
+<td align="left">Matches exactly <em><code>n</code></em> characters.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>lpeg.S(string)</code></td>
+<td align="left">Matches any character in set <code>string</code>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>lpeg.R(&quot;</code><em><code>xy</code></em><code>&quot;)</code></td>
+<td align="left">Matches any character between range <code>x</code> and <code>y</code>.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>patt^</code><em><code>n</code></em></td>
+<td align="left">Matches at least <em><code>n</code></em> repetitions of <code>patt</code>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>patt^-</code><em><code>n</code></em></td>
+<td align="left">Matches at most <em><code>n</code></em> repetitions of <code>patt</code>.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>patt1 * patt2</code></td>
+<td align="left">Matches <code>patt1</code> followed by <code>patt2</code>.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>patt1 + patt2</code></td>
+<td align="left">Matches <code>patt1</code> or <code>patt2</code> (ordered choice).</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>patt1 - patt2</code></td>
+<td align="left">Matches <code>patt1</code> if <code>patt2</code> does not match.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>-patt</code></td>
+<td align="left">Equivalent to <code>(&quot;&quot; - patt)</code>.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>#patt</code></td>
+<td align="left">Matches <code>patt</code> but consumes no input.</td>
+</tr>
+</tbody>
+</table>
+<p>The first part of this document deals with rapidly constructing a simple lexer. The next part deals with more advanced techniques, such as custom coloring and embedding lexers within one another. Following that is a discussion about code folding, or being able to tell Scintilla which code blocks are &quot;foldable&quot; (temporarily hideable from view). After that are instructions on how to use LPeg lexers with the aforementioned Textadept and SciTE editors. Finally there are comments on lexer performance and limitations.</p>
+<h2 id="lexer-basics">Lexer Basics</h2>
+<p>The <em>lexers/</em> directory contains all lexers, including your new one. Before attempting to write one from scratch though, first determine if your programming language is similar to any of the 80+ languages supported. If so, you may be able to copy and modify that lexer, saving some time and effort. The filename of your lexer should be the name of your programming language in lower case followed by a <em>.lua</em> extension. For example, a new Lua lexer has the name <em>lua.lua</em>.</p>
+<p>Note: Try to refrain from using one-character language names like &quot;b&quot;, &quot;c&quot;, or &quot;d&quot;. For example, Scintillua uses &quot;b_lang&quot;, &quot;cpp&quot;, and &quot;dmd&quot;, respectively.</p>
+<h3 id="new-lexer-template">New Lexer Template</h3>
+<p>There is a <em>lexers/template.txt</em> file that contains a simple template for a new lexer. Feel free to use it, replacing the '?'s with the name of your lexer:</p>
+<pre><code> -- ? LPeg lexer.
+
+ local l = require(&#39;lexer&#39;)
+ local token, word_match = l.token, l.word_match
+ local P, R, S = lpeg.P, lpeg.R, lpeg.S
+
+ local M = {_NAME = &#39;?&#39;}
+
+ -- Whitespace.
+ local ws = token(l.WHITESPACE, l.space^1)
+
+ M._rules = {
+   {&#39;whitespace&#39;, ws},
+ }
+
+ M._tokenstyles = {
+
+ }
+
+ return M</code></pre>
+<p>The first 4 lines of code simply define often used convenience variables. The 5th and last lines define and return the lexer object Scintilla uses; they are very important and must be part of every lexer. The sixth line defines something called a &quot;token&quot;, an essential building block of lexers. You will learn about tokens shortly. The rest of the code defines a set of grammar rules and token styles. You will learn about those later. Note, however, the <code>M.</code> prefix in front of <code>_rules</code> and <code>_tokenstyles</code>: not only do these tables belong to their respective lexers, but any non-local variables need the <code>M.</code> prefix too so-as not to affect Lua's global environment. All in all, this is a minimal, working lexer that you can build on.</p>
+<h3 id="tokens">Tokens</h3>
+<p>Take a moment to think about your programming language's structure. What kind of key elements does it have? In the template shown earlier, one predefined element all languages have is whitespace. Your language probably also has elements like comments, strings, and keywords. Lexers refer to these elements as &quot;tokens&quot;. Tokens are the fundamental &quot;building blocks&quot; of lexers. Lexers break down source code into tokens for coloring, which results in the syntax highlighting familiar to you. It is up to you how specific your lexer is when it comes to tokens. Perhaps only distinguishing between keywords and identifiers is necessary, or maybe recognizing constants and built-in functions, methods, or libraries is desirable. The Lua lexer, for example, defines 11 tokens: whitespace, comments, strings, numbers, keywords, built-in functions, constants, built-in libraries, identifiers, labels, and operators. Even though constants, built-in functions, and built-in libraries are subsets of identifiers, Lua programmers find it helpful for the lexer to distinguish between them all. It is perfectly acceptable to just recognize keywords and identifiers.</p>
+<p>In a lexer, tokens consist of a token name and an LPeg pattern that matches a sequence of characters recognized as an instance of that token. Create tokens using the <a href="#token"><code>token()</code></a> function. Let us examine the &quot;whitespace&quot; token defined in the template shown earlier:</p>
+<pre><code> local ws = token(l.WHITESPACE, l.space^1)</code></pre>
+<p>At first glance, the first argument does not appear to be a string name and the second argument does not appear to be an LPeg pattern. Perhaps you expected something like:</p>
+<pre><code> local ws = token(&#39;whitespace&#39;, S(&#39;\t\v\f\n\r &#39;)^1)</code></pre>
+<p>The <code>lexer</code> (<code>l</code>) module actually provides a convenient list of common token names and common LPeg patterns for you to use. Token names include <a href="#DEFAULT"><code>DEFAULT</code></a>, <a href="#WHITESPACE"><code>WHITESPACE</code></a>, <a href="#COMMENT"><code>COMMENT</code></a>, <a href="#STRING"><code>STRING</code></a>, <a href="#NUMBER"><code>NUMBER</code></a>, <a href="#KEYWORD"><code>KEYWORD</code></a>, <a href="#IDENTIFIER"><code>IDENTIFIER</code></a>, <a href="#OPERATOR"><code>OPERATOR</code></a>, <a href="#ERROR"><code>ERROR</code></a>, <a href="#PREPROCESSOR"><code>PREPROCESSOR</code></a>, <a href="#CONSTANT"><code>CONSTANT</code></a>, <a href="#VARIABLE"><code>VARIABLE</code></a>, <a href="#FUNCTION"><code>FUNCTION</code></a>, <a href="#CLASS"><code>CLASS</code></a>, <a href="#TYPE"><code>TYPE</code></a>, <a href="#LABEL"><code>LABEL</code></a>, <a href="#REGEX"><code>REGEX</code></a>, and <a href="#EMBEDDED"><code>EMBEDDED</code></a>. Patterns include <a href="#any"><code>any</code></a>, <a href="#ascii"><code>ascii</code></a>, <a href="#extend"><code>extend</code></a>, <a href="#alpha"><code>alpha</code></a>, <a href="#digit"><code>digit</code></a>, <a href="#alnum"><code>alnum</code></a>, <a href="#lower"><code>lower</code></a>, <a href="#upper"><code>upper</code></a>, <a href="#xdigit"><code>xdigit</code></a>, <a href="#cntrl"><code>cntrl</code></a>, <a href="#graph"><code>graph</code></a>, <a href="#print"><code>print</code></a>, <a href="#punct"><code>punct</code></a>, <a href="#space"><code>space</code></a>, <a href="#newline"><code>newline</code></a>, <a href="#nonnewline"><code>nonnewline</code></a>, <a href="#nonnewline_esc"><code>nonnewline_esc</code></a>, <a href="#dec_num"><code>dec_num</code></a>, <a href="#hex_num"><code>hex_num</code></a>, <a href="#oct_num"><code>oct_num</code></a>, <a href="#integer"><code>integer</code></a>, <a href="#float"><code>float</code></a>, and <a href="#word"><code>word</code></a>. You may use your own token names if none of the above fit your language, but an advantage to using predefined token names is that your lexer's tokens will inherit the universal syntax highlighting color theme used by your text editor.</p>
+<h4 id="example-tokens">Example Tokens</h4>
+<p>So, how might you define other tokens like comments, strings, and keywords? Here are some examples.</p>
+<p><strong>Comments</strong></p>
+<p>Line-style comments with a prefix character(s) are easy to express with LPeg:</p>
+<pre><code> local shell_comment = token(l.COMMENT, &#39;#&#39; * l.nonnewline^0)
+ local c_line_comment = token(l.COMMENT, &#39;//&#39; * l.nonnewline_esc^0)</code></pre>
+<p>The comments above start with a '#' or &quot;//&quot; and go to the end of the line. The second comment recognizes the next line also as a comment if the current line ends with a '' escape character.</p>
+<p>C-style &quot;block&quot; comments with a start and end delimiter are also easy to express:</p>
+<pre><code> local c_comment = token(l.COMMENT, &#39;/*&#39; * (l.any - &#39;*/&#39;)^0 * P(&#39;*/&#39;)^-1)</code></pre>
+<p>This comment starts with a &quot;/*&quot; sequence and contains anything up to and including an ending &quot;*/&quot; sequence. The ending &quot;*/&quot; is optional so the lexer can recognize unfinished comments as comments and highlight them properly.</p>
+<p><strong>Strings</strong></p>
+<p>It is tempting to think that a string is not much different from the block comment shown above in that both have start and end delimiters:</p>
+<pre><code> local dq_str = &#39;&quot;&#39; * (l.any - &#39;&quot;&#39;)^0 * P(&#39;&quot;&#39;)^-1
+ local sq_str = &quot;&#39;&quot; * (l.any - &quot;&#39;&quot;)^0 * P(&quot;&#39;&quot;)^-1
+ local simple_string = token(l.STRING, dq_str + sq_str)</code></pre>
+<p>However, most programming languages allow escape sequences in strings such that a sequence like &quot;\&quot;&quot; in a double-quoted string indicates that the '&quot;' is not the end of the string. The above token incorrectly matches such a string. Instead, use the <a href="#delimited_range"><code>delimited_range()</code></a> convenience function.</p>
+<pre><code> local dq_str = l.delimited_range(&#39;&quot;&#39;)
+ local sq_str = l.delimited_range(&quot;&#39;&quot;)
+ local string = token(l.STRING, dq_str + sq_str)</code></pre>
+<p>In this case, the lexer treats '' as an escape character in a string sequence.</p>
+<p><strong>Keywords</strong></p>
+<p>Instead of matching <em>n</em> keywords with <em>n</em> <code>P('keyword_</code><em><code>n</code></em><code>')</code> ordered choices, use another convenience function: <a href="#word_match"><code>word_match()</code></a>. It is much easier and more efficient to write word matches like:</p>
+<pre><code> local keyword = token(l.KEYWORD, l.word_match{
+   &#39;keyword_1&#39;, &#39;keyword_2&#39;, ..., &#39;keyword_n&#39;
+ })
+
+ local case_insensitive_keyword = token(l.KEYWORD, l.word_match({
+   &#39;KEYWORD_1&#39;, &#39;keyword_2&#39;, ..., &#39;KEYword_n&#39;
+ }, nil, true))
+
+ local hyphened_keyword = token(l.KEYWORD, l.word_match({
+   &#39;keyword-1&#39;, &#39;keyword-2&#39;, ..., &#39;keyword-n&#39;
+ }, &#39;-&#39;))</code></pre>
+<p>By default, characters considered to be in keywords are in the set of alphanumeric characters and underscores. The last token demonstrates how to allow '-' (hyphen) characters to be in keywords as well.</p>
+<p><strong>Numbers</strong></p>
+<p>Most programming languages have the same format for integer and float tokens, so it might be as simple as using a couple of predefined LPeg patterns:</p>
+<pre><code> local number = token(l.NUMBER, l.float + l.integer)</code></pre>
+<p>However, some languages allow postfix characters on integers.</p>
+<pre><code> local integer = P(&#39;-&#39;)^-1 * (l.dec_num * S(&#39;lL&#39;)^-1)
+ local number = token(l.NUMBER, l.float + l.hex_num + integer)</code></pre>
+<p>Your language may need other tweaks, but it is up to you how fine-grained you want your highlighting to be. After all, you are not writing a compiler or interpreter!</p>
+<h3 id="rules">Rules</h3>
+<p>Programming languages have grammars, which specify valid token structure. For example, comments usually cannot appear within a string. Grammars consist of rules, which are simply combinations of tokens. Recall from the lexer template the <code>_rules</code> table, which defines all the rules used by the lexer grammar:</p>
+<pre><code> M._rules = {
+   {&#39;whitespace&#39;, ws},
+ }</code></pre>
+<p>Each entry in a lexer's <code>_rules</code> table consists of a rule name and its associated pattern. Rule names are completely arbitrary and serve only to identify and distinguish between different rules. Rule order is important: if text does not match the first rule, the lexer tries the second rule, and so on. This simple grammar says to match whitespace tokens under a rule named &quot;whitespace&quot;.</p>
+<p>To illustrate the importance of rule order, here is an example of a simplified Lua grammar:</p>
+<pre><code> M._rules = {
+   {&#39;whitespace&#39;, ws},
+   {&#39;keyword&#39;, keyword},
+   {&#39;identifier&#39;, identifier},
+   {&#39;string&#39;, string},
+   {&#39;comment&#39;, comment},
+   {&#39;number&#39;, number},
+   {&#39;label&#39;, label},
+   {&#39;operator&#39;, operator},
+ }</code></pre>
+<p>Note how identifiers come after keywords. In Lua, as with most programming languages, the characters allowed in keywords and identifiers are in the same set (alphanumerics plus underscores). If the lexer specified the &quot;identifier&quot; rule before the &quot;keyword&quot; rule, all keywords would match identifiers and thus incorrectly highlight as identifiers instead of keywords. The same idea applies to function, constant, etc. tokens that you may want to distinguish between: their rules should come before identifiers.</p>
+<p>So what about text that does not match any rules? For example in Lua, the '!' character is meaningless outside a string or comment. Normally the lexer skips over such text. If instead you want to highlight these &quot;syntax errors&quot;, add an additional end rule:</p>
+<pre><code> M._rules = {
+   {&#39;whitespace&#39;, ws},
+   {&#39;error&#39;, token(l.ERROR, l.any)},
+ }</code></pre>
+<p>This identifies and highlights any character not matched by an existing rule as an <code>ERROR</code> token.</p>
+<p>Even though the rules defined in the examples above contain a single token, rules may consist of multiple tokens. For example, a rule for an HTML tag could consist of a tag token followed by an arbitrary number of attribute tokens, allowing the lexer to highlight all tokens separately. The rule might look something like this:</p>
+<pre><code> {&#39;tag&#39;, tag_start * (ws * attributes)^0 * tag_end^-1}</code></pre>
+<p>Note however that lexers with complex rules like these are more prone to lose track of their state.</p>
+<h3 id="summary">Summary</h3>
+<p>Lexers primarily consist of tokens and grammar rules. At your disposal are a number of convenience patterns and functions for rapidly creating a lexer. If you choose to use predefined token names for your tokens, you do not have to define how the lexer highlights them. The tokens will inherit the default syntax highlighting color theme your editor uses.</p>
+<h2 id="advanced-techniques">Advanced Techniques</h2>
+<h3 id="styles-and-styling">Styles and Styling</h3>
+<p>The most basic form of syntax highlighting is assigning different colors to different tokens. Instead of highlighting with just colors, Scintilla allows for more rich highlighting, or &quot;styling&quot;, with different fonts, font sizes, font attributes, and foreground and background colors, just to name a few. The unit of this rich highlighting is called a &quot;style&quot;. Styles are simply strings of comma-separated property settings. By default, lexers associate predefined token names like <code>WHITESPACE</code>, <code>COMMENT</code>, <code>STRING</code>, etc. with particular styles as part of a universal color theme. These predefined styles include <a href="#STYLE_CLASS"><code>STYLE_CLASS</code></a>, <a href="#STYLE_COMMENT"><code>STYLE_COMMENT</code></a>, <a href="#STYLE_CONSTANT"><code>STYLE_CONSTANT</code></a>, <a href="#STYLE_ERROR"><code>STYLE_ERROR</code></a>, <a href="#STYLE_EMBEDDED"><code>STYLE_EMBEDDED</code></a>, <a href="#STYLE_FUNCTION"><code>STYLE_FUNCTION</code></a>, <a href="#STYLE_IDENTIFIER"><code>STYLE_IDENTIFIER</code></a>, <a href="#STYLE_KEYWORD"><code>STYLE_KEYWORD</code></a>, <a href="#STYLE_LABEL"><code>STYLE_LABEL</code></a>, <a href="#STYLE_NUMBER"><code>STYLE_NUMBER</code></a>, <a href="#STYLE_OPERATOR"><code>STYLE_OPERATOR</code></a>, <a href="#STYLE_PREPROCESSOR"><code>STYLE_PREPROCESSOR</code></a>, <a href="#STYLE_REGEX"><code>STYLE_REGEX</code></a>, <a href="#STYLE_STRING"><code>STYLE_STRING</code></a>, <a href="#STYLE_TYPE"><code>STYLE_TYPE</code></a>, <a href="#STYLE_VARIABLE"><code>STYLE_VARIABLE</code></a>, and <a href="#STYLE_WHITESPACE"><code>STYLE_WHITESPACE</code></a>. Like with predefined token names and LPeg patterns, you may define your own styles. At their core, styles are just strings, so you may create new ones and/or modify existing ones. Each style consists of the following comma-separated settings:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Setting</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">font:<em>name</em></td>
+<td align="left">The name of the font the style uses.</td>
+</tr>
+<tr class="even">
+<td align="left">size:<em>int</em></td>
+<td align="left">The size of the font the style uses.</td>
+</tr>
+<tr class="odd">
+<td align="left">[not]bold</td>
+<td align="left">Whether or not the font face is bold.</td>
+</tr>
+<tr class="even">
+<td align="left">[not]italics</td>
+<td align="left">Whether or not the font face is italic.</td>
+</tr>
+<tr class="odd">
+<td align="left">[not]underlined</td>
+<td align="left">Whether or not the font face is underlined.</td>
+</tr>
+<tr class="even">
+<td align="left">fore:<em>color</em></td>
+<td align="left">The foreground color of the font face.</td>
+</tr>
+<tr class="odd">
+<td align="left">back:<em>color</em></td>
+<td align="left">The background color of the font face.</td>
+</tr>
+<tr class="even">
+<td align="left">[not]eolfilled</td>
+<td align="left">Does the background color extend to the end of the line?</td>
+</tr>
+<tr class="odd">
+<td align="left">case:<em>char</em></td>
+<td align="left">The case of the font ('u': upper, 'l': lower, 'm': normal).</td>
+</tr>
+<tr class="even">
+<td align="left">[not]visible</td>
+<td align="left">Whether or not the text is visible.</td>
+</tr>
+<tr class="odd">
+<td align="left">[not]changeable</td>
+<td align="left">Whether the text is changeable or read-only.</td>
+</tr>
+<tr class="even">
+<td align="left">[not]hotspot</td>
+<td align="left">Whether or not the text is clickable.</td>
+</tr>
+</tbody>
+</table>
+<p>Specify font colors in either &quot;#RRGGBB&quot; format, &quot;0xBBGGRR&quot; format, or the decimal equivalent of the latter. As with token names, LPeg patterns, and styles, there is a set of predefined color names, but they vary depending on the current color theme in use. Therefore, it is generally not a good idea to manually define colors within styles in your lexer since they might not fit into a user's chosen color theme. Try to refrain from even using predefined colors in a style because that color may be theme-specific. Instead, the best practice is to either use predefined styles or derive new color-agnostic styles from predefined ones. For example, Lua &quot;longstring&quot; tokens use the existing <code>STYLE_STRING</code> style instead of defining a new one.</p>
+<h4 id="example-styles">Example Styles</h4>
+<p>Defining styles is pretty straightforward. An empty style that inherits the default theme settings is simply an empty string:</p>
+<pre><code> local style_nothing = &#39;&#39;</code></pre>
+<p>A similar style but with a bold font face looks like this:</p>
+<pre><code> local style_bold = &#39;bold&#39;</code></pre>
+<p>If you want the same style, but also with an italic font face, define the new style in terms of the old one:</p>
+<pre><code> local style_bold_italic = style_bold..&#39;,italics&#39;</code></pre>
+<p>This allows you to derive new styles from predefined ones without having to rewrite them. This operation leaves the old style unchanged. Thus if you had a &quot;static variable&quot; token whose style you wanted to base off of <code>STYLE_VARIABLE</code>, it would probably look like:</p>
+<pre><code> local style_static_var = l.STYLE_VARIABLE..&#39;,italics&#39;</code></pre>
+<p>The color theme files in the <em>lexers/themes/</em> folder give more examples of style definitions.</p>
+<h3 id="token-styles">Token Styles</h3>
+<p>Lexers use the <code>_tokenstyles</code> table to assign tokens to particular styles. Recall the token definition and <code>_tokenstyles</code> table from the lexer template:</p>
+<pre><code> local ws = token(l.WHITESPACE, l.space^1)
+
+ ...
+
+ M._tokenstyles = {
+
+ }</code></pre>
+<p>Why is a style not assigned to the <code>WHITESPACE</code> token? As mentioned earlier, lexers automatically associate tokens that use predefined token names with a particular style. Only tokens with custom token names need manual style associations. As an example, consider a custom whitespace token:</p>
+<pre><code> local ws = token(&#39;custom_whitespace&#39;, l.space^1)</code></pre>
+<p>Assigning a style to this token looks like:</p>
+<pre><code> M._tokenstyles = {
+   custom_whitespace = l.STYLE_WHITESPACE
+ }</code></pre>
+<p>Do not confuse token names with rule names. They are completely different entities. In the example above, the lexer assigns the &quot;custom_whitespace&quot; token the existing style for <code>WHITESPACE</code> tokens. If instead you want to color the background of whitespace a shade of grey, it might look like:</p>
+<pre><code> local custom_style = l.STYLE_WHITESPACE..&#39;,back:$(color.grey)&#39;
+ M._tokenstyles = {
+   custom_whitespace = custom_style
+ }</code></pre>
+<p>Notice that the lexer peforms Scintilla/SciTE-style &quot;$()&quot; property expansion. You may also use &quot;%()&quot;. Remember to refrain from assigning specific colors in styles, but in this case, all user color themes probably define the &quot;color.grey&quot; property.</p>
+<h3 id="line-lexers">Line Lexers</h3>
+<p>By default, lexers match the arbitrary chunks of text passed to them by Scintilla. These chunks may be a full document, only the visible part of a document, or even just portions of lines. Some lexers need to match whole lines. For example, a lexer for the output of a file &quot;diff&quot; needs to know if the line started with a '+' or '-' and then style the entire line accordingly. To indicate that your lexer matches by line, use the <code>_LEXBYLINE</code> field:</p>
+<pre><code> M._LEXBYLINE = true</code></pre>
+<p>Now the input text for the lexer is a single line at a time. Keep in mind that line lexers do not have the ability to look ahead at subsequent lines.</p>
+<h3 id="embedded-lexers">Embedded Lexers</h3>
+<p>Lexers embed within one another very easily, requiring minimal effort. In the following sections, the lexer being embedded is called the &quot;child&quot; lexer and the lexer a child is being embedded in is called the &quot;parent&quot;. For example, consider an HTML lexer and a CSS lexer. Either lexer stands alone for styling their respective HTML and CSS files. However, CSS can be embedded inside HTML. In this specific case, the CSS lexer is the &quot;child&quot; lexer with the HTML lexer being the &quot;parent&quot;. Now consider an HTML lexer and a PHP lexer. This sounds a lot like the case with CSS, but there is a subtle difference: PHP <em>embeds itself</em> into HTML while CSS is <em>embedded in</em> HTML. This fundamental difference results in two types of embedded lexers: a parent lexer that embeds other child lexers in it (like HTML embedding CSS), and a child lexer that embeds itself within a parent lexer (like PHP embedding itself in HTML).</p>
+<h4 id="parent-lexer">Parent Lexer</h4>
+<p>Before embedding a child lexer into a parent lexer, the parent lexer needs to load the child lexer. This is done with the <a href="#load"><code>load()</code></a> function. For example, loading the CSS lexer within the HTML lexer looks like:</p>
+<pre><code> local css = l.load(&#39;css&#39;)</code></pre>
+<p>The next part of the embedding process is telling the parent lexer when to switch over to the child lexer and when to switch back. The lexer refers to these indications as the &quot;start rule&quot; and &quot;end rule&quot;, respectively, and are just LPeg patterns. Continuing with the HTML/CSS example, the transition from HTML to CSS is when the lexer encounters a &quot;style&quot; tag with a &quot;type&quot; attribute whose value is &quot;text/css&quot;:</p>
+<pre><code> local css_tag = P(&#39;&lt;style&#39;) * P(function(input, index)
+   if input:find(&#39;^[^&gt;]+type=&quot;text/css&quot;&#39;, index) then
+     return index
+   end
+ end)</code></pre>
+<p>This pattern looks for the beginning of a &quot;style&quot; tag and searches its attribute list for the text &quot;<code>type=&quot;text/css&quot;</code>&quot;. (In this simplified example, the Lua pattern does not consider whitespace between the '=' nor does it consider that using single quotes is valid.) If there is a match, the functional pattern returns a value instead of <code>nil</code>. In this case, the value returned does not matter because we ultimately want to style the &quot;style&quot; tag as an HTML tag, so the actual start rule looks like this:</p>
+<pre><code> local css_start_rule = #css_tag * tag</code></pre>
+<p>Now that the parent knows when to switch to the child, it needs to know when to switch back. In the case of HTML/CSS, the switch back occurs when the lexer encounters an ending &quot;style&quot; tag, though the lexer should still style the tag as an HTML tag:</p>
+<pre><code> local css_end_rule = #P(&#39;&lt;/style&gt;&#39;) * tag</code></pre>
+<p>Once the parent loads the child lexer and defines the child's start and end rules, it embeds the child with the <a href="#embed_lexer"><code>embed_lexer()</code></a> function:</p>
+<pre><code> l.embed_lexer(M, css, css_start_rule, css_end_rule)</code></pre>
+<p>The first parameter is the parent lexer object to embed the child in, which in this case is <code>M</code>. The other three parameters are the child lexer object loaded earlier followed by its start and end rules.</p>
+<h4 id="child-lexer">Child Lexer</h4>
+<p>The process for instructing a child lexer to embed itself into a parent is very similar to embedding a child into a parent: first, load the parent lexer into the child lexer with the <a href="#load"><code>load()</code></a> function and then create start and end rules for the child lexer. However, in this case, swap the lexer object arguments to <a href="#embed_lexer"><code>embed_lexer()</code></a>. For example, in the PHP lexer:</p>
+<pre><code> local html = l.load(&#39;html&#39;)
+ local php_start_rule = token(&#39;php_tag&#39;, &#39;&lt;?php &#39;)
+ local php_end_rule = token(&#39;php_tag&#39;, &#39;?&gt;&#39;)
+ l.embed_lexer(html, M, php_start_rule, php_end_rule)</code></pre>
+<h2 id="code-folding">Code Folding</h2>
+<p>When reading source code, it is occasionally helpful to temporarily hide blocks of code like functions, classes, comments, etc. This is the concept of &quot;folding&quot;. In the Textadept and SciTE editors for example, little indicators in the editor margins appear next to code that can be folded at places called &quot;fold points&quot;. When the user clicks an indicator, the editor hides the code associated with the indicator until the user clicks the indicator again. The lexer specifies these fold points and what code exactly to fold.</p>
+<p>The fold points for most languages occur on keywords or character sequences. Examples of fold keywords are &quot;if&quot; and &quot;end&quot; in Lua and examples of fold character sequences are '{', '}', &quot;/*&quot;, and &quot;*/&quot; in C for code block and comment delimiters, respectively. However, these fold points cannot occur just anywhere. For example, lexers should not recognize fold keywords that appear within strings or comments. The lexer's <code>_foldsymbols</code> table allows you to conveniently define fold points with such granularity. For example, consider C:</p>
+<pre><code> M._foldsymbols = {
+   [l.OPERATOR] = {[&#39;{&#39;] = 1, [&#39;}&#39;] = -1},
+   [l.COMMENT] = {[&#39;/*&#39;] = 1, [&#39;*/&#39;] = -1},
+   _patterns = {&#39;[{}]&#39;, &#39;/%*&#39;, &#39;%*/&#39;}
+ }</code></pre>
+<p>The first assignment states that any '{' or '}' that the lexer recognized as an <code>OPERATOR</code> token is a fold point. The integer <code>1</code> indicates the match is a beginning fold point and <code>-1</code> indicates the match is an ending fold point. Likewise, the second assignment states that any &quot;/*&quot; or &quot;*/&quot; that the lexer recognizes as part of a <code>COMMENT</code> token is a fold point. The lexer does not consider any occurences of these characters outside their defined tokens (such as in a string) as fold points. Finally, every <code>_foldsymbols</code> table must have a <code>_patterns</code> field that contains a list of <a href="http://www.lua.org/manual/5.2/manual.html#6.4.1">Lua patterns</a> that match fold points. If the lexer encounters text that matches one of those patterns, the lexer looks up the matched text in its token's table to determine whether or not the text is a fold point. In the example above, the first Lua pattern matches any '{' or '}' characters. When the lexer comes across one of those characters, it checks if the match is an <code>OPERATOR</code> token. If so, the lexer identifies the match as a fold point. The same idea applies for the other patterns. (The '%' is in the other patterns because '*' is a special character in Lua patterns that needs escaping.) How do you specify fold keywords? Here is an example for Lua:</p>
+<pre><code> M._foldsymbols = {
+   [l.KEYWORD] = {
+     [&#39;if&#39;] = 1, [&#39;do&#39;] = 1, [&#39;function&#39;] = 1,
+     [&#39;end&#39;] = -1, [&#39;repeat&#39;] = 1, [&#39;until&#39;] = -1
+   },
+   _patterns = {&#39;%l+&#39;}
+ }</code></pre>
+<p>Any time the lexer encounters a lower case word, if that word is a <code>KEYWORD</code> token and in the associated list of fold points, the lexer identifies the word as a fold point.</p>
+<p>If your lexer needs to do some additional processing to determine if a match is a fold point, assign a function that returns an integer. Returning <code>1</code> or <code>-1</code> indicates the match is a fold point. Returning <code>0</code> indicates it is not. For example:</p>
+<pre><code> local function fold_strange_token(text, pos, line, s, match)
+   if ... then
+     return 1 -- beginning fold point
+   elseif ... then
+     return -1 -- ending fold point
+   end
+   return 0
+ end
+
+ M._foldsymbols = {
+   [&#39;strange_token&#39;] = {[&#39;|&#39;] = fold_strange_token},
+   _patterns = {&#39;|&#39;}
+ }</code></pre>
+<p>Any time the lexer encounters a '|' that is a &quot;strange_token&quot;, it calls the <code>fold_strange_token</code> function to determine if '|' is a fold point. The lexer calls these functions with the following arguments: the text to identify fold points in, the beginning position of the current line in the text to fold, the current line's text, the position in the current line the matched text starts at, and the matched text itself.</p>
+<h2 id="using-lexers">Using Lexers</h2>
+<h3 id="textadept">Textadept</h3>
+<p>Put your lexer in your <em>~/.textadept/lexers/</em> directory so you do not overwrite it when upgrading Textadept. Also, lexers in this directory override default lexers. Thus, Textadept loads a user <em>lua</em> lexer instead of the default <em>lua</em> lexer. This is convenient for tweaking a default lexer to your liking. Then add a <a href="_M.textadept.file_types.html">file type</a> for your lexer if necessary.</p>
+<h3 id="scite">SciTE</h3>
+<p>Create a <em>.properties</em> file for your lexer and <code>import</code> it in either your <em>SciTEUser.properties</em> or <em>SciTEGlobal.properties</em>. The contents of the <em>.properties</em> file should contain:</p>
+<pre><code> file.patterns.[lexer_name]=[file_patterns]
+ lexer.$(file.patterns.[lexer_name])=[lexer_name]</code></pre>
+<p>where <code>[lexer_name]</code> is the name of your lexer (minus the <em>.lua</em> extension) and <code>[file_patterns]</code> is a set of file extensions to use your lexer for.</p>
+<p>Please note that Lua lexers ignore any styling information in <em>.properties</em> files. Your theme file in the <em>lexers/themes/</em> directory contains styling information.</p>
+<h2 id="considerations">Considerations</h2>
+<h3 id="performance">Performance</h3>
+<p>There might be some slight overhead when initializing a lexer, but loading a file from disk into Scintilla is usually more expensive. On modern computer systems, I see no difference in speed between LPeg lexers and Scintilla's C++ ones. Optimize lexers for speed by re-arranging rules in the <code>_rules</code> table so that the most common rules match first. Do keep in mind that order matters for similar rules.</p>
+<h3 id="limitations">Limitations</h3>
+<p>Embedded preprocessor languages like PHP cannot completely embed in their parent languages in that the parent's tokens do not support start and end rules. This mostly goes unnoticed, but code like</p>
+<pre><code> &lt;div id=&quot;&lt;?php echo $id; ?&gt;&quot;&gt;</code></pre>
+<p>or</p>
+<pre><code> &lt;div &lt;?php if ($odd) { echo &#39;class=&quot;odd&quot;&#39;; } ?&gt;&gt;</code></pre>
+<p>will not style correctly.</p>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>Errors in lexers can be tricky to debug. Lexers print Lua errors to <code>io.stderr</code> and <code>_G.print()</code> statements to <code>io.stdout</code>. Running your editor from a terminal is the easiest way to see errors as they occur.</p>
+<h3 id="risks">Risks</h3>
+<p>Poorly written lexers have the ability to crash Scintilla (and thus its containing application), so unsaved data might be lost. However, I have only observed these crashes in early lexer development, when syntax errors or pattern errors are present. Once the lexer actually starts styling text (either correctly or incorrectly, it does not matter), I have not observed any crashes.</p>
+<h3 id="acknowledgements">Acknowledgements</h3>
+<p>Thanks to Peter Odding for his <a href="http://lua-users.org/lists/lua-l/2007-04/msg00116.html">lexer post</a> on the Lua mailing list that inspired me, and thanks to Roberto Ierusalimschy for LPeg.</p>
+<dl>
+<dt>LEXERPATH (string)</dt>
+<dd>The path used to search for a lexer to load.
+</dd>
+<dd>Identical in format to Lua's <code>package.path</code> string.
+</dd>
+<dd>The default value is <code>package.path</code>.
+</dd>
+<dt>DEFAULT (string)</dt>
+<dd>The token name for default tokens.
+</dd>
+<dt>WHITESPACE (string)</dt>
+<dd>The token name for whitespace tokens.
+</dd>
+<dt>COMMENT (string)</dt>
+<dd>The token name for comment tokens.
+</dd>
+<dt>STRING (string)</dt>
+<dd>The token name for string tokens.
+</dd>
+<dt>NUMBER (string)</dt>
+<dd>The token name for number tokens.
+</dd>
+<dt>KEYWORD (string)</dt>
+<dd>The token name for keyword tokens.
+</dd>
+<dt>IDENTIFIER (string)</dt>
+<dd>The token name for identifier tokens.
+</dd>
+<dt>OPERATOR (string)</dt>
+<dd>The token name for operator tokens.
+</dd>
+<dt>ERROR (string)</dt>
+<dd>The token name for error tokens.
+</dd>
+<dt>PREPROCESSOR (string)</dt>
+<dd>The token name for preprocessor tokens.
+</dd>
+<dt>CONSTANT (string)</dt>
+<dd>The token name for constant tokens.
+</dd>
+<dt>VARIABLE (string)</dt>
+<dd>The token name for variable tokens.
+</dd>
+<dt>FUNCTION (string)</dt>
+<dd>The token name for function tokens.
+</dd>
+<dt>CLASS (string)</dt>
+<dd>The token name for class tokens.
+</dd>
+<dt>TYPE (string)</dt>
+<dd>The token name for type tokens.
+</dd>
+<dt>LABEL (string)</dt>
+<dd>The token name for label tokens.
+</dd>
+<dt>REGEX (string)</dt>
+<dd>The token name for regex tokens.
+</dd>
+<dt>STYLE_CLASS (string)</dt>
+<dd>The style typically used for class definitions.
+</dd>
+<dt>STYLE_COMMENT (string)</dt>
+<dd>The style typically used for code comments.
+</dd>
+<dt>STYLE_CONSTANT (string)</dt>
+<dd>The style typically used for constants.
+</dd>
+<dt>STYLE_ERROR (string)</dt>
+<dd>The style typically used for erroneous syntax.
+</dd>
+<dt>STYLE_FUNCTION (string)</dt>
+<dd>The style typically used for function definitions.
+</dd>
+<dt>STYLE_KEYWORD (string)</dt>
+<dd>The style typically used for language keywords.
+</dd>
+<dt>STYLE_LABEL (string)</dt>
+<dd>The style typically used for labels.
+</dd>
+<dt>STYLE_NUMBER (string)</dt>
+<dd>The style typically used for numbers.
+</dd>
+<dt>STYLE_OPERATOR (string)</dt>
+<dd>The style typically used for operators.
+</dd>
+<dt>STYLE_REGEX (string)</dt>
+<dd>The style typically used for regular expression strings.
+</dd>
+<dt>STYLE_STRING (string)</dt>
+<dd>The style typically used for strings.
+</dd>
+<dt>STYLE_PREPROCESSOR (string)</dt>
+<dd>The style typically used for preprocessor statements.
+</dd>
+<dt>STYLE_TYPE (string)</dt>
+<dd>The style typically used for static types.
+</dd>
+<dt>STYLE_VARIABLE (string)</dt>
+<dd>The style typically used for variables.
+</dd>
+<dt>STYLE_WHITESPACE (string)</dt>
+<dd>The style typically used for whitespace.
+</dd>
+<dt>STYLE_EMBEDDED (string)</dt>
+<dd>The style typically used for embedded code.
+</dd>
+<dt>STYLE_IDENTIFIER (string)</dt>
+<dd>The style typically used for identifier words.
+</dd>
+<dt>STYLE_DEFAULT (string)</dt>
+<dd>The style all styles are based off of.
+</dd>
+<dt>STYLE_LINENUMBER (string)</dt>
+<dd>The style used for all margins except fold margins.
+</dd>
+<dt>STYLE_BRACELIGHT (string)</dt>
+<dd>The style used for highlighted brace characters.
+</dd>
+<dt>STYLE_BRACEBAD (string)</dt>
+<dd>The style used for unmatched brace characters.
+</dd>
+<dt>STYLE_CONTROLCHAR (string)</dt>
+<dd>The style used for control characters.
+</dd>
+<dd>Color attributes are ignored.
+</dd>
+<dt>STYLE_INDENTGUIDE (string)</dt>
+<dd>The style used for indentation guides.
+</dd>
+<dt>STYLE_CALLTIP (string)</dt>
+<dd>The style used by call tips if <code>buffer.call_tip_use_style</code> is set.
+</dd>
+<dd>Only the font name, size, and color attributes are used.
+</dd>
+<dt>any (pattern)</dt>
+<dd>A pattern that matches any single character.
+</dd>
+<dt>ascii (pattern)</dt>
+<dd>A pattern that matches any ASCII character (codes 0 to 127).
+</dd>
+<dt>extend (pattern)</dt>
+<dd>A pattern that matches any ASCII extended character (codes 0 to 255).
+</dd>
+<dt>alpha (pattern)</dt>
+<dd>A pattern that matches any alphabetic character ('A'-'Z', 'a'-'z').
+</dd>
+<dt>digit (pattern)</dt>
+<dd>A pattern that matches any digit ('0'-'9').
+</dd>
+<dt>alnum (pattern)</dt>
+<dd>A pattern that matches any alphanumeric character ('A'-'Z', 'a'-'z',
+</dd>
+<dd><pre><code> &#39;0&#39;-&#39;9&#39;).</code></pre>
+</dd>
+<dt>lower (pattern)</dt>
+<dd>A pattern that matches any lower case character ('a'-'z').
+</dd>
+<dt>upper (pattern)</dt>
+<dd>A pattern that matches any upper case character ('A'-'Z').
+</dd>
+<dt>xdigit (pattern)</dt>
+<dd>A pattern that matches any hexadecimal digit ('0'-'9', 'A'-'F', 'a'-'f').
+</dd>
+<dt>cntrl (pattern)</dt>
+<dd>A pattern that matches any control character (ASCII codes 0 to 31).
+</dd>
+<dt>graph (pattern)</dt>
+<dd>A pattern that matches any graphical character ('!' to '~').
+</dd>
+<dt>print (pattern)</dt>
+<dd>A pattern that matches any printable character (' ' to '~').
+</dd>
+<dt>punct (pattern)</dt>
+<dd>A pattern that matches any punctuation character ('!' to '/', ':' to '@',
+</dd>
+<dd>'[' to ''', '{' to '~').
+</dd>
+<dt>space (pattern)</dt>
+<dd>A pattern that matches any whitespace character ('', '', '', '',
+</dd>
+<dd>'', space).
+</dd>
+<dt>newline (pattern)</dt>
+<dd>A pattern that matches any set of end of line characters.
+</dd>
+<dt>nonnewline (pattern)</dt>
+<dd>A pattern that matches any single, non-newline character.
+</dd>
+<dt>nonnewline_esc (pattern)</dt>
+<dd>A pattern that matches any single, non-newline character or any set of end
+</dd>
+<dd>of line characters escaped with ''.
+</dd>
+<dt>dec_num (pattern)</dt>
+<dd>A pattern that matches a decimal number.
+</dd>
+<dt>hex_num (pattern)</dt>
+<dd>A pattern that matches a hexadecimal number.
+</dd>
+<dt>oct_num (pattern)</dt>
+<dd>A pattern that matches an octal number.
+</dd>
+<dt>integer (pattern)</dt>
+<dd>A pattern that matches either a decimal, hexadecimal, or octal number.
+</dd>
+<dt>float (pattern)</dt>
+<dd>A pattern that matches a floating point number.
+</dd>
+<dt>word (pattern)</dt>
+<dd>A pattern that matches a typical word. Words begin with a letter or
+</dd>
+<dd>underscore and consist of alphanumeric and underscore characters.
+</dd>
+<dt>FOLD_BASE (number)</dt>
+<dd>The initial (root) fold level.
+</dd>
+<dt>FOLD_BLANK (number)</dt>
+<dd>Flag indicating that the line is blank.
+</dd>
+<dt>FOLD_HEADER (number)</dt>
+<dd>Flag indicating the line is fold point.
+</dd>
+<dt>fold_level (table, Read-only)</dt>
+<dd>Table of fold level bit-masks for line numbers starting from zero.
+</dd>
+<dd>Fold level masks are composed of an integer level combined with any of the
+</dd>
+<dd>following bits:
+</dd>
+<dd><ul>
+<li><code>lexer.FOLDBASE</code></li>
+</ul>
+</dd>
+<dd><pre><code> The initial fold level.</code></pre>
+</dd>
+<dd><ul>
+<li><code>lexer.FOLD_BLANK</code></li>
+</ul>
+</dd>
+<dd><pre><code> The line is blank.</code></pre>
+</dd>
+<dd><ul>
+<li><code>lexer.FOLD_HEADER</code></li>
+</ul>
+</dd>
+<dd><pre><code> The line is a header, or fold point.</code></pre>
+</dd>
+<dt>indent_amount (table, Read-only)</dt>
+<dd>Table of indentation amounts in character columns, for line numbers
+</dd>
+<dd>starting from zero.
+</dd>
+<dt>property (table)</dt>
+<dd>Map of key-value string pairs.
+</dd>
+<dt>property_expanded (table, Read-only)</dt>
+<dd>Map of key-value string pairs with <code>$()</code> and <code>%()</code> variable replacement
+</dd>
+<dd>performed in values.
+</dd>
+<dt>property_int (table, Read-only)</dt>
+<dd>Map of key-value pairs with values interpreted as numbers, or <code>0</code> if not
+</dd>
+<dd>found.
+</dd>
+<dt>style_at (table, Read-only)</dt>
+<dd>Table of style names at positions in the buffer starting from zero.
+</dd>
+</dl>
 				</section>
 			</div>
 			<div class="container">

@@ -81,12 +81,14 @@
 	* [libexif]
 * GUI
 	* [cplayer]
+	* [box2d]
+* Code Editing
 	* [codedit]
 		* [codedit_buffer]
 		* [codedit_selection]
 		* [codedit_cursor]
 		* [codedit_view]
-	* [box2d]
+	* [lexer]
 * Colors
 	* [color]
 * Motion
@@ -98,6 +100,7 @@
 * Support Packages
 	* [luajit]
 	* [wluajit]
+	* [lua-headers]
 	* [pixman]
 * Experiments
 	* [npapi]
@@ -106,7 +109,7 @@
 
 * Notes
 	* [design of glue][glue_design]
-	* [lua & luajit tricks][lua_tricks]
+	* [lua & luajit tricks][lua-tricks]
 * Meta
 	* [luapower-git]
 	* [building luapower][building]
