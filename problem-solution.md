@@ -9,6 +9,18 @@ in putting together Lua/LuaJIT environment.
 
 On this page I will try to make the case for luapower based on its main characteristics.
 
+## LOW-TECH
+
+Being easy to use is one of the main goals of luapower. This means leveraging technologies that we already
+know and use instead of creating new ones. It means providing the lowest-tech method of acheiving any task,
+and providing a more powerful way only as an alternative:
+
+  * choosing modules: online list (searchable, sortable), offline manifest files
+  * downloading modules: http download or git
+  * installing: download & unzip or [command line][luapower-git]
+  * documentation: online browsing or offline grepping
+  * building: shell scripts that are simple and known to get binaries on a prescribed environment
+
 ## PORTABLE
 
 The work tree can be moved around from system to system, and even between different platforms, and just work.
@@ -24,7 +36,11 @@ Finally the work tree also works as deployment tree, thus there's no deployment 
 
 ## MODULAR
 
-Each Lua module has its own life and death, its own repo, commit history, issues and forks and pull requests.
+Each Lua module has its own life and death, its own repository, commit history, version history (git tags),
+issues and forks and pull requests.
+
+Additionally, luapower modules from different people can be put together to build an entire app by just copying
+directories over each other, or by cloning repositories.
 
 ## ON GITHUB
 

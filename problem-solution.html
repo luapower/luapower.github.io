@@ -54,13 +54,23 @@
 					<span id="module_info"></span>
 					<p>Luapower is a custom selection of C libraries chosen for speed, portability, API stability and a free license. On top of that, a growing collection of ffi bindings and Lua modules, all packaged to minimize the friction in putting together Lua/LuaJIT environment.</p>
 <p>On this page I will try to make the case for luapower based on its main characteristics.</p>
+<h2 id="low-tech">LOW-TECH</h2>
+<p>Being easy to use is one of the main goals of luapower. This means leveraging technologies that we already know and use instead of creating new ones. It means providing the lowest-tech method of acheiving any task, and providing a more powerful way only as an alternative:</p>
+<ul>
+<li>choosing modules: online list (searchable, sortable), offline manifest files</li>
+<li>downloading modules: http download or git</li>
+<li>installing: download &amp; unzip or <a href="luapower-git.html">command line</a></li>
+<li>documentation: online browsing or offline grepping</li>
+<li>building: shell scripts that are simple and known to get binaries on a prescribed environment</li>
+</ul>
 <h2 id="portable">PORTABLE</h2>
 <p>The work tree can be moved around from system to system, and even between different platforms, and just work.</p>
 <p>This means including the binary dependencies that the code was actually tested against, instead of relying on the OS ones, and making sure that Lua loads the local ones over the system ones.</p>
 <p>It also means putting together all binaries for all platforms in the same tree (no branches). If space is really a problem (android) then deleting other platform directories just before packaging the app is easier than checking out per-platform &quot;binary&quot; branches for each module and thus needing multiple work trees.</p>
 <p>Finally the work tree also works as deployment tree, thus there's no deployment step, unless you really want to.</p>
 <h2 id="modular">MODULAR</h2>
-<p>Each Lua module has its own life and death, its own repo, commit history, issues and forks and pull requests.</p>
+<p>Each Lua module has its own life and death, its own repository, commit history, version history (git tags), issues and forks and pull requests.</p>
+<p>Additionally, luapower modules from different people can be put together to build an entire app by just copying directories over each other, or by cloning repositories.</p>
 <h2 id="on-github">ON GITHUB</h2>
 <p>To me the biggest barrier to getting involved in projects online is the friction that our communication tools inflict on us. This goes for anything from correcting a typo on wikipedia to submitting a patch to the Linux kernel. Github is just one way to lower that barrier for coding.</p>
 <h2 id="no-directories">NO DIRECTORIES</h2>

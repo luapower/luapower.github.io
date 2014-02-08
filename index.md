@@ -19,14 +19,15 @@ tagline:  Lua, JIT, batteries
 
 ## LUA POWER IS
 
-  * __PORTABLE__: no install, just unzip and run
-  * __MODULAR__: separate repo for each module
-  * __ON GITHUB__: fork/pull-request workflow
+  * __LOW-TECH__: based on http, zip, and git
+  * __PORTABLE__: no install, no deploy, just run
+  * __MODULAR__: each module is a separate project
+  * __ON GITHUB__: fork/pull-request-based collaboration
   * __NO DIRECTORIES__: all modules in a single directory
   * __BINARIES__: get code running in minutes
   * __SOURCES & BUILD SCRIPTS__: upgrade it yourself
   * __PACKAGE DATABASE__: self-maintaining, auto-generated
-  * __DOCUMENTED__: online & offline, based on pandoc-enhanced markdown
+  * __DOCUMENTED__: online browsing or offline grepping; powered by pandoc
   * __FREE(\*)__: no-strings attached
 
 > (\*) My code is in public domain (PD) as I do not support the copyright law.
