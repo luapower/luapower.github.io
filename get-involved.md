@@ -45,10 +45,11 @@ Docs should start with a yaml header:
 	tagline: defeats scammers
 	---
 
-  * the `project` field should match the git project's name (makes the github buttons appear).
+  * the `project` field should match the git project's name (if you want the github buttons to appear).
   * `platforms: platform1, ...` should be added for Lua packages that are platform-specific
   but don't have a C component (eg. [winapi]; for packages with a C component, adding the build scripts is enough
   to figure out the supported platforms).
+  * a good, short tagline is important for figuring out what the module does when browsing the module list
 
 You don't have to make a doc for each submodule if you don't have much to document for it.
 
@@ -147,7 +148,17 @@ The way you add modules to luapower.com is:
 	   * ask me to add you as an admin
 		* you will periodically push and update the website
 
-### What to add
+#### The Name
+
+Before making a new luapower module, please carefully consider:
+
+  * what name you plan to use for your module
+  * how your module relates to other modules
+
+Choosing a good name is important if you want people to find your module on luapower
+and understand (from the name alone) what it does.
+
+#### What to add
 
 Ideally, your lib has:
 
@@ -164,12 +175,13 @@ Ideally, your lib is not:
   * a __lowest common denominator library__ - unless direct access to the backends is included too
   * an __alternative take__ on another binding in the database (one should win)
 
-> It might be that your idea of a good package to add to luapower diverges too much from mine, in which case I would
-politely refuse to add your package to luapower. But here's where you can have your cake and eat it too.
+> It might be that your idea of a good package to add to luapower diverges too much from these criteria,
+in which case I would politely refuse to add your package to luapower.
+But here's where you can have your cake and eat it too.
 
 ### 2. Forking luapower.com
 
-Luapower can be used as web _software_ for publishing Lua modules.
+Luapower can be easily forked and used as a personal website for publishing Lua modules.
 
 Luapower is composed of:
 

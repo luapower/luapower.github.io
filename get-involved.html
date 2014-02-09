@@ -96,8 +96,9 @@ project: spheroboom
 tagline: defeats scammers
 ---</code></pre>
 <ul>
-<li>the <code>project</code> field should match the git project's name (makes the github buttons appear).</li>
+<li>the <code>project</code> field should match the git project's name (if you want the github buttons to appear).</li>
 <li><code>platforms: platform1, ...</code> should be added for Lua packages that are platform-specific but don't have a C component (eg. <a href="winapi.html">winapi</a>; for packages with a C component, adding the build scripts is enough to figure out the supported platforms).</li>
+<li>a good, short tagline is important for figuring out what the module does when browsing the module list</li>
 </ul>
 <p>You don't have to make a doc for each submodule if you don't have much to document for it.</p>
 <h3 id="the-what-file">The <code>WHAT</code> file</h3>
@@ -173,7 +174,14 @@ tagline: defeats scammers
 </ul></li>
 </ul></li>
 </ul>
-<h3 id="what-to-add">What to add</h3>
+<h4 id="the-name">The Name</h4>
+<p>Before making a new luapower module, please carefully consider:</p>
+<ul>
+<li>what name you plan to use for your module</li>
+<li>how your module relates to other modules</li>
+</ul>
+<p>Choosing a good name is important if you want people to find your module on luapower and understand (from the name alone) what it does.</p>
+<h4 id="what-to-add">What to add</h4>
 <p>Ideally, your lib has:</p>
 <ul>
 <li><strong>distinction</strong> - focused problem domain</li>
@@ -190,10 +198,10 @@ tagline: defeats scammers
 <li>an <strong>alternative take</strong> on another binding in the database (one should win)</li>
 </ul>
 <blockquote>
-<p>It might be that your idea of a good package to add to luapower diverges too much from mine, in which case I would politely refuse to add your package to luapower. But here's where you can have your cake and eat it too.</p>
+<p>It might be that your idea of a good package to add to luapower diverges too much from these criteria, in which case I would politely refuse to add your package to luapower. But here's where you can have your cake and eat it too.</p>
 </blockquote>
 <h3 id="forking-luapower.com">2. Forking luapower.com</h3>
-<p>Luapower can be used as web <em>software</em> for publishing Lua modules.</p>
+<p>Luapower can be easily forked and used as a personal website for publishing Lua modules.</p>
 <p>Luapower is composed of:</p>
 <ul>
 <li>a <a href="https://github.com/luapower/luapower.github.io">static website</a> generated with pandoc templating</li>
