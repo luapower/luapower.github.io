@@ -148,32 +148,24 @@ The way you add modules to luapower.com is:
 	   * ask me to add you as an admin
 		* you will periodically push and update the website
 
-#### The Name
+#### What to add
 
-Before making a new luapower module, please carefully consider:
+Before publishing a luapower module, please carefully consider:
 
   * what name you plan to use for your module
   * how your module relates to other modules
 
 Choosing a good name is important if you want people to find your module on luapower
-and understand (from the name alone) what it does.
+and understand (from the name alone) what it does. Likewise, it's a good idea to be sure that your module
+is doing something new or at least different (and hopefully better) than something already on luapower.
 
-#### What to add
-
-Ideally, your lib has:
+Ideally, your module has:
 
   * __distinction__ - focused problem domain
   * __completeness__ - exhaustive of the problem domain
-  * __API documentation__ - so it can be integrated into the website
+  * __API documentation__ - so it can be integrated into luapower.com
   * __test and/or demo__ - so it can be seen to work
   * __a non-viral license__ - so it doesn't impose restrictions on _other_ modules
-
-Ideally, your lib is not:
-
-  * a __glue library__ - lack of focus (by design)
-  * a __language abstraction library__ - except DSLs (discuss)
-  * a __lowest common denominator library__ - unless direct access to the backends is included too
-  * an __alternative take__ on another binding in the database (one should win)
 
 > It might be that your idea of a good package to add to luapower diverges too much from these criteria,
 in which case I would politely refuse to add your package to luapower.
