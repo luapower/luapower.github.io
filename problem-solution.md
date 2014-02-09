@@ -98,6 +98,14 @@ which reads: docs should start with a quick-ref table listing
 "function(args) -> return value ..... concise description" - chances are you'll rarely look beyound that
 once you get past the initial learning curve.
 
+## FREEDOM
+
+My code is in [public domain (PD)](http://unlicense.org/) as I [do not support][against ip] the copyright law.
+The rest is mostly free as-in non-viral, to avoid the case where one module is imposing licensing
+restrictions on _other_ modules and on your own applications.
+
+Generally speaking, violence is not a good way to solve people's problems.
+
 ## PROBLEMS STILL TO BE SOLVED
 
 ### Federation
@@ -135,4 +143,7 @@ Currently there's no way to load a script/app (as opposed to a module) and track
 actually running it, which could have side-effects. Thus the dependencies of demos and test units are not
 listed and must be figured by the run-check-error cycle or by looking at the code (no big deal to look at the
 top of the file for require calls though).
+
+
+[against ip]:  http://mises.org/document/3582
 

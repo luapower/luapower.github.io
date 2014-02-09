@@ -28,10 +28,9 @@ tagline:  Lua, JIT, batteries
   * __SOURCES & BUILD SCRIPTS__: upgrade it yourself
   * __PACKAGE DATABASE__: self-maintaining, auto-generated
   * __DOCUMENTED__: online browsing or offline grepping; powered by pandoc
-  * __FREE(\*)__: no-strings attached
+  * __FREE__: no-strings attached
 
-> (\*) My code is in public domain (PD) as I do not support the copyright law.
-The rest is mostly free as-in non-viral, but licenses are listed so you can choose for yourself.
+> Read [more][problem-solution] about the motivations behind these choices.
 
 ## Get Started
 
