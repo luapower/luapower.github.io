@@ -3,6 +3,16 @@ title:    get involved
 tagline:  I want YOU for LUA POWER
 ---
 
+> NOTE: This page is all about rules, so necessarily you will have issues with it.
+But whether or not you agree with the decisions taken, please recognize that
+_some_ decisions had to be taken, and _some_ conventions had to be created, 
+in order to achieve specific benefits, and that's the only reason for creating
+these conventions. I fully recognize and respect the fact everybody has his/hers 
+own rules and work flow and coding style, which can only accidentally coincide with mine,
+and I'd rather support individual freedom than enforce popular convention.
+Please have this in mind when reading upon these rules, and remember that they 
+are open for evaluation and improvement. As always, feedback is welcome and appreciated.
+
 ## Anatomy of a package
 
 There are 5 types of luapower packages:
@@ -17,8 +27,8 @@ There are 5 types of luapower packages:
 ### The Layout
 
   * main module: `foo.lua`
-  * submodule: `foo_bar.lua` and if you really have to, `foo/bar.lua`
-  * ffi cdef module: `foo_h.lua` (ok to embed cdefs in `foo.lua` for small APIs)
+  * submodule: `foo_bar.lua` but `foo/bar.lua` is fine too
+  * ffi cdef module: `foo_h.lua` 
   * test program: `foo_test.lua`
   * demo: `foo_demo.lua`
   * documentation: `foo.md`, `foo_bar.md` (pandoc markdown)
@@ -71,7 +81,7 @@ The WHAT file can also be used to describe Lua modules that are developed outsid
 
 This is the .gitignore file used for excluding files between packages so that files in one packages don't show
 as untracked files in other package. Another way to think of it is the file used for reserving name-space in the
-luapower directory layout.
+luapower directory layout. 
 
 Example:
 
@@ -89,10 +99,17 @@ Example:
   crap on the other hand is just bad taste - IMHO).
   * adding a comment on top of the `foo_h.lua` file describing the origin (which files? which version???)
   and process (cpp? by hand?) used for generating the file adds confidence that the C API is complete and updated.
-  * don't use `module()` if you can help it (we had that debate too many times already)
-  * use `ffi.load()` without paths, custom names or version (let the OS find the lib; the only compatible version
-  is that which you tested the binding against and you included in the package)
-
+  * I don't use `module()`, but if that's what you like, that's fine.
+  * my code is indented with tabs, and alignmenment inside the line is done with spaces, 
+  in recognition of the fact that tabsize is a personal preference and it should not be enforced upon people. 
+  * I use `foo_bar` instead of FooBar or fooBar.
+  * use `ffi.load()` without paths, custom names or version (let the OS find the library: this allows more 
+  freedom on how to deploy libraries; the only compatible version is that which you tested the binding against 
+  and you included in the package)
+  * the reason for putting cdefs in a separate file is because they could potentially be used 
+separately from the Lua binding or may contain types that other cdef modules need.
+  * it's ok to embed cdefs in the main module for small APIs
+  
 ### The Build Scripts
 
 Write a build script for each supported platform. Ideally, your build script is a gcc one-liner
