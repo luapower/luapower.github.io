@@ -57,7 +57,7 @@ inflict on us. This goes for anything from correcting a typo on wikipedia to sub
 Github is just one way to lower that barrier in the realm of programming.
 
 As for git, the reason for having everything under git's control all the time is basically Alan Kay's idea of
-"symmetric authoring and consumption", which says that you have to be able to edit and share back what you
+symmetric authoring and consumption, which says that you have to be able to edit and share back what you
 consume on the spot. The combination of a code editor and a VCS is the closest we have today to that idea
 as far as coding goes (:crying:).
 
