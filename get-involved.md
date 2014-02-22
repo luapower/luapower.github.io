@@ -97,18 +97,17 @@ Example:
   * adding at least a small comment on the first line of every Lua file with a short tagline (what the module does),
   author and license can be a huge barrier-remover towards approaching your code (adding a full-screen of legal
   crap on the other hand is just bad taste - IMHO).
-  * adding a comment on top of the `foo_h.lua` file describing the origin (which files? which version???)
+  * adding a comment on top of the `foo_h.lua` file describing the origin (which files? which version?)
   and process (cpp? by hand?) used for generating the file adds confidence that the C API is complete and updated.
   * I don't use `module()`, but if that's what you like, that's fine.
   * my code is indented with tabs, and alignmenment inside the line is done with spaces,
   in recognition of the fact that tabsize is a personal preference and it should not be enforced upon people.
   * I use `foo_bar` instead of FooBar or fooBar.
-  * use `ffi.load()` without paths, custom names or version (let the OS find the library: this allows more
-  freedom on how to deploy libraries; the only compatible version is that which you tested the binding against
-  and you included in the package)
-  * the reason for putting cdefs in a separate file is because they could potentially be used
-separately from the Lua binding or may contain types that other cdef modules need.
-  * it's ok to embed cdefs in the main module for small APIs
+  * calling `ffi.load()` without paths, custom names or version keeps the module away from any decision regarding
+  how and where the library is to be found, which in turn this allows for more freedom on how to deploy libraries.
+  * the reason for putting cdefs in a separate file is because they could potentially be used separately from
+  the Lua binding or may contain types that other cdef modules might need. it's ok to embed cdefs in the main
+  module for small APIs though, if these are use cases are unlikely.
 
 ### The Build Scripts
 
