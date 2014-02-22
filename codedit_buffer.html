@@ -280,11 +280,11 @@
 </tr>
 <tr class="even">
 <td align="left"><code>buf:next_tabful_col(line, col, [restrict_eol]) -&gt; col</code></td>
-<td align="left">find tabful boundaries. a tabful is the whitespace</td>
+<td align="left">find tabful boundaries. a tabful is the whitespace between two tabstops. the tabful column after some char is either the next tabstop or the first non-space char after the prev. char or the char after the last col, whichever comes first, and if after the given char.</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>buf:prev_tabful_col(line, col) -&gt; col</code></td>
-<td align="left">the tabful column before some char, which is either the prev. tabstop or the char after the prev. non-space char, whichever comes last, and if before the given char.</td>
+<td align="left">the tabful column before some char, which is either the prev. tabstop or the char after the prev. non-space char, whichever comes first, and if before the given char.</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>editing based on tabfuls</strong></td>
@@ -332,7 +332,7 @@
 </tr>
 <tr class="odd">
 <td align="left"><code>buf:save_to_file(filename)</code></td>
-<td align="left"></td>
+<td align="left">save the buffer to disk atomically</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>TODO</strong></td>

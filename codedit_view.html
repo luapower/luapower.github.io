@@ -68,7 +68,7 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="local-view_class-requirecodedit_view"><code>local view_class = require'codedit_view'</code></h2>
-<p>Codedit views deal with measuring, layouting, rendering and hit testing of codedit buffers. Rendering is done in terms of a set of primitive drawing methods, which in codedit_view are just stubs. You'll have to subclass codedit_view and implement these methods in order to have a working view.</p>
+<p>Codedit views deal with measuring, layouting, rendering and hit testing of codedit buffers. Rendering is done in terms of a set of primitive drawing methods, which in codedit_view are just stubs. You'll have to subclass codedit_view and implement these methods in order to have a working view (for subclassing you can use <a href="glue.html#inherit">glue.inherit</a> or <a href="glue.html#update">glue.update</a>).</p>
 <p><strong>NOTE:</strong> codedit_view assumes a monospace font and a fixed line height.</p>
 <h2 id="properties">Properties</h2>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--tab expansion</span>

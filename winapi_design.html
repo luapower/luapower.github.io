@@ -68,8 +68,8 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="structure">Structure</h2>
-<p>The library publishes a procedural API that mimics the windows API and an object API for creating windows and controls. Both APIs share the same namespace, which is the table returned by <code>require'winapi'</code>.</p>
-<p>Interactivity (windows message processing) is handled in the object layer since it requires keeping state. Dispatching of messages to child controls is implemented in the object layer. The object layer also provides additional features like anchor-based layouting, so there's little reason to use the procedural API directly except for say, implementing a different object API.</p>
+<p>The library publishes a procedural API that mimics the windows API, and an object API for creating windows and controls. Both APIs share the same namespace, which is the table returned by <code>require'winapi'</code>.</p>
+<p>Interactivity (windows message processing) is handled in the object layer because it needs to keep state. Dispatching of messages to child controls is implemented in the object layer. The object layer also provides additional features like anchor-based layouting. There's generally little reason to use the procedural API directly for managing windows and controls except for say, implementing a different object API.</p>
 <h2 id="scope">Scope</h2>
 <p>Current work is based on Windows 7 SDK headers, the latest available headers from Microsoft at the time of writing. Constants, macros, typedefs and function prototypes for all platforms from Windows 2000/XP on (version 0x0500 that is) are included. Obsolete ones are not included. Only wide-char API variants are included, the ANSI variants are not included. Only controls from <code>ComCtl32.dll</code> version 6 available on Windows XP and above are supported. To be able to use comctl 6, you'll need a manifest file near your <code>luajit.exe</code> (included). Note: comctl 6 is Unicode only, another reason not to bind the ANSI API.</p>
 <h2 id="the-code">The code</h2>

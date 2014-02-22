@@ -29,8 +29,7 @@
 * Databases
 	* [mysql]
 	* [fbclient]
-* Windows API
-	* [winapi]
+* [Windows API][winapi]
 	* [winapi_design]
 	* [winapi_binding]
 	* [winapi_history]

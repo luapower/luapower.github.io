@@ -3,11 +3,12 @@
 	<head>
 		<meta charset='utf-8'>
 		<title> windesigner   - winapi-based window designer </title>
-		<script src="templates/jquery.js"></script>
-		<script src="templates/jquery-cookie.js"></script>
-		<script src="templates/jquery-tablesorter.js"></script>
-		<script src="templates/strftime.js"></script>
-		<script src="templates/main.js"></script>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
 		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
 		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
 		<link rel="stylesheet" type="text/css" id="lights_css" />
@@ -34,10 +35,13 @@
 						<td style="vertical-align: middle;" width="100%">
 							<h1> windesigner </h1>
 							<h2> winapi-based window designer </h2>
-							<span class="doc" id="package_info">&nbsp;</span>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
 								<a href="https://github.com/luapower/windesigner" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
 								</td></tr><tr><td>
 								<a href="https://github.com/luapower/windesigner/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
@@ -48,15 +52,22 @@
 					</tr>
 				</table>
 												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/windesigner/issues/new" target="_blank" class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+					<a href="https://github.com/luapower/windesigner/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
 				</div>
 											</div>
 		</header>
-		<div class="container">
-			<div id="toc_container" class="toc_container doc"></div>
-			<section class="doc">
-				<span id="module_info"></span>
-				<h2 id="status">Status</h2>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-windesigner" style="background-image: url('bg/windesigner.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="status">Status</h2>
 <p>In development, see <a href="http://github.com/luapower/windesigner/blob/master/TODO.txt">todo</a>. Not active.</p>
 <h2 id="features-implemented-so-far">Features implemented so far</h2>
 <ul>
@@ -66,13 +77,14 @@
 <li>snapping to grid when moving and resizing</li>
 <li>cut, copy &amp; paste controls between windows or on the same window</li>
 </ul>
-			</section>
-		</div>
-		<div class="container">
-			<footer>
-				<div id="disqus_thread"></div>
-				<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-			</footer>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
 		</div>
 	</body>
 </html>

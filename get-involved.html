@@ -150,6 +150,10 @@ tagline: defeats scammers
 <li><code>-D&lt;name&gt;=&lt;value&gt;</code> : set a <code>#define</code></li>
 <li><code>-pthread</code> : enable pthread support (Linux only)</li>
 <li><code>-fpic</code> : PIC mode (required for 64bit)</li>
+<li><code>-DWINVER=0x501</code> : windows.h API level is Windows XP</li>
+<li><code>-DWINVER=0x502</code> : windows.h API level is Windows XP SP2</li>
+<li><code>-DWINVER=0x601</code> : windows.h API level is Windows 7</li>
+<li><code>-DWINVER=0x602</code> : windows.h API level is Windows 8</li>
 </ul>
 <h4 id="example-compile-lpeg-for-linux32">Example (compile lpeg for linux32):</h4>
 <pre><code>gcc -O2 -s -static-libgcc lpeg.c -shared -o ../../bin/linux32/clib/lpeg.so -I. -I../lua -ansi -DNDEBUG</code></pre>

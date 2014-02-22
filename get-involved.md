@@ -127,6 +127,10 @@ You only have to remember a few important gcc switches:
   * `-D<name>=<value>`				: set a `#define`
   * `-pthread`							: enable pthread support (Linux only)
   * `-fpic`								: PIC mode (required for 64bit)
+  * `-DWINVER=0x501`             : windows.h API level is Windows XP
+  * `-DWINVER=0x502`             : windows.h API level is Windows XP SP2
+  * `-DWINVER=0x601`             : windows.h API level is Windows 7
+  * `-DWINVER=0x602`             : windows.h API level is Windows 8
 
 #### Example (compile lpeg for linux32):
 
