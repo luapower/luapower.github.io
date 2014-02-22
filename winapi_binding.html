@@ -88,7 +88,7 @@
 <li>individual bits of bitmask fields can be read and set provided you define the data field and the mask field (and the prefix for the mask constants) in the struct definition.</li>
 </ul>
 <p>All in all this is a real time saver and results in self-documenting code.</p>
-<p>Btw, use lowercase with underscores for virtual field names. Use names like caption, x, y, w, h, pos, parent, etc. consistently throughout.</p>
+<p>Btw, use the lowercase-with-underscores naming convention for virtual field names. Use names like caption, x, y, w, h, pos, parent, etc. consistently throughout.</p>
 <h2 id="how-to-use-the-oo-system">How to use the OO system</h2>
 <p>The easiest way to bind a new control is to use the code of an existing control as a template. Basically, you subclass from <code>Control</code> (or a specific control, if your control is a refinement of a standard control) after you define the style bitmasks, default values, and event name mappings, if any. You override the constructor and/or any methods and define any new properties by way of getters and setters.</p>
 				</section>

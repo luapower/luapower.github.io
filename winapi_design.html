@@ -73,14 +73,16 @@
 <h2 id="scope">Scope</h2>
 <p>Current work is based on Windows 7 SDK headers, the latest available headers from Microsoft at the time of writing. Constants, macros, typedefs and function prototypes for all platforms from Windows 2000/XP on (version 0x0500 that is) are included. Obsolete ones are not included. Only wide-char API variants are included, the ANSI variants are not included. Only controls from <code>ComCtl32.dll</code> version 6 available on Windows XP and above are supported. To be able to use comctl 6, you'll need a manifest file near your <code>luajit.exe</code> (included). Note: comctl 6 is Unicode only, another reason not to bind the ANSI API.</p>
 <h2 id="the-code">The code</h2>
-<p>The code is a 4-layer cake that looks like this (from top to bottom):</p>
+<p>The code is a 4-layer pie that looks like this (from bottom to top):</p>
 <ul>
-<li>object API - actual classes for windows and controls (all files named <code>*class.lua</code>)</li>
-<li>OO system - mechanism for inheritance, instantiation and virtual properties</li>
-<li>procedural API - actual winapi wrappers</li>
-<li>ffi layer - helper functions to aid wrapping</li>
+<li><a href="winapi_binding.html">ffi layer</a> - helper functions that comprise the binding vocabulary</li>
+<li>winapi modules - low-level procedural winapi wrappers</li>
+<li>oo system - provides a mechanism for inheritance, instantiation and virtual properties</li>
+<li>winapi classes - actual classes for windows and controls (all files named <code>*class.lua</code>)</li>
 </ul>
-<p>The first line in each file is a comment describing it and giving its place in the cake.</p>
+<blockquote>
+<p>Each module starts with a comment which describes what the module does and its place in the pie.</p>
+</blockquote>
 <h2 id="object-api">Object API</h2>
 <p>The object API is implemented in terms of a minimalist OO system implemented in <code>class.lua</code>, <code>object.lua</code>, and <code>vobject.lua</code>. The OO system features single inheritance, constructors, and virtual properties with getters and setters. It differentiates between class (derivation) and object (instantiation), so it's not a prototype-based system.</p>
 <p>Winapi classes are implemented one-per-file in <code>*class.lua</code> and start with <code>basewindowclass.lua</code> which contains <code>BaseWindow</code> from which <code>Control</code> (the base class for all controls) and <code>Window</code> (the final class for top-level windows) are derived.</p>

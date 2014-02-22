@@ -68,17 +68,19 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="scope">Scope</h2>
-<p>Windows, common controls, auxiliary objects, dialogs, message loop, OpenGL and cairo integration.</p>
+<p>Windows, common controls and dialogs, message loop, support APIs, OpenGL and cairo integration.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>accepts (and returns) utf-8 encoded Lua strings throughout (accepts wide char buffers too)</li>
-<li>all calls are error-checked so you don't have to</li>
+<li>winapi calls are error-checked so you don't have to</li>
+<li>objects are automatically tied to the garbage collector when not owned by other winapi objects</li>
+<li>flags can be passed as <code>'FLAG1 | FLAG2'</code></li>
+<li>counting from 1 everywhere</li>
 <li>object system with virtual properties (eg. <code>window.w = 500</code> changes a window's width)</li>
+<li>Delphi-style anchor-based layout model for all controls</li>
+<li><a href="winapi_binding.html">binding infrastructure</a> tailored to winapi conventions, facilitating the binding of more APIs</li>
 <li>cairo, opengl and openvg panel widgets</li>
-<li>binding infrastructure tailored to winapi, facilitating the binding of more APIs</li>
 </ul>
-<h2 id="status">Status</h2>
-<p>Not active.</p>
 <h2 id="modules">Modules</h2>
 <table>
 <tbody>
