@@ -73,21 +73,28 @@
 <ul>
 <li>single, dynamic inheritance by default:
 <ul>
-<li><code>oo.class([superclass]) -&gt; class</code></li>
-<li><code>class() -&gt; instance</code></li>
-<li><code>instance.super -&gt; class</code></li>
-<li><code>class.super -&gt; superclass</code></li>
-</ul></li>
-<li>static, multiple inheritance by request:
+<li><code>fruit = oo.class()</code></li>
+<li><code>apple = oo.class(fruit)</code></li>
+<li><code>a = apple(...)</code>
 <ul>
-<li><code>self:inherit(other[,override])</code> - statically inherit properties of <code>other</code>, optionally overriding existing properties.</li>
+<li>calls <code>apple:create(...) -&gt; a</code>
+<ul>
+<li>calls <code>a:init(...)</code></li>
+</ul></li>
+</ul></li>
+<li><code>a.super -&gt; apple</code></li>
+<li><code>apple.super -&gt; fruit</code></li>
+</ul></li>
+<li>multiple, static inheritance by request:
+<ul>
+<li><code>self:inherit(baz[,override])</code> - statically inherit properties of <code>baz</code>, optionally overriding existing properties.</li>
 <li><code>self:detatch()</code> - detach from the parent class, in other words statically inherit <code>self.super</code>.</li>
 </ul></li>
 <li>virtual properties with getter and setter:
 <ul>
-<li>reading <code>self.foo</code> calls <code>self:get_foo()</code> to get the value.</li>
+<li>reading <code>self.foo</code> calls <code>self:get_foo()</code> to get the value, if <code>self.get_foo</code> exists.</li>
 <li>assignment to <code>self.foo</code> calls <code>self:set_foo(value)</code>.</li>
-<li>missing the setter, the property is read-only and assignment fails.</li>
+<li>missing the setter, the property is considered read-only and the assignment fails.</li>
 </ul></li>
 <li>stored properties (no getter):
 <ul>
@@ -96,8 +103,8 @@
 </ul></li>
 <li>before/after method hooks:
 <ul>
-<li><code>self:before_m()</code> installs a before-hook for <code>self:m()</code>.</li>
-<li><code>self:after_m()</code> installs an after-hook for <code>self:m()</code>.</li>
+<li><code>self:before_baz()</code> installs a before-hook for method <code>self:baz()</code>.</li>
+<li><code>self:after_baz()</code> installs an after-hook for method <code>self:baz()</code>.</li>
 </ul></li>
 <li>introspection:
 <ul>
@@ -106,7 +113,7 @@
 <li><code>self:inspect()</code> - inspect the class/instance structure and contents in detail.</li>
 </ul></li>
 </ul>
-<h2 id="in-detail">In detail</h2>
+<h2 id="inheritance-and-instantiation">Inheritance and instantiation</h2>
 <p><strong>Classes are created</strong> with <code>oo.class([super])</code>, where <code>super</code> is usually another class, but can also be an instance, which is useful for creating polymorphic &quot;views&quot; on existing instances.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">cls</span> <span class="ot">=</span> <span class="kw">oo</span><span class="ot">.</span>class<span class="ot">()</span>
 <span class="kw">cls</span><span class="ot">.</span><span class="kw">classname</span> <span class="ot">=</span> <span class="st">&#39;cls&#39;</span></code></pre>
@@ -115,7 +122,7 @@
 <p><strong>The superclass</strong> of a class or the class of an instance is accessible as <code>self.super</code>.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="fu">assert</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">super</span> <span class="ot">==</span> <span class="kw">cls</span><span class="ot">)</span>
 <span class="fu">assert</span><span class="ot">(</span><span class="kw">cls</span><span class="ot">.</span><span class="kw">super</span> <span class="ot">==</span> <span class="kw">oo</span><span class="ot">.</span><span class="kw">object</span><span class="ot">)</span></code></pre>
-<p><strong>Inheritance is dynamic</strong>: properties are looked up at runtime in <code>self.super</code> and changing the superclass reflects on all subclasses and instances. This can be slow, but it saves space.</p>
+<p><strong>Inheritance is dynamic</strong>: properties are looked up at runtime in <code>self.super</code> and changing a property or method in the superclass reflects on all subclasses and instances. This can be slow, but it saves space.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">cls</span><span class="ot">.</span><span class="kw">the_answer</span> <span class="ot">=</span> <span class="dv">42</span>
 <span class="fu">assert</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">the_answer</span> <span class="ot">==</span> <span class="dv">42</span><span class="ot">)</span></code></pre>
 <p>You can detach the class/instance from its parent class by calling <code>self:detach()</code>. This copies all inherited fields to the class/instance and removes <code>self.super</code>.</p>
@@ -149,6 +156,7 @@
 <span class="kw">obj</span> <span class="ot">=</span> cls<span class="ot">()</span>
 <span class="kw">obj</span><span class="ot">.</span><span class="kw">answer_to_life</span> <span class="ot">=</span> <span class="dv">42</span>
 <span class="fu">assert</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">answer_to_life</span> <span class="ot">==</span> <span class="dv">42</span><span class="ot">)</span> <span class="co">--assuming deep_thought can store a number</span></code></pre>
+<h2 id="virtual-properties">Virtual properties</h2>
 <p><strong>Stored properties</strong> are virtual properties with a setter but no getter. The values of those properties are stored in the table <code>self.state</code> upon assignment of the property and read back upon indexing the property. If the setter breaks, the value is not stored.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">cls</span>:set_answer_to_life<span class="ot">(</span><span class="kw">v</span><span class="ot">)</span> <span class="kw">deep_thought</span>:set_answer<span class="ot">(</span><span class="kw">v</span><span class="ot">)</span> <span class="kw">end</span>
 <span class="kw">obj</span> <span class="ot">=</span> cls<span class="ot">()</span>
@@ -156,11 +164,12 @@
 <span class="fu">assert</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">answer_to_life</span> <span class="ot">==</span> <span class="dv">42</span><span class="ot">)</span> <span class="co">--we return the stored the number</span>
 <span class="fu">assert</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">state</span><span class="ot">.</span><span class="kw">answer_to_life</span> <span class="ot">==</span> <span class="dv">42</span><span class="ot">)</span> <span class="co">--which we stored here</span></code></pre>
 <p>Virtual and inherited properties are all read by calling <code>self:getproperty(name)</code>. Virtual and real properties are written to with <code>self:setproperty(name, value)</code>. You can override these methods for <em>finer control</em> over the behavior of virtual and inherited properties.</p>
-<p>Virtual properties can be <em>generated in bulk</em> given a getter and a setter and a list of names by calling <code>self:gen_properties(names, getter, setter)</code>. The setter and getter must be methods of form:</p>
+<p>Virtual properties can be <em>generated in bulk</em> given a <em>multikey</em> getter and a <em>multikey</em> setter and a list of property names, by calling <code>self:gen_properties(names, getter, setter)</code>. The setter and getter must be methods of form:</p>
 <ul>
 <li><code>self:getter(k) -&gt; v</code></li>
 <li><code>self:setter(k, v)</code></li>
 </ul>
+<h2 id="method-hooks">Method hooks</h2>
 <p><strong>Before/after hooks</strong> are sugar for overriding methods. Overriding a method can be done by simply redefining it and calling <code>class.super.&lt;method&gt;(self,...)</code> inside the new implementation. Most of the time this call is done either on the first or on the last line of the new function. With before and after hooks you can have that done automatically.</p>
 <p>By defining <code>self:before_&lt;method&gt;(...)</code> a new implementation for <code>self.&lt;method&gt;</code> is created which calls the before hook (which receives all method's arguments) and then calls the existing (inherited) implementation with whatever the hook returns as arguments.</p>
 <p>By defining <code>self:after_&lt;method&gt;(...)</code> a new implementation for <code>self.&lt;method&gt;</code> is created which calls the existing (inherited) implementation, after which it calls the hook with whatever the method returns as arguments, and returns whatever the hook returns.</p>
