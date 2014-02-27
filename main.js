@@ -362,6 +362,8 @@ function get_commit_log_line(entry) {
 	var date = github_date(entry.commit.committer.date)
 	var message = entry.commit.message
 	var url = 'https://github.com/luapower/' + PROJECT + '/commit/' + entry.sha
+	if (message == 'unimportant')
+		return
 	return ahref(url, ellipsis(message, 26) + ' ' + date,
 		' title="' + message + '"' +
 		' class="faint"')
@@ -369,8 +371,13 @@ function get_commit_log_line(entry) {
 
 function set_commit_log(commits) {
 	var t = []
-	for(var i=0; i < 4 && commits.data.length > i; i++)
-		t.push(get_commit_log_line(commits.data[i]))
+	for(var i=0, c=0; c < 4 && i < commits.data.length; i++) {
+		var s = get_commit_log_line(commits.data[i])
+		if (!s)
+			continue
+		t.push(s)
+		c++
+	}
 
 	$('#package_info').html($('#package_info').html() + '<hr id="package_info_hr">') // TODO: not repeatable!
 	$('#commit_log').html(t.join('<br>'))
