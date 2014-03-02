@@ -61,8 +61,9 @@ hr {border-bottom-color: #bbb;}
 .doc li:before {color: #364619;}
 .doc pre {background-color: #d8d8d8;}
 .doc tr {border-top-color: #bbb; border-bottom-color: #bbb;}
-.doc a {color: #00a; text-decoration: none;}
+.doc a {color: #00d; text-decoration: underline;}
 .doc a:hover {text-decoration: underline;}
+.doc a:visited {color: #990099; text-decoration: none;}
 .doc code {color: #000; background-color: #eee;}
 .doc blockquote {color: #666; border-left-color: #444;}
 .doc blockquote code {color: #666; background-color: #eee;}

@@ -63,6 +63,7 @@ hr {border-bottom-color: #333;}
 .doc tr {border-top-color: #333; border-bottom-color: #333;}
 .doc a {color: #63c0f5; text-decoration: none;}
 .doc a:hover {text-decoration: underline;}
+.doc a:visited {color: #CF569E; text-decoration: none;}
 .doc code {color: #ff9;}
 .doc blockquote {color: #999; border-left-color: #666;}
 .doc blockquote code {color: #996;}
