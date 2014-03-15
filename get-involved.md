@@ -10,8 +10,13 @@ in order to achieve specific benefits, and that's the only reason for creating
 these conventions. I fully recognize and respect the fact everybody has his/hers
 own rules and work flow and coding style, which can only accidentally coincide with mine,
 and I'd rather support individual freedom than enforce popular convention.
+<<<<<<< Updated upstream
 Please have this in mind when reading upon these rules, and remember that they
 are open for evaluation and improvement. As always, feedback is welcome and appreciated.
+=======
+Please have this in mind when reading upon these rules, and remember that they 
+are open for improvement. As always, feedback is welcome and appreciated.
+>>>>>>> Stashed changes
 
 ## Anatomy of a package
 
@@ -48,14 +53,14 @@ and it makes it possible to extract package information and build the package da
 
 ### The Docs
 
-Docs should start with a yaml header:
+To appear on the website, docs should start with a yaml header:
 
 	---
 	project: spheroboom
 	tagline: defeats scammers
 	---
 
-  * the `project` field should match the git project's name (if you want the github buttons to appear).
+  * the `project` field should match the git project's name - this makes the "view on github" and download buttons appear.
   * `platforms: platform1, ...` should be added for Lua packages that are platform-specific
   but don't have a C component (eg. [winapi]; for packages with a C component, adding the build scripts is enough
   to figure out the supported platforms).
