@@ -4,19 +4,12 @@ tagline:  I want YOU for LUA POWER
 ---
 
 > NOTE: This page is all about rules, so necessarily you will have issues with it.
-But whether or not you agree with the decisions taken, please recognize that
-_some_ decisions had to be taken, and _some_ conventions had to be created,
-in order to achieve specific benefits, and that's the only reason for creating
-these conventions. I fully recognize and respect the fact everybody has his/hers
-own rules and work flow and coding style, which can only accidentally coincide with mine,
-and I'd rather support individual freedom than enforce popular convention.
-<<<<<<< Updated upstream
-Please have this in mind when reading upon these rules, and remember that they
-are open for evaluation and improvement. As always, feedback is welcome and appreciated.
-=======
-Please have this in mind when reading upon these rules, and remember that they 
-are open for improvement. As always, feedback is welcome and appreciated.
->>>>>>> Stashed changes
+Whether or not you agree with the decisions taken, please note that _some_ conventions
+had to be created in order to achieve specific benefits, and that's the only reason
+for creating them. I respect the fact everybody has his/hers own rules and work flow and
+coding style, which can only accidentally coincide with mine, and I'd rather support individual
+freedom than enforce popular convention. Please have this in mind when reading upon these rules,
+and remember that they are always open for improvement. Feedback is welcome and appreciated.
 
 ## Anatomy of a package
 
@@ -53,7 +46,7 @@ and it makes it possible to extract package information and build the package da
 
 ### The Docs
 
-To appear on the website, docs should start with a yaml header:
+In order to appear on the website, docs should start with a yaml header:
 
 	---
 	project: spheroboom
@@ -116,25 +109,26 @@ Example:
 
 ### The Build Scripts
 
-Write a build script for each supported platform. Ideally, your build script is a gcc one-liner
+Write a build script for each supported platform. Ideally, your build script is a gcc (or g++) one-liner
 like most build scripts around here. Writing gcc one-liners is quite easy for most C libraries.
 You only have to remember a few important gcc switches:
 
   * `-I<dir>`							: search path for headers
   * `-l<libname>`						: dynamic library dependency (without the `lib` prefix)
   * `-L<dir>`							: search path for library dependencies
-  * `-static-libstdc++`				: static linking of the C++ standard library (so that it doesn't become a runtime dependency)
-  * `-static-libgcc`					: static linking of the GCC library (so that it doesn't become a runtime dependency)
   * `-O2`								: enable code optimization
   * `-s`									: strip debug symbols (makes the binary smaller)
+  * `-static-libstdc++`				: static linking of the C++ standard library (for g++)
+  * `-static-libgcc`					: static linking of the GCC library (for gcc and g++)
   * `-D<name>`							: set a `#define`
   * `-D<name>=<value>`				: set a `#define`
-  * `-pthread`							: enable pthread support (Linux only)
-  * `-fpic`								: PIC mode (required for 64bit)
+  * `-pthread`							: enable pthread support (Linux and OSX only)
+  * `-fpic`								: PIC mode (required for 64bit targets)
   * `-DWINVER=0x501`             : windows.h API level is Windows XP
   * `-DWINVER=0x502`             : windows.h API level is Windows XP SP2
   * `-DWINVER=0x601`             : windows.h API level is Windows 7
   * `-DWINVER=0x602`             : windows.h API level is Windows 8
+  * `-undefined dynamic_lookup`  : required on OSX for Lua/C modules (don't link them to luajit!)
 
 #### Example (compile lpeg for linux32):
 

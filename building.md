@@ -6,20 +6,21 @@ tagline:  building the C libraries
 ## Overview
 
 Building is based on one-liner shell scripts that invoke gcc directly (no makefiles).
-Each package has a separate build script in its `csrc` dir, for each supported platform.
+Each package has a separate build script in its `csrc` dir, for each supported platform/architecture.
 C sources are also included in the package so you can start right away.
-Dependencies are listed in the `WHAT` file -- download and build them first.
+Dependent packages are listed in the `WHAT` file -- download and build them first.
 
 For compiling Lua/C modules you also need [lua-headers] and, for Windows in particular, lua51.dll
-must be available at the time of building, so you'll need [luajit] too.
+must be available at the time of building, so you'll need the [luajit] package too.
 
-The build scripts will build `-O2`-optimized, stripped binaries with static linking of libgcc and libstdc++.
+> The build scripts will build `-O2`-optimized, stripped binaries, with libgcc and libstdc++ statically linked,
+except on OSX.
 
 ## Building on Windows for Windows (32bit)
 
 The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
 
-Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.
+Windows binaries are compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.
 
 Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.
 
@@ -50,22 +51,19 @@ Below is the exact list of MinGW packages used to make a complete C/C++ toolchai
 [ragel 6.8 (only for harfbuzz)](http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z)
 ----
 
-> Don't use GCC 4.8 to build luajit. And with all due respect, don't bug me about build scripts not working
-if you're using a different toolchain. I don't like building things any more than anyone with a soul does.
-
 ## Building on Windows for Windows (64bit)
 
-Stay tuned.
+Stay tuned (or check out MinGW-w64).
 
 ## Building on Linux for Linux (32bit and 64bit)
 
 You probably have gcc and make installed already. If you have GCC 4.7+ that's even better.
 Just run the appropriate build scripts for your architecture (32bit or 64bit).
 
-## Building on Windows for Linux (32bit and 64bit)
+## Building from Windows or OSX for Linux (32bit and 64bit)
 
-If you are on Windows and you want to compile for Linux and don't want to mess with a cross-compiler,
-here is a quick method to build binaries for Linux from a Windows environment.
+If you are on Windows or OSX and you want to compile for Linux and don't want to mess with a cross-compiler,
+here is a quick method to build Linux binaries from a Windows or OSX (or even Linux) environment.
 
 * Grab VirtualBox
 * Grab TinyCore
@@ -73,7 +71,7 @@ here is a quick method to build binaries for Linux from a Windows environment.
 	* 64bit: [CorePure64-5.2.iso] (10 MB!)
 * Make a VM, set up like this:
 	* give it 512M RAM or more
-	* add a network card for Internet access
+	* add a network card with Internet access
 	* a disk is not necessary, tinycore runs entirely from RAM, if you have enough
 	* enable PAE under System -> Processor
 	* enable VT-x and Nested Paging under System -> Acceleration (if your CPU supports it)
@@ -97,7 +95,15 @@ here is a quick method to build binaries for Linux from a Windows environment.
 
 ## Building on OSX for OSX (64bit)
 
-Stay tuned.
+You need to install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).
+
+NOTE: There are a few problems with building with the Xcode-supplied compiler:
+
+  * you need to sign up with your Apple ID to get Xcode
+  * you need to install a specific version of Xcode (maybe you already have a different one that you need and use)
+  * clang doesn't support static building of the standard C++ library nor of libgcc.
+
+For these reasons, I am tempted to switch to GCC 4.7 from MacPorts, feedback welcome.
 
 
 [lua-headers]:        https://github.com/luapower/lua-headers

@@ -53,12 +53,14 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="overview">Overview</h2>
-<p>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles). Each package has a separate build script in its <code>csrc</code> dir, for each supported platform. C sources are also included in the package so you can start right away. Dependencies are listed in the <code>WHAT</code> file -- download and build them first.</p>
-<p>For compiling Lua/C modules you also need <a href="lua-headers.html">lua-headers</a> and, for Windows in particular, lua51.dll must be available at the time of building, so you'll need <a href="luajit.html">luajit</a> too.</p>
-<p>The build scripts will build <code>-O2</code>-optimized, stripped binaries with static linking of libgcc and libstdc++.</p>
+<p>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles). Each package has a separate build script in its <code>csrc</code> dir, for each supported platform/architecture. C sources are also included in the package so you can start right away. Dependent packages are listed in the <code>WHAT</code> file -- download and build them first.</p>
+<p>For compiling Lua/C modules you also need <a href="lua-headers.html">lua-headers</a> and, for Windows in particular, lua51.dll must be available at the time of building, so you'll need the <a href="luajit.html">luajit</a> package too.</p>
+<blockquote>
+<p>The build scripts will build <code>-O2</code>-optimized, stripped binaries, with libgcc and libstdc++ statically linked, except on OSX.</p>
+</blockquote>
 <h2 id="building-on-windows-for-windows-32bit">Building on Windows for Windows (32bit)</h2>
 <p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
-<p>Windows binaries were compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
+<p>Windows binaries are compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
 <p>Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.</p>
 <table>
 <tbody>
@@ -136,15 +138,12 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>Don't use GCC 4.8 to build luajit. And with all due respect, don't bug me about build scripts not working if you're using a different toolchain. I don't like building things any more than anyone with a soul does.</p>
-</blockquote>
 <h2 id="building-on-windows-for-windows-64bit">Building on Windows for Windows (64bit)</h2>
-<p>Stay tuned.</p>
+<p>Stay tuned (or check out MinGW-w64).</p>
 <h2 id="building-on-linux-for-linux-32bit-and-64bit">Building on Linux for Linux (32bit and 64bit)</h2>
 <p>You probably have gcc and make installed already. If you have GCC 4.7+ that's even better. Just run the appropriate build scripts for your architecture (32bit or 64bit).</p>
-<h2 id="building-on-windows-for-linux-32bit-and-64bit">Building on Windows for Linux (32bit and 64bit)</h2>
-<p>If you are on Windows and you want to compile for Linux and don't want to mess with a cross-compiler, here is a quick method to build binaries for Linux from a Windows environment.</p>
+<h2 id="building-from-windows-or-osx-for-linux-32bit-and-64bit">Building from Windows or OSX for Linux (32bit and 64bit)</h2>
+<p>If you are on Windows or OSX and you want to compile for Linux and don't want to mess with a cross-compiler, here is a quick method to build Linux binaries from a Windows or OSX (or even Linux) environment.</p>
 <ul>
 <li>Grab VirtualBox</li>
 <li>Grab TinyCore
@@ -155,7 +154,7 @@
 <li>Make a VM, set up like this:
 <ul>
 <li>give it 512M RAM or more</li>
-<li>add a network card for Internet access</li>
+<li>add a network card with Internet access</li>
 <li>a disk is not necessary, tinycore runs entirely from RAM, if you have enough</li>
 <li>enable PAE under System -&gt; Processor</li>
 <li>enable VT-x and Nested Paging under System -&gt; Acceleration (if your CPU supports it)
@@ -191,7 +190,14 @@
 </ul></li>
 </ul>
 <h2 id="building-on-osx-for-osx-64bit">Building on OSX for OSX (64bit)</h2>
-<p>Stay tuned.</p>
+<p>You need to install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).</p>
+<p>NOTE: There are a few problems with building with the Xcode-supplied compiler:</p>
+<ul>
+<li>you need to sign up with your Apple ID to get Xcode</li>
+<li>you need to install a specific version of Xcode (maybe you already have a different one that you need and use)</li>
+<li>clang doesn't support static building of the standard C++ library nor of libgcc.</li>
+</ul>
+<p>For these reasons, I am tempted to switch to GCC 4.7 from MacPorts, feedback welcome.</p>
 				</section>
 			</div>
 			<div class="container">
