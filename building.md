@@ -93,7 +93,7 @@ here is a quick method to build Linux binaries from a Windows or OSX (or even Li
 	* `$ cd csrc/foobar`
 	* `$ ./build-linux32.sh` or `./build-linux64.sh`, depending on what ISO you used
 
-## Building on OSX for OSX (64bit)
+## Building on OSX for OSX (x86 64bit)
 
 You need to install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).
 
