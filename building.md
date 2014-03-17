@@ -120,7 +120,7 @@ There are a few problems with building with the Xcode-supplied compiler:
   * clang doesn't support static building of the standard C++ library nor of libgcc.
 
 For these reasons, I am tempted to switch to GCC 4.7 from MacPorts.
-Support for OSX 10.6+ (32bit and 64bit) is also considered (this would require finding and downloading the 10.6 SDK).
+Support for OSX 10.6+ (32bit and 64bit) is also considered (this would require you to find and install the 10.6 SDK).
 Feedback welcome.
 
 
