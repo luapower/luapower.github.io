@@ -146,7 +146,7 @@
 <p>NOTE: In MinGW-w64 terminology, host means target and target means host.</p>
 </blockquote>
 <p>Because of that limitation, this is not a supported host/target combination and build scripts are not provided for this scenario.</p>
-<p>If you still want to do it, you can download the latest toolchain from <a href="http://heanet.dl.sourceforge.net/project/mingwbuilds/host-windows/releases/">mingwbuilds</a> (threads-posix/sjlj preferred), add mingw32/bin in your PATH, and make new build scripts based on the mingw32 build scripts, replacing <code>gcc</code> with <code>i686-w64-mingw32-gcc -m64</code> and <code>bin/mingw32</code> with <code>bin/mingw64</code>.</p>
+<p>If you still want to do it, you can download the latest toolchain from <a href="http://heanet.dl.sourceforge.net/project/mingwbuilds/host-windows/releases/">mingwbuilds</a> (threads-posix/sjlj preferred), add mingw32/bin in your PATH, and make new build scripts based on the mingw32 build scripts, replacing <code>gcc</code> with <code>i686-w64-mingw32-gcc -m64</code> and <code>../../bin/mingw32</code> with <code>../../bin/mingw64</code>.</p>
 <h2 id="building-on-linux-for-linux-native">Building on Linux for Linux (native)</h2>
 <p>You probably have gcc and make installed already. If you have GCC 4.7+ that's even better. Just run the appropriate build scripts for your architecture (32bit or 64bit).</p>
 <h2 id="building-on-windows-or-osx-for-linux-32bit-and-64bit">Building on Windows or OSX for Linux (32bit and 64bit)</h2>

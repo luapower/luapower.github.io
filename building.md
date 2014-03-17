@@ -68,7 +68,7 @@ are not provided for this scenario.
 
 If you still want to do it, you can download the latest toolchain from [mingwbuilds] (threads-posix/sjlj preferred),
 add mingw32/bin in your PATH, and make new build scripts based on the mingw32 build scripts,
-replacing `gcc` with `i686-w64-mingw32-gcc -m64` and `bin/mingw32` with `bin/mingw64`.
+replacing `gcc` with `i686-w64-mingw32-gcc -m64` and `../../bin/mingw32` with `../../bin/mingw64`.
 
 ## Building on Linux for Linux (native)
 
