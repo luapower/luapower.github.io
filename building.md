@@ -63,12 +63,12 @@ MinGW-w64 32bit binaries for that.
 
 > NOTE: In MinGW-w64 terminology, host means target and target means host.
 
-Because of that limitation, this is not a supported host/target combination and build scripts
-are not provided for this scenario.
+Because of that limitation, this is not a supported host/target combination.
 
-If you still want to do it, you can download the latest toolchain from [mingwbuilds] (threads-posix/sjlj preferred),
-add mingw32/bin in your PATH, and make new build scripts based on the mingw32 build scripts,
-replacing `gcc` with `i686-w64-mingw32-gcc -m64` and `../../bin/mingw32` with `../../bin/mingw64`.
+If you still want to do it, you can download the latest toolchain from [mingwbuilds],
+add mingw32/bin in your PATH and build using the `*-mingw64-from-win32.sh` scripts.
+
+> NOTE: This will build libraries with the SJLJ exception model.
 
 ## Building on Linux for Linux (native)
 
@@ -124,6 +124,6 @@ Support for OSX 10.6+ (32bit and 64bit) is also considered (this would require y
 Feedback welcome.
 
 
-[mingwbuilds]:        http://heanet.dl.sourceforge.net/project/mingwbuilds/host-windows/releases/
+[mingwbuilds]:        http://heanet.dl.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/32-bit/threads-posix/sjlj/
 [Core-5.2.iso]:       http://distro.ibiblio.org/tinycorelinux/5.x/x86/release/Core-5.2.iso
 [CorePure64-5.2.iso]: http://distro.ibiblio.org/tinycorelinux/5.x/x86_64/release/CorePure64-5.2.iso
