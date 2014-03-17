@@ -16,7 +16,7 @@ must be available at the time of building, so you'll need the [luajit] package t
 > The build scripts will build `-O2`-optimized, stripped binaries, with libgcc and libstdc++ statically linked,
 except on OSX.
 
-## Building on Windows for Windows (32bit)
+## Building on Windows 32bit for Windows 32bit
 
 The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
 
@@ -51,16 +51,31 @@ Below is the exact list of MinGW packages used to make a complete C/C++ toolchai
 [ragel 6.8 (only for harfbuzz)](http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z)
 ----
 
-## Building on Windows for Windows (64bit)
+## Building on Windows 64bit for Windows 64bit
 
-Stay tuned (or check out MinGW-w64).
+Stay tuned.
 
-## Building on Linux for Linux (32bit and 64bit)
+## Building on Windows 32bit for Windows 64bit
+
+MinGW-w64 can be used to cross-compile C libraries for x86_64 from a 32bit Windows machine. But MinGW-w64 cannot
+be used to cross-compile LuaJIT this way because LuaJIT requires SEH for the x86_64 target, and there's no
+MinGW-w64 32bit binaries for that.
+
+> NOTE: In MinGW-w64 terminology, host means target and target means host.
+
+Because of that limitation, this is not a supported host/target combination and build scripts
+are not provided for this scenario.
+
+If you still want to do it, you can download the latest toolchain from [mingwbuilds] (threads-posix/sjlj preferred),
+add mingw32/bin in your PATH, and make new build scripts based on the mingw32 build scripts,
+replacing `gcc` with `i686-w64-mingw32-gcc -m64` and `bin/mingw32` with `bin/mingw64`.
+
+## Building on Linux for Linux (native)
 
 You probably have gcc and make installed already. If you have GCC 4.7+ that's even better.
 Just run the appropriate build scripts for your architecture (32bit or 64bit).
 
-## Building from Windows or OSX for Linux (32bit and 64bit)
+## Building on Windows or OSX for Linux (32bit and 64bit)
 
 If you are on Windows or OSX and you want to compile for Linux and don't want to mess with a cross-compiler,
 here is a quick method to build Linux binaries from a Windows or OSX (or even Linux) environment.
@@ -95,17 +110,20 @@ here is a quick method to build Linux binaries from a Windows or OSX (or even Li
 
 ## Building on OSX for OSX (x86 64bit)
 
-You need to install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).
+OSX builds are currently only compatible with OSX 10.9.
 
-NOTE: There are a few problems with building with the Xcode-supplied compiler:
+Install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).
+
+There are a few problems with building with the Xcode-supplied compiler:
 
   * you need to sign up with your Apple ID to get Xcode
-  * you need to install a specific version of Xcode (maybe you already have a different one that you need and use)
   * clang doesn't support static building of the standard C++ library nor of libgcc.
 
-For these reasons, I am tempted to switch to GCC 4.7 from MacPorts, feedback welcome.
+For these reasons, I am tempted to switch to GCC 4.7 from MacPorts.
+Support for OSX 10.6+ (32bit and 64bit) is also considered (this would require finding and downloading the 10.6 SDK).
+Feedback welcome.
 
 
-[lua-headers]:        https://github.com/luapower/lua-headers
+[mingwbuilds]:        http://heanet.dl.sourceforge.net/project/mingwbuilds/host-windows/releases/
 [Core-5.2.iso]:       http://distro.ibiblio.org/tinycorelinux/5.x/x86/release/Core-5.2.iso
 [CorePure64-5.2.iso]: http://distro.ibiblio.org/tinycorelinux/5.x/x86_64/release/CorePure64-5.2.iso

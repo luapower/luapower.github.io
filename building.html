@@ -58,7 +58,7 @@
 <blockquote>
 <p>The build scripts will build <code>-O2</code>-optimized, stripped binaries, with libgcc and libstdc++ statically linked, except on OSX.</p>
 </blockquote>
-<h2 id="building-on-windows-for-windows-32bit">Building on Windows for Windows (32bit)</h2>
+<h2 id="building-on-windows-32bit-for-windows-32bit">Building on Windows 32bit for Windows 32bit</h2>
 <p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
 <p>Windows binaries are compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
 <p>Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.</p>
@@ -138,11 +138,18 @@
 </tr>
 </tbody>
 </table>
-<h2 id="building-on-windows-for-windows-64bit">Building on Windows for Windows (64bit)</h2>
-<p>Stay tuned (or check out MinGW-w64).</p>
-<h2 id="building-on-linux-for-linux-32bit-and-64bit">Building on Linux for Linux (32bit and 64bit)</h2>
+<h2 id="building-on-windows-64bit-for-windows-64bit">Building on Windows 64bit for Windows 64bit</h2>
+<p>Stay tuned.</p>
+<h2 id="building-on-windows-32bit-for-windows-64bit">Building on Windows 32bit for Windows 64bit</h2>
+<p>MinGW-w64 can be used to cross-compile C libraries for x86_64 from a 32bit Windows machine. But MinGW-w64 cannot be used to cross-compile LuaJIT this way because LuaJIT requires SEH for the x86_64 target, and there's no MinGW-w64 32bit binaries for that.</p>
+<blockquote>
+<p>NOTE: In MinGW-w64 terminology, host means target and target means host.</p>
+</blockquote>
+<p>Because of that limitation, this is not a supported host/target combination and build scripts are not provided for this scenario.</p>
+<p>If you still want to do it, you can download the latest toolchain from <a href="http://heanet.dl.sourceforge.net/project/mingwbuilds/host-windows/releases/">mingwbuilds</a> (threads-posix/sjlj preferred), add mingw32/bin in your PATH, and make new build scripts based on the mingw32 build scripts, replacing <code>gcc</code> with <code>i686-w64-mingw32-gcc -m64</code> and <code>bin/mingw32</code> with <code>bin/mingw64</code>.</p>
+<h2 id="building-on-linux-for-linux-native">Building on Linux for Linux (native)</h2>
 <p>You probably have gcc and make installed already. If you have GCC 4.7+ that's even better. Just run the appropriate build scripts for your architecture (32bit or 64bit).</p>
-<h2 id="building-from-windows-or-osx-for-linux-32bit-and-64bit">Building from Windows or OSX for Linux (32bit and 64bit)</h2>
+<h2 id="building-on-windows-or-osx-for-linux-32bit-and-64bit">Building on Windows or OSX for Linux (32bit and 64bit)</h2>
 <p>If you are on Windows or OSX and you want to compile for Linux and don't want to mess with a cross-compiler, here is a quick method to build Linux binaries from a Windows or OSX (or even Linux) environment.</p>
 <ul>
 <li>Grab VirtualBox</li>
@@ -190,14 +197,14 @@
 </ul></li>
 </ul>
 <h2 id="building-on-osx-for-osx-x86-64bit">Building on OSX for OSX (x86 64bit)</h2>
-<p>You need to install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).</p>
-<p>NOTE: There are a few problems with building with the Xcode-supplied compiler:</p>
+<p>OSX builds are currently only compatible with OSX 10.9.</p>
+<p>Install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).</p>
+<p>There are a few problems with building with the Xcode-supplied compiler:</p>
 <ul>
 <li>you need to sign up with your Apple ID to get Xcode</li>
-<li>you need to install a specific version of Xcode (maybe you already have a different one that you need and use)</li>
 <li>clang doesn't support static building of the standard C++ library nor of libgcc.</li>
 </ul>
-<p>For these reasons, I am tempted to switch to GCC 4.7 from MacPorts, feedback welcome.</p>
+<p>For these reasons, I am tempted to switch to GCC 4.7 from MacPorts. Support for OSX 10.6+ (32bit and 64bit) is also considered (this would require finding and downloading the 10.6 SDK). Feedback welcome.</p>
 				</section>
 			</div>
 			<div class="container">
