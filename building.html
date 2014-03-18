@@ -52,16 +52,22 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<h2 id="overview">Overview</h2>
-<p>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles). Each package has a separate build script in its <code>csrc</code> dir, for each supported platform/architecture. C sources are also included in the package so you can start right away. Dependent packages are listed in the <code>WHAT</code> file -- download and build them first.</p>
-<p>For compiling Lua/C modules you also need <a href="lua-headers.html">lua-headers</a> and, for Windows in particular, lua51.dll must be available at the time of building, so you'll need the <a href="luajit.html">luajit</a> package too.</p>
-<blockquote>
-<p>The build scripts will build <code>-O2</code>-optimized, stripped binaries, with libgcc and libstdc++ statically linked, except on OSX.</p>
-</blockquote>
+					<h2 id="what-you-need-to-know-first">What you need to know first</h2>
+<ul>
+<li>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles).</li>
+<li>Each supported package/platform/arch has a separate build script <code>csrc/&lt;package&gt;/build-&lt;platf&gt;&lt;arch&gt;.sh</code>.</li>
+<li>Not all platform/architecture combinations are supported for all packages.</li>
+<li>C sources are included so you can start right away.</li>
+<li>Dependent packages are listed in <code>csrc/&lt;package&gt;/WHAT</code>. Build those first.</li>
+<li>For building Lua/C modules you need <a href="lua-headers.html">lua-headers</a>.</li>
+<li>For building Lua/C modules for Windows you need <a href="luajit.html">luajit</a> (for linking to lua51.dll).</li>
+<li>You will get stripped binaries, with libgcc and libstdc++ statically linked, except on OSX (see below).</li>
+<li>Windows binaries are linked to msvcrt.dll and Lua/C modules are linked to lua51.dll.</li>
+</ul>
 <h2 id="building-on-windows-32bit-for-windows-32bit">Building on Windows 32bit for Windows 32bit</h2>
-<p>The build scripts for Windows assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
-<p>Windows binaries are compiled with MinGW GCC 4.7.2 and linked against msvcrt.dll.</p>
-<p>Below is the exact list of MinGW packages used to make a complete C/C++ toolchain.</p>
+<p>Use <code>build-mingw32.sh</code>.</p>
+<p>These scripts assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
+<p>Here's the exact list of MinGW packages used to build the current luapower stack:</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -133,22 +139,42 @@
 <tr class="odd">
 <td align="left"><a href="http://sourceforge.net/projects/mingw/files/MinGW/Extension/make/make-3.82-mingw32/make-3.82-5-mingw32-bin.tar.lzma">make-3.82-5-mingw32-bin</a></td>
 </tr>
-<tr class="even">
+</tbody>
+</table>
+<p>Additional tools needed by a few special libraries (use them for building for 64bit too):</p>
+<table>
+<tbody>
+<tr class="odd">
 <td align="left"><a href="http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z">ragel 6.8 (only for harfbuzz)</a></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="http://www.nasm.us/pub/nasm/releasebuilds/2.11/win32/nasm-2.11-win32.zip">nasm 2.11 (only for libjpeg-turbo)</a></td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="http://www.cmake.org/files/v2.8/cmake-2.8.12.2-win32-x86.zip">cmake 2.8.12.2 (only for libjpeg-turbo)</a></td>
 </tr>
 </tbody>
 </table>
 <h2 id="building-on-windows-64bit-for-windows-64bit">Building on Windows 64bit for Windows 64bit</h2>
-<p>Stay tuned.</p>
+<p>Use <code>build-mingw64.sh</code>.</p>
+<p>These scripts assume that both MSys and MinGW-w64 bin dirs (in this order) are in your PATH.</p>
+<p>Here's the exact MinGW-w64 package used to build the current luapower stack:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><a href="http://sourceforge.net/projects/mingwbuilds/files/host-windows/releases/4.8.1/64-bit/threads-posix/seh/x64-4.8.1-release-posix-seh-rev5.7z">mingw-w64 4.8.1 (64bit, posix threads, SEH exception model)</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="building-on-windows-32bit-for-windows-64bit">Building on Windows 32bit for Windows 64bit</h2>
 <p>MinGW-w64 can be used to cross-compile C libraries for x86_64 from a 32bit Windows machine. But MinGW-w64 cannot be used to cross-compile LuaJIT this way because LuaJIT requires SEH for the x86_64 target, and there's no MinGW-w64 32bit binaries for that.</p>
 <blockquote>
-<p>NOTE: In MinGW-w64 terminology, host means target and target means host.</p>
+<p>Note that in MinGW-w64 terminology, host means target and target means host.</p>
 </blockquote>
-<p>Because of that limitation, this is not a supported host/target combination.</p>
-<p>If you still want to do it, you can download the latest toolchain from <a href="http://heanet.dl.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/32-bit/threads-posix/sjlj/">mingwbuilds</a>, add mingw32/bin in your PATH and build using the <code>*-mingw64-from-win32.sh</code> scripts.</p>
+<p>Because of that limitation, this is not a supported host/target cross-compling combination.</p>
+<p>If you still want to do it, you can download the <a href="http://heanet.dl.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/32-bit/threads-posix/sjlj/">latest toolchain</a> from mingwbuilds, add mingw32/bin in your PATH and build using <code>build-mingw64-from-win32.sh</code> where available.</p>
 <blockquote>
-<p>NOTE: This will build libraries with the SJLJ exception model.</p>
+<p>NOTE: This will build libraries with the SJLJ exception model, unlike current luapower binaries which use SEH.</p>
 </blockquote>
 <h2 id="building-on-linux-for-linux-native">Building on Linux for Linux (native)</h2>
 <p>You probably have gcc and make installed already. If you have GCC 4.7+ that's even better. Just run the appropriate build scripts for your architecture (32bit or 64bit).</p>
@@ -200,7 +226,8 @@
 </ul></li>
 </ul>
 <h2 id="building-on-osx-for-osx-x86-64bit">Building on OSX for OSX (x86 64bit)</h2>
-<p>OSX builds are currently only compatible with OSX 10.9.</p>
+<p>Use <code>build-osx64.sh</code>.</p>
+<p>OSX builds are currently only compatible with the 64bit OSX 10.9.</p>
 <p>Install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).</p>
 <p>There are a few problems with building with the Xcode-supplied compiler:</p>
 <ul>
