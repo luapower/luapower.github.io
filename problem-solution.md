@@ -89,7 +89,11 @@ which directly affects my ability and motivation to fix problems (which in turn 
 It is much faster too.
 
 To me it boils down to how much indirection there is between problem (in this case the .c and .h files)
-and solution (the gcc compiler) and I suspect this is the way it works for other people too.
+and solution (the gcc compiler). Sure, you have to remember some gcc switches, but they are _the same_ switches
+for any library that you will ever build.
+
+It also allows you to apply a set of decisions consistently across the entire distribution, like, if you should
+statically build libgcc or not.
 
 ## PACKAGE DATABASE
 

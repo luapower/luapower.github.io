@@ -73,16 +73,18 @@
 <p>Makefile was modified to build with <code>-msse -msse2</code> (not enabled by default).</p>
 <h2 id="module-paths">MODULE PATHS</h2>
 <h3 id="on-windows">On Windows</h3>
-<p><code>!\..\..\?.lua;!\..\..\?\init.lua</code> was added to the default package.path in luaconf.h. This allows <code>require</code> to find luapower modules regardless of what the current directory is, without any additional setup.</p>
-<p>The default <code>package.cpath</code> was also modified from <code>!\?.dll</code> to <code>!\clib\?.dll</code>. This allows luapower.lua to distinguish Lua/C modules from other dll dependencies.</p>
+<p><code>!\..\..\?.lua;!\..\..\?\init.lua</code> was added to the default package.path in luaconf.h. This allows <code>require</code> to find modules relative to the executable regardless of what the current directory is, making the distribution portable.</p>
+<p>The default <code>package.cpath</code> was also modified from <code>!\?.dll</code> to <code>!\clib\?.dll</code>. This allows distinguishing between Lua/C modules and other dll dependencies.</p>
 <blockquote>
-<p>Windows looks for dlls in the directory of the executable first, and that's where all the non-module dlls are, so independence from system libraries is assured by default.</p>
+<p>Windows looks for dependent dlls in the directory of the executable first, and that's where all non-module dlls are, so independence from system libraries is assured by design.</p>
 </blockquote>
 <h3 id="on-linux">On Linux</h3>
 <p>In Linux, luajit is a shell wrapper script that sets LD_LIBRARY_PATH, LUA_PATH and LUA_CPATH to acheive the same effect and assure independence from system libraries.</p>
+<h3 id="on-osx">On OSX</h3>
+<p>In OSX, luajit is a shell wrapper script that sets DYLD_LIBRARY_PATH, DYLD_FALLBACK_LIBRARY_PATH, LUA_PATH and LUA_CPATH to acheive the same effect and assure independence from system libraries.</p>
 <h3 id="going-further">Going further</h3>
 <p>The above only solves the problem of finding luapower modules. To find other files, like media files, etc. relative to the directory of the running script, use <a href="glue.html#bin">glue.bin</a>.</p>
-<p>To add more paths to package.path and package.cpath use <a href="glue.html#luapath">glue.luapath</a> and <a href="glue.html#cpath">glue.cpath</a>.</p>
+<p>To add more paths to package.path and package.cpath at runtime, use <a href="glue.html#luapath">glue.luapath</a> and <a href="glue.html#cpath">glue.cpath</a>.</p>
 				</section>
 			</div>
 			<div class="container">

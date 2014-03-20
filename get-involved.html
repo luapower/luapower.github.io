@@ -77,7 +77,7 @@
 <li>sources: <code>csrc/foo/*</code></li>
 <li>build scripts: <code>csrc/foo/build-&lt;platform&gt;.sh</code>
 <ul>
-<li>platforms are named mingw32, mingw64, linux32, linux64, osx32, osx64, android.</li>
+<li>platforms are named mingw32, mingw64, linux32, linux64, osx32, osx64.</li>
 </ul></li>
 <li>binaries (resulted from building):
 <ul>
@@ -95,20 +95,22 @@
 <h3 id="the-docs">The Docs</h3>
 <p>In order to appear on the website, docs should start with a yaml header:</p>
 <pre><code>---
-project: spheroboom
-tagline: defeats scammers
+project: cairo
+tagline: cairo graphics engine
 ---</code></pre>
 <ul>
 <li>the <code>project</code> field should match the git project's name - this makes the &quot;view on github&quot; and download buttons appear.</li>
 <li><code>platforms: platform1, ...</code> should be added for Lua packages that are platform-specific but don't have a C component (eg. <a href="winapi.html">winapi</a>; for packages with a C component, adding the build scripts is enough to figure out the supported platforms).</li>
 <li>a good, short tagline is important for figuring out what the module does when browsing the module list</li>
 </ul>
-<p>You don't have to make a doc for each submodule if you don't have much to document for it.</p>
+<p>You don't have to make a doc for each submodule if you don't have much to document for it, a single doc matching the package name would suffice.</p>
 <h3 id="the-what-file">The <code>WHAT</code> file</h3>
-<p>The WHAT file is used for packages that have a C component (Lua+ffi, Lua/C or C packages), and it's used to describe that C component.</p>
+<p>The WHAT file is used for packages that have a C component (Lua+ffi, Lua/C or C packages), and it's used to describe that C component. Pure Lua packages don't need a WHAT file.</p>
+<pre><code>cairo 1.12.16 from http://cairographics.org/releases/ (LGPL license)
+requires: pixman, freetype, zlib, libpng</code></pre>
 <ul>
 <li>the first line should read <code>&lt;name&gt; &lt;version&gt; from &lt;browse-url&gt; (&lt;license&gt;)</code></li>
-<li>the second line should read <code>requires: package1, package2, ...</code> and it is only needed if the package has any <em>binary</em> dependencies which are not also Lua dependencies (eg. <a href="cairo.html">cairo</a> needs <a href="pixman.html">pixman</a> this way).</li>
+<li>the second line should read <code>requires: package1, package2, ...</code> and it is only needed if the package has any binary dependencies.</li>
 <li>after the first two lines and an empty line, you can type in additional notes, whatever, they aren't parsed.</li>
 </ul>
 <p>The WHAT file can also be used to describe Lua modules that are developed outside of luapower (eg. <a href="lexer.html">lexer</a>).</p>
@@ -129,43 +131,51 @@ tagline: defeats scammers
 <ul>
 <li>adding at least a small comment on the first line of every Lua file with a short tagline (what the module does), author and license can be a huge barrier-remover towards approaching your code (adding a full-screen of legal crap on the other hand is just bad taste - IMHO).</li>
 <li>adding a comment on top of the <code>foo_h.lua</code> file describing the origin (which files? which version?) and process (cpp? by hand?) used for generating the file adds confidence that the C API is complete and updated.</li>
-<li>I don't use <code>module()</code>, but if that's what you like, that's fine.</li>
-<li>my code is indented with tabs, and alignmenment inside the line is done with spaces, in recognition of the fact that tabsize is a personal preference and it should not be enforced upon people.</li>
-<li>I use <code>foo_bar</code> instead of FooBar or fooBar.</li>
-<li>calling <code>ffi.load()</code> without paths, custom names or version keeps the module away from any decision regarding how and where the library is to be found, which in turn this allows for more freedom on how to deploy libraries.</li>
-<li>the reason for putting cdefs in a separate file is because they could potentially be used separately from the Lua binding or may contain types that other cdef modules might need. it's ok to embed cdefs in the main module for small APIs though, if these are use cases are unlikely.</li>
+<li>calling <code>ffi.load()</code> without paths, custom names or version numbers keeps the module away from any decision regarding how and where the library is to be found, which in turn this allows for more freedom on how to deploy libraries.</li>
+<li>the reason for putting cdefs in a separate file is because they may contain types that other packages might need. If this is an unlikely scenario and the API is small, you can embed the cdefs in the main module file directly.</li>
+<li>(subjective) I don't use <code>module()</code> to keep _G clean. For big modules with a shared namespace I make a &quot;namespace&quot; module and use <code>setfenv(1, require'foo.ns')</code> as the first line of every submodule (see <a href="winapi.html">winapi</a>).</li>
+<li>(subjective) my code is indented with tabs, and alignment inside the line is done with spaces, because I think that a fixed tabsize should not be enforced on people (plus very few editors can jump through space indentation).</li>
+<li>(subjective) I use Lua's naming conventions <code>foo_bar</code> and <code>foobar</code> instead of FooBar or fooBar.</li>
 </ul>
 <h3 id="the-build-scripts">The Build Scripts</h3>
-<p>Write a build script for each supported platform. Ideally, your build script is a gcc (or g++) one-liner like most build scripts around here. Writing gcc one-liners is quite easy for most C libraries. You only have to remember a few important gcc switches:</p>
+<p>Write a build script for each supported platform. Ideally, your build script is a gcc (or g++) one-liner like most build scripts around here. Writing gcc one-liners is easy for most C libraries. You only have to remember a few important gcc switches:</p>
 <ul>
-<li><code>-I&lt;dir&gt;</code> : search path for headers</li>
-<li><code>-l&lt;libname&gt;</code> : dynamic library dependency (without the <code>lib</code> prefix)</li>
-<li><code>-L&lt;dir&gt;</code> : search path for library dependencies</li>
-<li><code>-O2</code> : enable code optimization</li>
-<li><code>-s</code> : strip debug symbols (makes the binary smaller)</li>
-<li><code>-static-libstdc++</code> : static linking of the C++ standard library (for g++)</li>
-<li><code>-static-libgcc</code> : static linking of the GCC library (for gcc and g++)</li>
+<li><code>-shared</code> : create a shared library</li>
+<li><code>-o &lt;output-file&gt;</code> : output file path (eg. <code>-o ../../bin/mingw32/z.dll</code>)</li>
+<li><code>-I&lt;dir&gt;</code> : search path for headers (eg. <code>-I../lua</code>)</li>
+<li><code>-L&lt;dir&gt;</code> : search path for library dependencies (eg. <code>-L../../bin/mingw32</code>)</li>
+<li><code>-l&lt;libname&gt;</code> : dynamic library dependency (eg. <code>-lz</code> looks for <code>z.dll</code>, <code>libz.so</code> or <code>libz.dylib</code> depending on platform)</li>
+<li><code>-O2</code> : enable code optimizations</li>
+<li><code>-s</code> : strip debug symbols (makes the binaries smaller and debuggers useless; not for OSX)</li>
+<li><code>-static-libstdc++</code> : static linking of the C++ standard library (for g++; not for OSX)</li>
+<li><code>-static-libgcc</code> : static linking of the GCC library (for gcc and g++; not for OSX)</li>
 <li><code>-D&lt;name&gt;</code> : set a <code>#define</code></li>
 <li><code>-D&lt;name&gt;=&lt;value&gt;</code> : set a <code>#define</code></li>
-<li><code>-pthread</code> : enable pthread support (Linux and OSX only)</li>
+<li><code>-pthread</code> : enable pthread support (not for Windows)</li>
 <li><code>-fpic</code> : PIC mode (required for 64bit targets)</li>
-<li><code>-DWINVER=0x501</code> : windows.h API level is Windows XP</li>
-<li><code>-DWINVER=0x502</code> : windows.h API level is Windows XP SP2</li>
-<li><code>-DWINVER=0x601</code> : windows.h API level is Windows 7</li>
-<li><code>-DWINVER=0x602</code> : windows.h API level is Windows 8</li>
-<li><code>-undefined dynamic_lookup</code> : required on OSX for Lua/C modules (don't link them to luajit!)</li>
+<li><code>-DWINVER=0x501</code> : set windows.h API level to Windows XP</li>
+<li><code>-DWINVER=0x502</code> : set windows.h API level to Windows XP SP2</li>
+<li><code>-DWINVER=0x601</code> : set windows.h API level to Windows 7</li>
+<li><code>-DWINVER=0x602</code> : set windows.h API level to Windows 8</li>
+<li><code>-undefined dynamic_lookup</code> : required for Lua/C modules on OSX (don't link them to luajit!)</li>
+<li><code>-arch i386</code> : OSX: create 32bit x86 binaries</li>
+<li><code>-arch x86_64</code> : OSX: create 64bit x86 binaries</li>
+<li><code>-mmacosx-version-min=10.6</code> : for C++ modules on OSX: link to libstdc++.6 instead of the newer libc++.1</li>
 </ul>
-<h4 id="example-compile-lpeg-for-linux32">Example (compile lpeg for linux32):</h4>
-<pre><code>gcc -O2 -s -static-libgcc lpeg.c -shared -o ../../bin/linux32/clib/lpeg.so -I. -I../lua -ansi -DNDEBUG</code></pre>
+<blockquote>
+<p><strong>IMPORTANT</strong>: place the <code>-L</code> and <code>-l</code> switches <strong><em>after</em></strong> the input files!</p>
+</blockquote>
+<h4 id="example-compile-lpeg-0.10-for-linux32">Example (compile lpeg 0.10 for linux32):</h4>
+<pre><code>gcc -O2 -s -static-libgcc lpeg.c -shared -o ../../bin/linux32/clib/lpeg.so -I. -I../lua</code></pre>
 <p>In some cases it's going to be more complicated than that.</p>
 <ul>
 <li>sometimes you won't get away with <code>*.c</code> -- some libraries rely on the makefile to choose the C files that need to be compiled for a specific platform or set of options (eg. <a href="socket.html">socket</a>)</li>
 <li>some libraries actually use one or two of the myriad of defines generated by the <code>./configure</code> script -- you might have to grep for those and add more <code>-D</code> switches to the command line.</li>
-<li>some libraries have parts written in assembler or other language, in which case you will have to do compilation and linking in separate steps. At that point, a (simple) makefile becomes a good alternative.</li>
+<li>some libraries have parts written in assembler or other language, in which case you will have to do compilation and linking in separate steps. At that point, a (simple) makefile becomes a good alternative. If the package has a good makefile that doesn't add more dependencies to the toolchain, use that.</li>
 </ul>
-<p>Bigger and more configurable libraries will need more options for sure, and some libraries rely on the build system to make too many decisions. But even large libraries like <a href="cairo.html">cairo</a> can be build with simple shell scripts without compromising on clarity or flexibility.</p>
+<p>Bigger and more configurable libraries will need more options for sure, and some libraries rely on the build system to make decisions for them. But even large libraries like <a href="cairo.html">cairo</a> can be build with simple shell scripts without compromising on clarity or flexibility.</p>
 <h3 id="binaries">Binaries</h3>
-<p>Ideally, you would test your build scripts against the standard luapower <a href="building.html">building</a> environments. Spare luapower users for having to add another tool to their toolchain.</p>
+<p>Ideally, you would build and test your build scripts against the standard luapower <a href="building.html">building</a> environments. Do not introduce additional tool requirements if you can avoid it.</p>
 <h2 id="publishing">Publishing</h2>
 <h3 id="publishing-on-luapower.com">1. Publishing on luapower.com</h3>
 <p>The way you add modules to luapower.com is:</p>
@@ -173,25 +183,25 @@ tagline: defeats scammers
 <li>first you make a git repo that resembles a luapower package</li>
 <li>then you can either:
 <ul>
-<li>publish it under your github account (luapower users will clone from your account directly)
+<li>publish it on your server or github account (luapower users will clone from that url directly)
 <ul>
-<li>ask me to add it to the package database</li>
-<li>I'll periodically pull and update the website</li>
+<li>I will add your package to the package database</li>
+<li>I will periodically pull and update luapower.com</li>
 </ul></li>
-<li>publish it <em>and manage it</em> yourself under the luapower github account (it's an org account)
+<li>publish it <em>and manage it</em> yourself on luapower.com
 <ul>
-<li>ask me to add you as an admin</li>
-<li>you will periodically push and update the website</li>
+<li>I will add you as an admin to the luapower github account (it's an organization account)</li>
+<li>you will update luapower.com yourself</li>
 </ul></li>
 </ul></li>
 </ul>
 <h4 id="what-to-add">What to add</h4>
-<p>Before publishing a luapower module, please carefully consider:</p>
+<p>Before publishing a luapower module, please consider:</p>
 <ul>
 <li>what name you plan to use for your module</li>
 <li>how your module relates to other modules</li>
 </ul>
-<p>Choosing a good name is important if you want people to find your module on luapower and understand (from the name alone) what it does. Likewise, it's a good idea to be sure that your module is doing something new or at least different (and hopefully better) than something already on luapower.</p>
+<p>Choosing a good name is important if you want people to find your module on luapower.com and understand (from the name alone) what it does. Likewise, it's a good idea to be sure that your module is doing something new or at least different (and hopefully better) than something already on luapower.com.</p>
 <p>Ideally, your module has:</p>
 <ul>
 <li><strong>distinction</strong> - focused problem domain</li>
@@ -200,18 +210,88 @@ tagline: defeats scammers
 <li><strong>test and/or demo</strong> - so it can be seen to work</li>
 <li><strong>a non-viral license</strong> - so it doesn't impose restrictions on <em>other</em> modules</li>
 </ul>
-<blockquote>
-<p>It might be that your idea of a good package to add to luapower diverges too much from these criteria, in which case I would politely refuse to add your package to luapower. But here's where you can have your cake and eat it too.</p>
-</blockquote>
+<p>Of course, few modules (in any language) qualify on all fronts, so luapower.com is inevitably an ecclectic mix. In any case, if your module collection is too specialized to be added to luapower.com or you simply don't want to mix it in, here's where you can have your cake and eat it too.</p>
 <h3 id="forking-luapower.com">2. Forking luapower.com</h3>
-<p>Luapower can be easily forked and used as a personal website for publishing Lua modules.</p>
+<p>Luapower can be easily forked and used as a personal website for publishing luapower modules.</p>
 <p>Luapower is composed of:</p>
 <ul>
 <li>a <a href="https://github.com/luapower/luapower.github.io">static website</a> generated with pandoc templating</li>
 <li>a <a href="https://github.com/luapower/luapower-git/blob/master/luapower.lua">Lua script</a> for updating the package database, navigation tree, and dependency lists offline</li>
 <li>a few <a href="https://github.com/luapower/luapower-git">simple shell scripts</a> for working with git in a shared-work-tree environment</li>
 </ul>
-<p>Which means that with a few forks and a few tweaks you can have your own luapower clone with your own modules on it. I'll write a section on how to configure a luapower clone if there's interest in the idea.</p>
+<p>Which means that with a few forks and a few tweaks you can have your own luapower clone with your own modules on it. The only dependency is <a href="http://johnmacfarlane.net/pandoc/">pandoc</a> for generating the website.</p>
+<h4 id="the-luapower-command">The <code>luapower</code> command</h4>
+<p>This is a powerful command that extracts and aggregates data from the luapower environment and gives detailed information about packages, modules and documentation. It can give accurate information about dependencies between modules and packages because it actually loads the module and tracks <code>require</code> calls, and then it integrates that information with the information about packages.</p>
+<p>It is also used for generating the package database on luapower.com, along with the the dependency lists you see on each module's page.</p>
+<p>The <code>luapower</code> command is a Lua script that depends on <a href="luajit.html">luajit</a>, <a href="lfs.html">lfs</a>, <a href="glue.html">glue</a> and <a href="tuple.html">tuple</a> so let's clone these first:</p>
+<pre><code>&gt; clone luajit
+&gt; clone lfs
+&gt; clone glue
+&gt; clone tuple</code></pre>
+<p>For updating the website, we also need to clone its files in the <code>_site</code> sub-directory:</p>
+<pre><code>&gt; git clone https://github.com/luapower/luapower.github.io _site</code></pre>
+<p>The rest you can learn from the tool itself:</p>
+<pre><code>&gt; luapower
+
+USAGE: luapower &lt;command&gt; ...
+
+HELP
+
+   help                           this screen
+
+PACKAGES
+
+   packages                       list installed packages
+   known                          list all known package
+   left                           list not yet installed packages
+
+PACKAGE INFO
+
+   describe &lt;package&gt;             describe a package
+   type [package]                 package type
+   ver [package]                  current git version
+   tags [package]                 git tags
+   tag [package]                  current git tag
+   files [package]                tracked files
+   docs [package]                 docs
+   modules [package]              modules
+   scripts [package]              scripts
+   mtree [package]                module tree
+   mtags [package [module]]       module info
+   platforms [package]            supported platforms
+   ctags [package]                C package info
+
+CHECKS
+
+   check [package]                consistency checks
+   trackable                      trackable files
+   multitracked                   files tracked by multiple packages
+   untracked                      files not tracked by any package
+
+DATABASE
+
+   update-db [package]            update _site/packages.json
+   update-toc [package]           update _site/toc.md
+   update [package]               update both _site/packages.json and _site/toc.md
+   rebuild-db                     rebuild _site/packages.json
+
+DEPENDENCIES
+
+   requires &lt;module&gt;              direct module requires
+   rall &lt;module&gt;                  direct and indirect module requires
+   rtree &lt;module&gt;                 module require log tree
+   rext &lt;module&gt;                  direct-external module requires
+   pall &lt;module&gt;                  direct and indirect package dependencies
+   pext &lt;module&gt;                  direct-external package dependencies
+   ppall [package]                direct and indirect package dependencies
+   ppext [package]                direct-external package dependencies
+   cdeps [package]                direct and indirect C dependencies
+   rrev &lt;module&gt;                  all modules that require a module
+
+The `package` arg defaults to the env var PROJECT, as set by the `proj` command,
+and if that is not set, it defaults to `--all`, meaning all packages.</code></pre>
+<h4 id="the-luapower-website">The luapower website</h4>
+<p>Look into <code>_site/config.js</code> for what needs to be adjusted.</p>
 				</section>
 			</div>
 			<div class="container">

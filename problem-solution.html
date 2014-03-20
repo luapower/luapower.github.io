@@ -81,7 +81,8 @@
 <p>I should not be forced to compile stuff. Not even in Linux. You should let me play around with the library before I even decide if I want to incorporate it in my project or not.</p>
 <h2 id="c-sources-build-scripts">C SOURCES &amp; BUILD SCRIPTS</h2>
 <p>I know I'm going against the grain with this one, but I deeply hate C build systems and I think for the most part that they are unnecessary. For me, the success rate for going from <code>make</code> to <code>dll</code> on the first shot has always been pretty pathetic. Building with one-liner gcc scripts is much more transparent, which directly affects my ability and motivation to fix problems (which in turn affects the number of packages built). It is much faster too.</p>
-<p>To me it boils down to how much indirection there is between problem (in this case the .c and .h files) and solution (the gcc compiler) and I suspect this is the way it works for other people too.</p>
+<p>To me it boils down to how much indirection there is between problem (in this case the .c and .h files) and solution (the gcc compiler). Sure, you have to remember some gcc switches, but they are <em>the same</em> switches for any library that you will ever build.</p>
+<p>It also allows you to apply a set of decisions consistently across the entire distribution, like, if you should statically build libgcc or not.</p>
 <h2 id="package-database">PACKAGE DATABASE</h2>
 <p>Package type, version, supported platforms, license, etc., this is information that needs to be aggregated and presented in a way that can be filtered.</p>
 <h2 id="documentation">DOCUMENTATION</h2>

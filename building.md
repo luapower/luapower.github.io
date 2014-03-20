@@ -14,6 +14,8 @@ tagline:  building the C libraries
  * For building Lua/C modules for Windows you need [luajit] (for linking to lua51.dll).
  * You will get stripped binaries, with libgcc and libstdc++ statically linked, except on OSX (see below).
  * Windows binaries are linked to msvcrt.dll and Lua/C modules are linked to lua51.dll.
+ * Windows builds are compatible down to Windows 2000/XP (32bit and 64bit)
+ * OSX builds are compatible down to OSX 10.6 (x86 only, 32bit and 64bit)
 
 
 ## Building on Windows 32bit for Windows 32bit
@@ -128,22 +130,18 @@ here is a quick method to build Linux binaries from a Windows or OSX (or even Li
 	* `$ ./build-linux32.sh` or `./build-linux64.sh`, depending on what ISO you used
 
 
-## Building on OSX for OSX (x86 64bit)
+## Building on OSX for OSX (x86, 32bit and 64bit)
 
-Use `build-osx64.sh`.
+OSX builds are based on clang 5.0 (clang-500.2.279) which comes with Xcode 5.0.2 and are done on a 64bit OSX 10.9.
 
-OSX builds are currently only compatible with the 64bit OSX 10.9.
+The good news about clang is that it's a cross-compiler, so you can build for 32bit on a 64bit OSX and viceversa.
+So use `build-osx32.sh` and `build-osx64.sh` freely on your OSX, regardless of version or architecture.
 
-Install Xcode 5.0.2 which will get you clang 5.0 (clang-500.2.279).
+> Clang is also lightning fast, something which you cannot fully appreciate with make-based builds,
+but you can clearly see with gcc one-liners.
 
-There are a few problems with building with the Xcode-supplied compiler:
-
-  * you need to sign up with your Apple ID to get Xcode
-  * clang doesn't support static building of the standard C++ library nor of libgcc.
-
-For these reasons, I am tempted to switch to GCC 4.7 from MacPorts.
-Support for OSX 10.6+ (32bit and 64bit) is also considered (this would require you to find and install the 10.6 SDK).
-Feedback welcome.
+The bad news is that clang/OSX doesn't (and will not) support static building of the standard C++ library nor of libgcc.
+The binaries should be compatible down to OSX 10.6 but I don't yet have a 10.6 to test. Feedback welcome.
 
 
 [mingw-w64-win64]:    http://sourceforge.net/projects/mingwbuilds/files/host-windows/releases/4.8.1/64-bit/threads-posix/seh/x64-4.8.1-release-posix-seh-rev5.7z
