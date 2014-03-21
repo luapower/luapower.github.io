@@ -56,7 +56,7 @@
 <ul>
 <li>Building is based on one-liner shell scripts that invoke gcc directly (no makefiles).</li>
 <li>Each supported package/platform/arch has a separate build script <code>csrc/&lt;package&gt;/build-&lt;platf&gt;&lt;arch&gt;.sh</code>.</li>
-<li>Not all platform/architecture combinations are supported for all packages.</li>
+<li>Not all platform/arch combinations are supported for all packages (sort packages by platform to check).</li>
 <li>C sources are included so you can start right away.</li>
 <li>Dependent packages are listed in <code>csrc/&lt;package&gt;/WHAT</code>. Build those first.</li>
 <li>For building Lua/C modules you need <a href="lua-headers.html">lua-headers</a>.</li>
@@ -67,9 +67,7 @@
 <li>OSX builds are compatible down to OSX 10.6 (x86 only, 32bit and 64bit)</li>
 </ul>
 <h2 id="building-on-windows-32bit-for-windows-32bit">Building on Windows 32bit for Windows 32bit</h2>
-<p>Use <code>build-mingw32.sh</code>.</p>
-<p>These scripts assume that both MSys and MinGW bin dirs (in this order) are in your PATH.</p>
-<p>Here's the exact list of MinGW packages used to build the current luapower stack:</p>
+<p>Use <code>build-mingw32.sh</code>. These scripts assume that both MSys and MinGW bin dirs (in this order) are in your PATH. Below is the exact list of MinGW packages used to build the current luapower stack:</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -143,7 +141,7 @@
 </tr>
 </tbody>
 </table>
-<p>Additional tools needed by a few special libraries (use them for building for 64bit too):</p>
+<p>Additional tools needed by a few special packages (use them for building for 64bit too):</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -158,9 +156,7 @@
 </tbody>
 </table>
 <h2 id="building-on-windows-64bit-for-windows-64bit">Building on Windows 64bit for Windows 64bit</h2>
-<p>Use <code>build-mingw64.sh</code>.</p>
-<p>These scripts assume that both MSys and MinGW-w64 bin dirs (in this order) are in your PATH.</p>
-<p>Here's the exact MinGW-w64 package used to build the current luapower stack:</p>
+<p>Use <code>build-mingw64.sh</code>. These scripts assume that both MSys and MinGW-w64 bin dirs (in this order) are in your PATH. Here's the exact MinGW-w64 package used to build the current luapower stack:</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -178,9 +174,11 @@
 <blockquote>
 <p>NOTE: This will build libraries with the SJLJ exception model, unlike current luapower binaries which use SEH.</p>
 </blockquote>
-<h2 id="building-on-linux-for-linux-native">Building on Linux for Linux (native)</h2>
-<p>You probably have gcc and make installed already. If you have GCC 4.7+ that's even better. Just run the appropriate build scripts for your architecture (32bit or 64bit).</p>
-<h2 id="building-on-windows-or-osx-for-linux-32bit-and-64bit">Building on Windows or OSX for Linux (32bit and 64bit)</h2>
+<h2 id="building-on-linux-for-linux-x86-native">Building on Linux for Linux (x86 native)</h2>
+<p>Use <code>build-linux32.sh</code> on a 32bit host and <code>build-linux64.sh</code> on a 64bit host. Careful not to mix them up, or you'll get 32bit binaries in the 64bit directory or viceversa.</p>
+<p>You need a recent gcc toolchain, which you probably already have.</p>
+<p>The current luapower stack is built with gcc 4.7.2 from tinycore 5.2 (see below).</p>
+<h2 id="building-on-windows-or-osx-for-linux-x86-32bit-and-64bit">Building on Windows or OSX for Linux (x86 32bit and 64bit)</h2>
 <p>If you are on Windows or OSX and you want to compile for Linux and don't want to mess with a cross-compiler, here is a quick method to build Linux binaries from a Windows or OSX (or even Linux) environment.</p>
 <ul>
 <li>Grab VirtualBox</li>
@@ -227,13 +225,13 @@
 <li><code>$ ./build-linux32.sh</code> or <code>./build-linux64.sh</code>, depending on what ISO you used</li>
 </ul></li>
 </ul>
-<h2 id="building-on-osx-for-osx-x86-32bit-and-64bit">Building on OSX for OSX (x86, 32bit and 64bit)</h2>
-<p>OSX builds are based on clang 5.0 (clang-500.2.279) which comes with Xcode 5.0.2 and are done on a 64bit OSX 10.9.</p>
-<p>The good news about clang is that it's a cross-compiler, so you can build for 32bit on a 64bit OSX and viceversa. So use <code>build-osx32.sh</code> and <code>build-osx64.sh</code> freely on your OSX, regardless of version or architecture.</p>
+<h2 id="building-on-osx-for-osx-x86-32bit-and-64bit">Building on OSX for OSX (x86 32bit and 64bit)</h2>
+<p>Use <code>build-osx32.sh</code> to make 32bit x86 binaries and <code>build-osx64.sh</code> to make 64bit x86 binaries. Clang is a cross-compiler, so you can build for 32bit on a 64bit OSX and viceversa.</p>
+<p>Current OSX builds are based on clang 5.0 (clang-500.2.279) which comes with Xcode 5.0.2, and are done on a 64bit OSX 10.9.</p>
+<p>The generated binaries are compatible down to OSX 10.6 for both 32bit and 64bit.</p>
 <blockquote>
-<p>Clang is also lightning fast, something which you cannot fully appreciate with make-based builds, but you can clearly see with gcc one-liners.</p>
+<p>NOTE: Clang/OSX doesn't (and will not) support static binding of the standard C++ library nor of libgcc.</p>
 </blockquote>
-<p>The bad news is that clang/OSX doesn't (and will not) support static building of the standard C++ library nor of libgcc. The binaries should be compatible down to OSX 10.6 but I don't yet have a 10.6 to test. Feedback welcome.</p>
 				</section>
 			</div>
 			<div class="container">

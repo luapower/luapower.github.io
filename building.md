@@ -7,7 +7,7 @@ tagline:  building the C libraries
 
  * Building is based on one-liner shell scripts that invoke gcc directly (no makefiles).
  * Each supported package/platform/arch has a separate build script `csrc/<package>/build-<platf><arch>.sh`.
- * Not all platform/architecture combinations are supported for all packages.
+ * Not all platform/arch combinations are supported for all packages (sort packages by platform to check).
  * C sources are included so you can start right away.
  * Dependent packages are listed in `csrc/<package>/WHAT`. Build those first.
  * For building Lua/C modules you need [lua-headers].
@@ -21,10 +21,8 @@ tagline:  building the C libraries
 ## Building on Windows 32bit for Windows 32bit
 
 Use `build-mingw32.sh`.
-
 These scripts assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
-
-Here's the exact list of MinGW packages used to build the current luapower stack:
+Below is the exact list of MinGW packages used to build the current luapower stack:
 
 ----
 [binutils-2.23.1-1-mingw32-bin](http://sourceforge.net/projects/mingw/files/MinGW/Base/binutils/binutils-2.23.1/binutils-2.23.1-1-mingw32-bin.tar.lzma)
@@ -52,7 +50,7 @@ Here's the exact list of MinGW packages used to build the current luapower stack
 [make-3.82-5-mingw32-bin](http://sourceforge.net/projects/mingw/files/MinGW/Extension/make/make-3.82-mingw32/make-3.82-5-mingw32-bin.tar.lzma)
 ----
 
-Additional tools needed by a few special libraries (use them for building for 64bit too):
+Additional tools needed by a few special packages (use them for building for 64bit too):
 
 ----
 [ragel 6.8 (only for harfbuzz)](http://www.jgoettgens.de/Meine_Bilder_und_Dateien/ragel-vs2012.7z)
@@ -63,9 +61,7 @@ Additional tools needed by a few special libraries (use them for building for 64
 ## Building on Windows 64bit for Windows 64bit
 
 Use `build-mingw64.sh`.
-
 These scripts assume that both MSys and MinGW-w64 bin dirs (in this order) are in your PATH.
-
 Here's the exact MinGW-w64 package used to build the current luapower stack:
 
 ----
@@ -90,13 +86,17 @@ add mingw32/bin in your PATH and build using `build-mingw64-from-win32.sh` where
 unlike current luapower binaries which use SEH.
 
 
-## Building on Linux for Linux (native)
+## Building on Linux for Linux (x86 native)
 
-You probably have gcc and make installed already. If you have GCC 4.7+ that's even better.
-Just run the appropriate build scripts for your architecture (32bit or 64bit).
+Use `build-linux32.sh` on a 32bit host and `build-linux64.sh` on a 64bit host.
+Careful not to mix them up, or you'll get 32bit binaries in the 64bit directory or viceversa.
+
+You need a recent gcc toolchain, which you probably already have.
+
+The current luapower stack is built with gcc 4.7.2 from tinycore 5.2 (see below).
 
 
-## Building on Windows or OSX for Linux (32bit and 64bit)
+## Building on Windows or OSX for Linux (x86 32bit and 64bit)
 
 If you are on Windows or OSX and you want to compile for Linux and don't want to mess with a cross-compiler,
 here is a quick method to build Linux binaries from a Windows or OSX (or even Linux) environment.
@@ -130,18 +130,17 @@ here is a quick method to build Linux binaries from a Windows or OSX (or even Li
 	* `$ ./build-linux32.sh` or `./build-linux64.sh`, depending on what ISO you used
 
 
-## Building on OSX for OSX (x86, 32bit and 64bit)
+## Building on OSX for OSX (x86 32bit and 64bit)
 
-OSX builds are based on clang 5.0 (clang-500.2.279) which comes with Xcode 5.0.2 and are done on a 64bit OSX 10.9.
+Use `build-osx32.sh` to make 32bit x86 binaries and `build-osx64.sh` to make 64bit x86 binaries.
+Clang is a cross-compiler, so you can build for 32bit on a 64bit OSX and viceversa.
 
-The good news about clang is that it's a cross-compiler, so you can build for 32bit on a 64bit OSX and viceversa.
-So use `build-osx32.sh` and `build-osx64.sh` freely on your OSX, regardless of version or architecture.
+Current OSX builds are based on clang 5.0 (clang-500.2.279) which comes with
+Xcode 5.0.2, and are done on a 64bit OSX 10.9.
 
-> Clang is also lightning fast, something which you cannot fully appreciate with make-based builds,
-but you can clearly see with gcc one-liners.
+The generated binaries are compatible down to OSX 10.6 for both 32bit and 64bit.
 
-The bad news is that clang/OSX doesn't (and will not) support static building of the standard C++ library nor of libgcc.
-The binaries should be compatible down to OSX 10.6 but I don't yet have a 10.6 to test. Feedback welcome.
+> NOTE: Clang/OSX doesn't (and will not) support static binding of the standard C++ library nor of libgcc.
 
 
 [mingw-w64-win64]:    http://sourceforge.net/projects/mingwbuilds/files/host-windows/releases/4.8.1/64-bit/threads-posix/seh/x64-4.8.1-release-posix-seh-rev5.7z
