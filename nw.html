@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> nw   - native widgets </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'nw'
+			var PROJECT = 'nw'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> nw </h1>
+							<h2> native widgets </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/nw" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/nw/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/nw/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/nw/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-nw" style="background-image: url('bg/nw.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-nw-requirenw"><code>local nw = require'nw'</code></h2>
+<p>Cross-platform library for displaying native windows, drawing their contents using <a href="cairo.html">cairo</a> or <a href="opengl.html">opengl</a>, and accessing keyboard, mouse and touchpad events in a consistent manner across Windows, Linux and OS X.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>application</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>nw:app() -&gt; app</code></td>
+<td align="left">create an application</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>app:run()</code></td>
+<td align="left">run the application main loop</td>
+</tr>
+<tr class="even">
+<td align="left"><code>app:quit()</code></td>
+<td align="left">close all windows and end the application main loop</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>app:screen_rect() -&gt; x, y, w, h</code></td>
+<td align="left">screen rectangle</td>
+</tr>
+<tr class="even">
+<td align="left"><code>app:client_rect() -&gt; x, y, w, h</code></td>
+<td align="left">desktop rectangle (without taskbar)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>app:time() -&gt; time</code></td>
+<td align="left">get an opaque time object representing a hi-resolution timestamp</td>
+</tr>
+<tr class="even">
+<td align="left"><code>app:timediff(time1, time2) -&gt; ms</code></td>
+<td align="left">get the difference between two time objects</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>windows</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>app:window(options_t) -&gt; win</code></td>
+<td align="left">create a window (see below for options)</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>options_t</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">x, y, w, h (required)</td>
+<td align="left">window's frame (i.e. outside) rectangle</td>
+</tr>
+<tr class="odd">
+<td align="left">title (empty)</td>
+<td align="left">window title</td>
+</tr>
+<tr class="even">
+<td align="left">state ('normal')</td>
+<td align="left">'normal' | 'maximized' | 'minimized' | 'fullscreen'</td>
+</tr>
+<tr class="odd">
+<td align="left">topmost (false)</td>
+<td align="left">allways on top window</td>
+</tr>
+<tr class="even">
+<td align="left">frame (true)</td>
+<td align="left">the window has a frame border and title bar</td>
+</tr>
+<tr class="odd">
+<td align="left">allow_minimize (true)</td>
+<td align="left">show the minimize button and allow minimization</td>
+</tr>
+<tr class="even">
+<td align="left">allow_maximize (true)</td>
+<td align="left">show the maximize button and allow maximization</td>
+</tr>
+<tr class="odd">
+<td align="left">allow_close (true)</td>
+<td align="left">enable the close button and allow the window to be closed</td>
+</tr>
+<tr class="even">
+<td align="left">allow_resize (true)</td>
+<td align="left">the window is resizeable</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>lifetime</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>app:windows() -&gt; iter() -&gt; win</code></td>
+<td align="left">iterate app's windows</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>app:active_window() -&gt; win</code></td>
+<td align="left">get the active window</td>
+</tr>
+<tr class="even">
+<td align="left"><code>app:active() -&gt; true|false</code></td>
+<td align="left">check if app is active</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:free()</code></td>
+<td align="left">close and free a window</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:dead() -&gt; true|false</code></td>
+<td align="left">check if the window was free'd</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:closing() -&gt; [false]</code></td>
+<td align="left">event: window is closing; return false to prevent it</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:closed()</code></td>
+<td align="left">event: window was closed (but not yet freed and its children are alive)</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>activation</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:activate()</code></td>
+<td align="left">activate the window</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:active() -&gt; true|false</code></td>
+<td align="left">check if the window is active</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:activated()</code></td>
+<td align="left">event: window was activated</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:deactivated()</code></td>
+<td align="left">event: window was deactivated</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>state</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:show([state])</code></td>
+<td align="left">show it (in its current state or in a new state)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:hide()</code></td>
+<td align="left">hide it</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:visible() -&gt; true|false</code></td>
+<td align="left">check if the window is visible</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:state_changed()</code></td>
+<td align="left">event: window's state has changed</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>positioning</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:frame_rect([x], [y], [w],</code> </td>
+<td align="left">change/return the frame rectangle</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>[h]) -&gt; x, y, w, h</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:frame_changing(how, x, y, w, h)</code></td>
+<td align="left">event: frame rect is changing; how = move|left|right|top|bottom|topleft|topright|bottomleft|bottomright</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:moved()</code></td>
+<td align="left">event: window was moved</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:resized()</code></td>
+<td align="left">event: window was resized</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:title([newtitle]) -&gt; newtitle</code></td>
+<td align="left">get/set the window's title</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>keyboard</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:key(keyname) -&gt; down[, toggled]</code></td>
+<td align="left">key and toggle state (see source for key names)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:key_down(key)</code></td>
+<td align="left">event: key down</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:key_up(key)</code></td>
+<td align="left">event: key up</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:key_press(key)</code></td>
+<td align="left">event: sent on each key down, including repeats</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:key_char(char)</code></td>
+<td align="left">event: sent after key_press for displayable characters; char is utf-8</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>mouse</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:mouse_move(x, y)</code></td>
+<td align="left">event: mouse move</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:mouse_enter()</code></td>
+<td align="left">event: mouse entered the client area of the window</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:mouse_leave()</code></td>
+<td align="left">event: mouse left the client area of the window</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:mouse_down(button)</code></td>
+<td align="left">event: a mouse button was pressed; button = 'left'|'right'|'middle'|'xbutton1'|'xbutton2'</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:mouse_up(button)</code></td>
+<td align="left">event: a mouse button was depressed</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:mouse_click(button, count)</code></td>
+<td align="left">event: a mouse button was clicked (pressed repeatedly); </td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">return false to end the repeat chain (see notes)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:mouse_wheel(delta)</code></td>
+<td align="left">event: mouse wheel</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:mouse_hwheel(delta)</code></td>
+<td align="left">event: mouse horizontal wheel</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>rendering</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>win:render()</code></td>
+<td align="left">event: draw the window contents</td>
+</tr>
+<tr class="even">
+<td align="left"><code>win:invalidate()</code></td>
+<td align="left">trigger window redrawing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="features">Features</h2>
+<ul>
+<li>consistent behavior accross Windows, Linux and OS X</li>
+<li>magnetized windows</li>
+<li>transparent windows</li>
+<li>full screen mode</li>
+<li>complete access to the US keyboard</li>
+<li>triple-click and n-click events</li>
+<li>utf-8 strings</li>
+</ul>
+<h2 id="example">Example</h2>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">nw</span> <span class="ot">=</span> require<span class="st">&#39;nw&#39;</span>
+
+<span class="kw">local</span> <span class="kw">app</span> <span class="ot">=</span> <span class="kw">nw</span>:app<span class="ot">()</span>
+
+<span class="kw">local</span> <span class="kw">win</span> <span class="ot">=</span> <span class="kw">app</span>:window<span class="ot">{</span><span class="kw">x</span> <span class="ot">=</span> <span class="dv">100</span><span class="ot">,</span> <span class="kw">y</span> <span class="ot">=</span> <span class="dv">100</span><span class="ot">,</span> <span class="kw">w</span> <span class="ot">=</span> <span class="dv">400</span><span class="ot">,</span> <span class="kw">h</span> <span class="ot">=</span> <span class="dv">200</span><span class="ot">,</span> <span class="kw">title</span> <span class="ot">=</span> <span class="st">&#39;hello&#39;</span><span class="ot">}</span>
+
+<span class="kw">function</span> <span class="kw">win</span>:mouse_click<span class="ot">(</span><span class="kw">button</span><span class="ot">,</span> <span class="kw">count</span><span class="ot">)</span>
+   <span class="kw">if</span> <span class="kw">button</span> <span class="ot">==</span> <span class="st">&#39;left&#39;</span> <span class="kw">and</span> <span class="kw">count</span> <span class="ot">==</span> <span class="dv">3</span> <span class="kw">then</span> <span class="co">--triple click</span>
+      <span class="kw">app</span>:quit<span class="ot">()</span>
+   <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="kw">function</span> <span class="kw">win</span>:key_down<span class="ot">(</span><span class="kw">key</span><span class="ot">)</span>
+   <span class="kw">if</span> <span class="kw">key</span> <span class="ot">==</span> <span class="st">&#39;F11&#39;</span> <span class="kw">then</span>
+      <span class="kw">if</span> <span class="kw">self</span>:state<span class="st">&#39;fullscreen&#39;</span> <span class="kw">then</span>
+         <span class="kw">self</span>:show<span class="st">&#39;normal&#39;</span>
+      <span class="kw">else</span>
+         <span class="kw">self</span>:show<span class="st">&#39;fullscreen&#39;</span>
+      <span class="kw">end</span>
+   <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="kw">app</span>:run<span class="ot">()</span> <span class="co">--start the main loop</span></code></pre>
+<h2 id="notes">Notes</h2>
+<h3 id="n-click-feature">n-click feature</h3>
+<p>...</p>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+

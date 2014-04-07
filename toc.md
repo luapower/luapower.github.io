@@ -81,6 +81,7 @@
 	* [libpng]
 	* [libexif]
 * GUI
+   * [nw]
 	* [cplayer]
 	* [box2d]
 * Code Editing
