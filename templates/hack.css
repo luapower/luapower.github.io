@@ -235,8 +235,8 @@ header h2 { /* tagline */
 .doc h1 {font-size: 24px; font-weight: normal;}
 .doc h2 {font-size: 18px;}
 .doc h2 code {font-size: 16px;}
-.doc h3 {font-size: 16px;}
-.doc h4 {font-size: 15px;font-weight: normal;}
+.doc h3 {font-size: 15px;text-transform: none;}
+.doc h4 {font-size: 14px;text-transform: none;font-weight: normal;}
 
 .doc h5 {
 	font-size: 12px;

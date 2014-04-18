@@ -75,7 +75,7 @@
 <p>The idea is to find the most popular, familiar and <em>short</em> names for <em>each and every</em> function (no underscores and no capitals). Python gets this right, so does UNIX. A function with an unheard of name or alien semantics will be avoided. People rather recall known names/semantics rather than learn unfamiliar new names/semantics.</p>
 <p>For non-obvious O(n) operations, use verbs to emphasize the process rather than the result, eg. <code>scan(t,e)</code> not <code>indexof(e,t)</code>, <code>count(t)</code> not <code>size(t)</code>.</p>
 <h2 id="semantics">Semantics</h2>
-<p>They follow the general [APIDesign] rules.</p>
+<p>They follow the general <a href="api-design.html">api-design</a> rules.</p>
 <h3 id="objects-vs-glue">Objects vs glue</h3>
 <p>Don't provide data structures like list and set in a glue library, or a way to do OOP. Instead just provide the mechanisms as functions working on bare tables. Don't do both either: if your list type gets widely adopted, your programs will now be a mixture of bare tables (this is inevitable) and lists so now you have to decide which of your lists has a <code>sort()</code> method and which need to be wrapped first. A global <code>glue.sort(t)</code> spares you the trouble.</p>
 <h3 id="write-in-lua">Write in Lua</h3>

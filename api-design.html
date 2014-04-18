@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> API design   - tips &amp; principles </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'api-design'
+			var PROJECT = ''
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> API design </h1>
+							<h2> tips &amp; principles </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																											</td>
+					</tr>
+				</table>
+															</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-api-design" style="background-image: url('bg/api-design.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="overview">Overview</h2>
+<p>Design APIs from the point of view of the user and not for implementation requirements. The following guidelines and observations are mostly derived from this principle.</p>
+<h2 id="compact-your-api">Compact your API</h2>
+<p>Structuring your API semantically makes it easier to learn and later to recall because humans work best with semantic hierarchies. Here's a few techniques you can use:</p>
+<ul>
+<li>group functions into namespaces (the easy one)</li>
+<li>group semantic variations into a single function using parameter polymorphism (aka function overloading)</li>
+</ul>
+<p>Lua uses both tricks to extremes, making its API seem much smaller than it is, eg. by carefully shelving even the most basic functions like <code>table.insert</code> into their proper namespaces, or cramming multiple variations for reading from a file into a single function, <code>file:read()</code> with a <code>mode</code> argument with values that form a small namespace of their own and are cleverly mnemonic.</p>
+<p><strong>Explanation</strong>: Semantic hierarchies are different than classification hierarchies. In terms of helping with remembering, the first is good, the second is bad. Eg. file:read(mode) creates a semantic hierarchy file -&gt; read -&gt; mode because each level in the hierarchy contains a different <em>class</em> of concepts (file object -&gt; file method -&gt; mode parameter). Memory is helped by this association. But <code>urllib.parse.urlparse</code> is a classification hierarchy, which although a logical one to make from the implementation point of view, the fact that <code>urlparse</code> is to be found under the <code>parse</code> sub-namespace is completely arbitrary from the user's pov. and thus hard to remember (also see <a href="http://blip.tv/pycon-us-videos-2009-2010-2011/pycon-2011-api-design-lessons-learned-4901258">this</a> - skip to 44:00h for more problems with hierarchies).</p>
+<h2 id="caveats-of-function-overloading">Caveats of function overloading</h2>
+<p>Dispatching based on select('#',...) means there's now a difference between passing a nil as the last argument or not passing that argument at all which can lead to subtle bugs. Eg. if function <code>f</code> is sensitive to the number of arguments passed, the expression <code>f(a,b,c,g())</code> is now sensitive to whether <code>g()</code> returns nil or nothing which can lead to hard to find bugs since many functions signal a missing result value implicitly by exiting the function scope instead of calling <code>return nil</code>. It can also make it harder to wrap such a function sometimes, eg. to cap a depth variable with an optional maximum value you can't just write <code>depth = math.min(depth, maxdepth)</code>, instead you have to write <code>depth = math.min(depth, maxdepth or depth)</code>.</p>
+<p>Dispatching based on type can create ambiguities when passing objects with metamethods, eg. a function that can use either a table or an iterator to get its data would have to decide on how it would use a callable table (which eg. modules and classes sometimes are). Again, analyze the usage scenarios to decide: if they lead to a clear choice, the ambiguity is resolved, if not, avoid the overloading.</p>
+<p>Make argument optional only when it doesn't leave you wondering what the default is, eg. as the default separator for a <code>split()</code> function would. Contrast with <code>table.concat</code> for which the default separator is implied by the verb.</p>
+<p>Avoid boolean flag arguments, you can never tell what they stand for by looking at the code, eg. <code>fileopen(filename, mode = '*b' or '*t')</code> not <code>fileopen(filename, is_binary)</code> which could just as well be <code>fileopen(filename, is_text)</code> and you wouldn't know which by looking at a code like: <code>fileopen('file',false)</code>; another example <code>s:find(needle,nil,true)</code> - instead, <code>s:find(needle,nil,'plain')</code> would have been more readable.</p>
+<p>Don't close your semantic options with generalized rules like &quot;arguments should never/always be coerced&quot; or &quot;mutating operations should never return a value&quot;. A function's behavior and signature is dictated by its usage patterns which may be idiosyncratic and thus make generalized rules seem arbitrary. Eg. <code>t = update({}, t)</code> works better than <code>tt = {}; update(tt, t); t = tt</code>.</p>
+<h2 id="convention-over-configuration">Convention over configuration</h2>
+<p>Don't make it configurable if it affects portability, eg. a table serialization function that generates Lua code can be made to generate locale-dependent identifier keys that Lua 5.2 would refuse to load. Instead of making this choice a configuration option, it's better to just generate ascii identifier keys.</p>
+<p>Don't make it configurable if there's a clear best choice between alternatives, even if that would upset some users. Avoid compulsive customization. Best to add in customization options after presented with use cases from users, and use them to justify and document each option.</p>
+<h2 id="virtualization-is-overrated">Virtualization is overrated</h2>
+<p>Lua doesn't have the virtualization capabilities of some of the more extreme OO languages like Eiffel. In these languages you have enough hooks to achieve semantic equivalence of the native types and it's not easy to subvert the virtualization, making libraries mostly work automatically with the new types. This model is incompatible with Lua for practical reasons. The high performance standard Lua has set to follow is enough of a show-stopper: hooks are expensive to check and many standard utilities exploit implementation details for performance. It is also a broken model philosophically because abstractions leak, like how <code>1/0</code> breaks when LUA_NUMBER is int, or <code>#</code> lacking a good definition for a utf-8 string. It's also because of Lua's philosophy of &quot;mechanism not policy&quot; that you don't even have a clear (semantic or behavioral) definition of what exactly an array is. The Lua standard library is also hostile to virtualization, typechecking arguments and refusing to check hooks all over the place. If still not convinced, search the Lua mailing list for &quot;<code>__next</code>&quot;. I don't know why they even bothered with <code>__pairs</code> and <code>__ipairs</code>. This clearly isn't going anywhere.</p>
+<p>That being said, there <em>are</em> patterns of virtualization that you should care for. In particular, callable tables and userdata are common enough that typechecking for functions should be made with <code>callable(f)</code> instead of <code>type(f)=='function'</code>. Virtualized functions work because the API for a function is almost leak-free: except for dumping and loading, all you can do with a function is call it and pass it around.</p>
+<h2 id="keep-meaning-clear">Keep meaning clear</h2>
+<p>Sometimes the drive to compress and compact the code goes beyond clarity, obscuring the programmer's intention.</p>
+<table>
+<col width="27%" />
+<col width="36%" />
+<col width="36%" />
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Intention</strong></td>
+<td align="left"><strong>Unclear way</strong></td>
+<td align="left"><strong>Better way</strong></td>
+</tr>
+<tr class="even">
+<td align="left">break the code</td>
+<td align="left"><code>return last_func_call()</code></td>
+<td align="left"><code>last_func_call()</code><br /><code>return</code></td>
+</tr>
+<tr class="odd">
+<td align="left">declaring unrelated variables</td>
+<td align="left"><code>local var1, var2 = val1, val2</code></td>
+<td align="left"><code>local var1 = val1</code><br /><code>local var2 = val2</code></td>
+</tr>
+<tr class="even">
+<td align="left">private methods</td>
+<td align="left"><code>local function obj_foo(self, ...) end</code><br /><code>obj_foo(self, ...)</code></td>
+<td align="left"><code>function obj:_foo(...) end</code><br /><code>self:_foo(...)</code></td>
+</tr>
+<tr class="odd">
+<td align="left">dealing with simple cases</td>
+<td align="left"><code>if simple_case then</code><br />  <code>return simple_answer</code><br /><code>else</code><br />  <code>hard case ...</code><br /><code>end</code></td>
+<td align="left"><code>if simple_case then</code><br />  <code>return simple_answer</code><br /><code>end</code><br /><code>hard case ...</code></td>
+</tr>
+</tbody>
+</table>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+
