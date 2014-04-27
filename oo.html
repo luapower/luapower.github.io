@@ -185,7 +185,7 @@
 <p>Write:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">apple</span>:override_pick<span class="ot">(</span><span class="kw">inherited</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">,</span> <span class="ot">...)</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picking&#39;</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
-   <span class="kw">local</span> <span class="kw">ret</span> <span class="ot">=</span> inherited<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">ret</span> <span class="ot">=</span> inherited<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">,</span> <span class="ot">...)</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picked&#39;</span><span class="ot">,</span> <span class="kw">ret</span><span class="ot">)</span>
    <span class="kw">return</span> <span class="kw">ret</span>
 <span class="kw">end</span></code></pre>
