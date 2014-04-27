@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> oo   - object system with virtual properties </title>
+		<title> oo   - object system with properties and hooks </title>
 		<script src="jquery.js"></script>
 		<script src="jquery-cookie.js"></script>
 		<script src="jquery-tablesorter.js"></script>
@@ -34,7 +34,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> oo </h1>
-							<h2> object system with virtual properties </h2>
+							<h2> object system with properties and hooks </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -81,24 +81,25 @@
 </ul></li>
 <li>multiple, static inheritance by request:
 <ul>
-<li><code>self:inherit(baz[,override])</code> - statically inherit properties of <code>baz</code>, optionally overriding existing properties.</li>
-<li><code>self:detatch()</code> - detach from the parent class, in other words statically inherit <code>self.super</code>.</li>
+<li><code>apple:inherit(fruit[,replace])</code> - statically inherit <code>fruit</code>, optionally replacing existing properties.</li>
+<li><code>apple:detatch()</code> - detach from the parent class, in other words statically inherit <code>self.super</code>.</li>
 </ul></li>
 <li>virtual properties with getter and setter:
 <ul>
-<li>reading <code>self.foo</code> calls <code>self:get_foo()</code> to get the value, if <code>self.get_foo</code> exists.</li>
-<li>assignment to <code>self.foo</code> calls <code>self:set_foo(value)</code>.</li>
+<li>reading <code>apple.foo</code> calls <code>apple:get_foo()</code> to get the value, if <code>apple.get_foo</code> is defined.</li>
+<li>assignment to <code>apple.foo</code> calls <code>apple:set_foo(value)</code> if <code>apple.set_foo</code> is defined.</li>
 <li>missing the setter, the property is considered read-only and the assignment fails.</li>
 </ul></li>
 <li>stored properties (no getter):
 <ul>
-<li>assignment to <code>self.foo</code> calls <code>self:set_foo(value)</code> and sets <code>self.state.foo</code>.</li>
-<li>reading <code>self.foo</code> reads back <code>self.state.foo</code>.</li>
+<li>assignment to <code>apple.foo</code> calls <code>apple:set_foo(value)</code> and sets <code>apple.state.foo</code>.</li>
+<li>reading <code>apple.foo</code> reads back <code>apple.state.foo</code>.</li>
 </ul></li>
-<li>before/after method hooks:
+<li>method overriding hooks:
 <ul>
-<li><code>self:before_baz()</code> installs a before-hook for method <code>self:baz()</code>.</li>
-<li><code>self:after_baz()</code> installs an after-hook for method <code>self:baz()</code>.</li>
+<li><code>function apple:before_pick(args...) return newargs... end</code> makes <code>apple:pick()</code> call your method first.</li>
+<li><code>function apple:after_pick(ret...) return newret... end</code> makes <code>apple:pick()</code> call your method last.</li>
+<li><code>function apple:override_pick(inherited, ...)</code> lets you override <code>apple:pick()</code> and call <code>inherited(self, ...)</code>.</li>
 </ul></li>
 <li>introspection:
 <ul>
@@ -119,7 +120,7 @@
 <h2 id="inheritance-and-instantiation">Inheritance and instantiation</h2>
 <p><strong>Classes are created</strong> with <code>oo.class([super])</code>, where <code>super</code> is usually another class, but can also be an instance, which is useful for creating polymorphic &quot;views&quot; on existing instances.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">cls</span> <span class="ot">=</span> <span class="kw">oo</span><span class="ot">.</span>class<span class="ot">()</span>
-<span class="kw">cls</span><span class="ot">.</span><span class="kw">classname</span> <span class="ot">=</span> <span class="st">&#39;cls&#39;</span></code></pre>
+<span class="kw">cls</span><span class="ot">.</span><span class="kw">classname</span> <span class="ot">=</span> <span class="st">&#39;cls&#39;</span> <span class="co">--optional, for easy identification</span></code></pre>
 <p><strong>Instances are created</strong> with <code>myclass:create(...)</code> or simply <code>myclass()</code>, which in turn calls <code>myclass:init(...)</code> which is the object constructor. While <code>myclass</code> is normally a class, it can also be an instance, which effectively enables prototype-based inheritance.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> cls<span class="ot">()</span></code></pre>
 <p><strong>The superclass</strong> of a class or the class of an instance is accessible as <code>self.super</code>.</p>
@@ -172,10 +173,34 @@
 <li><code>self:getter(k) -&gt; v</code></li>
 <li><code>self:setter(k, v)</code></li>
 </ul>
-<h2 id="method-hooks">Method hooks</h2>
-<p><strong>Before/after hooks</strong> are sugar for overriding methods. Overriding a method can be done by simply redefining it and calling <code>class.super.&lt;method&gt;(self,...)</code> inside the new implementation. Most of the time this call is done either on the first or on the last line of the new function. With before and after hooks you can have that done automatically.</p>
+<h2 id="overriding-hooks">Overriding hooks</h2>
+<p>Overriding hooks are sugar to make method overriding more easy and readable.</p>
+<p>Instead of:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">apple</span>:pick<span class="ot">(</span><span class="kw">arg</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picking&#39;</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">ret</span> <span class="ot">=</span> <span class="kw">apple</span><span class="ot">.</span><span class="kw">super</span><span class="ot">.</span>pick<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picked&#39;</span><span class="ot">,</span> <span class="kw">ret</span><span class="ot">)</span>
+   <span class="kw">return</span> <span class="kw">ret</span>
+<span class="kw">end</span></code></pre>
+<p>Write:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">apple</span>:override_pick<span class="ot">(</span><span class="kw">inherited</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">,</span> <span class="ot">...)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picking&#39;</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">ret</span> <span class="ot">=</span> inherited<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picked&#39;</span><span class="ot">,</span> <span class="kw">ret</span><span class="ot">)</span>
+   <span class="kw">return</span> <span class="kw">ret</span>
+<span class="kw">end</span></code></pre>
+<p>Or even better:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">apple</span>:before_pick<span class="ot">(</span><span class="kw">arg</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picking&#39;</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
+<span class="kw">end</span>
+
+<span class="kw">function</span> <span class="kw">apple</span>:after_pick<span class="ot">(</span><span class="kw">ret</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picked&#39;</span><span class="ot">,</span> <span class="kw">ret</span><span class="ot">)</span>
+   <span class="kw">return</span> <span class="kw">ret</span>
+<span class="kw">end</span></code></pre>
 <p>By defining <code>self:before_&lt;method&gt;(...)</code> a new implementation for <code>self.&lt;method&gt;</code> is created which calls the before hook (which receives all method's arguments) and then calls the existing (inherited) implementation with whatever the hook returns as arguments.</p>
 <p>By defining <code>self:after_&lt;method&gt;(...)</code> a new implementation for <code>self.&lt;method&gt;</code> is created which calls the existing (inherited) implementation, after which it calls the hook with whatever the method returns as arguments, and returns whatever the hook returns.</p>
+<p>By defining <code>self:override_&lt;method&gt;(inherited, ...)</code> you can access <code>self.super.&lt;method&gt;</code> as <code>inherited</code>.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">cls</span>:before_init<span class="ot">(</span><span class="kw">foo</span><span class="ot">,</span> <span class="kw">bar</span><span class="ot">)</span>
   <span class="kw">foo</span> <span class="ot">=</span> <span class="kw">foo</span> <span class="kw">or</span> <span class="kw">default_foo</span>
   <span class="kw">bar</span> <span class="ot">=</span> <span class="kw">bar</span> <span class="kw">or</span> <span class="kw">default_bar</span>
