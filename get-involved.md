@@ -128,14 +128,13 @@ a few important gcc switches:
   * `-s`									: strip debug symbols (makes the binaries smaller and debuggers useless; not for OSX)
   * `-static-libstdc++`				: static linking of the C++ standard library (for g++; not for OSX)
   * `-static-libgcc`					: static linking of the GCC library (for gcc and g++; not for OSX)
+  * `-static`							: static linking of the winpthread library (for g++ mingw64)
   * `-D<name>`							: set a `#define`
   * `-D<name>=<value>`				: set a `#define`
   * `-pthread`							: enable pthread support (not for Windows)
   * `-fpic`								: PIC mode (required for 64bit targets)
   * `-DWINVER=0x501`             : set windows.h API level to Windows XP
   * `-DWINVER=0x502`             : set windows.h API level to Windows XP SP2
-  * `-DWINVER=0x601`             : set windows.h API level to Windows 7
-  * `-DWINVER=0x602`             : set windows.h API level to Windows 8
   * `-undefined dynamic_lookup`  : required for Lua/C modules on OSX (don't link them to luajit!)
   * `-arch i386`                 : OSX: create 32bit x86 binaries
   * `-arch x86_64`               : OSX: create 64bit x86 binaries

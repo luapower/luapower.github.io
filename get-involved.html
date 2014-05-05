@@ -149,14 +149,13 @@ requires: pixman, freetype, zlib, libpng</code></pre>
 <li><code>-s</code> : strip debug symbols (makes the binaries smaller and debuggers useless; not for OSX)</li>
 <li><code>-static-libstdc++</code> : static linking of the C++ standard library (for g++; not for OSX)</li>
 <li><code>-static-libgcc</code> : static linking of the GCC library (for gcc and g++; not for OSX)</li>
+<li><code>-static</code> : static linking of the winpthread library (for g++ mingw64)</li>
 <li><code>-D&lt;name&gt;</code> : set a <code>#define</code></li>
 <li><code>-D&lt;name&gt;=&lt;value&gt;</code> : set a <code>#define</code></li>
 <li><code>-pthread</code> : enable pthread support (not for Windows)</li>
 <li><code>-fpic</code> : PIC mode (required for 64bit targets)</li>
 <li><code>-DWINVER=0x501</code> : set windows.h API level to Windows XP</li>
 <li><code>-DWINVER=0x502</code> : set windows.h API level to Windows XP SP2</li>
-<li><code>-DWINVER=0x601</code> : set windows.h API level to Windows 7</li>
-<li><code>-DWINVER=0x602</code> : set windows.h API level to Windows 8</li>
 <li><code>-undefined dynamic_lookup</code> : required for Lua/C modules on OSX (don't link them to luajit!)</li>
 <li><code>-arch i386</code> : OSX: create 32bit x86 binaries</li>
 <li><code>-arch x86_64</code> : OSX: create 64bit x86 binaries</li>
