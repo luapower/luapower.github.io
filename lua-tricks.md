@@ -79,7 +79,10 @@ This has two implications:
 
 This idiom doesn't work as you would expect (swapping) when the array elements are structs.
 
-### jit and callbacks
+### LuaJIT Callbacks
 
-The JIT must be disabled on any C function that can trigger a ffi callback.
+The JIT must be disabled on any function that calls a C function that can trigger a ffi callback.
+This is done automatically only if the ffi callback is called before the triggering C function returns.
+
+Currently, passing structs by value or returning structs by value is not supported with callbacks.
 
