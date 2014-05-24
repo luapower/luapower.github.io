@@ -5,9 +5,6 @@ tagline:  Lua, JIT, batteries
 
 ![](luapower.png)
 
-  * LuaJIT binary + source distribution and module repository
-  * platform for publishing Lua modules
-
 ## News
 
 <div id="news_table">loading...</div>
@@ -19,9 +16,14 @@ tagline:  Lua, JIT, batteries
 
 ## LUA POWER IS
 
+  * a binary + source distribution of LuaJIT and Lua modules
+  * a platform for publishing Lua modules
+
+## FEATURES
+
   * __LOW-TECH__: based on http, zip, and git
   * __PORTABLE__: no install, no deploy, just run
-  * __MODULAR__: each module is a separate project
+  * __MODULAR__: each module is a separate git project
   * __ON GITHUB__: fork/pull-request-based collaboration
   * __NO DIRECTORIES__: all modules in a single directory
   * __BINARIES__: get code running in minutes
