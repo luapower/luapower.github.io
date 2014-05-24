@@ -79,3 +79,7 @@ This has two implications:
 
 This idiom doesn't work as you would expect (swapping) when the array elements are structs.
 
+### jit and callbacks
+
+The JIT must be disabled on any C function that can trigger a ffi callback.
+

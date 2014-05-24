@@ -67,10 +67,233 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<p><strong>NOTE: This is just a distribution of TLC. TLC is developed <a href="https://github.com/fjolnir/TLC">here</a>.</strong></p>
-<h2 id="local-objc-requireobjc"><code>local objc = require'objc'</code></h2>
-<h2 id="documentation">Documentation</h2>
-<p>It's <a href="https://github.com/fjolnir/TLC">here</a>.</p>
+					<h2 id="local-objc-requireobjc"><code>local objc = require'objc'</code></h2>
+<p>Objecive-C runtime and BridgeSupport binding.</p>
+<h2 id="basic-api">Basic API</h2>
+<table>
+<col width="49%" />
+<col width="50%" />
+<tbody>
+<tr class="odd">
+<td align="left"><strong>frameworks</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>objc.load(name|path[, option])</code></td>
+<td align="left">load a framework given its name or full path<br />option 'notypes': don't load bridgesupport file<br />option 'nodeps': don't load dependencies</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>objc.searchpaths = {path1, ...}</code></td>
+<td align="left">search paths for frameworks</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>selectors</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>objc.selector(s|sel) -&gt; sel</code></td>
+<td align="left">create/find a selector by name</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sel:name() -&gt; s</code></td>
+<td align="left">selector's name (same as tostring(sel))</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>classes</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>objc.class(name[, superclass[, proto, ...]]) -&gt; cls</code></td>
+<td align="left">create a class</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>objc.class(name[, def]) -&gt; cls</code></td>
+<td align="left">create a class; def = 'ClassFoo <ProtocolBar, ProtocolBaz>`</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reflection-api">Reflection API</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>protocols</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>objc.protocols() -&gt; clist&lt;proto&gt;</code></td>
+<td align="left">list all loaded protocols</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>objc.protocol(name|proto) -&gt; proto</code></td>
+<td align="left">get a protocol by name</td>
+</tr>
+<tr class="even">
+<td align="left"><code>proto:name() -&gt; s</code></td>
+<td align="left">protocol name</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>proto:protocols() -&gt; clist&lt;proto&gt;</code></td>
+<td align="left">inherited protocols</td>
+</tr>
+<tr class="even">
+<td align="left"><code>proto:properties() -&gt; clist&lt;prop&gt;</code></td>
+<td align="left">get properties (inherited ones not included)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>proto:property(proto, name, required, readonly) -&gt; prop</code></td>
+<td align="left">find a property</td>
+</tr>
+<tr class="even">
+<td align="left"><code>proto:method_types(proto, inst, req) -&gt; {name=types}</code></td>
+<td align="left">get methods and their types</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>proto:method_type(proto, sel, inst, req) -&gt; {name=types}</code></td>
+<td align="left">find a method</td>
+</tr>
+<tr class="even">
+<td align="left"><code>proto:search(f, ...) -&gt; ret</code></td>
+<td align="left">call f(proto, ...) for proto and all superprotocols recursively. stops when f() returns something and returns that value.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>classes</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>objc.classes() -&gt; clist&lt;cls&gt;</code></td>
+<td align="left">list all loaded classes</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>properties</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>prop:name()</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>prop:getter() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>prop:setter() -&gt; s</code></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="debugging-and-fine-tuning">Debugging and Fine Tuning</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>logging</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">objc.debug.errors (true)</td>
+<td align="left">log errors to stderr</td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.methodtypes (false)</td>
+<td align="left">log method ctype parsing</td>
+</tr>
+<tr class="even">
+<td align="left">objc.debug.release (false)</td>
+<td align="left">log relases with refcount</td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.retain (false)</td>
+<td align="left">log retains with refcount</td>
+</tr>
+<tr class="even">
+<td align="left">objc.debug.load (false)</td>
+<td align="left">log loaded frameworks</td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.cdefs (false)</td>
+<td align="left">print cdefs to stdout (then you can grab them and make your own static cdef headers)</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>stats</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.stats.errors</td>
+<td align="left">number of cdef errors</td>
+</tr>
+<tr class="even">
+<td align="left">objc.debug.stats.cdefs</td>
+<td align="left">number of cdefs without error</td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.stats.redef</td>
+<td align="left">number of incompatible redefines (if objc.debug.redef == true)</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>ctype renaming</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.rename.string.foo = bar</td>
+<td align="left">load a string constant under a different name</td>
+</tr>
+<tr class="even">
+<td align="left">objc.debug.rename.enum.foo = bar</td>
+<td align="left">load an enum under a different name</td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.rename.typedef.foo = bar</td>
+<td align="left">load a type under a different name</td>
+</tr>
+<tr class="even">
+<td align="left">objc.debug.rename.const.foo = bar</td>
+<td align="left">load a const under a different name</td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.rename.function.foo = bar</td>
+<td align="left">load a global function under a different name</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>bridgesupport options</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.loaddeps (false)</td>
+<td align="left">load dependencies per bridgesupport file (usually too many to be useful)</td>
+</tr>
+<tr class="even">
+<td align="left">objc.debug.lazyfuncs (true)</td>
+<td align="left">cdef functions on the first call</td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.redef (false)</td>
+<td align="left">check incompatible redefinition attempts (makes parsing slower)</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>framework loading fine tuning</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">objc.debug.loadtypes (true)</td>
+<td align="left">load bridgesupport files</td>
+</tr>
+<tr class="even">
+<td align="left"><code>objc.find_framework(name|path) -&gt; path, name</code></td>
+<td align="left">find a framework in <code>objc.searchpaths</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>objc.load_bridgesupport(path, loaddeps)</code></td>
+<td align="left">load a bridgesupport file</td>
+</tr>
+<tr class="even">
+<td align="left"><code>objc.debug.loaded -&gt; {name = true}</code></td>
+<td align="left">loaded frameworks</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>objc.debug.loaded_bs -&gt; {name = true}</code></td>
+<td align="left">frameworks for which bridgesupport was loaded too</td>
+</tr>
+</tbody>
+</table>
 				</section>
 			</div>
 			<div class="container">

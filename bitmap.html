@@ -400,9 +400,24 @@ convert<span class="ot">(</span><span class="kw">bmp</span><span class="ot">,</s
 <p>Print the list of supported pixel formats and the list of supported colortype conversions.</p>
 <h2 id="customization">Customization</h2>
 <h2 id="custom-formats">Custom formats</h2>
-<p>A custom pixel format definition is a table with the following fields: * <code>bpp</code> - pixel size, in bits (must be an even number of bits). * <code>ctype</code> - C type to cast <code>data</code> to when reading and writing pixels (see below). * <code>colortype</code> - a string naming a standard color type or a table specifying a custom color type. The channel values that <code>read</code> and <code>write</code> refer to depend on the colortype, eg. for the 'rgba8' colortype, the read function must return 4 numbers in the 0-255 range corresponding to the R, G, B, A channels. * <code>read</code> - a function to be called as <code>read(data, i) -&gt; a, b, c, ...</code>; the function must decode the pixel at <code>data[i]</code> and return its channel values according to colortype. * <code>write</code> - a function to be called as <code>write(data, i, a, b, c, ...)</code>; the function must encode the given channel values according to colortype and write the pixel at <code>data[i]</code>. * for formats that have bpp &lt; 8, the index i is fractional and the bit offset of the pixel is at <code>bit.band(i * 8, 7)</code>.</p>
+<p>A custom pixel format definition is a table with the following fields:</p>
+<ul>
+<li><code>bpp</code> - pixel size, in bits (must be an even number of bits).</li>
+<li><code>ctype</code> - C type to cast <code>data</code> to when reading and writing pixels (see below).</li>
+<li><code>colortype</code> - a string naming a standard color type or a table specifying a custom color type. The channel values that <code>read</code> and <code>write</code> refer to depend on the colortype, eg. for the 'rgba8' colortype, the read function must return 4 numbers in the 0-255 range corresponding to the R, G, B, A channels.</li>
+<li><code>read</code> - a function to be called as <code>read(data, i) -&gt; a, b, c, ...</code>; the function must decode the pixel at <code>data[i]</code> and return its channel values according to colortype.</li>
+<li><code>write</code> - a function to be called as <code>write(data, i, a, b, c, ...)</code>; the function must encode the given channel values according to colortype and write the pixel at <code>data[i]</code>.
+<ul>
+<li>for formats that have bpp &lt; 8, the index i is fractional and the bit offset of the pixel is at <code>bit.band(i * 8, 7)</code>.</li>
+</ul></li>
+</ul>
 <h2 id="custom-colortypes">Custom colortypes</h2>
-<p>A custom colortype definition is a table with the following fields: * <code>channels</code> - a string with each letter a channel name, eg. 'rgba', so that <code>#channels</code> indicates the number of channels. * <code>max</code> - maximum value to which the channel values need to be clipped. * <code>bpc</code> - bits/channel - same meaning as <code>max</code> but in bits.</p>
+<p>A custom colortype definition is a table with the following fields:</p>
+<ul>
+<li><code>channels</code> - a string with each letter a channel name, eg. 'rgba', so that <code>#channels</code> indicates the number of channels.</li>
+<li><code>max</code> - maximum value to which the channel values need to be clipped.</li>
+<li><code>bpc</code> - bits/channel - same meaning as <code>max</code> but in bits.</li>
+</ul>
 <h2 id="extending">Extending</h2>
 <p>Extending the <code>bitmap</code> module with new colortypes, formats, conversions and module functions is easy. Look at the <code>bitmap_rgbaf</code> sub-module for an example on how to do that. For the submodule to be loaded automatically though, you need to reference it in the <code>bitmap</code> module too in a few key spots (look at how <code>rgbaf</code> does it, it's very easy).</p>
 <h2 id="todo">TODO</h2>
