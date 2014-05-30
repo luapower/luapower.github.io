@@ -67,9 +67,60 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<h2 id="local-objc-requireobjc"><code>local objc = require'objc'</code></h2>
+					<h2 id="in-development-coming-soon">IN DEVELOPMENT (coming soon)</h2>
+<h2 id="local-objc-requireobjc"><code>local objc = require'objc'</code></h2>
 <p>Objecive-C runtime and BridgeSupport binding.</p>
-<h2 id="basic-api">Basic API</h2>
+<h2 id="quick-tour">Quick Tour</h2>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--load a framework by name; `objc.searchpaths` says where the frameworks are. you can also use full paths.</span>
+<span class="co">--this loads the classes and protocols, but also C constants, enums, functions, structs and even macros.</span>
+<span class="kw">objc</span><span class="ot">.</span>load<span class="st">&#39;Foundation&#39;</span>
+
+<span class="co">--instantiate a class. the resulting object is retained and released on gc.</span>
+<span class="co">--you can call `release()` on it too, for a more speedy destruction.</span>
+<span class="kw">local</span> <span class="kw">str</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSString</span>:alloc<span class="ot">()</span>:initWithUTF8String<span class="st">&#39;wazza&#39;</span>
+
+<span class="co">--call methods with multiple arguments using underscores for &#39;:&#39;. last underscore is optional.</span>
+<span class="co">--C constants, enums and functions are in the objc namespace too.</span>
+<span class="kw">local</span> <span class="kw">result</span> <span class="ot">=</span> <span class="kw">str</span>:compare_options<span class="ot">(</span><span class="kw">otherStr</span><span class="ot">,</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSLiteralSearch</span><span class="ot">)</span>
+
+<span class="co">--create a derived class. when creating a class, say which protocols you wish it conforms to,</span>
+<span class="co">--so that you don&#39;t have to deal with type encodings when implementing its methods.</span>
+<span class="kw">objc</span><span class="ot">.</span>class<span class="ot">(</span><span class="st">&#39;NSMainWindow&#39;</span><span class="ot">,</span> <span class="st">&#39;NSWindw &lt;NSWindowDelegate&gt;&#39;</span><span class="ot">)</span>
+
+<span class="co">--add methods to your class. the selector `windowWillClose` is from the `NSWindowDelegate` protocol</span>
+<span class="co">--so its type encoding is inferred from the protocol definition. arg#1 is sugar for calling the supermethod.</span>
+<span class="kw">function</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSMainWindow</span>:windowWillClose<span class="ot">(</span><span class="kw">callsuper</span><span class="ot">,</span> <span class="kw">notification</span><span class="ot">)</span>
+   <span class="kw">return</span> callsuper<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="kw">notification</span><span class="ot">)</span>
+<span class="kw">end</span>
+
+<span class="co">--add Lua variables to your objects - their lifetime is tied to the lifetime of the object.</span>
+<span class="co">--you can also add class variables - they will be accessible through the objects too.</span>
+<span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span><span class="ot">.</span><span class="kw">myClassVar</span> <span class="ot">=</span> <span class="st">&#39;I can live forever&#39;</span>
+<span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span>:new<span class="ot">()</span>
+<span class="kw">obj</span><span class="ot">.</span><span class="kw">myInstanceVar</span> <span class="ot">=</span> <span class="st">&#39;I live while obj lives&#39;</span>
+<span class="kw">obj</span><span class="ot">.</span><span class="kw">myClassVar</span> <span class="ot">=</span> <span class="dv">42</span> <span class="co">--change the class var (same value for all objects)</span>
+
+<span class="co">--get and set class and instance properties using the dot notation.</span>
+<span class="kw">local</span> <span class="kw">pr</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSProgress</span>:progressWithTotalUnitCount<span class="ot">(</span><span class="dv">123</span><span class="ot">)</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">pr</span><span class="ot">.</span><span class="kw">totalUnitCount</span><span class="ot">)</span> <span class="co">--prints 123</span>
+<span class="kw">pr</span><span class="ot">.</span><span class="kw">totalUnitCount</span> <span class="ot">=</span> <span class="dv">321</span>  <span class="co">--sets it</span>
+
+<span class="co">--get and set ivars using the dot notation.</span>
+<span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSDocInfo</span>:new<span class="ot">()</span>
+<span class="kw">obj</span><span class="ot">.</span><span class="kw">time</span> <span class="ot">=</span> <span class="dv">123</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">time</span><span class="ot">)</span> <span class="co">--prints 123</span>
+
+<span class="co">--create and use blocks manually. blocks are also created automatically when passing a Lua function</span>
+<span class="co">--where a block is expected, but that creates callback objects that cannot be freed.</span>
+<span class="co">--</span>
+<span class="kw">local</span> <span class="kw">str</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSString</span>:alloc<span class="ot">()</span>:initWithUTF8String<span class="st">&#39;line1</span><span class="ot">\n</span><span class="st">line2</span><span class="ot">\n</span><span class="st">line3&#39;</span>
+<span class="kw">local</span> <span class="kw">block</span><span class="ot">,</span> <span class="kw">callback</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>block<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">line</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="kw">line</span>:UTF8String<span class="ot">())</span> <span class="co">--&#39;char *&#39; return values are also converted to Lua strings automatically</span>
+<span class="kw">end</span><span class="ot">,</span> <span class="st">&#39;v@^B&#39;</span><span class="ot">)</span>
+<span class="kw">str</span>:enumerateLinesUsingBlock<span class="ot">(</span><span class="kw">block</span><span class="ot">)</span>
+<span class="kw">callback</span>:free<span class="ot">()</span>
+</code></pre>
+<h2 id="api-refrence">API Refrence</h2>
 <table>
 <col width="49%" />
 <col width="50%" />
@@ -80,7 +131,7 @@
 </tr>
 <tr class="even">
 <td align="left"><code>objc.load(name|path[, option])</code></td>
-<td align="left">load a framework given its name or full path<br />option 'notypes': don't load bridgesupport file<br />option 'nodeps': don't load dependencies</td>
+<td align="left">load a framework given its name or its full path<br />option 'notypes': don't load bridgesupport file</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>objc.searchpaths = {path1, ...}</code></td>
@@ -91,7 +142,7 @@
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"><code>objc.selector(s|sel) -&gt; sel</code></td>
+<td align="left"><code>objc.SEL(s|sel) -&gt; sel</code></td>
 <td align="left">create/find a selector by name</td>
 </tr>
 <tr class="even">
@@ -103,12 +154,20 @@
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left"><code>objc.class(name[, superclass[, proto, ...]]) -&gt; cls</code></td>
+<td align="left"><code>objc.class'NSString' -&gt; cls</code></td>
+<td align="left">class by name (same as objc.NSString)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>objc.class(obj) -&gt; cls</code></td>
+<td align="left">class of instance</td>
+</tr>
+<tr class="even">
+<td align="left"><code>objc.class('Foo', 'SuperFoo &lt;Protocol1, ...&gt;') -&gt; cls</code></td>
 <td align="left">create a class</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>objc.class(name[, def]) -&gt; cls</code></td>
-<td align="left">create a class; def = 'ClassFoo <ProtocolBar, ProtocolBaz>`</td>
+<td align="left"><code>objc.class('Foo', 'SuperFoo', 'Protocol1', ...) -&gt; cls</code></td>
+<td align="left">create a class (alternative way)</td>
 </tr>
 </tbody>
 </table>
@@ -294,6 +353,8 @@
 </tr>
 </tbody>
 </table>
+<h2 id="quick-tutorial">Quick Tutorial</h2>
+<p>...</p>
 				</section>
 			</div>
 			<div class="container">
