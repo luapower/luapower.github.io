@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> objc tutorial  </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'objc_tutorial'
+			var PROJECT = 'objc'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> objc tutorial </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/objc" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/objc/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/objc/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/objc/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-objc" style="background-image: url('bg/objc.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="quick-tutorial">Quick Tutorial</h2>
+<h3 id="loading-frameworks">Loading Frameworks</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--load a framework by name; `objc.searchpaths` says where the frameworks are. you can also use full paths.</span>
+<span class="co">--classes and protocols are loaded, but also C constants, enums, functions, structs and even macros.</span>
+<span class="kw">objc</span><span class="ot">.</span>load<span class="st">&#39;Foundation&#39;</span></code></pre>
+<h3 id="creating-and-using-objects">Creating and using Objects</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--instantiate a class. the resulting object is retained and released on gc.</span>
+<span class="co">--you can call `release()` on it too, for a more speedy destruction.</span>
+<span class="kw">local</span> <span class="kw">str</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSString</span>:alloc<span class="ot">()</span>:initWithUTF8String<span class="st">&#39;wazza&#39;</span>
+
+<span class="co">--call methods with multiple arguments using underscores for &#39;:&#39;. last underscore is optional.</span>
+<span class="co">--C constants, enums and functions are in the objc namespace too.</span>
+<span class="kw">local</span> <span class="kw">result</span> <span class="ot">=</span> <span class="kw">str</span>:compare_options<span class="ot">(</span><span class="kw">otherStr</span><span class="ot">,</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSLiteralSearch</span><span class="ot">)</span></code></pre>
+<h3 id="subclassing">Subclassing</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--create a derived class. when creating a class, say which protocols you wish it conforms to,</span>
+<span class="co">--so that you don&#39;t have to deal with type encodings when implementing its methods.</span>
+<span class="kw">objc</span><span class="ot">.</span>class<span class="ot">(</span><span class="st">&#39;NSMainWindow&#39;</span><span class="ot">,</span> <span class="st">&#39;NSWindw &lt;NSWindowDelegate&gt;&#39;</span><span class="ot">)</span>
+
+<span class="co">--add methods to your class. the selector `windowWillClose` is from the `NSWindowDelegate` protocol</span>
+<span class="co">--so its type encoding is inferred from the protocol definition.</span>
+<span class="kw">function</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSMainWindow</span>:windowWillClose<span class="ot">(</span><span class="kw">notification</span><span class="ot">)</span>
+   <span class="ot">...</span>
+<span class="kw">end</span>
+
+<span class="co">--override existing methods. when overriding an existing method, arg#1 is sugar for calling the supermethod.</span>
+<span class="kw">function</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSMainWindow</span>:update<span class="ot">(</span><span class="kw">callsuper</span><span class="ot">)</span>
+   <span class="ot">...</span>
+   <span class="kw">return</span> callsuper<span class="ot">(</span><span class="kw">self</span><span class="ot">)</span>
+<span class="kw">end</span></code></pre>
+<h3 id="adding-lua-variables">Adding Lua Variables</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--add Lua variables to your objects - their lifetime is tied to the lifetime of the object.</span>
+<span class="co">--you can also add class variables - they will be accessible through the objects too.</span>
+<span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span><span class="ot">.</span><span class="kw">myClassVar</span> <span class="ot">=</span> <span class="st">&#39;I can live forever&#39;</span>
+<span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span>:new<span class="ot">()</span>
+<span class="kw">obj</span><span class="ot">.</span><span class="kw">myInstanceVar</span> <span class="ot">=</span> <span class="st">&#39;I live while obj lives&#39;</span>
+<span class="kw">obj</span><span class="ot">.</span><span class="kw">myClassVar</span> <span class="ot">=</span> <span class="dv">42</span> <span class="co">--change the class var (same value for all objects)</span></code></pre>
+<h3 id="accessing-properties-ivars">Accessing Properties &amp; IVars</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--get and set class and instance properties using the dot notation.</span>
+<span class="kw">local</span> <span class="kw">pr</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSProgress</span>:progressWithTotalUnitCount<span class="ot">(</span><span class="dv">123</span><span class="ot">)</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">pr</span><span class="ot">.</span><span class="kw">totalUnitCount</span><span class="ot">)</span> <span class="co">--prints 123</span>
+<span class="kw">pr</span><span class="ot">.</span><span class="kw">totalUnitCount</span> <span class="ot">=</span> <span class="dv">321</span>  <span class="co">--sets it</span>
+
+<span class="co">--get and set ivars using the dot notation.</span>
+<span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSDocInfo</span>:new<span class="ot">()</span>
+<span class="kw">obj</span><span class="ot">.</span><span class="kw">time</span> <span class="ot">=</span> <span class="dv">123</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">time</span><span class="ot">)</span> <span class="co">--prints 123</span></code></pre>
+<h3 id="creating-and-using-blocks">Creating and using Blocks</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--blocks are created automatically when passing a Lua function where a block is expected.</span>
+<span class="co">--their lifetime is auto-managed, for both synchronous and asynchronous methods.</span>
+<span class="kw">local</span> <span class="kw">str</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSString</span>:alloc<span class="ot">()</span>:initWithUTF8String<span class="st">&#39;line1</span><span class="ot">\n</span><span class="st">line2</span><span class="ot">\n</span><span class="st">line3&#39;</span>
+<span class="kw">str</span>:enumerateLinesUsingBlock<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">line</span><span class="ot">,</span> <span class="kw">stop</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="kw">line</span>:UTF8String<span class="ot">())</span> <span class="co">--&#39;char *&#39; return values are also converted to Lua strings automatically</span>
+<span class="kw">end</span><span class="ot">)</span>
+
+<span class="co">--however, blocks are slow to create and use ffi callbacks which are very limited in number.</span>
+<span class="co">--create your blocks outside loops if possible, or call `collectgarbage()` every few hundred iterations.</span>
+
+<span class="co">--create a block with its type signature inferred from usage.</span>
+<span class="co">--in this case, its type is that of arg#1 to NSString&#39;s `enumerateLinesUsingBlock` method.</span>
+<span class="kw">local</span> <span class="kw">block</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>toarg<span class="ot">(</span><span class="kw">objc</span><span class="ot">.</span><span class="kw">NSString</span><span class="ot">,</span> <span class="st">&#39;enumerateLinesUsingBlock&#39;</span><span class="ot">,</span> <span class="dv">1</span><span class="ot">,</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">line</span><span class="ot">,</span> <span class="kw">stop</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="kw">line</span>:UTF8String<span class="ot">())</span>
+<span class="kw">end</span><span class="ot">)</span>
+<span class="kw">str</span>:enumerateLinesUsingBlock<span class="ot">(</span><span class="kw">block</span><span class="ot">)</span>
+
+<span class="co">--create a block with its method type encoding given manaully.</span>
+<span class="co">--for type encodings see:</span>
+<span class="co">--   https://code.google.com/p/jscocoa/wiki/MethodEncoding</span>
+<span class="co">--   https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html</span>
+<span class="kw">local</span> <span class="kw">block</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>block<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">line</span><span class="ot">,</span> <span class="kw">stop</span><span class="ot">)</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="kw">line</span>:UTF8String<span class="ot">())</span>
+<span class="kw">end</span><span class="ot">,</span> <span class="st">&#39;v@^B&#39;</span><span class="ot">})</span> <span class="co">--retval is &#39;v&#39; (void), line is &#39;@&#39; (object), stop is &#39;^B&#39; (pointer to BOOL)</span>
+<span class="kw">str</span>:enumerateLinesUsingBlock<span class="ot">(</span><span class="kw">block</span><span class="ot">)</span></code></pre>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+

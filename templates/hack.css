@@ -2,7 +2,7 @@
 
 body {
 	font-size: 12px;
-	line-height: 1.5;
+	line-height: 1.7;
 	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", monospace;
 }
 
@@ -43,6 +43,7 @@ hr {
 #package_info_hr {
 	margin-top: 0px;
 	margin-bottom: 10px;
+	border: 0;
 }
 
 #commit_log {
@@ -160,7 +161,7 @@ header h2 { /* tagline */
 
 .btn-rightside {
 	width: 130px;
-	padding: 6px 18px;
+	padding: 4px 18px;
 	margin: 2px;
 }
 
@@ -171,7 +172,7 @@ header h2 { /* tagline */
 	top: 114px;
 }
 
-.btn-home {width: 80px; padding: 4px;}
+.btn-home {width: 80px; padding: 2.5px;}
 
 .btn-lights-container {
 	float: left;
@@ -179,7 +180,7 @@ header h2 { /* tagline */
 	margin-left: 2em;
 }
 
-.btn-lights {width: 80px; padding: 4px;}
+.btn-lights {width: 80px; padding: 2.5px;}
 
 .btn-discuss-container {
 	width: 100%;
