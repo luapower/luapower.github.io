@@ -88,21 +88,18 @@
 </ul></li>
 <li>Type Bridging
 <ul>
-<li>NSNumber, NSString, NSArray and NSDictionary args accept Lua numbers, strings and tables respectively</li>
-<li><code>BOOL</code> return values are converted to Lua booleans</li>
-<li><code>Class</code> and <code>SEL</code> args accept Lua strings naming them
-<ul>
-<li>anywhere, selectors can be given as <code>foo:bar:</code> or <code>foo_bar_</code></li>
-</ul></li>
-<li>block and function pointer args accept Lua functions
+<li>methods and functions return Lua booleans</li>
+<li>Lua numbers, strings and tables can be passed for NSNumber, NSStrings, NSArray and NSDictionary args</li>
+<li>string names can be passed for class and selector args</li>
+<li>Lua functions can be passed for block and function-pointer args
 <ul>
 <li>their type signature is inferred from the calling context</li>
 </ul></li>
-<li>method signatures are inferred when overriding methods
+<li>overriding methods does not require specifying method type signatures
 <ul>
-<li>method signatures are also inferred by conforming to protocols
+<li>method signatures are inferred from existing supermethods and conforming protocols
 <ul>
-<li>both formal and informal protocols supported</li>
+<li>formal and informal protocols supported</li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -114,13 +111,13 @@
 </ul></li>
 <li>automatic memory management of objects and blocks
 <ul>
-<li>blocks are refcounted and freed when their last owner releases them (why all the slavery metaphors in memory management?)</li>
+<li>blocks are refcounted and freed when their last owner releases them</li>
 </ul></li>
 </ul></li>
 <li>Speed
 <ul>
 <li>aggressive caching all-around</li>
-<li>no heap objects in the method call path</li>
+<li>no gc pressure in calling methods after the first invocation</li>
 <li>fast, small embedded XML parser</li>
 </ul></li>
 </ul>
@@ -205,6 +202,13 @@
    <span class="fu">print</span><span class="ot">(</span><span class="kw">line</span>:UTF8String<span class="ot">())</span>
 <span class="kw">end</span><span class="ot">,</span> <span class="st">&#39;v@^B&#39;</span><span class="ot">})</span> <span class="co">--retval is &#39;v&#39; (void), line is &#39;@&#39; (object), stop is &#39;^B&#39; (pointer to BOOL)</span>
 <span class="kw">str</span>:enumerateLinesUsingBlock<span class="ot">(</span><span class="kw">block</span><span class="ot">)</span></code></pre>
+<h2 id="more-goodies">More goodies</h2>
+<p>Check out the unit test script, it also contains a few demos, not just tests.</p>
+<p>Check out the undocumented <code>objc_inspect</code> module, it has a simple cmdline inspection API.</p>
+<p>Look up anything in Cocoa by a Lua pattern:</p>
+<pre><code>   ./luajit objc_test.lua inspect_find foo</code></pre>
+<p>Then inspect it:</p>
+<pre><code>   ./luajit objc_test.lua inspect_class PAFootprint</code></pre>
 <h2 id="main-api">Main API</h2>
 <table>
 <col width="49%" />
@@ -600,7 +604,16 @@
 </tr>
 </tbody>
 </table>
-<h2 id="wishlist-type-bridging">Wishlist / Type Bridging</h2>
+<h2 id="credits">Credits</h2>
+<ul>
+<li>Cosmin Apreutesei, May 2014, public domain.</li>
+<li>Ideas and code from <a href="https://github.com/fjolnir/TLC">TLC</a> by Fjölnir Ásgeirsson (c) 2012, MIT license.</li>
+</ul>
+<h2 id="future-developments">Future developments</h2>
+<blockquote>
+<p>NOTE: I don't plan to work on these, except on requests with a use case. Patches/pull requests welcome.</p>
+</blockquote>
+<h3 id="bridging">Bridging</h3>
 <ul>
 <li>toarg() for functions</li>
 <li>fp args on fp args (recorded but not used - need use cases)</li>
@@ -625,24 +638,11 @@
 <li>core foundation stuff
 <ul>
 <li><code>cftypes</code> xml node - use cases?</li>
+<li><code>already_retained</code> flag</li>
 </ul></li>
 <li>operator overloading (need good use cases)</li>
 </ul>
-<h2 id="wishlist-gc-bridging">Wishlist / GC Bridging</h2>
-<ul>
-<li>core foundation stuff
-<ul>
-<li><code>already_retained</code> flag</li>
-</ul></li>
-</ul>
-<h2 id="wishlist-speed">Wishlist / Speed</h2>
-<ul>
-<li><code>function_caller</code> and <code>callback_caller</code> - skip wrapping when not necessary (worth it?)
-<ul>
-<li>would need to distinquish functions from class methods to skip checking the first 2 args</li>
-</ul></li>
-</ul>
-<h2 id="wishlist-inspection">Wishlist / Inspection</h2>
+<h3 id="inspection">Inspection</h3>
 <ul>
 <li>list all frameworks in searchpaths</li>
 <li>find framework in searchpaths</li>
@@ -654,7 +654,8 @@
 <li>listing sections: ivars, properties, methods, with origin class/protocol for each</li>
 </ul></li>
 </ul>
-<h2 id="wishlist-type-cache">Wishlist / Type Cache</h2>
+<h3 id="type-cache">Type Cache</h3>
+<p>The idea is to cache bridgesupport data into Lua files for faster loading of frameworks.</p>
 <ul>
 <li>one Lua cache file for each framework to be loaded with standard 'require'
 <ul>
