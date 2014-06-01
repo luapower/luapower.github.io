@@ -80,7 +80,7 @@
 </ul></li>
 <li>Platforms
 <ul>
-<li>tested with <strong>OSX 10.9</strong> on <strong>32bit</strong> and <strong>64bit</strong></li>
+<li>tested with <strong>OSX 10.9</strong> (<strong>32bit</strong> and <strong>64bit</strong>)</li>
 </ul></li>
 <li>Dependencies
 <ul>
@@ -91,17 +91,15 @@
 <li>methods and functions return Lua booleans</li>
 <li>Lua numbers, strings and tables can be passed for NSNumber, NSStrings, NSArray and NSDictionary args</li>
 <li>string names can be passed for class and selector args</li>
-<li>Lua functions can be passed for block and function-pointer args
-<ul>
-<li>their type signature is inferred from the calling context</li>
-</ul></li>
-<li>overriding methods does not require specifying method type signatures
+<li>Lua functions can be passed for block and function-pointer args without specifying a type signature</li>
+<li>overriding methods does not require specifying the method type signature
 <ul>
 <li>method signatures are inferred from existing supermethods and conforming protocols
 <ul>
 <li>formal and informal protocols supported</li>
 </ul></li>
 </ul></li>
+<li>function-pointer args on overriden methods and blocks can be called without specifying a type signature</li>
 </ul></li>
 <li>GC Bridging
 <ul>
@@ -615,8 +613,9 @@
 </blockquote>
 <h3 id="bridging">Bridging</h3>
 <ul>
-<li>toarg() for functions</li>
-<li>fp args on fp args (recorded but not used - need use cases)</li>
+<li>toarg() for C functions (only works for methods)</li>
+<li>function-pointer args on function-pointer args (recorded but not used - need use cases)</li>
+<li>test for overriding a method that takes a function-pointer (not a block) arg and invoking that arg from the callback</li>
 <li>auto-coercion of types for functions/methods with format strings, eg. NSLog
 <ul>
 <li>record <code>printf_format</code> tag</li>
