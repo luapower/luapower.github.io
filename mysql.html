@@ -532,7 +532,8 @@
    <span class="kw">local</span> <span class="kw">mysql</span> <span class="ot">=</span> require<span class="st">&#39;mysql&#39;</span>
 
    <span class="kw">local</span> <span class="kw">conn</span> <span class="ot">=</span> <span class="kw">mysql</span><span class="ot">.</span>connect<span class="ot">(</span><span class="st">&#39;localhost&#39;</span><span class="ot">,</span> <span class="st">&#39;root&#39;</span><span class="ot">,</span> <span class="kw">nil</span><span class="ot">,</span> <span class="st">&#39;mysql&#39;</span><span class="ot">,</span> <span class="st">&#39;utf8&#39;</span><span class="ot">)</span>
-   <span class="kw">conn</span>:query<span class="ot">(</span><span class="st">&quot;select name, description, example from help_topic where name like &#39;&quot;</span> <span class="ot">..</span> <span class="kw">conn</span>:escape<span class="ot">(</span><span class="kw">search</span><span class="ot">)</span> <span class="ot">..</span> <span class="st">&quot;&#39;&quot;</span><span class="ot">)</span>
+   <span class="kw">conn</span>:query<span class="ot">(</span><span class="st">&quot;select name, description, example from help_topic where name like &#39;&quot;</span> <span class="ot">..</span>
+                  <span class="kw">conn</span>:escape<span class="ot">(</span><span class="kw">search</span><span class="ot">)</span> <span class="ot">..</span> <span class="st">&quot;&#39;&quot;</span><span class="ot">)</span>
    <span class="kw">local</span> <span class="kw">result</span> <span class="ot">=</span> <span class="kw">conn</span>:store_result<span class="ot">()</span>
 
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;Found:&#39;</span><span class="ot">)</span>

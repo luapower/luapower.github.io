@@ -59,7 +59,7 @@ hr {border-bottom-color: #bbb;}
 
 .doc h5, .doc h6 {color: #333;}
 .doc li:before {color: #364619;}
-.doc pre {background-color: #d8d8d8;}
+.doc pre {background-color: #f6f6f6; border:1px solid #ddd;}
 .doc tr {border-top-color: #bbb; border-bottom-color: #bbb;}
 .doc a {color: #00d; text-decoration: underline;}
 .doc a:hover {text-decoration: underline;}
