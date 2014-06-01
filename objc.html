@@ -299,11 +299,11 @@
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left"><code>obj[field] -&gt; x</code><br /></td>
+<td align="left"><code>obj.field</code><br /><code>obj:method(args...)</code></td>
 <td align="left">access an instance field, i.e. try to get, in order:<br />- an instance luavar<br />- a readable instance property<br />- an ivar<br />- an instance method<br />- a class field (see below)</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>obj[name] = x</code></td>
+<td align="left"><code>obj.field = val</code><br /></td>
 <td align="left">set an instance field, i.e. try to set, in order:<br />- an existing instance luavar<br />- a writable instance property<br />- an ivar<br />- an existing class field (see below)<br />- a new instance luavar</td>
 </tr>
 <tr class="even">
@@ -311,11 +311,11 @@
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"><code>cls[name] -&gt; x</code></td>
+<td align="left"><code>cls.field</code><br /><code>cls:method(args...)</code></td>
 <td align="left">access a class field, i.e. try to get, in order:<br />- a class luavar<br />- a readable class property<br />- a class method</td>
 </tr>
 <tr class="even">
-<td align="left"><code>cls[name] = x</code></td>
+<td align="left"><code>cls.field = val</code><br /><code>function cls:method(args...) end</code></td>
 <td align="left">set a class field, i.e. try to set, in order:<br />- an existing class luavar<br />- a writable class property<br />- an instance method<br />- a conforming instance method<br />- a class method<br />- a conforming class method<br />- a new class luavar</td>
 </tr>
 <tr class="odd">
