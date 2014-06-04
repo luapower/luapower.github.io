@@ -27,7 +27,7 @@ tagline:  Lua, JIT, batteries
   * __ON GITHUB__: fork/pull-request-based collaboration
   * __NO DIRECTORIES__: all modules in a single directory
   * __BINARIES__: get code running in minutes
-  * __SOURCES & BUILD SCRIPTS__: upgrade it yourself
+  * __SOURCES & BUILD SCRIPTS__: upgrade it yourself, don't wait for others
   * __PACKAGE DATABASE__: self-maintaining, auto-generated
   * __DOCUMENTED__: online browsing or offline grepping; powered by pandoc
   * __FREE__: no-strings attached
@@ -51,7 +51,8 @@ Alternatively you can go the git way with [luapower-git] which allows you to:
   * keep your modules up-to-date by pulling
   * [create your own modules][get-involved] and publish them
 
-> NOTE: Dependencies are not listed anywhere for demos and test units, so I better tell you now:
+> NOTE: The listed dependencies for a package are for the modules of that package only. Associated demos and test units
+can sometimes have additional dependencies which are not listed, so I better tell you now:
 some test units need [unit], and most demos need [cplayer] and [glue].
 
 > NOTE: Packages marked `dev` are either in active development or are planned for more development in the future.

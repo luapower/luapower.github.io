@@ -68,12 +68,14 @@ but because of the tools we use (file browsers, code editors, IDEs, command line
 You don't have instant search in most of them (sublime text excepted), but you have to "navigate" them instead (this
 is true for GUIs and it's true for the command line as well).
 Also, one of the major reasons for directory hierarchies is structuring information for human consumption (learning).
-In the case of a module distribution, the structure of a package is the same for all packages, thus juxtaposition
-of files doesn't add any complexity to the structure. If you feel uneasy about a long flat list of files,
+In the case of a module distribution, the structure of a package is the same for all packages. Thus the juxtaposition
+of files from many modules doesn't make things less organized. If you feel uneasy about a long flat list of files,
 try organizing them into directories, learn the structure of the information, then put them back.
 
-Philosophy aside, having all modules in the same directory is the way Lua's `require` works by default, which
-means we don't need to have a custom `require` loader to find modules.
+Philosophy aside, having all the modules in the same directory is the way `require()` works by default, which
+means there's no need to have a custom `require` loader to find modules.
+
+The downside is that we have to use git with gloves sometimes.
 
 ## BINARIES
 
@@ -86,7 +88,7 @@ I know I'm going against the grain with this one, but I deeply hate C build syst
 the most part that they are unnecessary. For me, the success rate for going from `make` to `dll` on the first
 shot has always been pretty pathetic. Building with one-liner gcc scripts is much more transparent,
 which directly affects my ability and motivation to fix problems (which in turn affects the number of packages built).
-It is much faster too.
+It compiles much faster too.
 
 To me it boils down to how much indirection there is between problem (in this case the .c and .h files)
 and solution (the gcc compiler). Sure, you have to remember some gcc switches, but they are _the same_ switches
@@ -98,7 +100,7 @@ statically build libgcc or not.
 ## PACKAGE DATABASE
 
 Package type, version, supported platforms, license, etc., this is information that needs to be aggregated
-and presented in a way that can be filtered.
+and presented in a way that can be sorted and filtered.
 
 ## DOCUMENTATION
 
@@ -156,7 +158,7 @@ Chopping doc. pages to feed a code editor for displaying tooltips, autocompletio
 Currently there's no way to load a script/app (as opposed to a module) and track its `require` calls without
 actually running it, which could have side-effects. Thus the dependencies of demos and test units are not
 listed and must be figured by the run-check-error cycle or by looking at the code (no big deal to look at the
-top of the file for require calls though).
+top of the file for require calls though). Maybe a Lua parser could help here, not sure.
 
 
 [against ip]:  http://mises.org/document/3582
