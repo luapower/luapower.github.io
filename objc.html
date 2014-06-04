@@ -208,11 +208,15 @@
 <h3 id="even-more-goodies">Even more goodies</h3>
 <p>Check out the unit test script, it also contains a few demos, not just tests.<br />Check out the undocumented <code>objc_inspect</code> module, it has a simple cmdline inspection API.</p>
 <h3 id="gotchas">Gotchas</h3>
+<h4 id="callback-arguments-are-weak">1. Callback arguments are weak</h4>
 <p>Object arguments passed to overriden methods (even self), blocks and function pointers, are weak references, not tied to Lua's garbage collector. If you want to keep them around outside the scope of the callback, you need to retain them:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">hard_ref</span>
 <span class="kw">function</span> <span class="kw">MySubClass</span>:overridenMethod<span class="ot">()</span>
    <span class="kw">hard_ref</span> <span class="ot">=</span> <span class="kw">self</span>:retain<span class="ot">()</span> <span class="co">--self is a weak ref. it needs to be retained.</span>
 <span class="kw">end</span></code></pre>
+<h4 id="confusion-about-weak-and-hard-references">2. Confusion about weak and hard references</h4>
+<p>Ref. counting systems are fragile: they require that retain() and release() calls over the same object be perfectly balanced. If they're not, you're toasted. Modelling object relationships in terms of weak and hard references can help a lot with that.</p>
+<p>Cocoa's rules are that if you alloc an object, you get a hard ref, otherwise you get a weak ref. But if you create a <code>NSWindow</code>, Cocoa (hand in glove with the user) gives you a weak ref because if the user closes the window, the window gets released. Objc doesn't know that and on gc it calls release again, giving you a crash at an unpredictable time (<code>export NSZombieEnabled=YES</code> can help here). To fix that you can either tell Cocoa that the ref is hard by calling <code>win:setReleasedWhenClosed(false)</code>, or tell the ffi that the ref is weak by calling <code>ffi.gc(win, nil)</code>.</p>
 <h2 id="main-api">Main API</h2>
 <table>
 <col width="49%" />
