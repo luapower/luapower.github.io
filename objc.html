@@ -129,11 +129,11 @@
 </ul></li>
 </ul>
 <h2 id="quick-tutorial">Quick Tutorial</h2>
-<h3 id="loading-frameworks">Loading Frameworks</h3>
+<h3 id="loading-frameworks">Loading frameworks</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--load a framework by name; `objc.searchpaths` says where the frameworks are. you can also use full paths.</span>
 <span class="co">--classes and protocols are loaded, but also C constants, enums, functions, structs and even macros.</span>
 <span class="kw">objc</span><span class="ot">.</span>load<span class="st">&#39;Foundation&#39;</span></code></pre>
-<h3 id="creating-and-using-objects">Creating and using Objects</h3>
+<h3 id="creating-and-using-objects">Creating and using objects</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--instantiate a class. the resulting object is retained and released on gc.</span>
 <span class="co">--you can call `release()` on it too, for a more speedy destruction.</span>
 <span class="kw">local</span> <span class="kw">str</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSString</span>:alloc<span class="ot">()</span>:initWithUTF8String<span class="st">&#39;wazza&#39;</span>
@@ -157,14 +157,14 @@
    <span class="ot">...</span>
    <span class="kw">return</span> callsuper<span class="ot">(</span><span class="kw">self</span><span class="ot">)</span>
 <span class="kw">end</span></code></pre>
-<h3 id="adding-lua-variables">Adding Lua Variables</h3>
+<h3 id="adding-lua-variables">Adding Lua variables</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--add Lua variables to your objects - their lifetime is tied to the lifetime of the object.</span>
 <span class="co">--you can also add class variables - they will be accessible through the objects too.</span>
 <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span><span class="ot">.</span><span class="kw">myClassVar</span> <span class="ot">=</span> <span class="st">&#39;I can live forever&#39;</span>
 <span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span>:new<span class="ot">()</span>
 <span class="kw">obj</span><span class="ot">.</span><span class="kw">myInstanceVar</span> <span class="ot">=</span> <span class="st">&#39;I live while obj lives&#39;</span>
 <span class="kw">obj</span><span class="ot">.</span><span class="kw">myClassVar</span> <span class="ot">=</span> <span class="dv">5</span> <span class="co">--change the class var (same value for all objects)</span></code></pre>
-<h3 id="accessing-properties-ivars">Accessing Properties &amp; IVars</h3>
+<h3 id="accessing-properties-ivars">Accessing properties &amp; ivars</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--get and set class and instance properties using the dot notation.</span>
 <span class="kw">local</span> <span class="kw">pr</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSProgress</span>:progressWithTotalUnitCount<span class="ot">(</span><span class="dv">123</span><span class="ot">)</span>
 <span class="fu">print</span><span class="ot">(</span><span class="kw">pr</span><span class="ot">.</span><span class="kw">totalUnitCount</span><span class="ot">)</span> <span class="co">--prints 123</span>
@@ -174,7 +174,7 @@
 <span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSDocInfo</span>:new<span class="ot">()</span>
 <span class="kw">obj</span><span class="ot">.</span><span class="kw">time</span> <span class="ot">=</span> <span class="dv">123</span>
 <span class="fu">print</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">time</span><span class="ot">)</span> <span class="co">--prints 123</span></code></pre>
-<h3 id="creating-and-using-blocks">Creating and using Blocks</h3>
+<h3 id="creating-and-using-blocks">Creating and using blocks</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--blocks are created automatically when passing a Lua function where a block is expected.</span>
 <span class="co">--their lifetime is auto-managed, for both synchronous and asynchronous methods.</span>
 <span class="kw">local</span> <span class="kw">str</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSString</span>:alloc<span class="ot">()</span>:initWithUTF8String<span class="st">&#39;line1</span><span class="ot">\n</span><span class="st">line2</span><span class="ot">\n</span><span class="st">line3&#39;</span>
@@ -200,13 +200,19 @@
    <span class="fu">print</span><span class="ot">(</span><span class="kw">line</span>:UTF8String<span class="ot">())</span>
 <span class="kw">end</span><span class="ot">,</span> <span class="st">&#39;v@^B&#39;</span><span class="ot">})</span> <span class="co">--retval is &#39;v&#39; (void), line is &#39;@&#39; (object), stop is &#39;^B&#39; (pointer to BOOL)</span>
 <span class="kw">str</span>:enumerateLinesUsingBlock<span class="ot">(</span><span class="kw">block</span><span class="ot">)</span></code></pre>
-<h2 id="more-goodies">More goodies</h2>
-<p>Check out the unit test script, it also contains a few demos, not just tests.</p>
-<p>Check out the undocumented <code>objc_inspect</code> module, it has a simple cmdline inspection API.</p>
+<h3 id="more-goodies">More goodies</h3>
 <p>Look up anything in Cocoa by a Lua pattern:</p>
 <pre><code>   ./luajit objc_test.lua inspect_find foo</code></pre>
 <p>Then inspect it:</p>
 <pre><code>   ./luajit objc_test.lua inspect_class PAFootprint</code></pre>
+<h3 id="even-more-goodies">Even more goodies</h3>
+<p>Check out the unit test script, it also contains a few demos, not just tests.<br />Check out the undocumented <code>objc_inspect</code> module, it has a simple cmdline inspection API.</p>
+<h3 id="gotchas">Gotchas</h3>
+<p>Object arguments passed to overriden methods (even self), blocks and function pointers, are weak references, not tied to Lua's garbage collector. If you want to keep them around outside the scope of the callback, you need to retain them:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">hard_ref</span>
+<span class="kw">function</span> <span class="kw">MySubClass</span>:overridenMethod<span class="ot">()</span>
+   <span class="kw">hard_ref</span> <span class="ot">=</span> <span class="kw">self</span>:retain<span class="ot">()</span> <span class="co">--self is a weak ref. it needs to be retained.</span>
+<span class="kw">end</span></code></pre>
 <h2 id="main-api">Main API</h2>
 <table>
 <col width="49%" />
