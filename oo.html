@@ -73,33 +73,33 @@
 <ul>
 <li>single, dynamic inheritance by default:
 <ul>
-<li><code>fruit = oo.class()</code></li>
-<li><code>apple = oo.class(fruit)</code></li>
-<li><code>a = apple(...)</code></li>
-<li><code>a.super -&gt; apple</code></li>
-<li><code>apple.super -&gt; fruit</code></li>
+<li><code>Fruit = oo.Fruit()</code></li>
+<li><code>Apple = oo.Apple(Fruit)</code></li>
+<li><code>apple = Apple(...)</code></li>
+<li><code>apple.super -&gt; Apple</code></li>
+<li><code>Apple.super -&gt; Fruit</code></li>
 </ul></li>
 <li>multiple, static inheritance by request:
 <ul>
-<li><code>apple:inherit(fruit[,replace])</code> - statically inherit <code>fruit</code>, optionally replacing existing properties.</li>
-<li><code>apple:detach()</code> - detach from the parent class, in other words statically inherit <code>self.super</code>.</li>
+<li><code>Apple:inherit(Fruit[,replace])</code> - statically inherit <code>Fruit</code>, optionally replacing existing properties.</li>
+<li><code>Apple:detach()</code> - detach from the parent class, in other words statically inherit <code>self.super</code>.</li>
 </ul></li>
 <li>virtual properties with getter and setter:
 <ul>
-<li>reading <code>apple.foo</code> calls <code>apple:get_foo()</code> to get the value, if <code>apple.get_foo</code> is defined.</li>
-<li>assignment to <code>apple.foo</code> calls <code>apple:set_foo(value)</code> if <code>apple.set_foo</code> is defined.</li>
+<li>reading <code>Apple.foo</code> calls <code>Apple:get_foo()</code> to get the value, if <code>Apple.get_foo</code> is defined.</li>
+<li>assignment to <code>Apple.foo</code> calls <code>Apple:set_foo(value)</code> if <code>Apple.set_foo</code> is defined.</li>
 <li>missing the setter, the property is considered read-only and the assignment fails.</li>
 </ul></li>
 <li>stored properties (no getter):
 <ul>
-<li>assignment to <code>apple.foo</code> calls <code>apple:set_foo(value)</code> and sets <code>apple.state.foo</code>.</li>
-<li>reading <code>apple.foo</code> reads back <code>apple.state.foo</code>.</li>
+<li>assignment to <code>Apple.foo</code> calls <code>Apple:set_foo(value)</code> and sets <code>Apple.state.foo</code>.</li>
+<li>reading <code>Apple.foo</code> reads back <code>Apple.state.foo</code>.</li>
 </ul></li>
 <li>method overriding hooks:
 <ul>
-<li><code>function apple:before_pick(args...) return newargs... end</code> makes <code>apple:pick()</code> call your method first.</li>
-<li><code>function apple:after_pick(ret...) return newret... end</code> makes <code>apple:pick()</code> call your method last.</li>
-<li><code>function apple:override_pick(inherited, ...)</code> lets you override <code>apple:pick()</code> and call <code>inherited(self, ...)</code>.</li>
+<li><code>function Apple:before_pick(args...) return newargs... end</code> makes <code>Apple:pick()</code> call your method first.</li>
+<li><code>function Apple:after_pick(ret...) return newret... end</code> makes <code>Apple:pick()</code> call your method last.</li>
+<li><code>function Apple:override_pick(inherited, ...)</code> lets you override <code>Apple:pick()</code> and call <code>inherited(self, ...)</code>.</li>
 </ul></li>
 <li>introspection:
 <ul>
@@ -109,23 +109,24 @@
 </ul></li>
 <li>overridable subclassing and instantiation mechanisms:
 <ul>
-<li><code>oo.class() -&gt; fruit</code> is sugar for <code>oo.object:subclass() -&gt; fruit</code></li>
-<li><code>oo.class(fruit) -&gt; apple</code> is sugar for <code>fruit:subclass() -&gt; apple</code></li>
-<li><code>apple(...) -&gt; a</code> is sugar for <code>apple:create(...) -&gt; a</code>
+<li><code>Fruit = oo.Fruit()</code> is sugar for <code>Fruit = oo.Object:subclass()</code></li>
+<li><code>Apple = oo.Apple(Fruit)</code> is sugar for <code>Apple = Fruit:subclass()</code></li>
+<li><code>apple = Apple(...)</code> is sugar for <code>apple = Apple:create(...)</code>
 <ul>
-<li><code>apple:create()</code> calls <code>a:init(...)</code></li>
+<li><code>Apple:create()</code> calls <code>apple:init(...)</code></li>
 </ul></li>
 </ul></li>
 </ul>
 <h2 id="inheritance-and-instantiation">Inheritance and instantiation</h2>
-<p><strong>Classes are created</strong> with <code>oo.class([super])</code>, where <code>super</code> is usually another class, but can also be an instance, which is useful for creating polymorphic &quot;views&quot; on existing instances.</p>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">cls</span> <span class="ot">=</span> <span class="kw">oo</span><span class="ot">.</span>class<span class="ot">()</span>
-<span class="kw">cls</span><span class="ot">.</span><span class="kw">classname</span> <span class="ot">=</span> <span class="st">&#39;cls&#39;</span> <span class="co">--optional, for easy identification</span></code></pre>
-<p><strong>Instances are created</strong> with <code>myclass:create(...)</code> or simply <code>myclass()</code>, which in turn calls <code>myclass:init(...)</code> which is the object constructor. While <code>myclass</code> is normally a class, it can also be an instance, which effectively enables prototype-based inheritance.</p>
+<p><strong>Classes are created</strong> with <code>oo.ClassName([super])</code>, where <code>super</code> is usually another class, but can also be an instance, which is useful for creating polymorphic &quot;views&quot; on existing instances.</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">Fruit</span> <span class="ot">=</span> <span class="kw">oo</span><span class="ot">.</span>Fruit<span class="ot">()</span></code></pre>
+<p>You can also create anonymous classes with <code>oo.class([super])</code>:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">cls</span> <span class="ot">=</span> <span class="kw">oo</span><span class="ot">.</span>class<span class="ot">()</span></code></pre>
+<p><strong>Instances are created</strong> with <code>cls:create(...)</code> or simply <code>cls()</code>, which in turn calls <code>cls:init(...)</code> which is the object constructor. While <code>cls</code> is normally a class, it can also be an instance, which effectively enables prototype-based inheritance.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> cls<span class="ot">()</span></code></pre>
 <p><strong>The superclass</strong> of a class or the class of an instance is accessible as <code>self.super</code>.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="fu">assert</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">super</span> <span class="ot">==</span> <span class="kw">cls</span><span class="ot">)</span>
-<span class="fu">assert</span><span class="ot">(</span><span class="kw">cls</span><span class="ot">.</span><span class="kw">super</span> <span class="ot">==</span> <span class="kw">oo</span><span class="ot">.</span><span class="kw">object</span><span class="ot">)</span></code></pre>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">cls</span><span class="ot">.</span><span class="kw">super</span> <span class="ot">==</span> <span class="kw">oo</span><span class="ot">.</span><span class="kw">Object</span><span class="ot">)</span></code></pre>
 <p><strong>Inheritance is dynamic</strong>: properties are looked up at runtime in <code>self.super</code> and changing a property or method in the superclass reflects on all subclasses and instances. This can be slow, but it saves space.</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">cls</span><span class="ot">.</span><span class="kw">the_answer</span> <span class="ot">=</span> <span class="dv">42</span>
 <span class="fu">assert</span><span class="ot">(</span><span class="kw">obj</span><span class="ot">.</span><span class="kw">the_answer</span> <span class="ot">==</span> <span class="dv">42</span><span class="ot">)</span></code></pre>
@@ -176,25 +177,25 @@
 <h2 id="overriding-hooks">Overriding hooks</h2>
 <p>Overriding hooks are sugar to make method overriding more easy and readable.</p>
 <p>Instead of:</p>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">apple</span>:pick<span class="ot">(</span><span class="kw">arg</span><span class="ot">)</span>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">Apple</span>:pick<span class="ot">(</span><span class="kw">arg</span><span class="ot">)</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picking&#39;</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
-   <span class="kw">local</span> <span class="kw">ret</span> <span class="ot">=</span> <span class="kw">apple</span><span class="ot">.</span><span class="kw">super</span><span class="ot">.</span>pick<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">ret</span> <span class="ot">=</span> <span class="kw">Apple</span><span class="ot">.</span><span class="kw">super</span><span class="ot">.</span>pick<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picked&#39;</span><span class="ot">,</span> <span class="kw">ret</span><span class="ot">)</span>
    <span class="kw">return</span> <span class="kw">ret</span>
 <span class="kw">end</span></code></pre>
 <p>Write:</p>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">apple</span>:override_pick<span class="ot">(</span><span class="kw">inherited</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">,</span> <span class="ot">...)</span>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">Apple</span>:override_pick<span class="ot">(</span><span class="kw">inherited</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">,</span> <span class="ot">...)</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picking&#39;</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
    <span class="kw">local</span> <span class="kw">ret</span> <span class="ot">=</span> inherited<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">,</span> <span class="ot">...)</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picked&#39;</span><span class="ot">,</span> <span class="kw">ret</span><span class="ot">)</span>
    <span class="kw">return</span> <span class="kw">ret</span>
 <span class="kw">end</span></code></pre>
 <p>Or even better:</p>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">apple</span>:before_pick<span class="ot">(</span><span class="kw">arg</span><span class="ot">)</span>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">Apple</span>:before_pick<span class="ot">(</span><span class="kw">arg</span><span class="ot">)</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picking&#39;</span><span class="ot">,</span> <span class="kw">arg</span><span class="ot">)</span>
 <span class="kw">end</span>
 
-<span class="kw">function</span> <span class="kw">apple</span>:after_pick<span class="ot">(</span><span class="kw">ret</span><span class="ot">)</span>
+<span class="kw">function</span> <span class="kw">Apple</span>:after_pick<span class="ot">(</span><span class="kw">ret</span><span class="ot">)</span>
    <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;picked&#39;</span><span class="ot">,</span> <span class="kw">ret</span><span class="ot">)</span>
    <span class="kw">return</span> <span class="kw">ret</span>
 <span class="kw">end</span></code></pre>
@@ -214,6 +215,7 @@
 <span class="kw">function</span> <span class="kw">cls</span>:before_destroy<span class="ot">()</span>
   <span class="co">--destroy resources</span>
 <span class="kw">end</span></code></pre>
+<p>If you don't know the name of the method you want to override until runtime, use <code>cls:before(name, func)</code>, <code>cls:after(name, func)</code> and <code>cls:override(name, func)</code> instead.</p>
 				</section>
 			</div>
 			<div class="container">
