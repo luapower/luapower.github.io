@@ -152,10 +152,10 @@
    <span class="ot">...</span>
 <span class="kw">end</span>
 
-<span class="co">--override existing methods. when overriding an existing method, arg#1 is sugar for calling the supermethod.</span>
-<span class="kw">function</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSMainWindow</span>:update<span class="ot">(</span><span class="kw">callsuper</span><span class="ot">)</span>
+<span class="co">--override existing methods. use `objc.callsuper` to call the supermethod.</span>
+<span class="kw">function</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSMainWindow</span>:update<span class="ot">()</span>
    <span class="ot">...</span>
-   <span class="kw">return</span> callsuper<span class="ot">(</span><span class="kw">self</span><span class="ot">)</span>
+   <span class="kw">return</span> <span class="kw">objc</span><span class="ot">.</span>callsuper<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="st">&#39;update&#39;</span><span class="ot">)</span>
 <span class="kw">end</span></code></pre>
 <h3 id="adding-lua-variables">Adding Lua variables</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--add Lua variables to your objects - their lifetime is tied to the lifetime of the object.</span>
