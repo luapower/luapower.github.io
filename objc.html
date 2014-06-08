@@ -132,7 +132,13 @@
 <h3 id="loading-frameworks">Loading frameworks</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--load a framework by name; `objc.searchpaths` says where the frameworks are. you can also use full paths.</span>
 <span class="co">--classes and protocols are loaded, but also C constants, enums, functions, structs and even macros.</span>
-<span class="kw">objc</span><span class="ot">.</span>load<span class="st">&#39;Foundation&#39;</span></code></pre>
+<span class="kw">objc</span><span class="ot">.</span>load<span class="st">&#39;Foundation&#39;</span>
+
+<span class="co">--you can also load sub-frameworks like this:</span>
+<span class="kw">objc</span><span class="ot">.</span>load<span class="st">&#39;Carbon.HIToolbox&#39;</span>
+
+<span class="co">--which is the same as using relative paths:</span>
+<span class="kw">objc</span><span class="ot">.</span>load<span class="st">&#39;Carbon.framework/Versions/Current/Frameworks/HIToolbox&#39;</span></code></pre>
 <h3 id="creating-and-using-objects">Creating and using objects</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--instantiate a class. the resulting object is retained and released on gc.</span>
 <span class="co">--you can call `release()` on it too, for a more speedy destruction.</span>
