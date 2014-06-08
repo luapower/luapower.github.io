@@ -4,12 +4,6 @@ tagline:  I want YOU for LUA POWER
 ---
 
 > NOTE: This page is all about rules, so necessarily you will have issues with it.
-Whether or not you agree with the decisions taken, please note that _some_ conventions
-had to be created in order to achieve specific benefits, and that's the only reason
-for creating them. I respect the fact everybody has his/hers own rules and work flow and
-coding style, which can only accidentally coincide with mine, and I'd rather support individual
-freedom than enforce popular convention. Please have this in mind when reading upon these rules,
-and remember that they are always open for improvement. Feedback is welcome and appreciated.
 
 ## Anatomy of a package
 

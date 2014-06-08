@@ -5,7 +5,7 @@ tagline:  \"and here's where I keep assorted lengths of wire\" - HJF
 
 Luapower is a custom selection of C libraries chosen for speed, portability, API stability and a free license.
 On top of that, a growing collection of ffi bindings and Lua modules, all packaged to minimize the friction
-in putting together Lua/LuaJIT environment.
+in putting together Lua/LuaJIT environment for general-purpose programming.
 
 On this page I will try to make the case for luapower based on its main characteristics.
 
