@@ -281,12 +281,20 @@
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/memory.lua">winapi.memory</a></td>
-<td align="left">memory management</td>
-</tr>
-<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/mouse.lua">winapi.mouse</a></td>
 <td align="left">mouse API</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/keyboard.lua">winapi.keyboard</a></td>
+<td align="left">keyboard input handling and keyboard layouts</td>
+</tr>
+<tr class="even">
+<td align="left">[winapi.rawinput]</td>
+<td align="left">raw input handling</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/memory.lua">winapi.memory</a></td>
+<td align="left">memory management</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/process.lua">winapi.process</a></td>
@@ -341,170 +349,166 @@
 <td align="left">winuser submodule that deals with dlls</td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/keyboard.lua">winapi.keyboard</a></td>
-<td align="left">keyboard input handling and keyboard layouts</td>
-</tr>
-<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/gdi.lua">winapi.gdi</a></td>
 <td align="left">windows GDI API</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>opengl</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/gl.lua">winapi.gl</a></td>
 <td align="left">opengl dynamic namespace based on <code>PFN*PROC</code> cdefs and wglGetProcAddress</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/gl11.lua">winapi.gl11</a></td>
 <td align="left">opengl 1.1 API</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/gl21.lua">winapi.gl21</a></td>
 <td align="left">opengl 2.1 API</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/wgl.lua">winapi.wgl</a></td>
 <td align="left">windows opengl32 ffi module and WGL API from wingdi.h</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/wglext.lua">winapi.wglext</a></td>
 <td align="left">opengl WGL API from wglext.h</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>oo system</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/class.lua">winapi.class</a></td>
 <td align="left">single inheritance object model</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/object.lua">winapi.object</a></td>
 <td align="left">base object class</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/vobject.lua">winapi.vobject</a></td>
 <td align="left">base object class with virtual properties</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>oo core classes</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/handlelist.lua">winapi.handlelist</a></td>
 <td align="left">track objects by their corresponding 32bit pointer handle</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/imagelistclass.lua">winapi.imagelistclass</a></td>
 <td align="left">image list class</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>oo windows</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/basewindowclass.lua">winapi.basewindowclass</a></td>
 <td align="left">base class for both overlapping windows and controls</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/windowclass.lua">winapi.windowclass</a></td>
 <td align="left">overlapping (aka top-level) windows</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/showcase.lua">winapi.showcase</a></td>
 <td align="left">showcase window for the showcase part of modules</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>oo controls</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/controlclass.lua">winapi.controlclass</a></td>
 <td align="left">base class for standard controls</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/panelclass.lua">winapi.panelclass</a></td>
 <td align="left">custom frameless child window</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/basebuttonclass.lua">winapi.basebuttonclass</a></td>
 <td align="left">base class for push-buttons, checkboxes, radio buttons</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/buttonclass.lua">winapi.buttonclass</a></td>
 <td align="left">push-button control</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/checkboxclass.lua">winapi.checkboxclass</a></td>
 <td align="left">checkbox control</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/comboboxclass.lua">winapi.comboboxclass</a></td>
 <td align="left">standard combobox control based on ComboBoxEx32 control</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/editclass.lua">winapi.editclass</a></td>
 <td align="left">standard edit control</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/groupboxclass.lua">winapi.groupboxclass</a></td>
 <td align="left">groupbox control</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/itemlist.lua">winapi.itemlist</a></td>
 <td align="left">class template for lists of structured items</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/listboxclass.lua">winapi.listboxclass</a></td>
 <td align="left">standard listbox control</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/listviewclass.lua">winapi.listviewclass</a></td>
 <td align="left">standard listview control</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/menuclass.lua">winapi.menuclass</a></td>
 <td align="left">standard menu control</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/radiobuttonclass.lua">winapi.radiobuttonclass</a></td>
 <td align="left">radio button control</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/toolbarclass.lua">winapi.toolbarclass</a></td>
 <td align="left">standard toolbar control</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/tabcontrolclass.lua">winapi.tabcontrolclass</a></td>
 <td align="left">standard tab control</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/waitemlistclass.lua">winapi.waitemlistclass</a></td>
 <td align="left">accelerator item list</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>oo custom panels</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/wglpanel.lua">winapi.wglpanel</a></td>
 <td align="left">opengl-enabled panel</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/amanithvgpanel.lua">winapi.amanithvgpanel</a></td>
 <td align="left">opengl + openvg-enabled panel using AmanithVG GLE implementation</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/cairopanel.lua">winapi.cairopanel</a></td>
 <td align="left"><code>self:on_render(surface)</code> event to draw on a cairo pixman surface</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/cairosgpanel.lua">winapi.cairosgpanel</a></td>
 <td align="left">cairo scene graph panel: call <code>self.scene_graph:render(scene)</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"></td>
 <td align="left">on <code>self:on_render()</code> to render a cairo scene graph</td>
 </tr>
