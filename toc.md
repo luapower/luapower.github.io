@@ -5,6 +5,7 @@
 	* [pp]
 	* [oo]
 	* [struct]
+	* [dynasm]
 	* [lpeg], [lpeg2]
 	* [vararg]
 	* [dlist]
