@@ -323,9 +323,9 @@
 <p>The <a href="https://github.com/luapower/dynasm/compare/7d7e130...master">source code changes</a> made to DynASM were kept to a minimum to preserve DynASM semantics, and to make it easy to add the Lua mode to other architectures supported by DynASM. As for the user-facing changes, the list is again small:</p>
 <ul>
 <li>added <code>-l, --lang C|Lua</code> command line option (set automatically for dasl and dasc files).</li>
-<li>comments in asm lines can start with both <code>--</code> and <code>//</code> in Lua mode.</li>
-<li>defines ARCH, OS, X86, X64, WINDOWS, LINUX, OSX are predefined in Lua mode.</li>
-<li>the <code>.globals</code> directive also generates DASM_MAXGLOBAL.</li>
+<li>asm comments can start with both <code>--</code> and <code>//</code> in Lua mode.</li>
+<li>the defines ARCH, OS, X86, X64, WINDOWS, LINUX, OSX are available by default in Lua mode.</li>
+<li>the <code>.globals</code> directive generates DASM_MAXGLOBAL.</li>
 </ul>
 				</section>
 			</div>
