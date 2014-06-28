@@ -217,11 +217,16 @@ header h2 { /* tagline */
 /* Document */
 
 .doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6,
-.doc p, .doc hr, .doc table, .doc pre, .doc blockquote,
+.doc hr, .doc table, .doc pre, .doc blockquote,
 .doc dd, .doc dt,
 .doc embed, .doc object {
 	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
+}
+
+.doc p {
+	margin-top: 20px;
+	margin-bottom: 10px;
 }
 
 .doc h1, .doc h2, .doc h3 {

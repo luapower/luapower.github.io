@@ -67,10 +67,11 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<h2 id="local-dynasm-requiredynasm-local-dasm-requiredasm"><code>local dynasm = require'dynasm'</code><br /> <code>local dasm = require'dasm'</code></h2>
-<p>This is a <a href="https://github.com/luapower/dynasm/commit/7b00676a717eaf1199c5acc69698b0259ec5c7b6">modified</a> version of <a href="http://luajit.org/dynasm.html">DynASM</a> that allows generating, compiling, and running x86 and x86-64 assembly code directly from Lua. It also exposes the DynASM translator and linker to be used as Lua modules.</p>
+					<h2 id="local-dynasm-requiredynasm"><code>local dynasm = require'dynasm'</code></h2>
+<p>Jump To: <a href="#features">Features</a> | <a href="#examples">Examples</a> | <a href="#dynasm-api">DynASM API</a> | <a href="#dasm-api">DASM API</a> | <a href="#changes-to-dynasm">Changes to DynASM</a> | <a href="#dynasm-reference-tutorials">DynASM Reference</a></p>
+<p>This is a modified version of <a href="http://luajit.org/dynasm.html">DynASM</a> that allows generating, compiling, and running x86 and x86-64 assembly code directly from Lua. It also exposes the DynASM translator and linker to be used as Lua modules.</p>
 <blockquote>
-<p>If you want to learn more about DynASM, look <a href="#dynasm-reference-tutorials">below</a> for some fine material.</p>
+<p>If you want to learn more about DynASM, look <a href="#dynasm-reference-tutorials">below</a> for some fine learning material.<br />If you want to know how this differs from the original DynASM, look <a href="#changes-to-dynasm">below</a> for the list of changes.</p>
 </blockquote>
 <h2 id="features">Features</h2>
 <ul>
@@ -78,66 +79,124 @@
 <li>load Lua/ASM (.dasl) files with <code>require()</code></li>
 <li>translate from file/string/stream inputs to file/string/stream outputs</li>
 </ul>
-<h2 id="dynasm-lua-howto">DynASM + Lua HOWTO</h2>
-<h3 id="load-and-run-a-program-from-a-string">Load and run a program from a string:</h3>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">dynasm</span> <span class="ot">=</span> require<span class="st">&#39;dynasm&#39;</span>         <span class="co">--load the translator</span>
+<h2 id="examples">Examples</h2>
+<p>Before you start:</p>
+<ul>
+<li><code>dynasm.lua</code> is the Lua part of dynasm (the translator).</li>
+<li><code>dasm.lua</code> is the binding to the C part of DynASM (the linker/encoder).</li>
+<li><code>.dasl</code> files refer to Lua/ASM files, <code>.dasc</code> files refer to Lua/C files.</li>
+</ul>
+<p>Ok, let's see some samples.</p>
+<h3 id="self-contained-module">1. Self-contained module:</h3>
+<h4 id="multiply_x86.dasl"><code>multiply_x86.dasl:</code></h4>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">ffi</span> <span class="ot">=</span> require<span class="st">&#39;ffi&#39;</span>               <span class="co">--required</span>
+<span class="kw">local</span> <span class="kw">dasm</span> <span class="ot">=</span> require<span class="st">&#39;dasm&#39;</span>             <span class="co">--required</span>
 
-<span class="kw">local</span> <span class="kw">program</span> <span class="ot">=</span> <span class="st">[[</span>
-<span class="st">local ffi = require&#39;ffi&#39;               --load the ffi as `ffi`: the generated code references it</span>
-<span class="st">local dasm = require&#39;dasm&#39;             --load the linker/encoder as `dasm`: the generated code references it</span>
+|<span class="ot">.</span><span class="kw">arch</span> <span class="kw">x86</span>                             <span class="co">--must be the first instruction</span>
+|<span class="ot">.</span><span class="kw">actionlist</span> <span class="kw">actions</span>                   <span class="co">--make an action list called `actions`</span>
 
-<span class="st">|.arch x86                             --must be the first instruction</span>
-<span class="st">|.actionlist actions                   --make an action list for emmitting code</span>
-
-<span class="st">local Dst, globals = dasm.new(actions) --create a new dynasm state using actions per `.actionlist` directive</span>
-
-<span class="st">|-&gt;main:</span>
-<span class="st">|  mov eax, [esp+4]</span>
-<span class="st">|  imul dword [esp+8]</span>
-<span class="st">|  ret</span>
-
-<span class="st">local buf, size = Dst:build()          --check, link and encode the code</span>
-<span class="st">local main = globals[0]                --`main` is the first and only global label, here the same as `buf`</span>
-<span class="st">local func = ffi.cast(&#39;int32_t __cdecl (*) (int32_t x, int32_t y)&#39;, main) --get a callable pointer to it</span>
-<span class="st">return buf, size, func                 --return the code, its size and the callable pointer</span>
-<span class="st">]]</span>
-
-<span class="kw">local</span> <span class="kw">chunk</span> <span class="ot">=</span> <span class="kw">dynasm</span><span class="ot">.</span>loadstring<span class="ot">(</span><span class="kw">program</span><span class="ot">)</span>  <span class="co">--like Lua&#39;s loadstring()</span>
-<span class="kw">local</span> <span class="kw">code</span><span class="ot">,</span> <span class="kw">codesize</span><span class="ot">,</span> <span class="kw">multiply</span> <span class="ot">=</span> chunk<span class="ot">()</span>  <span class="co">--run the Lua chunk</span>
-<span class="fu">assert</span><span class="ot">(</span>multiply<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">35</span><span class="ot">)</span>            <span class="co">--call into the built program</span></code></pre>
-<h3 id="load-and-run-the-same-program-from-a-file">Load and run the same program from a file:</h3>
-<h4 id="multiply.dasl"><code>multiply.dasl:</code></h4>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">ffi</span> <span class="ot">=</span> require<span class="st">&#39;ffi&#39;</span>
-<span class="kw">local</span> <span class="kw">dasm</span> <span class="ot">=</span> require<span class="st">&#39;dasm&#39;</span>
-
-|<span class="ot">.</span><span class="kw">arch</span> <span class="kw">x86</span>
-|<span class="ot">.</span><span class="kw">actionlist</span> <span class="kw">actions</span>
-
-<span class="kw">local</span> <span class="kw">Dst</span> <span class="ot">=</span> <span class="kw">dasm</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">actions</span><span class="ot">)</span>
+<span class="kw">local</span> <span class="kw">Dst</span> <span class="ot">=</span> <span class="kw">dasm</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">actions</span><span class="ot">)</span>          <span class="co">--make a dasm state; next chunk will generate `dasm.put(Dst, ...)`</span>
 
 |  <span class="kw">mov</span> <span class="kw">eax</span><span class="ot">,</span> <span class="ot">[</span><span class="kw">esp</span><span class="ot">+</span><span class="dv">4</span><span class="ot">]</span>
 |  <span class="kw">imul</span> <span class="kw">dword</span> <span class="ot">[</span><span class="kw">esp</span><span class="ot">+</span><span class="dv">8</span><span class="ot">]</span>
 |  <span class="kw">ret</span>
 
-<span class="kw">local</span> <span class="kw">buf</span><span class="ot">,</span> <span class="kw">size</span> <span class="ot">=</span> <span class="kw">Dst</span>:build<span class="ot">()</span>
-<span class="kw">local</span> <span class="kw">func</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>cast<span class="ot">(</span><span class="st">&#39;int32_t __cdecl (*) (int32_t x, int32_t y)&#39;</span><span class="ot">,</span> <span class="kw">buf</span><span class="ot">)</span>
-<span class="kw">return</span> <span class="ot">{</span><span class="fu">call</span> <span class="ot">=</span> <span class="kw">func</span><span class="ot">,</span> <span class="kw">code</span> <span class="ot">=</span> <span class="kw">buf</span><span class="ot">,</span> <span class="kw">codesize</span> <span class="ot">=</span> <span class="kw">size</span><span class="ot">}</span></code></pre>
+<span class="kw">local</span> <span class="kw">code</span> <span class="ot">=</span> <span class="kw">Dst</span>:build<span class="ot">()</span>               <span class="co">--check, link and encode the code</span>
+<span class="kw">local</span> <span class="kw">fptr</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>cast<span class="ot">(</span><span class="st">&#39;int32_t __cdecl (*) (int32_t x, int32_t y)&#39;</span><span class="ot">,</span> <span class="kw">code</span><span class="ot">)</span> <span class="co">--take a callable pointer to it</span>
+
+<span class="kw">return</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">_</span> <span class="ot">=</span> <span class="kw">code</span>                      <span class="co">--pin the code buffer so it doesn&#39;t get collected</span>
+   <span class="kw">return</span> fptr<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)</span>
+<span class="kw">end</span></code></pre>
 <h4 id="main.lua"><code>main.lua</code>:</h4>
-<pre class="sourceCode lua"><code class="sourceCode lua">require<span class="st">&#39;dynasm&#39;</span>                           <span class="co">--register the `require` loader for .dasl files</span>
-<span class="kw">local</span> <span class="kw">multiply</span> <span class="ot">=</span> require<span class="st">&#39;multiply&#39;</span>        <span class="co">--load, translate and run `multiply.dasl`</span>
-<span class="fu">assert</span><span class="ot">(</span><span class="kw">multiply</span><span class="ot">.</span>call<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">35</span><span class="ot">)</span>       <span class="co">--call into the built program</span></code></pre>
-<h3 id="translate-to-stdout-from-lua">Translate to stdout from Lua:</h3>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> require<span class="st">&#39;dynasm&#39;</span>
-<span class="fu">print</span><span class="ot">(</span><span class="kw">dynasm</span><span class="ot">.</span>translate_tostring<span class="st">&#39;multiply.dasl&#39;</span><span class="ot">)</span></code></pre>
-<h3 id="translate-to-stdout-from-the-command-line">Translate to stdout from the command-line:</h3>
-<pre><code>luajit dynasm.lua multiply.dasl</code></pre>
-<h2 id="gotchas-and-limitations">Gotchas and Limitations</h2>
-<ol style="list-style-type: decimal">
-<li><p>All dynamic values are sent to the linker/encoder as int32 values, which means that uint32 values need to be normalized to int32 using <code>bit.tobit()</code>.</p></li>
-<li><p>Once you called <code>.arch</code> with some value, you can't call <code>.arch</code> again with a different value, not even on separate invocations of the translator.</p></li>
-</ol>
-<h2 id="dynasm-aka-translator-api">DynASM (aka translator) API</h2>
-<h2 id="local-dynasm-requiredynasm"><code>local dynasm = require'dynasm'</code></h2>
+<pre class="sourceCode lua"><code class="sourceCode lua">require<span class="st">&#39;dynasm&#39;</span>                           <span class="co">--hook in the `require` loader for .dasl files</span>
+<span class="kw">local</span> <span class="kw">multiply</span> <span class="ot">=</span> require<span class="st">&#39;multiply_x86&#39;</span>    <span class="co">--load, translate and run `multiply_x86.dasl`</span>
+<span class="fu">assert</span><span class="ot">(</span>multiply<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">35</span><span class="ot">)</span></code></pre>
+<h3 id="code-gen-build-split">2. Code gen / build split:</h3>
+<p>Here's an idea on how you can keep your asm code separated from the plumbing required to build it, and also how you can make separate functions out of different asm chunks from the same dasl file.</p>
+<h4 id="funcs_x86.dasl"><code>funcs_x86.dasl</code>:</h4>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">ffi</span> <span class="ot">=</span> require<span class="st">&#39;ffi&#39;</span>
+<span class="kw">local</span> <span class="kw">dasm</span> <span class="ot">=</span> require<span class="st">&#39;dasm&#39;</span>
+
+|<span class="ot">.</span><span class="kw">arch</span> <span class="kw">x86</span>
+|<span class="ot">.</span><span class="kw">actionlist</span> <span class="kw">actions</span>
+|<span class="ot">.</span><span class="kw">globalnames</span> <span class="kw">globalnames</span>
+
+<span class="kw">local</span> <span class="kw">gen</span> <span class="ot">=</span> <span class="ot">{}</span>
+
+<span class="kw">function</span> <span class="kw">gen</span><span class="ot">.</span>mul<span class="ot">(</span><span class="kw">Dst</span><span class="ot">)</span>                  <span class="co">--function which generates code into the dynasm state called `Dst`</span>
+   |<span class="ot">-&gt;</span><span class="kw">mul</span>:                             <span class="co">--and returns a &quot;make&quot; function which gets a dasm.globals() map</span>
+   |  <span class="kw">mov</span> <span class="kw">eax</span><span class="ot">,</span> <span class="ot">[</span><span class="kw">esp</span><span class="ot">+</span><span class="dv">4</span><span class="ot">]</span>                 <span class="co">--and returns a function that knows how to call into its code.</span>
+   |  <span class="kw">imul</span> <span class="kw">dword</span> <span class="ot">[</span><span class="kw">esp</span><span class="ot">+</span><span class="dv">8</span><span class="ot">]</span>
+   |  <span class="kw">ret</span>
+   <span class="kw">return</span> <span class="kw">function</span><span class="ot">(</span><span class="fu">globals</span><span class="ot">)</span>
+     <span class="kw">return</span> <span class="kw">ffi</span><span class="ot">.</span>cast<span class="ot">(</span><span class="st">&#39;int32_t __cdecl (*) (int32_t x, int32_t y)&#39;</span><span class="ot">,</span> <span class="kw">globals</span><span class="ot">.</span><span class="kw">mul</span><span class="ot">)</span>
+   <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="kw">function</span> <span class="kw">gen</span><span class="ot">.</span>add<span class="ot">(</span><span class="kw">Dst</span><span class="ot">)</span>
+   |<span class="ot">-&gt;</span><span class="kw">add</span>:
+   |  <span class="kw">mov</span> <span class="kw">eax</span><span class="ot">,</span> <span class="ot">[</span><span class="kw">esp</span><span class="ot">+</span><span class="dv">4</span><span class="ot">]</span>
+   |  <span class="kw">add</span> <span class="kw">eax</span><span class="ot">,</span> <span class="kw">dword</span> <span class="ot">[</span><span class="kw">esp</span><span class="ot">+</span><span class="dv">8</span><span class="ot">]</span>
+   |  <span class="kw">ret</span>
+   <span class="kw">return</span> <span class="kw">function</span><span class="ot">(</span><span class="fu">globals</span><span class="ot">)</span>
+     <span class="kw">return</span> <span class="kw">ffi</span><span class="ot">.</span>cast<span class="ot">(</span><span class="st">&#39;int32_t __cdecl (*) (int32_t x, int32_t y)&#39;</span><span class="ot">,</span> <span class="kw">globals</span><span class="ot">.</span><span class="kw">add</span><span class="ot">)</span>
+   <span class="kw">end</span>
+<span class="kw">end</span>
+
+<span class="kw">return</span> <span class="ot">{</span><span class="kw">gen</span> <span class="ot">=</span> <span class="kw">gen</span><span class="ot">,</span> <span class="kw">actions</span> <span class="ot">=</span> <span class="kw">actions</span><span class="ot">,</span> <span class="kw">globalnames</span> <span class="ot">=</span> <span class="kw">globalnames</span><span class="ot">}</span>
+<span class="ot">]]</span></code></pre>
+<h4 id="funcs.lua"><code>funcs.lua</code>:</h4>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">dynasm</span> <span class="ot">=</span> require<span class="st">&#39;dynasm&#39;</span>
+<span class="kw">local</span> <span class="kw">dasm</span>   <span class="ot">=</span> require<span class="st">&#39;dasm&#39;</span>
+<span class="kw">local</span> <span class="kw">funcs</span>  <span class="ot">=</span> require<span class="st">&#39;funcs_x86&#39;</span>
+
+<span class="kw">local</span> <span class="kw">state</span><span class="ot">,</span> <span class="fu">globals</span> <span class="ot">=</span> <span class="kw">dasm</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">funcs</span><span class="ot">.</span><span class="kw">actions</span><span class="ot">)</span>     <span class="co">--create a dynasm state with the generated action list</span>
+
+<span class="kw">local</span> <span class="kw">M</span> <span class="ot">=</span> <span class="ot">{}</span>                                       <span class="co">--generate the code, collecting the make functions</span>
+<span class="kw">for</span> <span class="kw">name</span><span class="ot">,</span> <span class="kw">gen</span> <span class="kw">in</span> <span class="fu">pairs</span><span class="ot">(</span><span class="kw">funcs</span><span class="ot">.</span><span class="kw">gen</span><span class="ot">)</span> <span class="kw">do</span>
+   <span class="kw">M</span><span class="ot">[</span><span class="kw">name</span><span class="ot">]</span> <span class="ot">=</span> gen<span class="ot">(</span><span class="kw">state</span><span class="ot">)</span>
+<span class="kw">end</span>
+
+<span class="kw">local</span> <span class="kw">buf</span><span class="ot">,</span> <span class="kw">size</span> <span class="ot">=</span> <span class="kw">state</span>:build<span class="ot">()</span>                    <span class="co">--check, link and encode the code</span>
+<span class="kw">local</span> <span class="fu">globals</span> <span class="ot">=</span> <span class="kw">dasm</span><span class="ot">.</span>globals<span class="ot">(</span><span class="fu">globals</span><span class="ot">,</span> <span class="kw">funcs</span><span class="ot">.</span><span class="kw">globalnames</span><span class="ot">)</span>   <span class="co">--get the map of global_name -&gt; global_addr</span>
+
+<span class="kw">for</span> <span class="kw">name</span><span class="ot">,</span> <span class="kw">make</span> <span class="kw">in</span> <span class="fu">pairs</span><span class="ot">(</span><span class="kw">M</span><span class="ot">)</span> <span class="kw">do</span>                      <span class="co">--make the callable functions</span>
+   <span class="kw">M</span><span class="ot">[</span><span class="kw">name</span><span class="ot">]</span> <span class="ot">=</span> make<span class="ot">(</span><span class="fu">globals</span><span class="ot">)</span>
+<span class="kw">end</span>
+
+<span class="kw">M</span><span class="ot">.</span><span class="kw">__buf</span> <span class="ot">=</span> <span class="kw">buf</span>                                      <span class="co">--pin buf so it doesn&#39;t get collected</span>
+
+<span class="kw">return</span> <span class="kw">M</span></code></pre>
+<h4 id="main.lua-1"><code>main.lua</code></h4>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">funcs</span> <span class="ot">=</span> require<span class="st">&#39;funcs&#39;</span>
+
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">funcs</span><span class="ot">.</span>mul<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">35</span><span class="ot">)</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">funcs</span><span class="ot">.</span>add<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">2</span><span class="ot">)</span></code></pre>
+<h3 id="translate-to-stdout-from-lua">3. Translate to stdout from Lua:</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">dynasm</span> <span class="ot">=</span> require<span class="st">&#39;dynasm&#39;</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">dynasm</span><span class="ot">.</span>translate_tostring<span class="st">&#39;multiply_x86.dasl&#39;</span><span class="ot">)</span></code></pre>
+<p>The above is equivalent to the command line</p>
+<pre><code>&gt; lua dynasm.lua multilpy_x86.dasl</code></pre>
+<h3 id="load-from-string">4. Load from string:</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">dynasm</span> <span class="ot">=</span> require<span class="st">&#39;dynasm&#39;</span>
+
+<span class="kw">local</span> <span class="kw">gencode</span><span class="ot">,</span> <span class="kw">actions</span> <span class="ot">=</span> <span class="kw">dynasm</span><span class="ot">.</span>loadstring<span class="ot">(</span><span class="st">[[</span>
+<span class="st">local ffi  = require&#39;ffi&#39;</span>
+<span class="st">local dasm = require&#39;dasm&#39;</span>
+
+<span class="st">|.arch x86</span>
+<span class="st">|.actionlist actions</span>
+
+<span class="st">local function gencode(Dst)</span>
+<span class="st">   |  mov ax, bx</span>
+<span class="st">end</span>
+
+<span class="st">return gencode, actions</span>
+<span class="st">]]</span><span class="ot">)()</span></code></pre>
+<h3 id="included-demotutorial">5. Included demo/tutorial</h3>
+<p>Check out the included <a href="https://github.com/luapower/dynasm/blob/master/dynasm_demo_x86.dasl">dynasm_demo_x86.dasl</a> and <a href="https://github.com/luapower/dynasm/blob/master/dynasm_demo.lua">dynasm_demo.lua</a> files for more in-depth knowledge about DynASM/Lua interaction.</p>
+<h2 id="dynasm-api">DynASM API</h2>
 <table>
 <col width="51%" />
 <col width="48%" />
@@ -160,7 +219,7 @@
 </tr>
 <tr class="odd">
 <td align="left">dynasm.translate(infile, outfile[, opt])</td>
-<td align="left">ranslate a dasc or dasl file</td>
+<td align="left">translate a dasc or dasl file</td>
 </tr>
 <tr class="even">
 <td align="left">dynasm.string_infile(s) -&gt; infile</td>
@@ -184,8 +243,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="dasm-aka-linkerencoder-api">DASM (aka linker/encoder) API</h2>
-<h2 id="local-dasm-requiredasm"><code>local dasm = require'dasm'</code></h2>
+<h2 id="dasm-api">DASM API</h2>
 <table>
 <col width="51%" />
 <col width="48%" />
@@ -195,36 +253,36 @@
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">dasm.new(actionlist, [externnames],<br />[sectioncount], [globalcount], [externget],<br />[globals]) -&gt; state, globals</td>
-<td align="left">make a dasm state to be used as <code>Dst</code></td>
+<td align="left">dasm.new(<br />actionlist,<br />[externnames],<br />[sectioncount],<br />[globalcount],<br />[externget],<br />[globals]) -&gt; state, globals</td>
+<td align="left">make a dasm state for an action list.<br />-&gt; per <code>.actionlist</code> directive.<br />-&gt; per <code>.externnames</code> directive.<br />-&gt; DASM_MAXSECTION from <code>.sections</code> directive.<br />-&gt; DASM_MAXGLOBAL from <code>.globals</code> directive.<br />-&gt; <code>func(externname) -&gt; addr</code>, for solving <code>extern</code>s<br />-&gt; <code>void*[DASM_MAXGLOBAL]</code>, to hold globals</td>
 </tr>
 <tr class="odd">
 <td align="left">local buf, size = state:build()</td>
-<td align="left">check, link and encode the code</td>
+<td align="left">check, link, alloc, encode and mprotect the code</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>low-level</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">state:init()</td>
-<td align="left"></td>
+<td align="left">state:init(maxsection)</td>
+<td align="left">init a state</td>
 </tr>
 <tr class="even">
 <td align="left">state:free()</td>
-<td align="left"></td>
+<td align="left">free the state</td>
 </tr>
 <tr class="odd">
-<td align="left">state:setupglobal()</td>
-<td align="left"></td>
+<td align="left">state:setupglobal(globals, globalcount)</td>
+<td align="left">set up the globals buffer</td>
 </tr>
 <tr class="even">
-<td align="left">state:growpc()</td>
-<td align="left"></td>
+<td align="left">state:growpc(maxpc)</td>
+<td align="left">grow the number of available pc labels</td>
 </tr>
 <tr class="odd">
-<td align="left">state:setup()</td>
-<td align="left"></td>
+<td align="left">state:setup(actionlist)</td>
+<td align="left">set up the state with an action list</td>
 </tr>
 <tr class="even">
 <td align="left">state:put(state, ...)</td>
@@ -232,26 +290,34 @@
 </tr>
 <tr class="odd">
 <td align="left">state:link() -&gt; size</td>
-<td align="left">link the code</td>
+<td align="left">link the code and get its size</td>
 </tr>
 <tr class="even">
-<td align="left">state:encode()</td>
-<td align="left"></td>
+<td align="left">state:encode(buf)</td>
+<td align="left">encode the code into a buffer</td>
 </tr>
 <tr class="odd">
-<td align="left">state:getpclabel()</td>
-<td align="left"></td>
+<td align="left">state:getpclabel(pclabel)</td>
+<td align="left">get pc label offset</td>
 </tr>
 <tr class="even">
-<td align="left">state:checkstep()</td>
-<td align="left"></td>
+<td align="left">state:checkstep(secmatch)</td>
+<td align="left">check code before encoding</td>
 </tr>
 <tr class="odd">
-<td align="left">state:setupextern()</td>
-<td align="left"></td>
+<td align="left">state:setupextern(externnames, getter)</td>
+<td align="left">set up a new <code>extern</code> handler</td>
 </tr>
 </tbody>
 </table>
+<h2 id="changes-to-dynasm">Changes to DynASM</h2>
+<p>The <a href="https://github.com/luapower/dynasm/compare/7d7e130...master">source code changes</a> made to DynASM were kept to a minimum to preserve DynASM semantics, and to make it easy to add the Lua mode to other architectures supported by DynASM. As for the user-facing changes, the list is again small:</p>
+<ul>
+<li>added <code>-l, --lang C|Lua</code> command line option (set automatically for dasl and dasc files).</li>
+<li>comments in asm lines can start with both <code>--</code> and <code>//</code> in Lua mode.</li>
+<li>defines ARCH, OS, X86, X64, WINDOWS, LINUX, OSX are predefined in Lua mode.</li>
+<li>the <code>.globals</code> directive also generates DASM_MAXGLOBAL.</li>
+</ul>
 <h2 id="dynasm-reference-tutorials">DynASM Reference &amp; Tutorials</h2>
 <p>Peter Cawley &gt; <a href="http://corsix.github.io/dynasm-doc/index.html">Intro</a>, <a href="http://corsix.github.io/dynasm-doc/tutorial.html">Tutorial</a>, <a href="http://corsix.github.io/dynasm-doc/reference.html">Reference</a>, <a href="http://corsix.github.io/dynasm-doc/instructions.html">Instructions</a><br />Josh Haberman &gt; <a href="http://blog.reverberate.org/2012/12/hello-jit-world-joy-of-simple-jits.html">Tutorial</a><br />Mike Pall &gt; <a href="http://luajit.org/dynasm.html">Intro</a>, <a href="http://luajit.org/dynasm_features.html">Features</a>, <a href="http://luajit.org/dynasm_examples.html">Examples</a></p>
 				</section>
