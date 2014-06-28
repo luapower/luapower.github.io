@@ -68,8 +68,8 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="local-dynasm-requiredynasm"><code>local dynasm = require'dynasm'</code></h2>
-<p>Jump To: <a href="#features">Features</a> | <a href="#examples">Examples</a> | <a href="#dynasm-api">DynASM API</a> | <a href="#dasm-api">DASM API</a> | <a href="#changes-to-dynasm">Changes to DynASM</a> | <a href="#dynasm-reference-tutorials">DynASM Reference</a></p>
-<p>This is a modified version of <a href="http://luajit.org/dynasm.html">DynASM</a> that allows generating, compiling, and running x86 and x86-64 assembly code directly from Lua. It also exposes the DynASM translator and linker to be used as Lua modules.</p>
+<p>Jump To: <a href="#features">Features</a> | <a href="#examples">Examples</a> | <a href="#dynasm-api">DynASM API</a> | <a href="#dasm-api">DASM API</a> | <a href="#changes-to-dynasm">Changes to DynASM</a></p>
+<p>This is a modified version of <a href="http://luajit.org/dynasm.html">DynASM</a> that allows generating, compiling, and running x86 and x86-64 assembly code directly from Lua. It also exposes the DynASM assembler and linker to be used as Lua modules.</p>
 <blockquote>
 <p>If you want to learn more about DynASM, look <a href="#dynasm-reference-tutorials">below</a> for some fine learning material.<br />If you want to know how this differs from the original DynASM, look <a href="#changes-to-dynasm">below</a> for the list of changes.</p>
 </blockquote>
@@ -77,17 +77,18 @@
 <ul>
 <li>translate, compile and run Lua/ASM code from Lua (no C glue)</li>
 <li>load Lua/ASM (.dasl) files with <code>require()</code></li>
-<li>translate from file/string/stream inputs to file/string/stream outputs</li>
+<li>works with file, string and stream inputs and outputs</li>
 </ul>
 <h2 id="examples">Examples</h2>
 <p>Before you start:</p>
 <ul>
-<li><code>dynasm.lua</code> is the Lua part of dynasm (the translator).</li>
+<li><code>dynasm.lua</code> is the Lua part of dynasm (the assembler).</li>
 <li><code>dasm.lua</code> is the binding to the C part of DynASM (the linker/encoder).</li>
 <li><code>.dasl</code> files refer to Lua/ASM files, <code>.dasc</code> files refer to Lua/C files.</li>
 </ul>
-<p>Ok, let's see some samples.</p>
-<h3 id="self-contained-module">1. Self-contained module:</h3>
+<p>OK, let's see some samples.</p>
+<h3 id="self-contained-module">1. Self-contained module</h3>
+<p>This simple, self-contained module publishes the function multiply(x, y) -&gt; x * y.</p>
 <h4 id="multiply_x86.dasl"><code>multiply_x86.dasl:</code></h4>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">ffi</span> <span class="ot">=</span> require<span class="st">&#39;ffi&#39;</span>               <span class="co">--required</span>
 <span class="kw">local</span> <span class="kw">dasm</span> <span class="ot">=</span> require<span class="st">&#39;dasm&#39;</span>             <span class="co">--required</span>
@@ -95,7 +96,11 @@
 |<span class="ot">.</span><span class="kw">arch</span> <span class="kw">x86</span>                             <span class="co">--must be the first instruction</span>
 |<span class="ot">.</span><span class="kw">actionlist</span> <span class="kw">actions</span>                   <span class="co">--make an action list called `actions`</span>
 
-<span class="kw">local</span> <span class="kw">Dst</span> <span class="ot">=</span> <span class="kw">dasm</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">actions</span><span class="ot">)</span>          <span class="co">--make a dasm state; next chunk will generate `dasm.put(Dst, ...)`</span>
+<span class="kw">local</span> <span class="kw">Dst</span> <span class="ot">=</span> <span class="kw">dasm</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">actions</span><span class="ot">)</span>          <span class="co">--make a dasm state</span>
+
+<span class="co">-- the next chunk of asm code will be added to the action list, and a call</span>
+<span class="co">-- to `dasm.put(Dst, 0)` will be generated in its place, which will be copying</span>
+<span class="co">-- the code from the start of the action list into the Dst state.</span>
 
 |  <span class="kw">mov</span> <span class="kw">eax</span><span class="ot">,</span> <span class="ot">[</span><span class="kw">esp</span><span class="ot">+</span><span class="dv">4</span><span class="ot">]</span>
 |  <span class="kw">imul</span> <span class="kw">dword</span> <span class="ot">[</span><span class="kw">esp</span><span class="ot">+</span><span class="dv">8</span><span class="ot">]</span>
@@ -112,8 +117,8 @@
 <pre class="sourceCode lua"><code class="sourceCode lua">require<span class="st">&#39;dynasm&#39;</span>                           <span class="co">--hook in the `require` loader for .dasl files</span>
 <span class="kw">local</span> <span class="kw">multiply</span> <span class="ot">=</span> require<span class="st">&#39;multiply_x86&#39;</span>    <span class="co">--load, translate and run `multiply_x86.dasl`</span>
 <span class="fu">assert</span><span class="ot">(</span>multiply<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">35</span><span class="ot">)</span></code></pre>
-<h3 id="code-gen-build-split">2. Code gen / build split:</h3>
-<p>Here's an idea on how you can keep your asm code separated from the plumbing required to build it, and also how you can make separate functions out of different asm chunks from the same dasl file.</p>
+<h3 id="code-gen-build-split">2. Code gen / build split</h3>
+<p>This is an idea on how you can keep your asm code separated from the plumbing required to build it, and also how you can make separate functions out of different asm chunks from the same dasl file. Building a single code section with many entry points is also memory-efficient (executable memory can only be allocated in multiple of 64k chunks).</p>
 <h4 id="funcs_x86.dasl"><code>funcs_x86.dasl</code>:</h4>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">ffi</span> <span class="ot">=</span> require<span class="st">&#39;ffi&#39;</span>
 <span class="kw">local</span> <span class="kw">dasm</span> <span class="ot">=</span> require<span class="st">&#39;dasm&#39;</span>
@@ -173,12 +178,7 @@
 
 <span class="fu">assert</span><span class="ot">(</span><span class="kw">funcs</span><span class="ot">.</span>mul<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">35</span><span class="ot">)</span>
 <span class="fu">assert</span><span class="ot">(</span><span class="kw">funcs</span><span class="ot">.</span>add<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">2</span><span class="ot">)</span></code></pre>
-<h3 id="translate-to-stdout-from-lua">3. Translate to stdout from Lua:</h3>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">dynasm</span> <span class="ot">=</span> require<span class="st">&#39;dynasm&#39;</span>
-<span class="fu">print</span><span class="ot">(</span><span class="kw">dynasm</span><span class="ot">.</span>translate_tostring<span class="st">&#39;multiply_x86.dasl&#39;</span><span class="ot">)</span></code></pre>
-<p>The above is equivalent to the command line</p>
-<pre><code>&gt; lua dynasm.lua multilpy_x86.dasl</code></pre>
-<h3 id="load-from-string">4. Load from string:</h3>
+<h3 id="load-code-from-a-string">3. Load code from a string</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">dynasm</span> <span class="ot">=</span> require<span class="st">&#39;dynasm&#39;</span>
 
 <span class="kw">local</span> <span class="kw">gencode</span><span class="ot">,</span> <span class="kw">actions</span> <span class="ot">=</span> <span class="kw">dynasm</span><span class="ot">.</span>loadstring<span class="ot">(</span><span class="st">[[</span>
@@ -194,8 +194,20 @@
 
 <span class="st">return gencode, actions</span>
 <span class="st">]]</span><span class="ot">)()</span></code></pre>
+<h3 id="translate-from-lua">4. Translate from Lua</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">dynasm</span> <span class="ot">=</span> require<span class="st">&#39;dynasm&#39;</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">dynasm</span><span class="ot">.</span>translate_tostring<span class="st">&#39;multiply_x86.dasl&#39;</span><span class="ot">)</span></code></pre>
+<p>The above is equivalent to the command line:</p>
+<pre><code>&gt; lua dynasm.lua multiply_x86.dasl</code></pre>
+<blockquote>
+<p><strong>Tip</strong>: You can pre-assemble <code>foo.dasl</code> into <code>foo.lua</code> -- <code>require()</code> will then choose <code>foo.lua</code> over <code>foo.dasl</code>, so you basically get transparent caching for free. This speeds up app loading a bit, and you can ship your app without the assembler (you still need to ship the linker/encoder for all the platforms that you support).</p>
+</blockquote>
 <h3 id="included-demotutorial">5. Included demo/tutorial</h3>
-<p>Check out the included <a href="https://github.com/luapower/dynasm/blob/master/dynasm_demo_x86.dasl">dynasm_demo_x86.dasl</a> and <a href="https://github.com/luapower/dynasm/blob/master/dynasm_demo.lua">dynasm_demo.lua</a> files for more in-depth knowledge about DynASM/Lua interaction.</p>
+<p>Check out the included <a href="https://github.com/luapower/dynasm/blob/master/dynasm_demo_x86.dasl">dynasm_demo_x86.dasl</a> and <a href="https://github.com/luapower/dynasm/blob/master/dynasm_demo.lua">dynasm_demo.lua</a> modules for more in-depth knowledge about DynASM/Lua interaction. It works on Windows, Linux and OSX, both x86 and x64.</p>
+<h3 id="brainfuck-jit-compiler">6. Brainfuck JIT compiler</h3>
+<p>Check out the <a href="https://github.com/luapower/bf">bf project</a>. It's a Lua translation of the code from Josh Haberman's <a href="http://blog.reverberate.org/2012/12/hello-jit-world-joy-of-simple-jits.html">tutorial</a> on DynASM and JITs, and probably the simplest JIT compiler you could write.</p>
+<h3 id="dynasm-tutorials-and-reference">7. DynASM Tutorials and Reference</h3>
+<p>Peter Cawley &gt; <a href="http://corsix.github.io/dynasm-doc/index.html">Intro</a>, <a href="http://corsix.github.io/dynasm-doc/tutorial.html">Tutorial</a>, <a href="http://corsix.github.io/dynasm-doc/reference.html">Reference</a>, <a href="http://corsix.github.io/dynasm-doc/instructions.html">Instructions</a><br />Mike Pall &gt; <a href="http://luajit.org/dynasm.html">Intro</a>, <a href="http://luajit.org/dynasm_features.html">Features</a>, <a href="http://luajit.org/dynasm_examples.html">Examples</a></p>
 <h2 id="dynasm-api">DynASM API</h2>
 <table>
 <col width="51%" />
@@ -286,7 +298,7 @@
 </tr>
 <tr class="even">
 <td align="left">state:put(state, ...)</td>
-<td align="left">the translator generates these calls</td>
+<td align="left">the assembler generates these calls</td>
 </tr>
 <tr class="odd">
 <td align="left">state:link() -&gt; size</td>
@@ -318,8 +330,6 @@
 <li>defines ARCH, OS, X86, X64, WINDOWS, LINUX, OSX are predefined in Lua mode.</li>
 <li>the <code>.globals</code> directive also generates DASM_MAXGLOBAL.</li>
 </ul>
-<h2 id="dynasm-reference-tutorials">DynASM Reference &amp; Tutorials</h2>
-<p>Peter Cawley &gt; <a href="http://corsix.github.io/dynasm-doc/index.html">Intro</a>, <a href="http://corsix.github.io/dynasm-doc/tutorial.html">Tutorial</a>, <a href="http://corsix.github.io/dynasm-doc/reference.html">Reference</a>, <a href="http://corsix.github.io/dynasm-doc/instructions.html">Instructions</a><br />Josh Haberman &gt; <a href="http://blog.reverberate.org/2012/12/hello-jit-world-joy-of-simple-jits.html">Tutorial</a><br />Mike Pall &gt; <a href="http://luajit.org/dynasm.html">Intro</a>, <a href="http://luajit.org/dynasm_features.html">Features</a>, <a href="http://luajit.org/dynasm_examples.html">Examples</a></p>
 				</section>
 			</div>
 			<div class="container">
