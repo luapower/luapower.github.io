@@ -270,6 +270,14 @@
 <td align="left">check, link, alloc, encode and mprotect the code</td>
 </tr>
 <tr class="even">
+<td align="left">dasm.dump(buf, size)</td>
+<td align="left">dump the code using the included disassembler in luajit</td>
+</tr>
+<tr class="odd">
+<td align="left">dasm.globals(globals, globalnames) -&gt; {name -&gt; addr}</td>
+<td align="left">given the globals array returned by dasm.new() and the globalnames list per <code>globalnames</code> directive, return a table that maps the names to their address.</td>
+</tr>
+<tr class="even">
 <td align="left"><strong>low-level</strong></td>
 <td align="left"></td>
 </tr>
