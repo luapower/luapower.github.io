@@ -84,7 +84,7 @@
       | <span class="kw">mov</span> <span class="kw">ax</span><span class="ot">,</span> <span class="kw">i</span>
    <span class="kw">end</span>
 <span class="kw">end</span></code></pre>
-<p>does <em>not</em> run the assembly instruction 3 times when codegen is called, instead, it mereley adds the instruction sequence <code>mov ax, 1; mov ax, 2; mov ax, 3</code> to the dynasm state <code>Dst</code> when codegen is called. Mixing Lua and ASM code like this has the effect of generating code, not running it.</p></li>
+<p>does <em>not</em> run the assembly instruction 3 times when codegen is called, instead, it merely adds the instruction sequence <code>mov ax, 1; mov ax, 2; mov ax, 3</code> to the dynasm state <code>Dst</code> when codegen is called. Mixing Lua and ASM code like this has the effect of generating code, not running it.</p></li>
 <li><p>DynASM has two parts: the assembler/preprocessor, written in Lua, and the the linker/encoder, written in C. <code>dynasm.lua</code> is the preprocessor. It takes mixed C/ASM code as input (from a file, string or file-like object) and generates C code (to a file, string, or file-like object). Alternatively, it can take mixed Lua/ASM code (like the above example) and generate Lua code, which is what the &quot;Lua mode&quot; part is all about. <code>dasm.lua</code> is the binding to the C part of DynASM (the linker/encoder) which deals with building the code into executable memory that can be called into.</p></li>
 <li><p><code>.dasl</code> files refer to Lua/ASM files, <code>.dasc</code> files refer to C/ASM files. dasl files can be used transparently as Lua modules (they are translated on-the-fly).</p></li>
 </ol>
@@ -272,7 +272,7 @@
 <td align="left">make a dasm state for an action list.<br />-&gt; per <code>.actionlist</code> directive.<br />-&gt; per <code>.externnames</code> directive.<br />-&gt; DASM_MAXSECTION from <code>.sections</code> directive.<br />-&gt; DASM_MAXGLOBAL from <code>.globals</code> directive.<br />-&gt; <code>func(externname) -&gt; addr</code>, for solving <code>extern</code>s<br />-&gt; <code>void*[DASM_MAXGLOBAL]</code>, to hold globals</td>
 </tr>
 <tr class="odd">
-<td align="left">local buf, size = state:build()</td>
+<td align="left">state:build() -&gt; buf, size</td>
 <td align="left">check, link, alloc, encode and mprotect the code</td>
 </tr>
 <tr class="even">
@@ -281,7 +281,7 @@
 </tr>
 <tr class="odd">
 <td align="left">dasm.globals(globals, globalnames) -&gt; {name -&gt; addr}</td>
-<td align="left">given the globals array returned by dasm.new() and the globalnames list per <code>globalnames</code> directive, return a table that maps the names to their address.</td>
+<td align="left">given the globals array returned by dasm.new() and the globalnames list per <code>.globalnames</code> directive, return a table that maps the names to their address.</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>low-level</strong></td>
@@ -339,7 +339,7 @@
 <li>added <code>-l, --lang C|Lua</code> command line option (set automatically for dasl and dasc files).</li>
 <li>asm comments can start with both <code>--</code> and <code>//</code> in Lua mode.</li>
 <li>the defines ARCH, OS, X86, X64, WINDOWS, LINUX, OSX are available by default in Lua mode.</li>
-<li>the <code>.globals</code> directive generates DASM_MAXGLOBAL.</li>
+<li>the <code>.globals</code> directive generates DASM_MAXGLOBAL in Lua mode.</li>
 </ul>
 				</section>
 			</div>
