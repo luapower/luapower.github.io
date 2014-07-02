@@ -19,14 +19,26 @@ function ellipsis(s, maxlen) {
 	return s.substring(0, maxlen-1) + (s.length <= maxlen ? '' : '...')
 }
 
-function github_api(url, success) {
+function github_api_(url, success) {
 	$.ajax({
-		url: 'https://api.github.com/' + url + '?callback=?',
+		url: 'https://api.github.com/' + url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=?',
 		cache: true,  // because of github's aggressive throttling policies
 		dataType: 'jsonp',
 		jsonpCallback:'ghajpc', // a global function will be created so careful what you name here
 		success: success,
 	})
+}
+
+function github_api(url, success) {
+	var try_again
+	try_again = function(data) {
+		if (data.meta.status == 304) { // github api is shit
+			github_api_(url, try_again)
+		} else {
+			success(data)
+		}
+	}
+	github_api_(url, try_again)
 }
 
 function github_date(date) {
@@ -406,8 +418,10 @@ function get_repo_link(repo, packages) {
 }
 
 function add_news_rows(rows, event, packages) {
-	var maxrows = 10
 	var maxtext = 50
+
+	if (event.type != 'PushEvent' && event.type != 'CreateEvent' && event.type != 'IssuesEvent')
+		return
 
 	var plink = get_repo_link(event.repo.name, packages)
 	if (!plink) return
@@ -418,17 +432,14 @@ function add_news_rows(rows, event, packages) {
 	if (event.type == 'PushEvent') {
 		for (var i = 0; i < event.payload.commits.length; i++) {
 			var commit = event.payload.commits[i]
-			if (rows.length > maxrows) return
 			var url = 'https://github.com/' + event.repo.name + '/commit/' + commit.sha
 			if (commit.message != 'unimportant')
 				rows.push(s + ahref(url, ellipsis(commit.message, maxtext)) + '</td>')
 		}
 	} else if (event.type == 'CreateEvent' && event.payload.ref_type == 'tag') {
-		if (rows.length > maxrows) return
 		var url = 'https://github.com/' + event.repo.name + '/tree/' + event.payload.ref
 		rows.push(s + 'New tag: <b>' + ahref(url, event.payload.ref) + '</b>' + '</td>')
 	} else if (event.type == 'IssuesEvent') {
-		if (rows.length > maxrows) return
 		var url = 'https://github.com/' + event.repo.name + '/issues/' + event.payload.issue.number
 		var text = 'issue <b>' + event.payload.action + '</b>: ' +
 						ahref(url, ellipsis(event.payload.issue.title, maxtext - 15))
@@ -436,13 +447,9 @@ function add_news_rows(rows, event, packages) {
 	}
 }
 
-function set_news_table(events, packages) {
+function set_news_table(rows, events, packages) {
 	var s = '<table width="100%">'
 
-	var rows = []
-	for(var i=0; i < events.data.length; i++) {
-		add_news_rows(rows, events.data[i], packages)
-	}
 	s = s + '<tr>' + rows.join('</tr><tr>') + '</tr>'
 	s = s + '</table>'
 
@@ -452,9 +459,24 @@ function set_news_table(events, packages) {
 
 function load_github_events(packages) {
 	if ($('#news_table').length == 0) return
-	github_api('orgs/luapower/events', function(events) {
-		set_news_table(events, packages)
-	})
+	var page = 1
+	var maxpage = 10
+	var rows = []
+	var maxrows = 10
+	var try_next
+	try_next = function(events) {
+		for(var i=0; i < events.data.length; i++) {
+			add_news_rows(rows, events.data[i], packages)
+		}
+		if (page < maxpage && rows.length < maxrows) {
+			page += 1
+			github_api('orgs/luapower/events?page=' + page, try_next)
+		} else {
+			rows = rows.slice(0, maxrows)
+			set_news_table(rows, events, packages)
+		}
+	}
+	github_api('orgs/luapower/events?page=' + page, try_next)
 }
 
 // disqus
