@@ -191,6 +191,14 @@ p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])</code></pre>
 <h3 id="luajit-callbacks">LuaJIT Callbacks</h3>
 <p>The JIT must be disabled on any function that calls a C function that can trigger a ffi callback. This is done automatically only if the ffi callback is called before the triggering C function returns.</p>
 <p>Currently, passing structs by value or returning structs by value is not supported with callbacks.</p>
+<h3 id="cdata-finalizer-call-order">Cdata finalizer call order</h3>
+<p>Finalizers for cdata objects are called in undefined order. This means that anchoring another object in a finalizer may not work as expected, and may leave you with a reference to a finalized object. Consider this code:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">heap</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span>CreateHeap<span class="ot">(),</span> <span class="kw">FreeHeap</span><span class="ot">)</span>
+
+<span class="kw">local</span> <span class="kw">mem</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span>CreateMem<span class="ot">(</span><span class="kw">heap</span><span class="ot">,</span> <span class="kw">size</span><span class="ot">),</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">mem</span><span class="ot">)</span>
+   FreeMem<span class="ot">(</span><span class="kw">heap</span><span class="ot">,</span> <span class="kw">mem</span><span class="ot">)</span> <span class="co">-- heap anchored in mem&#39;s finalizer</span>
+<span class="kw">end</span><span class="ot">)</span></code></pre>
+<p>When the program exits, sometimes the heap's finalizer is called before mem's finalizer, even though mem's finalizer holds a reference to heap.</p>
 				</section>
 			</div>
 			<div class="container">

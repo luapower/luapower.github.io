@@ -86,3 +86,19 @@ This is done automatically only if the ffi callback is called before the trigger
 
 Currently, passing structs by value or returning structs by value is not supported with callbacks.
 
+### Cdata finalizer call order
+
+Finalizers for cdata objects are called in undefined order. This means that anchoring another object
+in a finalizer may not work as expected, and may leave you with a reference to a finalized object.
+Consider this code:
+
+~~~{.lua}
+local heap = ffi.gc(CreateHeap(), FreeHeap)
+
+local mem = ffi.gc(CreateMem(heap, size), function(mem)
+	FreeMem(heap, mem) -- heap anchored in mem's finalizer
+end)
+~~~
+
+When the program exits, sometimes the heap's finalizer is called before mem's finalizer,
+even though mem's finalizer holds a reference to heap.
