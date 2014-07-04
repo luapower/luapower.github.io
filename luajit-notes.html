@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> LuaJIT notes   - assumptions, gotchas, tricks </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'luajit-notes'
+			var PROJECT = ''
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> LuaJIT notes </h1>
+							<h2> assumptions, gotchas, tricks </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																											</td>
+					</tr>
+				</table>
+															</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-luajit-notes" style="background-image: url('bg/luajit-notes.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="luajit-assumptions">LuaJIT assumptions</h2>
+<ul>
+<li>LuaJIT hoists table accesses with constant keys (so module functions) out of loops, so no point caching those in locals.</li>
+<li>LuaJIT hoists constant branches out of loops so it's ok to specialize loop kernels with if/else or and/or inside the loops.</li>
+<li>LuaJIT inlines functions (except when using <code>...</code> and <code>select()</code> with non-constant indices), so it's ok to specialize loop kernels with function composition.</li>
+<li>multiplications and additions are cheaper than memory access, so storing the results of these operations in temporary variables might actually harm performance.</li>
+<li>there's no difference between using if/else and using and/or expressions - they generate the same pipeline-trashing branch code (so avoid non-constant and/or in tight loops).</li>
+<li>divisions are 4x slower than multiplications, so when dividing by a constant, it helps turning <code>x / c</code> into <code>x * (1 / c)</code> since the constant expression is folded -- LuaJIT seems to do this already for power-of-2 constants where the semantics are equivalent. (are they?)</li>
+<li>the <code>%</code> operator is slow (it's implemented in terms of <code>math.floor()</code> and division) and really kills hot loops; <code>math.fmod()</code> is even slower; I don't have a solution for this (except for <code>x % 2^n</code> which can be made with bit ops).</li>
+</ul>
+<p>The above are assumptions I use throughout my code, so if any of them are wrong, please correct me.</p>
+<h2 id="luajit-gotchas">LuaJIT gotchas</h2>
+<h3 id="null_ptr-nil"><code>null_ptr == nil</code></h3>
+<p><code>ptr == nil</code> evaluates to true for a nil pointer. As innocent as this looks, this is actually a language extension because in Lua 5.1 world, objects of different types can't ever be equal (in this case type <code>cdata</code> == type <code>nil</code>).</p>
+<p>This has two implications:</p>
+<ol style="list-style-type: decimal">
+<li>Luaffi cannot implement this for Lua 5.1, so compatibility with Lua cannot be acheived if this idiom is used.</li>
+<li>The <code>if ptr then</code> idiom doesn't work, although you'd expect that anything that <code>== nil</code> to pass the <code>if</code> test too.</li>
+</ol>
+<p>Both problems can be solved easily with a null filter <code>function ptr(p) return p ~= nil and p or nil end</code> which must be applied on pointers flowing into Lua (mostly from constructors). You can later reimplement this filter when porting to luaffi.</p>
+<h3 id="arrayi-arrayj-arrayj-arrayi"><code>array[i], array[j] = array[j], array[i]</code></h3>
+<p>This idiom doesn't work as you would expect (swapping) when the array elements are structs. This is because array indexing returns a reference type for structs, not a copy of the struct object. Just something to keep in mind.</p>
+<h3 id="callbacks-and-jit">Callbacks and JIT</h3>
+<p>JIT must be disabled on any Lua function that calls a C function that can trigger a ffi callback or you might get a &quot;bad callback&quot; exception. LuaJIT takes great pains to ensure that you won't, but there's no guarantee. This can turn into a &quot;99% is worse than 0%&quot; situation, because you might forget to disable the jit for a particular callback-triggering function only to get a crash in production.</p>
+<h3 id="callbacks-and-passing-structs-by-value">Callbacks and passing structs by value</h3>
+<p>Currently, passing structs by value or returning structs by value is not supported with callbacks. This is generally not a problem, as most APIs don't do that, with the notable exception of OSX APIs which do that <em>a lot</em>.</p>
+<h3 id="cdata-finalizer-call-order">Cdata finalizer call order</h3>
+<p>Finalizers for cdata objects are called in undefined order. This means that objects anchored in a finalizer are not guaranteed to not be already finalized when that finalizer is called.</p>
+<p>Consider this:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">heap</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span>CreateHeap<span class="ot">(),</span> <span class="kw">FreeHeap</span><span class="ot">)</span>
+
+<span class="kw">local</span> <span class="kw">mem</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span>CreateMem<span class="ot">(</span><span class="kw">heap</span><span class="ot">,</span> <span class="kw">size</span><span class="ot">),</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">mem</span><span class="ot">)</span>
+   FreeMem<span class="ot">(</span><span class="kw">heap</span><span class="ot">,</span> <span class="kw">mem</span><span class="ot">)</span> <span class="co">-- heap anchored in mem&#39;s finalizer</span>
+<span class="kw">end</span><span class="ot">)</span></code></pre>
+<p>When the program exits, sometimes the heap's finalizer is called before mem's finalizer, even though mem's finalizer holds a reference to heap. So it's ok and useful to anchor objects in finalizers, but don't <em>use</em> them in finalizers unless you can ensure that they're still alive by other means.</p>
+<h3 id="floating-points-from-outside">Floating points from outside</h3>
+<p>In places where an arbitrary bit pattern can be injected in place of a double or float, you have to normalize these to a standard NaN pattern (<code>0xffc00000</code> for floats and <code>0xfff8000000000000</code> for doubles), or check for NaN before accessing them. Failing to do so will get you a crash.</p>
+<blockquote>
+<p>The bit pattern for NaN is: exponent is all '1', mantissa non-zero, sign ignored.</p>
+</blockquote>
+<p>Here's a handy NaN checker for doubles:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">cast</span><span class="ot">,</span> <span class="kw">band</span><span class="ot">,</span> <span class="kw">bor</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span><span class="kw">cast</span><span class="ot">,</span> <span class="kw">bit</span><span class="ot">.</span><span class="kw">band</span><span class="ot">,</span> <span class="kw">bit</span><span class="ot">.</span><span class="kw">bor</span>
+<span class="kw">local</span> <span class="kw">lohi_p</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>typeof<span class="ot">(</span><span class="st">&quot;struct { int32_t &quot;</span><span class="ot">..(</span><span class="kw">ffi</span><span class="ot">.</span>abi<span class="ot">(</span><span class="st">&quot;le&quot;</span><span class="ot">)</span> <span class="kw">and</span> <span class="st">&quot;lo, hi&quot;</span> <span class="kw">or</span> <span class="st">&quot;hi, lo&quot;</span><span class="ot">)..</span><span class="st">&quot;; } *&quot;</span><span class="ot">)</span>
+
+<span class="kw">local</span> <span class="kw">function</span> double_isnan<span class="ot">(</span><span class="kw">p</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">q</span> <span class="ot">=</span> cast<span class="ot">(</span><span class="kw">lohi_p</span><span class="ot">,</span> <span class="kw">p</span><span class="ot">)</span>
+   <span class="kw">return</span> band<span class="ot">(</span><span class="kw">q</span><span class="ot">.</span><span class="kw">hi</span><span class="ot">,</span> <span class="dv">0x7ff00000</span><span class="ot">)</span> <span class="ot">==</span> <span class="dv">0x7ff00000</span> <span class="kw">and</span>
+           bor<span class="ot">(</span><span class="kw">q</span><span class="ot">.</span><span class="kw">lo</span><span class="ot">,</span> band<span class="ot">(</span><span class="kw">q</span><span class="ot">.</span><span class="kw">hi</span><span class="ot">,</span> <span class="dv">0xfffff</span><span class="ot">))</span> <span class="ot">~=</span> <span class="dv">0</span>
+<span class="kw">end</span></code></pre>
+<h2 id="luajit-tricks">LuaJIT tricks</h2>
+<p>Pointer to number conversion that turns into a no-op when compiled:</p>
+<pre><code>tonumber(ffi.cast(&#39;intptr_t&#39;, ffi.cast(&#39;void *&#39;, ptr)))</code></pre>
+<p>Switching endianness of a 64bit integer (to use in conjunction with <code>ffi.abi'le'</code> and <code>ffi.abi'be'</code>):</p>
+<pre><code>local p = ffi.cast(&#39;uint32*&#39;, int64_buffer)
+p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])</code></pre>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+

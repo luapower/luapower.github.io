@@ -111,8 +111,9 @@
 ----
 
 * Notes
+	* [lua tricks][lua-tricks]
+	* [luajit notes][luajit-notes]
 	* [design of glue][glue_design]
-	* [lua & luajit tricks][lua-tricks]
 * Meta
 	* [luapower-git]
 	* [building luapower][building]

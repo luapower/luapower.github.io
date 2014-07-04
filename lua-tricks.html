@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> tricks   - Lua &amp; LuaJIT tricks and idioms </title>
+		<title> tricks   - quick Lua cheat sheet </title>
 		<script src="jquery.js"></script>
 		<script src="jquery-cookie.js"></script>
 		<script src="jquery-tablesorter.js"></script>
@@ -34,7 +34,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> tricks </h1>
-							<h2> Lua &amp; LuaJIT tricks and idioms </h2>
+							<h2> quick Lua cheat sheet </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																											</td>
@@ -52,7 +52,7 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<h2 id="quick-lua-cheat-sheet">Quick Lua cheat sheet</h2>
+					<p>Or, unreadable code that you should really turn into helper functions whenever you can.</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -85,15 +85,15 @@
 </tr>
 <tr class="even">
 <td align="left"><code>math.huge == math.huge-1</code></td>
-<td align="left">check if inf is available (Lua numbers are floats) without dividing by zero</td>
+<td align="left">check if inf is available without dividing by zero</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>x % 1</code></td>
 <td align="left">fractional part (always positive)</td>
 </tr>
 <tr class="even">
-<td align="left"><code>x % 1 ##  0</code></td>
-<td align="left">number is integer; but better use <code>math.floor(x)  x</code></td>
+<td align="left"><code>x % 1 == 0</code></td>
+<td align="left">number is integer; <code>math.floor(x) == x</code></td>
 </tr>
 <tr class="odd">
 <td align="left"><code>x - x % 1</code></td>
@@ -116,7 +116,7 @@
 <td align="left">round</td>
 </tr>
 <tr class="even">
-<td align="left"><code>x &gt;= 0 and 1 or -1</code></td>
+<td align="left"><code>(x &gt;= 0 and 1 or -1)</code></td>
 <td align="left">sign</td>
 </tr>
 <tr class="odd">
@@ -161,44 +161,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="luajit-tricks">LuaJIT tricks</h2>
-<p>Pointer to number conversion that turns into a no-op when compiled:</p>
-<pre><code>tonumber(ffi.cast(&#39;intptr_t&#39;, ffi.cast(&#39;void *&#39;, ptr)))</code></pre>
-<p>Switching endianness of a 64bit integer (to use in conjunction with <code>ffi.abi'le'</code> and <code>ffi.abi'be'</code>):</p>
-<pre><code>local p = ffi.cast(&#39;uint32*&#39;, int64_buffer)
-p[0], p[1] = bit.bswap(p[1]), bit.bswap(p[0])</code></pre>
-<h2 id="assumptions-about-luajit">Assumptions about LuaJIT</h2>
-<ul>
-<li>LuaJIT hoists table accesses with constant keys (so module functions) out of loops, so no point caching those in locals.</li>
-<li>LuaJIT hoists constant branches out of loops so it's ok to specialize loop kernels with if/else or and/or inside the loops.</li>
-<li>LuaJIT inlines functions (except when using <code>...</code> and <code>select()</code> with non-constant indices), so specializing loop kernels with function composition is ok.</li>
-<li>multiplications and additions can be cheaper than a memory access, so no point caching results in out-of-loop locals.</li>
-<li>there's no difference between using if/else and using and/or expressions - they generate the same pipeline-trashing branch code.</li>
-<li>divisions are 4x slower than multiplications, so when dividing by a constant, it helps turning <code>x / c</code> into <code>x * (1 / c)</code> since the constant expression is folded -- LuaJIT seems to do this already for power-of-2 constants where the semantics are equivalent (are they? need reference).</li>
-<li>the <code>%</code> operator is slow (it's implemented in terms of <code>math.floor()</code> and division) and really kills hot loops; <code>math.fmod()</code> is even slower; I don't have a solution for this (except for <code>x % 2^n</code> which can be made with bit ops).</li>
-</ul>
-<p>The above are assumptions I use throughout my code, so if any of them are wrong, please correct me.</p>
-<h2 id="luajit-gotchas">LuaJIT gotchas</h2>
-<h3 id="null_ptr-nil"><code>null_ptr == nil</code></h3>
-<p><code>ptr == nil</code> evaluates to true for a nil pointer. As innocent as this looks, this is actually a language extension because it breaks the Lua semantics for <code>==</code> which says that objects of different types can't ever be equal (in this case <code>cdata</code> == <code>nil</code>).</p>
-<p>This has two implications:</p>
-<ul>
-<li>Lua ffi cannot implement this, so compatibility with that cannot be acheived if this idiom is used.</li>
-<li>the <code>if ptr then</code> idiom doesn't work, although you'd expect that anything that <code>== nil</code> to pass the <code>if</code> test too.</li>
-</ul>
-<h3 id="arrayi-arrayj-arrayj-arrayi"><code>array[i], array[j] = array[j], array[i]</code></h3>
-<p>This idiom doesn't work as you would expect (swapping) when the array elements are structs.</p>
-<h3 id="luajit-callbacks">LuaJIT Callbacks</h3>
-<p>The JIT must be disabled on any function that calls a C function that can trigger a ffi callback. This is done automatically only if the ffi callback is called before the triggering C function returns.</p>
-<p>Currently, passing structs by value or returning structs by value is not supported with callbacks.</p>
-<h3 id="cdata-finalizer-call-order">Cdata finalizer call order</h3>
-<p>Finalizers for cdata objects are called in undefined order. This means that anchoring another object in a finalizer may not work as expected, and may leave you with a reference to a finalized object. Consider this code:</p>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">heap</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span>CreateHeap<span class="ot">(),</span> <span class="kw">FreeHeap</span><span class="ot">)</span>
-
-<span class="kw">local</span> <span class="kw">mem</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span>CreateMem<span class="ot">(</span><span class="kw">heap</span><span class="ot">,</span> <span class="kw">size</span><span class="ot">),</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">mem</span><span class="ot">)</span>
-   FreeMem<span class="ot">(</span><span class="kw">heap</span><span class="ot">,</span> <span class="kw">mem</span><span class="ot">)</span> <span class="co">-- heap anchored in mem&#39;s finalizer</span>
-<span class="kw">end</span><span class="ot">)</span></code></pre>
-<p>When the program exits, sometimes the heap's finalizer is called before mem's finalizer, even though mem's finalizer holds a reference to heap.</p>
 				</section>
 			</div>
 			<div class="container">
