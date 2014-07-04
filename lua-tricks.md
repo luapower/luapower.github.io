@@ -3,7 +3,7 @@ title:   tricks
 tagline: quick Lua cheat sheet
 ---
 
-Or, unreadable code that you should really turn into helper functions whenever you can.
+> Or, unreadable code that you should really turn into helper functions whenever you can.
 
 ------------------------------------------- -------------------------------------------
 __logic__
