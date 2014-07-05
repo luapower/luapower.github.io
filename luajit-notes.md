@@ -53,11 +53,13 @@ get a "bad callback" exception. LuaJIT takes great pains to ensure that you won'
 This can turn into a "99% is worse than 0%" situation, because you might forget to disable the jit for a
 particular callback-triggering function only to get a crash in production.
 
+There is no way that I know of to disable these jit barriers.
+
 ### Callbacks and passing structs by value
 
 Currently, passing structs by value or returning structs by value is not supported with callbacks.
 This is generally not a problem, as most APIs don't do that, with the notable exception of OSX APIs
-which do that _a lot_.
+which do that _a lot_. I have no solution for this (yet).
 
 ### Cdata finalizer call order
 
@@ -77,6 +79,8 @@ end)
 When the program exits, sometimes the heap's finalizer is called before mem's finalizer,
 even though mem's finalizer holds a reference to heap. So it's ok and useful to anchor objects in finalizers,
 but don't _use_ them in finalizers unless you can ensure that they're still alive by other means.
+
+There is no way to fix this with the current garbage collector.
 
 ### Floating points from outside
 
@@ -98,6 +102,17 @@ local function double_isnan(p)
 	        bor(q.lo, band(q.hi, 0xfffff)) ~= 0
 end
 ~~~
+
+### LuaJIT memory restrictions
+
+LuaJIT must be in the lowest 2G of address space on x64. This applies to all GC-managed memory,
+including `ffi.new` allocations. Use malloc, mmap, etc. to access all memory without restrictions.
+Keep the low 2G of your address space free for LuaJIT (this might be hard depending on how you
+integrate LuaJIT in your app). Needless to say, if your memory usage on x86 is above 2G,
+your app is already not portable to x64. Also, in one-Lua-state/core/thread scenarios the memory
+available for each core is 2G/number-of-cores. If you use malloc, watch out for problems with
+finalization order: finalization and freeing are the same thing now.
+
 
 ## LuaJIT tricks
 

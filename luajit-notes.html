@@ -76,8 +76,9 @@
 <p>This idiom doesn't work as you would expect (swapping) when the array elements are structs. This is because array indexing returns a reference type for structs, not a copy of the struct object. Just something to keep in mind.</p>
 <h3 id="callbacks-and-jit">Callbacks and JIT</h3>
 <p>JIT must be disabled on any Lua function that calls a C function that can trigger a ffi callback or you might get a &quot;bad callback&quot; exception. LuaJIT takes great pains to ensure that you won't, but there's no guarantee. This can turn into a &quot;99% is worse than 0%&quot; situation, because you might forget to disable the jit for a particular callback-triggering function only to get a crash in production.</p>
+<p>There is no way that I know of to disable these jit barriers.</p>
 <h3 id="callbacks-and-passing-structs-by-value">Callbacks and passing structs by value</h3>
-<p>Currently, passing structs by value or returning structs by value is not supported with callbacks. This is generally not a problem, as most APIs don't do that, with the notable exception of OSX APIs which do that <em>a lot</em>.</p>
+<p>Currently, passing structs by value or returning structs by value is not supported with callbacks. This is generally not a problem, as most APIs don't do that, with the notable exception of OSX APIs which do that <em>a lot</em>. I have no solution for this (yet).</p>
 <h3 id="cdata-finalizer-call-order">Cdata finalizer call order</h3>
 <p>Finalizers for cdata objects are called in undefined order. This means that objects anchored in a finalizer are not guaranteed to not be already finalized when that finalizer is called.</p>
 <p>Consider this:</p>
@@ -87,6 +88,7 @@
    FreeMem<span class="ot">(</span><span class="kw">heap</span><span class="ot">,</span> <span class="kw">mem</span><span class="ot">)</span> <span class="co">-- heap anchored in mem&#39;s finalizer</span>
 <span class="kw">end</span><span class="ot">)</span></code></pre>
 <p>When the program exits, sometimes the heap's finalizer is called before mem's finalizer, even though mem's finalizer holds a reference to heap. So it's ok and useful to anchor objects in finalizers, but don't <em>use</em> them in finalizers unless you can ensure that they're still alive by other means.</p>
+<p>There is no way to fix this with the current garbage collector.</p>
 <h3 id="floating-points-from-outside">Floating points from outside</h3>
 <p>In places where an arbitrary bit pattern can be injected in place of a double or float, you have to normalize these to a standard NaN pattern (<code>0xffc00000</code> for floats and <code>0xfff8000000000000</code> for doubles), or check for NaN before accessing them. Failing to do so will get you a crash.</p>
 <blockquote>
@@ -101,6 +103,8 @@
    <span class="kw">return</span> band<span class="ot">(</span><span class="kw">q</span><span class="ot">.</span><span class="kw">hi</span><span class="ot">,</span> <span class="dv">0x7ff00000</span><span class="ot">)</span> <span class="ot">==</span> <span class="dv">0x7ff00000</span> <span class="kw">and</span>
            bor<span class="ot">(</span><span class="kw">q</span><span class="ot">.</span><span class="kw">lo</span><span class="ot">,</span> band<span class="ot">(</span><span class="kw">q</span><span class="ot">.</span><span class="kw">hi</span><span class="ot">,</span> <span class="dv">0xfffff</span><span class="ot">))</span> <span class="ot">~=</span> <span class="dv">0</span>
 <span class="kw">end</span></code></pre>
+<h3 id="luajit-memory-restrictions">LuaJIT memory restrictions</h3>
+<p>LuaJIT must be in the lowest 2G of address space on x64. This applies to all GC-managed memory, including <code>ffi.new</code> allocations. Use malloc, mmap, etc. to access all memory without restrictions. Keep the low 2G of your address space free for LuaJIT (this might be hard depending on how you integrate LuaJIT in your app). Needless to say, if your memory usage on x86 is above 2G, your app is already not portable to x64. Also, in one-Lua-state/core/thread scenarios the memory available for each core is 2G/number-of-cores. If you use malloc, watch out for problems with finalization order: finalization and freeing are the same thing now.</p>
 <h2 id="luajit-tricks">LuaJIT tricks</h2>
 <p>Pointer to number conversion that turns into a no-op when compiled:</p>
 <pre><code>tonumber(ffi.cast(&#39;intptr_t&#39;, ffi.cast(&#39;void *&#39;, ptr)))</code></pre>
