@@ -122,7 +122,7 @@
 <span class="kw">local</span> <span class="kw">multiply</span> <span class="ot">=</span> require<span class="st">&#39;multiply_x86&#39;</span>    <span class="co">--translate, load and run `multiply_x86.dasl`</span>
 <span class="fu">assert</span><span class="ot">(</span>multiply<span class="ot">(-</span><span class="dv">7</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">)</span> <span class="ot">==</span> <span class="ot">-</span><span class="dv">35</span><span class="ot">)</span></code></pre>
 <h3 id="code-gen-build-split">2. Code gen / build split</h3>
-<p>This is an idea on how you can keep your asm code separated from the plumbing required to build it, and also how you can make separate functions out of different asm chunks from the same dasl file. Building a single code section with many entry points is also memory-efficient (executable memory can only be allocated in multiple of 64k chunks).</p>
+<p>This is an idea on how you can keep your asm code separated from the plumbing required to build it, and also how you can make separate functions out of different asm chunks from the same dasl file.</p>
 <h4 id="funcs_x86.dasl"><code>funcs_x86.dasl</code>:</h4>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">ffi</span> <span class="ot">=</span> require<span class="st">&#39;ffi&#39;</span>
 <span class="kw">local</span> <span class="kw">dasm</span> <span class="ot">=</span> require<span class="st">&#39;dasm&#39;</span>
