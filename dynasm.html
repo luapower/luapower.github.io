@@ -340,7 +340,7 @@
 <li>asm comments can start with both <code>--</code> and <code>//</code> in Lua mode.</li>
 <li>the defines ARCH, OS, X86, X64, WINDOWS, LINUX, OSX are available by default in Lua mode.</li>
 <li>the <code>.globals</code> directive generates DASM_MAXGLOBAL in Lua mode.</li>
-<li>added <code>fstenv</code>, <code>fnstenv</code>, <code>fxsave</code>, <code>fxrstor</code> opcodes.</li>
+<li>added <code>fstenv</code>, <code>fnstenv</code>, <code>fldenv</code>, <code>fxsave</code>, <code>fxrstor</code> opcodes.</li>
 <li><code>.type</code> usage is limited in Lua mode: <code>FOO.field</code>, <code>FOO[expr]</code> and <code>FOO[expr].field</code> are ok, but arbitrary expressions like <code>FOO[5].bar[2].baz</code> are not.</li>
 <li><code>extern foo</code> resolves to <code>ffi.C.foo</code> by default; if foo has no cdef, <code>ffi.cdef'void foo()'</code> is called (i.e. a dummy cdef is made for it - caveat emptor).</li>
 </ul>
