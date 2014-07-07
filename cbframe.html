@@ -72,9 +72,9 @@
 <blockquote>
 <p>To change the stack, update the memory around ESP (RSP) directly, and update ESP (RSP).</p>
 </blockquote>
-<p>You can implement the full ABI rules on top of it, or if you only have a few problematic callbacks to work out, you can discover how arguments are passed in each case by using the included CPU state dumper.</p>
-<p>Like ffi callbacks, cbframes are limited resources. There's a hard 1024 limit on them, which you can change in the code.</p>
-<p>The API is similar to that of ffi callbacks:</p>
+<p>You can implement a full ABI on top of it, or if you only have a few problematic callbacks to work out, you can discover how arguments are passed on a case-by-case basis by inspecting the CPU state.</p>
+<p>Like ffi callbacks, cbframes are limited resources. You can create up to 1024 simultaneous cbframe objects (and you can change this limit in the code).</p>
+<p>The API is similar to the API for ffi callbacks:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">cbframe</span> <span class="ot">=</span> require<span class="st">&#39;cbframe&#39;</span>
 
 <span class="kw">local</span> <span class="kw">foo_cbframe</span> <span class="ot">=</span> <span class="kw">cbframe</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>
