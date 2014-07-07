@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> cbframe   - callback frames for luajit </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'cbframe'
+			var PROJECT = 'cbframe'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> cbframe </h1>
+							<h2> callback frames for luajit </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/cbframe" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/cbframe/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/cbframe/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/cbframe/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-cbframe" style="background-image: url('bg/cbframe.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<p>Cbframe is a low-level helper module for the luajit ffi for creating ABI-agnostic callbacks. I made it as a workaround for the problem of creating callbacks that accept pass-by-value struct args and return values.</p>
+<p>The idea is simple: your callbacks receive the full state of the CPU (all registers, and CPU flags even), you can modify the state any way you want, and the CPU will be set with the modified state before the callback returns. It's up to you to pick the function arguments from the right registers and/or stack, and to put the return value into the right registers and/or stack, according to the ABI rules of your platform/compiler.</p>
+<blockquote>
+<p>To change the stack, update the memory around ESP (RSP) directly, and update ESP (RSP).</p>
+</blockquote>
+<p>You can implement the full ABI rules on top of it, or if you only have a few problematic callbacks to work out, you can discover how arguments are passed in each case by using the included CPU state dumper.</p>
+<p>Like ffi callbacks, cbframes are limited resources. There's a hard 1024 limit on them, which you can change in the code.</p>
+<p>The API is similar to that of ffi callbacks:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">cbframe</span> <span class="ot">=</span> require<span class="st">&#39;cbframe&#39;</span>
+
+<span class="kw">local</span> <span class="kw">foo_cbframe</span> <span class="ot">=</span> <span class="kw">cbframe</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>
+   <span class="kw">cbframe</span><span class="ot">.</span>dump<span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>       <span class="co">--inspect the CPU state</span>
+   <span class="kw">local</span> <span class="kw">arg1</span> <span class="ot">=</span> <span class="kw">cpu</span><span class="ot">.</span><span class="kw">RDI</span><span class="ot">.</span><span class="kw">s</span>  <span class="co">--Linux/x64 ABI: int arg#1 in RDI</span>
+   <span class="kw">cpu</span><span class="ot">.</span><span class="kw">RAX</span><span class="ot">.</span><span class="kw">s</span> <span class="ot">=</span> <span class="kw">arg1</span><span class="ot">^</span><span class="dv">2</span>      <span class="co">--Linux/x64 ABI: return value in RAX</span>
+<span class="kw">end</span><span class="ot">)</span>
+
+<span class="co">--don&#39;t pass cbframe to your callback-setting function, pass cbframe.p instead.</span>
+set_foo_callback<span class="ot">(</span><span class="kw">foo_cbframe</span><span class="ot">.</span><span class="kw">p</span><span class="ot">)</span>
+
+<span class="co">--make a cbframe permanent by untying it from the gc.</span>
+<span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span><span class="kw">cbframe</span><span class="ot">,</span> <span class="kw">nil</span><span class="ot">)</span>
+
+<span class="co">--release the callback slot (or reuse it with cbframe:set(func)).</span>
+<span class="kw">cbframe</span>:free<span class="ot">()</span></code></pre>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+
