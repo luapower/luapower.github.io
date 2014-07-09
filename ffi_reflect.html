@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> ffi_reflect   - LuaJIT ffi reflection </title>
+		<title> ffi_reflect   - luajit ffi reflection </title>
 		<script src="jquery.js"></script>
 		<script src="jquery-cookie.js"></script>
 		<script src="jquery-tablesorter.js"></script>
@@ -34,7 +34,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> ffi_reflect </h1>
-							<h2> LuaJIT ffi reflection </h2>
+							<h2> luajit ffi reflection </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -67,9 +67,12 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<p>Quick examples:</p>
+					<blockquote>
+<p><strong>NOTE</strong>: This is a fork of the reflect module by Peter Cawley, developed <a href="https://github.com/corsix/ffi-reflect">here</a>.</p>
+</blockquote>
+<p>Quick examples:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">ffi</span> <span class="ot">=</span> <span class="fu">require</span> <span class="st">&quot;ffi&quot;</span>
-<span class="kw">local</span> <span class="kw">reflect</span> <span class="ot">=</span> <span class="fu">require</span> <span class="st">&quot;reflect&quot;</span>
+<span class="kw">local</span> <span class="kw">reflect</span> <span class="ot">=</span> <span class="fu">require</span> <span class="st">&quot;ffi_reflect&quot;</span>
 
 <span class="kw">ffi</span><span class="ot">.</span>cdef <span class="st">&#39;int sc(const char*, const char*) __asm__(&quot;strcmp&quot;);&#39;</span>
 <span class="fu">print</span><span class="ot">(</span><span class="kw">reflect</span><span class="ot">.</span>typeof<span class="ot">(</span><span class="kw">ffi</span><span class="ot">.</span><span class="kw">C</span><span class="ot">.</span><span class="kw">sc</span><span class="ot">).</span><span class="kw">sym_name</span><span class="ot">)</span> <span class="co">--&gt; &quot;strcmp&quot;</span>
