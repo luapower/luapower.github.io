@@ -75,9 +75,9 @@
 <p>Like ffi callbacks, cbframes are limited resources. You can create up to 1024 simultaneous cbframe objects (and you can change that limit in the code - one callback slot is 7 bytes).</p>
 <p>The API is simple. You don't even have to provide the function signature :)</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">foo</span> <span class="ot">=</span> <span class="kw">cbframe</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>
-   <span class="kw">cbframe</span><span class="ot">.</span>dump<span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>       <span class="co">--inspect the CPU state</span>
-   <span class="kw">local</span> <span class="kw">arg1</span> <span class="ot">=</span> <span class="kw">cpu</span><span class="ot">.</span><span class="kw">RDI</span><span class="ot">.</span><span class="kw">s</span>  <span class="co">--Linux/x64 ABI: int arg#1 in RDI</span>
-   <span class="kw">cpu</span><span class="ot">.</span><span class="kw">RAX</span><span class="ot">.</span><span class="kw">s</span> <span class="ot">=</span> <span class="kw">arg1</span><span class="ot">^</span><span class="dv">2</span>      <span class="co">--Linux/x64 ABI: return value in RAX</span>
+   <span class="kw">cbframe</span><span class="ot">.</span>dump<span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>          <span class="co">--inspect the CPU state</span>
+   <span class="kw">local</span> <span class="kw">arg1</span> <span class="ot">=</span> <span class="kw">cpu</span><span class="ot">.</span><span class="kw">RDI</span><span class="ot">.</span><span class="kw">lo</span><span class="ot">.</span><span class="kw">i</span>  <span class="co">--Linux/x64 ABI: int32 arg#1 in RDI</span>
+   <span class="kw">cpu</span><span class="ot">.</span><span class="kw">RAX</span><span class="ot">.</span><span class="kw">u</span> <span class="ot">=</span> <span class="kw">arg1</span><span class="ot">^</span><span class="dv">2</span>         <span class="co">--Linux/x64 ABI: uint64 return value in RAX</span>
 <span class="kw">end</span><span class="ot">)</span>
 
 <span class="co">--foo is the callback object, foo.p is the actual function pointer to use.</span>
