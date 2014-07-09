@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> ffi_reflect   - LuaJIT ffi reflection </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'ffi_reflect'
+			var PROJECT = 'ffi_reflect'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> ffi_reflect </h1>
+							<h2> LuaJIT ffi reflection </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/ffi_reflect" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/ffi_reflect/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/ffi_reflect/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/ffi_reflect/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-ffi_reflect" style="background-image: url('bg/ffi_reflect.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<p>Quick examples:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">ffi</span> <span class="ot">=</span> <span class="fu">require</span> <span class="st">&quot;ffi&quot;</span>
+<span class="kw">local</span> <span class="kw">reflect</span> <span class="ot">=</span> <span class="fu">require</span> <span class="st">&quot;reflect&quot;</span>
+
+<span class="kw">ffi</span><span class="ot">.</span>cdef <span class="st">&#39;int sc(const char*, const char*) __asm__(&quot;strcmp&quot;);&#39;</span>
+<span class="fu">print</span><span class="ot">(</span><span class="kw">reflect</span><span class="ot">.</span>typeof<span class="ot">(</span><span class="kw">ffi</span><span class="ot">.</span><span class="kw">C</span><span class="ot">.</span><span class="kw">sc</span><span class="ot">).</span><span class="kw">sym_name</span><span class="ot">)</span> <span class="co">--&gt; &quot;strcmp&quot;</span>
+
+<span class="kw">for</span> <span class="kw">refct</span> <span class="kw">in</span> <span class="kw">reflect</span><span class="ot">.</span>typeof<span class="st">&quot;int(*)(int x, int y)&quot;</span><span class="ot">.</span><span class="kw">element_type</span>:arguments<span class="ot">()</span> <span class="kw">do</span>
+  <span class="fu">print</span><span class="ot">(</span><span class="kw">refct</span><span class="ot">.</span><span class="kw">name</span><span class="ot">)</span>
+<span class="kw">end</span> <span class="co">--&gt; x, y</span>
+
+<span class="kw">t</span> <span class="ot">=</span> <span class="ot">{}</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">reflect</span><span class="ot">.</span>getmetatable<span class="ot">(</span><span class="kw">ffi</span><span class="ot">.</span>metatype<span class="ot">(</span><span class="st">&quot;struct {}&quot;</span><span class="ot">,</span> <span class="kw">t</span><span class="ot">))</span> <span class="ot">==</span> <span class="kw">t</span><span class="ot">)</span></code></pre>
+<p>For the full API reference, see <a href="http://corsix.github.io/ffi-reflect/">http://corsix.github.io/ffi-reflect/</a>.</p>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+

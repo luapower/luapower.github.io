@@ -5,10 +5,13 @@
 	* [pp]
 	* [oo]
 	* [struct]
-	* [dynasm]
 	* [lpeg], [lpeg2]
 	* [vararg]
 	* [dlist]
+* FFI tools
+	* [dynasm]
+	* [cbframe]
+	* [ffi_reflect]
 * Basic OS
 	* [lanes]
 	* [socket]

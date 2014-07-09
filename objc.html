@@ -126,6 +126,7 @@
 <li>can't access the vararg part of the function, for variadic functions/methods</li>
 <li>can't access the pass-by-value struct args or any arg after the first pass-by-value struct arg</li>
 <li>can't return structs by value</li>
+<li><strong>UPDATE</strong>: you can use <a href="cbframe.html">cbframe</a> as a workaround until better days. Enable it with <code>objc.debug.cbframe = true</code>; now all the problem methods and blocks will receive a single arg: a pointer to a <a href="https://github.com/luapower/cbframe/blob/master/cbframe_x86_h.lua">D_CPUSTATE</a> struct that you have to pick up args from and set return value into (note: self isn't passed, the cpu state is the only arg).</li>
 </ul></li>
 </ul>
 <h2 id="quick-tutorial">Quick Tutorial</h2>

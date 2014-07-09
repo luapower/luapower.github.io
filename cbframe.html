@@ -67,30 +67,26 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<p>Cbframe is a low-level helper module for the luajit ffi for creating ABI-agnostic callbacks. I made it as a workaround for the problem of creating callbacks that accept pass-by-value struct args and return values.</p>
-<p>The idea is simple: your callbacks receive the full state of the CPU (all registers, and CPU flags even), you can modify the state any way you want, and the CPU will be set with the modified state before the callback returns. It's up to you to pick the function arguments from the right registers and/or stack, and to put the return value into the right registers and/or stack, according to the ABI rules of your platform/compiler.</p>
-<blockquote>
-<p>To change the stack, update the memory around ESP (RSP) directly, and update ESP (RSP).</p>
-</blockquote>
-<p>You can implement a full ABI on top of it, or if you only have a few problematic callbacks to work out, you can discover how arguments are passed on a case-by-case basis by inspecting the CPU state.</p>
-<p>Like ffi callbacks, cbframes are limited resources. You can create up to 1024 simultaneous cbframe objects (and you can change this limit in the code).</p>
-<p>The API is similar to the API for ffi callbacks:</p>
-<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">cbframe</span> <span class="ot">=</span> require<span class="st">&#39;cbframe&#39;</span>
-
-<span class="kw">local</span> <span class="kw">foo_cbframe</span> <span class="ot">=</span> <span class="kw">cbframe</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>
+					<h2 id="local-cbframe-requirecbframe"><code>local cbframe = require'cbframe'</code></h2>
+<p>Cbframe is a low-level helper module for the luajit ffi for creating ABI-agnostic callbacks. I made it as a workaround for the problem of creating callbacks with pass-by-value struct args and return values in <a href="objc.html">objc</a>.</p>
+<p>The idea is simple: your callbacks receive the <a href="https://github.com/luapower/cbframe/blob/master/cbframe_x86_h.lua">full state of the CPU</a> (all registers, and CPU flags even), you can modify the state any way you want, and the CPU will be set with the modified state before the callback returns. It's up to you to pick the function arguments from the right registers and/or stack, and to put the return value into the right registers and/or stack, according to the calling convention rules for your platform/compiler.</p>
+<p>You can use it to implement a full ABI in pure Lua with the help of <a href="ffi_reflect.html">ffi_reflect</a>. Or, if you only have a few problematic callbacks that you need to work out, like I do, you can discover where the arguments are on a case-by-case basis by inspecting the CPU state via <code>cbframe.dump()</code>. If in doubt, use <a href="http://www.agner.org/optimize/calling_conventions.pdf">Agner Fog</a> (ABIs are a bitch).</p>
+<p>Like ffi callbacks, cbframes are limited resources. You can create up to 1024 simultaneous cbframe objects (and you can change that limit in the code - one callback slot is 7 bytes).</p>
+<p>The API is simple. You don't even have to provide the function signature :)</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">foo</span> <span class="ot">=</span> <span class="kw">cbframe</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>
    <span class="kw">cbframe</span><span class="ot">.</span>dump<span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>       <span class="co">--inspect the CPU state</span>
    <span class="kw">local</span> <span class="kw">arg1</span> <span class="ot">=</span> <span class="kw">cpu</span><span class="ot">.</span><span class="kw">RDI</span><span class="ot">.</span><span class="kw">s</span>  <span class="co">--Linux/x64 ABI: int arg#1 in RDI</span>
    <span class="kw">cpu</span><span class="ot">.</span><span class="kw">RAX</span><span class="ot">.</span><span class="kw">s</span> <span class="ot">=</span> <span class="kw">arg1</span><span class="ot">^</span><span class="dv">2</span>      <span class="co">--Linux/x64 ABI: return value in RAX</span>
 <span class="kw">end</span><span class="ot">)</span>
 
-<span class="co">--don&#39;t pass cbframe to your callback-setting function, pass cbframe.p instead.</span>
-set_foo_callback<span class="ot">(</span><span class="kw">foo_cbframe</span><span class="ot">.</span><span class="kw">p</span><span class="ot">)</span>
+<span class="co">--foo is the callback object, foo.p is the actual function pointer to use.</span>
+set_foo_callback<span class="ot">(</span><span class="kw">foo</span><span class="ot">.</span><span class="kw">p</span><span class="ot">)</span>
 
-<span class="co">--make a cbframe permanent by untying it from the gc.</span>
-<span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span><span class="kw">cbframe</span><span class="ot">,</span> <span class="kw">nil</span><span class="ot">)</span>
+<span class="co">--cbframes are permanent by default just like ffi callbacks. tie them to the gc if you want.</span>
+<span class="kw">ffi</span><span class="ot">.</span>gc<span class="ot">(</span><span class="kw">foo</span><span class="ot">,</span> <span class="kw">foo</span><span class="ot">.</span><span class="kw">free</span><span class="ot">)</span>
 
-<span class="co">--release the callback slot (or reuse it with cbframe:set(func)).</span>
-<span class="kw">cbframe</span>:free<span class="ot">()</span></code></pre>
+<span class="co">--release the callback slot (or reuse it with foo:set(func)).</span>
+<span class="kw">foo</span>:free<span class="ot">()</span></code></pre>
 				</section>
 			</div>
 			<div class="container">
