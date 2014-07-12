@@ -70,6 +70,8 @@
 					<h2 id="local-box-requirebox2d"><code>local box = require'box2d'</code></h2>
 <p>Math for 2D rectangles defined as <code>(x, y, w, h)</code>.</p>
 <table>
+<col width="56%" />
+<col width="43%" />
 <tbody>
 <tr class="odd">
 <td align="left"><strong>representation forms</strong></td>
@@ -88,7 +90,7 @@
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"><code>box.align(w, h, halign, valign, bx, by, bw, bh) -&gt; x, y, w, h</code></td>
+<td align="left"><code>box.align(w, h, halign, valign,</code><br /><code>bx, by, bw, bh) -&gt; x, y, w, h</code></td>
 <td align="left">align a box in another box</td>
 </tr>
 <tr class="even">
@@ -124,29 +126,30 @@
 <td align="left">check if a point (x0, y0) is inside rect (x, y, w, h)</td>
 </tr>
 <tr class="even">
-<td align="left"><code>box.hit_margins(x0, y0, d, x, y, w, h) -&gt; hit, left, top, right, bottom</code></td>
-<td align="left">hit test for margins and corners</td>
+<td align="left"><code>box.hit_edges(x0, y0, d, x, y, w, h)</code><br /><code>-&gt; hit, left, top, right, bottom</code></td>
+<td align="left">hit test for edges and corners</td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>edge snapping</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left"><code>box.snap_margins(d, x, y, w, h, rectangles) -&gt; x, y, w, h</code></td>
-<td align="left">snap the sides of a rectangle against an iterator of rectangles. <code>rectangles = function() -&gt; x, y, w, h | nil</code></td>
+<td align="left"><code>box.snap_edges(d, x, y, w, h, rectangles[, opaque])</code><br /><code>-&gt; x, y, w, h</code></td>
+<td align="left">snap the sides of a rectangle against a list of rectangles of form <code>{{x=,y=,w=,h=},...}</code>. if <code>opaque = true</code>, the rectangles are considered opaque, in which case they must be sorted front-to-back.</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>box.snap_pos(d, x, y, w, h, rectangles) -&gt; x, y, w, h</code></td>
-<td align="left">snap the position of a rectangle against an iterator of rectangles.</td>
+<td align="left"><code>box.snap_pos(d, x, y, w, h, rectangles[, opaque])</code><br /><code>-&gt; x, y, w, h</code></td>
+<td align="left">snap the position of a rectangle against a list of rectangles.</td>
 </tr>
 <tr class="even">
-<td align="left"><code>box.snapped_margins(d, x1, y1, w1, h1, x2, y2, w2, h2) -&gt; snapped, left, top, right, bottom</code></td>
-<td align="left">check if two boxes are snapped and on which margins.</td>
+<td align="left"><code>box.snapped_edges(d, x1, y1, w1, h1, x2, y2, w2, h2[, opaque])</code><br /><code>-&gt; snapped, left, top, right, bottom</code></td>
+<td align="left">check if two boxes are snapped and on which edges.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="oop-api-untested">OOP API (untested)</h2>
-<p>Operations never mutate the box object, they always return a new one.</p>
+<p>Note: opaque</p>
+<h2 id="oop-api">OOP API</h2>
+<p>Operations never mutate the object, instead they return a new one.</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -198,12 +201,12 @@
 <td align="left">hit test</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>box:hit_margins(x0, y0, d) -&gt; hit, left, top, right, bottom</code></td>
-<td align="left">hit test for margins</td>
+<td align="left"><code>box:hit_edges(x0, y0, d) -&gt; hit, left, top, right, bottom</code></td>
+<td align="left">hit test for edges</td>
 </tr>
 <tr class="even">
-<td align="left"><code>box:snap_margins(d, boxes) -&gt; box</code></td>
-<td align="left">snap the margins. boxes is an <code>iterator&lt;box&gt;</code> or a list of boxes</td>
+<td align="left"><code>box:snap_edges(d, boxes) -&gt; box</code></td>
+<td align="left">snap the edges to a list of boxes</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>box:snap_pos(d, boxes) -&gt; box</code></td>
@@ -211,7 +214,6 @@
 </tr>
 </tbody>
 </table>
-<p>TODO: access x1, y1, x2, y2 directly.</p>
 				</section>
 			</div>
 			<div class="container">
