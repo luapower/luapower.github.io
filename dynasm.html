@@ -69,7 +69,7 @@
 					<span id="module_info"></span>
 					<h2 id="local-dynasm-requiredynasm"><code>local dynasm = require'dynasm'</code></h2>
 <p>This is a modified version of <a href="http://luajit.org/dynasm.html">DynASM</a> that allows generating, compiling, and running x86 and x86-64 assembly code directly from Lua. It also exposes the DynASM assembler and linker to be used as Lua modules.</p>
-<p>Jump To: <a href="#examples">Examples</a> | <a href="#dynasm-api">DynASM API</a> | <a href="#dasm-api">DASM API</a> | <a href="#changes-to-dynasm">Changes to DynASM</a></p>
+<p>Jump To: <a href="#examples">Examples</a> | <a href="#dynasm-api">DynASM API</a> | <a href="#dasm-api">DASM API</a> | <a href="#changes-to-dynasm">Changes to DynASM</a> | <a href="http://corsix.github.io/dynasm-doc/instructions.html">List of Instructions</a> | <a href="http://corsix.github.io/dynasm-doc/reference.html#directives">List of Directives</a></p>
 <h2 id="features">Features</h2>
 <ul>
 <li>translate, compile and run Lua/ASM code from Lua (no C glue)</li>
@@ -209,8 +209,6 @@
 <p>Check out the included <a href="https://github.com/luapower/dynasm/blob/master/dynasm_demo_x86.dasl">dynasm_demo_x86.dasl</a> and <a href="https://github.com/luapower/dynasm/blob/master/dynasm_demo.lua">dynasm_demo.lua</a> modules for more in-depth knowledge about DynASM/Lua interaction. It works on Windows, Linux and OSX, both x86 and x64.</p>
 <h3 id="brainfuck-jit-compiler">6. Brainfuck JIT compiler</h3>
 <p>The examples above don't do DynASM enough justice, because DynASM was after all made for building JIT compilers. The <a href="https://github.com/luapower/bf">bf project</a> contains a Lua/ASM translation of the code from Josh Haberman's <a href="http://blog.reverberate.org/2012/12/hello-jit-world-joy-of-simple-jits.html">tutorial</a> on DynASM and JITs, and probably the simplest JIT compiler you could write. It too works on Windows, Linux and OSX, x86 and x64.</p>
-<h3 id="dynasm-tutorials-and-reference">7. DynASM Tutorials and Reference</h3>
-<p>Peter Cawley &gt; <a href="http://corsix.github.io/dynasm-doc/index.html">Intro</a>, <a href="http://corsix.github.io/dynasm-doc/tutorial.html">Tutorial</a>, <a href="http://corsix.github.io/dynasm-doc/reference.html">Reference</a>, <a href="http://corsix.github.io/dynasm-doc/instructions.html">Instructions</a><br />Mike Pall &gt; <a href="http://luajit.org/dynasm.html">Intro</a>, <a href="http://luajit.org/dynasm_features.html">Features</a>, <a href="http://luajit.org/dynasm_examples.html">Examples</a></p>
 <h2 id="dynasm-api">DynASM API</h2>
 <table>
 <col width="51%" />
@@ -343,6 +341,17 @@
 <li>added <code>fstenv</code>, <code>fnstenv</code>, <code>fldenv</code>, <code>fxsave</code>, <code>fxrstor</code> opcodes.</li>
 <li><code>.type</code> usage is limited in Lua mode: <code>FOO.field</code>, <code>FOO[expr]</code> and <code>FOO[expr].field</code> are ok, but arbitrary expressions like <code>FOO[5].bar[2].baz</code> are not.</li>
 <li><code>extern foo</code> resolves to <code>ffi.C.foo</code> by default; if foo has no cdef, <code>ffi.cdef'void foo()'</code> is called (i.e. a dummy cdef is made for it - caveat emptor).</li>
+</ul>
+<h2 id="assembler-tutorials-ref-docs">Assembler tutorials &amp; ref docs</h2>
+<ul>
+<li><a href="https://software.intel.com/en-us/articles/introduction-to-x64-assembly/">x64 tutorial</a></li>
+<li><a href="http://neilkemp.us/src/sse_tutorial/sse_tutorial.html">SSE tutorial</a></li>
+<li><a href="http://softpixel.com/~cwright/programming/simd/sse.php">SSE quick ref</a></li>
+<li><a href="http://www.website.masmforum.com/tutorials/fptute/index.html">FPU tutorial &amp; ref</a></li>
+<li><a href="http://www.agner.org/optimize/calling_conventions.pdf">Agner Fog - Calling Conventions</a></li>
+<li><a href="http://www.agner.org/optimize/microarchitecture.pdf">Agner Fog - CPU Internals</a></li>
+<li><a href="http://www.agner.org/optimize/optimizing_assembly.pdf">Agner Fog - Optimization Guide</a></li>
+<li><a href="http://www.agner.org/optimize/instruction_tables.pdf">Agner Fog - Instruction Tables</a></li>
 </ul>
 				</section>
 			</div>

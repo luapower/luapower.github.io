@@ -71,7 +71,15 @@
 <p>Cbframe is a low-level helper module for the luajit ffi for creating ABI-agnostic callbacks. I made it as a workaround for the problem of creating callbacks with pass-by-value struct args and return values in <a href="objc.html">objc</a>.</p>
 <p>Works with x86 and x64 Windows, Linux and OSX.</p>
 <p>The idea is simple: your callbacks receive the <a href="https://github.com/luapower/cbframe/blob/master/cbframe_x86_h.lua">full state of the CPU</a> (all registers, and CPU flags even), you can modify the state any way you want, and the CPU will be set with the modified state before the callback returns. It's up to you to pick the function arguments from the right registers and/or stack, and to put the return value into the right registers and/or stack, according to the calling convention rules for your platform/compiler.</p>
-<p>You can use it to implement a full ABI in pure Lua with the help of <a href="ffi_reflect.html">ffi_reflect</a>. Or, if you only have a few problematic callbacks that you need to work out, like I do, you can discover where the arguments are on a case-by-case basis by inspecting the CPU state via <code>cbframe.dump()</code>. If in doubt, use <a href="http://www.agner.org/optimize/calling_conventions.pdf">Agner Fog</a> (ABIs are a bitch).</p>
+<p>You can use it to implement a full ABI in pure Lua by leveraging <a href="ffi_reflect.html">ffi_reflect</a>. Or, if you only have a few problematic callbacks that you need to work out, like I do, you can discover where the arguments are on a case-by-case basis by inspecting the CPU state via <code>cbframe.dump()</code>.</p>
+<p>ABI manuals:</p>
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/k2b2ssfy.aspx">Windows / x86</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/7kcdt6fy.aspx">Windows / x64</a></li>
+<li><a href="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/LowLevelABI/130-IA-32_Function_Calling_Conventions/IA32.html">OSX / x86</a></li>
+<li><a href="http://www.x86-64.org/documentation/abi.pdf">Linux &amp; OSX / x64</a></li>
+</ul>
+<p>If in doubt, use <a href="http://www.agner.org/optimize/calling_conventions.pdf">Agner Fog</a> (ABIs are a bitch).</p>
 <p>Like ffi callbacks, cbframes are limited resources. You can create up to 1024 simultaneous cbframe objects (you can change that limit in the code - callback slots must be pre-allocated; each callback slot is 7 bytes).</p>
 <p>The API is simple. You don't even have to provide the function signature :)</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">foo</span> <span class="ot">=</span> <span class="kw">cbframe</span><span class="ot">.</span>new<span class="ot">(</span><span class="kw">function</span><span class="ot">(</span><span class="kw">cpu</span><span class="ot">)</span>
