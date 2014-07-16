@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> variant  </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'variant'
+			var PROJECT = ''
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> variant </h1>
+							<h2> &nbsp; </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																											</td>
+					</tr>
+				</table>
+															</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-variant" style="background-image: url('bg/variant.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h1 id="lgi-variant-support">LGI Variant support</h1>
+<p>LGI provides extended overrides for supporting GLib's GVariant type. it supports folloing operations with variants:</p>
+<h2 id="creation">Creation</h2>
+<p>Variants should be created using GLib.Variant(type, value) constructor. Type is either GLib.VariantType or just plain string describing requested type of the variant. Following types are supported:</p>
+<ul>
+<li><code>b</code>, <code>y</code>, <code>n</code>, <code>q</code>, <code>i</code>, <code>u</code>, <code>q</code>, <code>t</code>, <code>s</code>, <code>d</code>, <code>o</code>, <code>g</code> are basic types, see either GVariant documentation or DBus specification for their meaning. <code>value</code> argument is expected to contain appropriate string or number for the basic type.</li>
+<li><code>v</code> is variant type, <code>value</code> should be another GLib.Variant instance.</li>
+<li><code>m</code>type is 'maybe' type, <code>value</code> should be either <code>nil</code> or value acceptable for target type.</li>
+<li><code>a</code>type is array of values of specified type, <code>value</code> is expected to contain Lua table (array) with values for the array. If the array contains <code>nil</code> elements inside, it must contain also <code>n</code> field with the real length of the array.</li>
+<li><code>(typelist)</code> is tuple of types, <code>value</code> is expected to contain Lua table (array) with values for the tuple members.</li>
+<li><code>{key-value-pair}</code> is dictionary entry, <code>value</code> is expected to contain Lua table (array) with 2 values (key and value) for the entry.</li>
+</ul>
+<p>There are two convenience exceptions from above rules: - when array of dictionary entries is met (i.e. dictionary), <code>value</code> is expected to contain Lua table with keys and values mapping to dictionary keys and values - when array of bytes is met, a bytestring is expected in the form of Lua string, not array of byte numbers.</p>
+<p>Some examples creating valid variants follow:</p>
+<pre><code> GLib = require(&#39;lgi&#39;).Glib
+ local v1 = GLib.Variant(&#39;s&#39;, &#39;Hello&#39;)
+ local v2 = GLib.Variant(&#39;d&#39;, 3.14)
+ local v3 = GLib.Variant(&#39;ms&#39;, nil)
+ local v4 = GLib.Variant(&#39;v&#39;, v3)
+ local v5 = GLib.Variant(&#39;as&#39;, { &#39;Hello&#39;, &#39;world&#39; })
+ local v6 = GLib.Variant(&#39;ami&#39;, { 1, nil, 2, n = 3 })
+ local v7 = GLib.Variant(&#39;(is)&#39;, { 100, &#39;title&#39; })
+ local v8 = GLib.Variant(&#39;a{sd}&#39;, { pi = 3.14, one = 1 })
+ local v9 = GLib.Variant(&#39;aay&#39;, { &#39;bytetring1&#39;, &#39;bytestring2&#39; })</code></pre>
+<h2 id="data-access">Data access</h2>
+<p>LGI implements following special properties for accessing data stored inside variants</p>
+<ul>
+<li><code>type</code> contains read-only string describing type of the variant</li>
+<li><code>value</code> unpacks value of the variant. Simple scalar types are unpacked into their corresponding Lua variants, tuples and dictionary entries are unpacked into Lua tables (arrays), child varaints are expanded for <code>v</code>-typed variants. Dictionaries return proxy table which can be indexed by dictionary keys to retrieve dictionary values. Generic arrays are <strong>not</strong> automatically expanded, the source variants are returned are returned instead.</li>
+<li><code># operator</code> Length operator is overriden for GLib.Variants, returning number of child elements. Non-compound variants always return 0, maybe-s return 0 or 1, arrays, tuples and dictionary entries return number of children subvariants.</li>
+<li><code>[number] operator</code> Compound variants can be indexed by number, returning n-th subvariant (array entry, n-th field of tuple etc).</li>
+<li><code>pairs() and ipairs()</code> Variants support these methods, which behave as standard Lua enumerators.</li>
+</ul>
+<p>Examples of extracting values from variants created above:</p>
+<pre><code> assert(v1.type == &#39;s&#39; and v1.value == &#39;Hello&#39;)
+ assert(v2.value == 3.14)
+ assert(v3.value == nil and #v3 = 0)
+ assert(v4.value == nil and #v4 = 1)
+ assert(v5.value == v5 and #v5 == 2 and v5[2] == &#39;world&#39;)
+ assert(#v6 == 3 and v6[2] == nil)
+ assert(v7.value[1] == 100 and v7[1] == 100 and #v7 == 2)
+ assert(v8.value.pi == 3.14 and v8.value[&#39;one&#39;] == 1 and #v8 == 2)
+ assert(v9[1] == &#39;bytestring1&#39;)
+ for k, v in v8:pairs() do print(k, v) end</code></pre>
+<h2 id="serialization">Serialization</h2>
+<p>To serialize variant into bytestream form, use <code>data</code> property, which return Lua string containing serialized variant. Deserialization is done by <code>Variant.new_from_data</code> constructor, which is similar to <code>g_variant_new_from_data</code>, but it does <em>not</em> accept <code>destroy_notify</code> argument. See following serialization example:</p>
+<pre><code> local v = GLib.Variant(&#39;s&#39;, &#39;Hello&#39;)
+ local serialized = v.data
+ assert(type(data) == &#39;string&#39;)
+ 
+ local newv = GLib.Variant.new_from_data(serialized, true)
+ assert(newv.type == &#39;s&#39; and newv.value == &#39;Hello&#39;)</code></pre>
+<h2 id="other-operations">Other operations</h2>
+<p>LGI also contains many of the original <code>g_variant_</code> APIs, but many of them are not useful because their functionality is covered in more Lua-native way by operations described above. However, there there are still some useful calls, which are enumerated here. All of them can be called using object notation on variant instances, e.g. <code>local vt = variant:get_type()</code> See GLib documentation for their closer description.</p>
+<ul>
+<li><code>print(with_types)</code> returns textual format of the variant. Note that LGI does not contain opposite operation, i.e. g_variant_parse is not implemented yet</li>
+<li><code>is_of_type(type)</code> checks whether variant instance conforms to specified type</li>
+<li><code>compare(other_variant)</code> and <code>equal(other_variant)</code> allow comparison of variant instances</li>
+<li><code>byteswap()</code>, <code>is_normal_form()</code> and <code>get_normal_form()</code> for affecting the binary representation of variants.</li>
+<li><code>get_type()</code> method returns <code>VariantType</code> instance representing type of the variant. Seldom useful, <code>type</code> property returning type as string is usually better choice.</li>
+<li><code>GLib.VariantBuilder</code> although builder is supported, it is seldom useful, because creation of variants using constructors above is usually preferred. The exception may be creating of very large arrays, where creating source Lua table with source array might waste too much memory. Building such array piece-by-piece using builder instance is preferred. Note that VariantBuilder's <code>end()</code> method clashes with lua <code>end</code> keyword, so it is renamed to <code>_end()</code>.</li>
+<li><code>VARIANT_TYPE_</code> constants are accessible as <code>GLib.VariantType.XXX</code>, e.g. <code>GLib.VariantType.STRING</code>. Although there should not be many cases where these constants are needed.</li>
+</ul>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+

@@ -86,6 +86,8 @@
 	* [libexif]
 * GUI
    * [nw]
+		* [nw_api]
+		* [nw_keys]
 	* [cplayer]
 	* [box2d]
 * Code Editing

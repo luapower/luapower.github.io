@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> nw_api   - native widgets API </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'nw_api'
+			var PROJECT = 'nw api'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> nw_api </h1>
+							<h2> native widgets API </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/nw api" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/nw api/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/nw api/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/nw api/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-nw api" style="background-image: url('bg/nw api.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-nw-requirenw"><code>local nw = require'nw'</code></h2>
+<table>
+<col width="15%" />
+<col width="29%" />
+<col width="31%" />
+<col width="23%" />
+<tbody>
+<tr class="odd">
+<td align="left"><strong>topic</strong></td>
+<td align="left"><strong>actions</strong></td>
+<td align="left"><strong>queries</strong></td>
+<td align="left"><strong>events</strong></td>
+</tr>
+<tr class="even">
+<td align="left">backends</td>
+<td align="left">nw.backend = backendmodule</td>
+<td align="left">nw.backends = {OS = backendname}</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">oo</td>
+<td align="left">obj:override(method, func)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">events</td>
+<td align="left">obj:observe(event, func)</td>
+<td align="left"></td>
+<td align="left">obj:event(name, args...)<br />obj:&lt;event&gt;(args...)</td>
+</tr>
+<tr class="odd">
+<td align="left">app singleton</td>
+<td align="left"></td>
+<td align="left">nw:app() -&gt; app</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">message loop</td>
+<td align="left">app:run()<br />app:stop()</td>
+<td align="left">app:running()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">quitting</td>
+<td align="left">app:autoquit(?)<br />win:autoquit(?)<br />app:quit()</td>
+<td align="left">app:autoquit() -&gt; ?<br />win:autoquit() -&gt; ?</td>
+<td align="left"><br /><br />app:quitting() -&gt; ?</td>
+</tr>
+<tr class="even">
+<td align="left">timers</td>
+<td align="left">app:runafter(seconds, func)<br /></td>
+<td align="left">app:time() -&gt; time<br />app:timediff(time1, time2) -&gt; ms</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">activation</td>
+<td align="left">app:activate()<br /><br />win:activate()</td>
+<td align="left">app:active() -&gt; ?<br /><br />win:active() -&gt; ?<br />app:active_window() -&gt; win</td>
+<td align="left">app:activated()<br />app:deactivated()<br />win:activated()<br />win:deactivated()</td>
+</tr>
+<tr class="even">
+<td align="left">displays</td>
+<td align="left"></td>
+<td align="left">app:displays() -&gt; {disp1, ...}<br />app:main_display() -&gt; disp<br />win:display() -&gt; disp<br />disp:rect() -&gt; x, y, w, h<br />disp:client_rect() -&gt; x, y, w, h</td>
+<td align="left">app:displays_changed()</td>
+</tr>
+<tr class="odd">
+<td align="left">windows</td>
+<td align="left">app:window(params) -&gt; win<br />win:close()<br />win:check()</td>
+<td align="left"><br />win:dead() -&gt; ?</td>
+<td align="left"><br />win:closing() -&gt; ?<br />win:closed()</td>
+</tr>
+<tr class="even">
+<td align="left">window list</td>
+<td align="left"></td>
+<td align="left">app:windows([order]) -&gt; {win1,...}<br />app:window_count() -&gt; n</td>
+<td align="left">app:window_created()<br />app:window_closed()</td>
+</tr>
+<tr class="odd">
+<td align="left">visibility</td>
+<td align="left">win:show()<br />win:hide()</td>
+<td align="left">win:visible() -&gt; ?</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">state</td>
+<td align="left">win:minimize()<br />win:maximize()<br />win:restore()<br />win:shownormal()<br />win:fullscreen()</td>
+<td align="left">win:minimized() -&gt; ?<br />win:maximized() -&gt; ?<br /><br /><br />win:fullscreen() -&gt; ?</td>
+<td align="left">win:state_changed(how)</td>
+</tr>
+<tr class="odd">
+<td align="left">position</td>
+<td align="left">win:frame_rect(x, y, w, h)</td>
+<td align="left">win:frame_rect() -&gt; x, y, w, h<br />win:client_rect() -&gt; x, y, w, h</td>
+<td align="left">win:resizing(how, x, y, w, h) -&gt; x, y, w, h<br />win:resized()</td>
+</tr>
+<tr class="even">
+<td align="left">mouse pointer</td>
+<td align="left">win:cursor(name)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">frame</td>
+<td align="left">win:title(title)<br /><br /><br /><br /><br /><br /><br />win:edgesnapping(?)</td>
+<td align="left">win:title() -&gt; title<br />win:frame() -&gt; frame<br />win:minimizable() -&gt; ?<br />win:maximizable() -&gt; ?<br />win:closeable() -&gt; ?<br />win:resizeable() -&gt; ?<br />win:fullscreenable() -&gt; ?<br />win:edgesnapping() -&gt; ?</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">z-order</td>
+<td align="left">win:topmost(?)<br />win:order(z|'back'|'front')</td>
+<td align="left">win:topmost() -&gt; ?<br />win:zorder() -&gt; z</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">parent</td>
+<td align="left"></td>
+<td align="left">win:parent() -&gt; parent</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">keyboard</td>
+<td align="left">app:ignore_numlock(?)</td>
+<td align="left">app:ignore_numlock() -&gt; ?<br />win:key(keyquery) -&gt; ?</td>
+<td align="left">win:keydown(key, vkey)<br />win:keyup(key, vkey)<br />win:keypress(key, vkey)<br />win:keychar(char)</td>
+</tr>
+<tr class="odd">
+<td align="left">mouse</td>
+<td align="left"></td>
+<td align="left">win:mouse() -&gt; m<br />m.x, m.y,<br />m.left, m.right, m.middle,<br />m.xbutton1, m.xbutton2</td>
+<td align="left">win:mousedown(button)<br />win:click(button, count) -&gt; reset?<br />win:mouseup(button)<br />win:mouseenter()<br />win:mouseleave()<br />win:mousemove(x, y)<br />win:mousewheel(delta)<br />win:mousehwheel(delta)</td>
+</tr>
+<tr class="even">
+<td align="left">rendering</td>
+<td align="left">win:invalidate()</td>
+<td align="left"></td>
+<td align="left">win:render(cr)</td>
+</tr>
+</tbody>
+</table>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> nw_keys   - native widgets key codes </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'nw_keys'
+			var PROJECT = 'nw'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> nw_keys </h1>
+							<h2> native widgets key codes </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/nw" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/nw/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/nw/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/nw/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-nw" style="background-image: url('bg/nw.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="types-of-keys">Types of keys</h2>
+<p>Keys on a keyboard are classified as follows:</p>
+<pre><code>naming         represents        numlock-sensitive    left-right distinction
+-------------- ----------------- -------------------- -----------------------
+key            functional keys   yes                  no
+vkey           virtual keys      yes                  yes
+pkey           physical keys     no                   yes</code></pre>
+<p>Functional keys are useful for creating shortcuts, while physical keys are useful for games. Virtual keys are not generally useful, except when you need to distinguish between left/right key variations or between numapd keys and standalone cursor keys, but you also need to respect the numlock key.</p>
+<h2 id="full-list">Full list</h2>
+<p>Here's the full list of functional keys and their corresponding virtual keys. You get physical keys instead of virtual keys if you set the <code>ignore_numlock</code> option, in which case the keyboard API will act as if numlock is always on.</p>
+<pre><code>key            vkeys                         comments
+-----------------------------------------------------------------
+;                                            US keyboard
+=
+,
+-
+.
+/                                            US keyboard
+`                                            US keyboard
+[                                            US keyboard
+\\                                           US keyboard
+]                                            US keyboard
+&#39;                                            US keyboard
+
+backspace
+tab
+space
+esc
+
+F1-F10
+
+F11                                          taken on mac (show desktop)
+F12                                          taken on mac (show dashboard)
+
+F13                                          osx only
+F14                                          osx only; taken (brightness down)
+F15                                          osx only; taken (brightness up)
+F16                                          mac keyboard
+F17                                          mac keyboard
+F18                                          mac keyboard
+F19                                          mac keyboard
+
+capslock                                     no key-up timing on osx
+numlock                                      windows only; light always off on OSX
+printscreen                                  windows only; taken (screen capture)
+scrolllock                                   windows only
+break                                        windows only
+
+num0-num9
+
+num.
+num*
+num+
+num-
+num/
+numclear                                     separate key on mac keyboard
+
+lwin                                         windows only
+rwin                                         windows only
+menu                                         win keyboard
+num=                                         osx only
+
+0-9
+A-Z
+
+ctrl           lctrl          rctrl
+alt            lalt           ralt
+command        lcommand       rcommand       osx only
+
+left           left!          numleft        num... variants are windows only
+up             up!            numup
+right          right!         numright
+down           down!          numdown
+
+pageup         pageup!        numpageup
+pagedown       pagedown!      numpagedown
+end            end!           numend
+home           home!          numhome
+insert         insert!        numinsert
+delete         delete!        numdelete
+enter          enter!         numenter
+
+help                                         osx only; no keydown event
+
+mute
+volumedown
+volumeup</code></pre>
+<h2 id="crossing-cultures">Crossing cultures</h2>
+<p>Windows keyboards can be used on OSX and Mac keyboards can be used on Windows. Each OS will try to simulate its own keyboard on the foreign keyboard. For example, the numlock key on the Windows keyboard is mapped to numclear in OSX, because that's where the typical Mac user expects numclear to be, regardless of what is written on the key cap.</p>
+<p>Here's how the mappings go:</p>
+<h3 id="windows-keyboard-on-osx">Windows Keyboard on OSX</h3>
+<pre><code>win keyboard      key on OSX
+----------------------------------
+lwin              lcommand
+rwin              rcommand
+menu              menu
+
+numlock           numclear
+
+printscreen       F13
+scrolllock        F14
+break             F15
+
+insert!           help</code></pre>
+<h3 id="mac-keyboard-on-windows">Mac Keyboard on Windows</h3>
+<p>If you have a mac keyboard and a windows box, please fill these up.</p>
+<pre><code>mac keyboard      key on Windows
+----------------------------------
+F13               ?
+F14               ?
+F15               ?
+F16               ?
+F17               ?
+F18               ?
+F19               ?
+
+num=              ?
+help              ?
+numclear          ?</code></pre>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+
