@@ -71,7 +71,11 @@
 <li>Luaffi cannot implement this for Lua 5.1, so compatibility with Lua cannot be acheived if this idiom is used.</li>
 <li>The <code>if ptr then</code> idiom doesn't work, although you'd expect that anything that <code>== nil</code> to pass the <code>if</code> test too.</li>
 </ol>
-<p>Both problems can be solved easily with a null filter <code>function ptr(p) return p ~= nil and p or nil end</code> which must be applied on pointers flowing into Lua (mostly from constructors). You can later reimplement this filter when porting to luaffi.</p>
+<p>Both problems can be solved easily with a NULL filter which must be applied to all pointers flowing into Lua (mostly from constructors):</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">NULL</span> <span class="ot">=</span> <span class="kw">ffi</span><span class="ot">.</span>new<span class="st">&#39;void*&#39;</span>
+<span class="kw">function</span> ptr<span class="ot">(</span><span class="kw">p</span><span class="ot">)</span>
+   <span class="kw">return</span> <span class="kw">p</span> <span class="ot">~=</span> <span class="kw">NULL</span> <span class="kw">and</span> <span class="kw">p</span> <span class="kw">or</span> <span class="kw">nil</span>
+<span class="kw">end</span></code></pre>
 <h3 id="arrayi-arrayj-arrayj-arrayi"><code>array[i], array[j] = array[j], array[i]</code></h3>
 <p>This idiom doesn't work as you would expect (swapping) when the array elements are structs. This is because array indexing returns a reference type for structs, not a copy of the struct object. Just something to keep in mind.</p>
 <h3 id="callbacks-and-jit">Callbacks and JIT</h3>

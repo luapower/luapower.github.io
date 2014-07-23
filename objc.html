@@ -106,6 +106,7 @@
 <li>attaching Lua variables to classes and objects
 <ul>
 <li>Lua variables follow the lifetime of Obj-C objects</li>
+<li>Lua variables attached to classes are inherited</li>
 </ul></li>
 <li>automatic memory management of objects and blocks
 <ul>
@@ -164,13 +165,33 @@
    <span class="ot">...</span>
    <span class="kw">return</span> <span class="kw">objc</span><span class="ot">.</span>callsuper<span class="ot">(</span><span class="kw">self</span><span class="ot">,</span> <span class="st">&#39;update&#39;</span><span class="ot">)</span>
 <span class="kw">end</span></code></pre>
-<h3 id="adding-lua-variables">Adding Lua variables</h3>
+<h3 id="converting-between-lua-and-obj-c-types">Converting between Lua and Obj-C types</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">str</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>toobj<span class="st">&#39;hello&#39;</span>             <span class="co">--create a NSString from a Lua string</span>
+<span class="kw">local</span> <span class="kw">num</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>toobj<span class="ot">(</span><span class="dv">3.14</span><span class="ot">)</span>              <span class="co">--create a NSNumber from a Lua number</span>
+<span class="kw">local</span> <span class="kw">dic</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>toobj<span class="ot">{</span><span class="kw">a</span> <span class="ot">=</span> <span class="dv">1</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">=</span> <span class="st">&#39;hi&#39;</span><span class="ot">}</span>   <span class="co">--create a NSDictionary from a Lua table</span>
+<span class="kw">local</span> <span class="kw">arr</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>toobj<span class="ot">{</span><span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="dv">3</span><span class="ot">}</span>           <span class="co">--create a NSArray from a Lua table</span>
+
+<span class="kw">local</span> <span class="kw">s</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>tolua<span class="ot">(</span><span class="kw">str</span><span class="ot">)</span>
+<span class="kw">local</span> <span class="kw">n</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>tolua<span class="ot">(</span><span class="kw">num</span><span class="ot">)</span>
+<span class="kw">local</span> <span class="kw">t1</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>tolua<span class="ot">(</span><span class="kw">dic</span><span class="ot">)</span>
+<span class="kw">local</span> <span class="kw">t2</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>tolua<span class="ot">(</span><span class="kw">arr</span><span class="ot">)</span></code></pre>
+<h3 id="adding-lua-variables-luavars">Adding Lua variables (luavars)</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--add Lua variables to your objects - their lifetime is tied to the lifetime of the object.</span>
 <span class="co">--you can also add class variables - they will be accessible through the objects too.</span>
 <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span><span class="ot">.</span><span class="kw">myClassVar</span> <span class="ot">=</span> <span class="st">&#39;I can live forever&#39;</span>
 <span class="kw">local</span> <span class="kw">obj</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span>:new<span class="ot">()</span>
 <span class="kw">obj</span><span class="ot">.</span><span class="kw">myInstanceVar</span> <span class="ot">=</span> <span class="st">&#39;I live while obj lives&#39;</span>
 <span class="kw">obj</span><span class="ot">.</span><span class="kw">myClassVar</span> <span class="ot">=</span> <span class="dv">5</span> <span class="co">--change the class var (same value for all objects)</span></code></pre>
+<h3 id="adding-lua-methods">Adding Lua methods</h3>
+<p>Lua methods are just Lua variables which happen to have a function-type value. You can add them to a class or to an instance, but that doesn't make them &quot;class methods&quot; or &quot;instance methods&quot; in OOP sense. Instead, this distinction comes about when you call them:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSObject</span>:myMethod<span class="ot">()</span> <span class="kw">end</span>
+<span class="kw">local</span> <span class="kw">str</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span>toobj<span class="st">&#39;hello&#39;</span>   <span class="co">--create a NSString instance, which is a NSObject</span>
+<span class="kw">str</span>:myMethod<span class="ot">()</span>                  <span class="co">--instance method (str passed as self)</span>
+<span class="kw">objc</span><span class="ot">.</span><span class="kw">NSString</span>:myMethod<span class="ot">()</span>        <span class="co">--class method (NSString passed as self)</span></code></pre>
+<p>As you can see, luavars attached to a class are also inherited.</p>
+<blockquote>
+<p>If this looks like a lot of magic, it is. The indexing rules for class and instance objects (i.e. getting and setting object and class fields) are pretty complex. Have a look at the API sections &quot;object fields&quot; and &quot;class fields&quot; to learn more.</p>
+</blockquote>
 <h3 id="accessing-properties-ivars">Accessing properties &amp; ivars</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="co">--get and set class and instance properties using the dot notation.</span>
 <span class="kw">local</span> <span class="kw">pr</span> <span class="ot">=</span> <span class="kw">objc</span><span class="ot">.</span><span class="kw">NSProgress</span>:progressWithTotalUnitCount<span class="ot">(</span><span class="dv">123</span><span class="ot">)</span>
@@ -331,11 +352,11 @@
 </tr>
 <tr class="even">
 <td align="left"><code>cls.field</code><br /><code>cls:method(args...)</code></td>
-<td align="left">access a class field, i.e. try to get, in order:<br />- a class luavar<br />- a readable class property<br />- a class method</td>
+<td align="left">access a class field, i.e. try to get, in order:<br />- a class luavar<br />- a readable class property<br />- a class method<br />- a class luavar from a superclass</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>cls.field = val</code><br /><code>function cls:method(args...) end</code></td>
-<td align="left">set a class field, i.e. try to set, in order:<br />- an existing class luavar<br />- a writable class property<br />- an instance method<br />- a conforming instance method<br />- a class method<br />- a conforming class method<br />- a new class luavar</td>
+<td align="left">set a class field, i.e. try to set, in order:<br />- an existing class luavar<br />- a writable class property<br />- an instance method<br />- a conforming instance method<br />- a class method<br />- a conforming class method<br />- an existing class luavar in a superclass<br />- a new class luavar</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>type conversions</strong></td>

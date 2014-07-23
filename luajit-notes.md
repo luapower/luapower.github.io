@@ -36,9 +36,15 @@ This has two implications:
 1. Luaffi cannot implement this for Lua 5.1, so compatibility with Lua cannot be acheived if this idiom is used.
 2. The `if ptr then` idiom doesn't work, although you'd expect that anything that `== nil` to pass the `if` test too.
 
-Both problems can be solved easily with a null filter `function ptr(p) return p ~= nil and p or nil end` which
-must be applied on pointers flowing into Lua (mostly from constructors). You can later reimplement this filter
-when porting to luaffi.
+Both problems can be solved easily with a NULL filter which must be applied to
+all pointers flowing into Lua (mostly from constructors):
+
+~~~{.lua}
+local NULL = ffi.new'void*'
+function ptr(p)
+	return p ~= NULL and p or nil
+end
+~~~
 
 ### `array[i], array[j] = array[j], array[i]`
 
