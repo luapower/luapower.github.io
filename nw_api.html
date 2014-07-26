@@ -68,6 +68,9 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="local-nw-requirenw"><code>local nw = require'nw'</code></h2>
+<blockquote>
+<p>In the following table &quot;?&quot; means boolean.</p>
+</blockquote>
 <table>
 <col width="15%" />
 <col width="29%" />
@@ -83,11 +86,11 @@
 <tr class="even">
 <td align="left">backends</td>
 <td align="left">nw:init([backendname])</td>
-<td align="left">nw.backends-&gt; {OS = backendname}<br />nw.backend.name -&gt; backendname</td>
+<td align="left">nw.backends-&gt; {OS = backendname}<br />nw.backend.name -&gt; name<br />nw:os() -&gt; os_version<br />nw:os(compat_version) -&gt; ?</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">oo</td>
+<td align="left">OOP</td>
 <td align="left">obj:override(method, func)</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -141,70 +144,82 @@
 <td align="left"><br />win:closing() -&gt; ?<br />win:closed()</td>
 </tr>
 <tr class="even">
-<td align="left">activation</td>
-<td align="left">app:activate()<br /><br />win:activate()</td>
-<td align="left">app:active() -&gt; ?<br /><br />win:active() -&gt; ?<br />app:active_window() -&gt; win</td>
-<td align="left">app:activated()<br />app:deactivated()<br />win:activated()<br />win:deactivated()</td>
+<td align="left">app activation</td>
+<td align="left">app:activate()<br /></td>
+<td align="left">app:active() -&gt; ?<br /></td>
+<td align="left">app:activated()<br />app:deactivated()</td>
 </tr>
 <tr class="odd">
-<td align="left">state</td>
+<td align="left">window activation</td>
+<td align="left">win:activate()</td>
+<td align="left">win:active() -&gt; ?<br />app:active_window() -&gt; win</td>
+<td align="left">win:activated()<br />win:deactivated()</td>
+</tr>
+<tr class="even">
+<td align="left">window state</td>
 <td align="left">win:show()<br />win:hide()<br />win:minimize()<br />win:maximize()<br />win:restore()<br />win:shownormal()<br />win:fullscreen()</td>
 <td align="left">win:visible() -&gt; ?<br /><br />win:minimized() -&gt; ?<br />win:maximized() -&gt; ?<br /><br /><br />win:fullscreen() -&gt; ?</td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">position</td>
 <td align="left">win:frame_rect(x, y, w, h)</td>
 <td align="left">win:frame_rect() -&gt; x, y, w, h<br />win:client_rect() -&gt; x, y, w, h</td>
 <td align="left">win:resizing(how, x, y, w, h) -&gt; x, y, w, h<br />win:resized()</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">displays</td>
 <td align="left"></td>
-<td align="left">app:displays() -&gt; {disp1, ...}<br />app:main_display() -&gt; disp<br />win:display() -&gt; disp<br />disp:rect() -&gt; x, y, w, h<br />disp:client_rect() -&gt; x, y, w, h</td>
+<td align="left">app:displays() -&gt; {disp1, ...}<br />app:display_count() -&gt; n<br />app:main_display() -&gt; disp<br />win:display() -&gt; disp<br />disp:rect() -&gt; x, y, w, h<br />disp:client_rect() -&gt; x, y, w, h</td>
 <td align="left">app:displays_changed()</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">mouse pointer</td>
 <td align="left">win:cursor(name)</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">frame</td>
 <td align="left">win:title(title)<br /><br /><br /><br /><br /><br /><br />win:edgesnapping(?)</td>
 <td align="left">win:title() -&gt; title<br />win:frame() -&gt; frame<br />win:minimizable() -&gt; ?<br />win:maximizable() -&gt; ?<br />win:closeable() -&gt; ?<br />win:resizeable() -&gt; ?<br />win:fullscreenable() -&gt; ?<br />win:edgesnapping() -&gt; ?</td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">z-order</td>
 <td align="left">win:topmost(?)<br />win:order(z|'back'|'front')</td>
 <td align="left">win:topmost() -&gt; ?<br />win:zorder() -&gt; z</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">parent</td>
 <td align="left"></td>
 <td align="left">win:parent() -&gt; parent</td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">keyboard</td>
 <td align="left">app:ignore_numlock(?)</td>
 <td align="left">app:ignore_numlock() -&gt; ?<br />win:key(keyquery) -&gt; pressed?</td>
 <td align="left">win:keydown(key, vkey)<br />win:keyup(key, vkey)<br />win:keypress(key, vkey)<br />win:keychar(char)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">mouse</td>
 <td align="left"></td>
-<td align="left">win:mouse() -&gt; m<br />m.x, m.y,<br />m.left, m.right, m.middle,<br />m.xbutton1, m.xbutton2</td>
+<td align="left">win:mouse() -&gt; m<br />m.x, m.y,<br />m.left, m.right, m.middle,<br />m.ex1, m.ex2<br />win:mouse(var) -&gt; m[var]</td>
 <td align="left">win:mousedown(button)<br />win:click(button, count) -&gt; reset?<br />win:mouseup(button)<br />win:mouseenter()<br />win:mouseleave()<br />win:mousemove(x, y)<br />win:mousewheel(delta)<br />win:mousehwheel(delta)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">rendering</td>
 <td align="left">win:invalidate()</td>
 <td align="left"></td>
 <td align="left">win:render(cr)</td>
+</tr>
+<tr class="even">
+<td align="left">menus</td>
+<td align="left">app:menu() -&gt; menu menu:add([i,]text,action) -&gt; i<br />menu:add([i,]text,menu) -&gt; i<br />menu:add(args) -&gt; i<br />menu:set(index, text, action)<br />menu:set(index, text, menu)<br />menu:set(menuitem)<br /><br />menu:checked(index, ?)<br />menu:enabled(index, ?)</td>
+<td align="left">win:menu() -&gt; menu<br /><br /><br /><br />menu:get(index) -&gt; {text=,...}<br /><br />menu:get(index) -&gt; menuitem<br />menu:item_count() -&gt; n<br />menu:checked(index) -&gt; ?<br />menu:enabled(index) -&gt; ?</td>
+<td align="left">action()</td>
 </tr>
 </tbody>
 </table>

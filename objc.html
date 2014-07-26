@@ -371,16 +371,24 @@
 <td align="left">convert a Lua number, string, or table to a NSNumber, NSString, NSDictionary, NSArray respectively. anything else passes through.</td>
 </tr>
 <tr class="odd">
+<td align="left"><code>objc.ipairs(arr) -&gt; next, arr, 0</code></td>
+<td align="left">ipairs for NSarray.</td>
+</tr>
+<tr class="even">
 <td align="left"><strong>overriding</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>objc.override(cls, sel, func[,mtype|ftype]) -&gt; true|false</code></td>
 <td align="left">override an existing method, or add a method which conforms to one of the conforming protocols. returns true if the method was found and overriden.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>objc.callsuper(obj, sel, args...) -&gt; retval</code></td>
 <td align="left">call the method implementation of the superclass of an object.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>objc.swizle(cls, sel1, sel2[, func])</code></td>
+<td align="left">swap implementations between sel1 and sel2. if sel2 is not an existing selector, func is required.</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>selectors</strong></td>
