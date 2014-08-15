@@ -90,330 +90,326 @@
 <td align="left">close all windows; abandon on the first window that refuses to close.</td>
 </tr>
 <tr class="odd">
-<td align="left"><strong>monitors</strong></td>
+<td align="left"><strong>displays</strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left"><code>app:monitors() -&gt; iter() -&gt; monitor</code></td>
-<td align="left">get monitors in no specific order</td>
+<td align="left"><code>app:displays() -&gt; iter() -&gt; display</code></td>
+<td align="left">get displays in no specific order</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>app:primary_monitor() -&gt; monitor</code></td>
-<td align="left">get the monitor whose screen rect starts at (0,0)</td>
+<td align="left"><code>app:main_display() -&gt; display</code></td>
+<td align="left">get the display whose screen rect starts at (0,0)</td>
 </tr>
 <tr class="even">
-<td align="left"><code>app:screen_rect([monitor]) -&gt; x, y, w, h</code></td>
-<td align="left">monitor's screen rectangle</td>
+<td align="left"><code>app:screen_rect([display]) -&gt; x, y, w, h</code></td>
+<td align="left">display's screen rectangle</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>app:client_rect([monitor]) -&gt; x, y, w, h</code></td>
-<td align="left">monitor's screen rectangle excluding the taskbar</td>
+<td align="left"><code>app:desktop_rect([display]) -&gt; x, y, w, h</code></td>
+<td align="left">display's screen rectangle excluding the taskbar</td>
 </tr>
 <tr class="even">
-<td align="left"><code>app:frames() -&gt; iter() -&gt; x, y, w, h</code></td>
-<td align="left">the frames of all windows of all apps in top-to-bottom z-order (stable iterator)</td>
-</tr>
-<tr class="odd">
 <td align="left"><strong>time</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>app:time() -&gt; time</code></td>
 <td align="left">get an opaque time object representing a hi-resolution timestamp</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>app:timediff(time1, time2) -&gt; ms</code></td>
 <td align="left">get the difference between two time objects</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>windows</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>app:windows() -&gt; iter() -&gt; win</code></td>
 <td align="left">iterate app's windows in creation order</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>app:active_window() -&gt; win</code></td>
 <td align="left">get the active window, if any</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>app:window(t) -&gt; win</code></td>
 <td align="left">create a window (fields of t below)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>state options</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
-<td align="left">t.x, t.y, t.w, t.h (required)</td>
+<tr class="even">
+<td align="left"><code>t.x, t.y, t.w, t.h</code> (required)</td>
 <td align="left">window's frame rectangle</td>
 </tr>
-<tr class="even">
-<td align="left">t.visible (true)</td>
+<tr class="odd">
+<td align="left"><code>t.visible</code> (true)</td>
 <td align="left">window is visible</td>
 </tr>
-<tr class="odd">
-<td align="left">t.title (empty)</td>
+<tr class="even">
+<td align="left"><code>t.title</code> (empty)</td>
 <td align="left">window title</td>
 </tr>
-<tr class="even">
-<td align="left">t.state ('normal')</td>
+<tr class="odd">
+<td align="left"><code>t.state</code> ('normal')</td>
 <td align="left">window state: 'normal', 'maximized', 'minimized'</td>
 </tr>
-<tr class="odd">
-<td align="left">t.fullscreen (false)</td>
+<tr class="even">
+<td align="left"><code>t.fullscreen</code> (false)</td>
 <td align="left">fullscreen mode (orthogonal to state)</td>
 </tr>
-<tr class="even">
-<td align="left">t.topmost (false)</td>
+<tr class="odd">
+<td align="left"><code>t.topmost</code> (false)</td>
 <td align="left">always stay on top of all other windows</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>frame options</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
-<td align="left">t.frame (true)</td>
+<tr class="odd">
+<td align="left"><code>t.frame</code> (true)</td>
 <td align="left">window has a frame, border and title bar</td>
 </tr>
-<tr class="odd">
-<td align="left">t.transparent (false)</td>
+<tr class="even">
+<td align="left"><code>t.transparent</code> (false)</td>
 <td align="left">window is transparent, has no frame and is not directly resizeable</td>
 </tr>
-<tr class="even">
-<td align="left">t.minimizable (true)</td>
+<tr class="odd">
+<td align="left"><code>t.minimizable</code> (true)</td>
 <td align="left">enable the minimize button</td>
 </tr>
-<tr class="odd">
-<td align="left">t.maximizable (true)</td>
+<tr class="even">
+<td align="left"><code>t.maximizable</code> (true)</td>
 <td align="left">enable the maximize button</td>
 </tr>
-<tr class="even">
-<td align="left">t.closeable (true)</td>
+<tr class="odd">
+<td align="left"><code>t.closeable</code> (true)</td>
 <td align="left">enable the close button / allow closing the window</td>
 </tr>
-<tr class="odd">
-<td align="left">t.resizeable (true)</td>
+<tr class="even">
+<td align="left"><code>t.resizeable</code> (true)</td>
 <td align="left">window is user-resizeable</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>window lifetime</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:free()</code></td>
 <td align="left">close the window and destroy it</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:dead() -&gt; true|false</code></td>
 <td align="left">check if the window was destroyed</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:closing()</code></td>
 <td align="left">event: closing; return false to prevent it</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:closed()</code></td>
 <td align="left">event: closed (but not dead yet)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>window focus</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:activate()</code></td>
 <td align="left">activate the window</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:active() -&gt; true|false</code></td>
 <td align="left">check if the window is active</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:activated()</code></td>
 <td align="left">event: window was activated</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:deactivated()</code></td>
 <td align="left">event: window was deactivated</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>window state</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:show([state])</code></td>
 <td align="left">show it, in its current state or in a new state</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:hide()</code></td>
 <td align="left">hide it (orthogonal to state)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:visible([visible]) -&gt; true|false</code></td>
 <td align="left">get/set visibility</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:state([state]) -&gt; state</code></td>
 <td align="left">get/set state: 'normal', 'maximized', 'minimized'</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:topmost([true]) -&gt; topmost</code></td>
 <td align="left">get/set the topmost flag</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:fullscreen([on]) -&gt; true|false</code></td>
 <td align="left">get/set fullscreen mode (orthogonal to state)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:frame_rect([x, y, w, h]) -&gt; x, y, w, h</code></td>
 <td align="left">get/set the frame rect of the 'normal' state</td>
 </tr>
-<tr class="even">
-<td align="left"><code>win:monitor() -&gt; monitor</code></td>
-<td align="left">the monitor the window is on</td>
-</tr>
 <tr class="odd">
+<td align="left"><code>win:display() -&gt; display</code></td>
+<td align="left">the display the window is on</td>
+</tr>
+<tr class="even">
 <td align="left"><code>win:frame_changing(how, x, y, w, h)</code></td>
 <td align="left">event: moving (how = 'move'), or resizing (how = 'left', 'right', 'top', 'bottom', 'topleft', 'topright', 'bottomleft', 'bottomright'); return different (x, y, w, h) to constrain</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:frame_changed()</code></td>
 <td align="left">event: window was moved, resized or state changed</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:title([title]) -&gt; title</code></td>
 <td align="left">get/set the window's title</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:save() -&gt; t</code></td>
 <td align="left">save user-changeable state</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:load(t)</code></td>
 <td align="left">load user-changeable state</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>window frame</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:frame(flag) -&gt; value</code></td>
 <td align="left">get frame flags: 'frame', 'transparent', 'minimizable', 'maximizable', 'closeable', 'resizeable'</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>keyboard events</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:key(keyname) -&gt; down[, toggled]</code></td>
 <td align="left">get key and toggle state (see source for key names, or print keys on keydown)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:keydown(key)</code></td>
 <td align="left">event: a key was pressed</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:keyup(key)</code></td>
 <td align="left">event: a key was depressed</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:keypress(key)</code></td>
 <td align="left">event: sent on each key down, including repeats</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:keychar(char)</code></td>
 <td align="left">event: sent after key_press for displayable characters; char is utf-8</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>mouse events</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:hover()</code></td>
 <td align="left">event: mouse entered the client area of the window</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:leave()</code></td>
 <td align="left">event: mouse left the client area of the window</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:mousemove(x, y)</code></td>
 <td align="left">event: mouse move</td>
 </tr>
-<tr class="even">
-<td align="left"><code>win:mousedown(button)</code></td>
-<td align="left">event: a mouse button was pressed: 'left', 'right', 'middle', 'xbutton1', 'xbutton2'</td>
-</tr>
 <tr class="odd">
+<td align="left"><code>win:mousedown(button)</code></td>
+<td align="left">event: a mouse button was pressed: 'left', 'right', 'middle', 'ex1', 'ex2'</td>
+</tr>
+<tr class="even">
 <td align="left"><code>win:mouseup(button)</code></td>
 <td align="left">event: a mouse button was depressed</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:click(button, count)</code></td>
 <td align="left">event: a mouse button was pressed (see notes for double-click)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:wheel(delta)</code></td>
 <td align="left">event: mouse wheel was moved</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:hwheel(delta)</code></td>
 <td align="left">event: mouse horizontal wheel was moved</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>mouse state</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win.mouse</code></td>
 <td align="left">a table with fields: x, y, left, right, middle, xbutton1, xbutton2, inside</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>rendering</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:render(cr)</code></td>
 <td align="left">event: redraw the window client area using the given <a href="cairo.html">cairo</a> context</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:invalidate()</code></td>
 <td align="left">request window redrawing</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:client_rect() -&gt; x, y, w, h</code></td>
 <td align="left">get the client area rect (relative to itself)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>events</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>win:event(event, ...)</code></td>
 <td align="left">post an event</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>win:observe(event, func(...) end)</code></td>
 <td align="left">observe an event i.e. call <code>func</code> when <code>event</code> happens</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>app:&lt;event&gt;(win, ...)</code></td>
 <td align="left">window events are forwarded to the app object</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>extending</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>app.window_class</code></td>
 <td align="left">the table that windows inherit from</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>app.window_class.defaults</code></td>
 <td align="left">default values for window creation arguments</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>nw.impl</code></td>
 <td align="left">nw implementation class</td>
 </tr>
@@ -459,6 +455,11 @@
 <li>properties for state are orthogonal to each other</li>
 <li>iterators are stable and with specified order</li>
 </ul>
+<h2 id="backends">Backends</h2>
+<ul>
+<li>cocoa: OSX 10.7+</li>
+<li>winapi: Windows XP/2000+</li>
+</ul>
 <h2 id="behavior">Behavior</h2>
 <h3 id="state-variables">State variables</h3>
 <p>State variables are independent of each other, so a window can be maximized, in full screen mode and hidden all at the same time. Changing the state to 'minimized' won't affect the fact that the window is still hidden, nor that it is in full screen mode. If the window is shown, it will be in full screen mode. Out of full screen mode it will be minimized. Likewise, moving or resizing the window affects the frame rectangle of the 'normal' mode. If the window is maximized, resizing it won't have an immediate effect, but changing the state to 'normal' will show the window in its new size.</p>
@@ -480,7 +481,7 @@
 <li>calling any method on a closed window results in error, except for win:free() which does nothing.</li>
 <li>calling app:run() while running is a no op.</li>
 <li>app:windows() can return dead windows (but not new windows).</li>
-<li>calling monitor functions on an invalid monitor object results in error (monitors can come and go too you know).</li>
+<li>calling display functions on an invalid display object results in error (monitors can come and go too you know).</li>
 </ul>
 				</section>
 			</div>
