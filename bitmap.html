@@ -360,7 +360,7 @@
    <span class="kw">return</span> <span class="kw">r</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">g</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">a</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">)</span> <span class="co">--make 2x darker</span>
 <span class="kw">end</span>
 
-<span class="kw">local</span> <span class="kw">getpixel</span><span class="ot">,</span> <span class="kw">setpixel</span> <span class="ot">=</span> pixel_interface<span class="ot">(</span><span class="kw">bmp</span><span class="ot">)</span>
+<span class="kw">local</span> <span class="kw">getpixel</span><span class="ot">,</span> <span class="kw">setpixel</span> <span class="ot">=</span> <span class="kw">bitmap</span><span class="ot">.</span>pixel_interface<span class="ot">(</span><span class="kw">bmp</span><span class="ot">)</span>
 <span class="kw">for</span> <span class="kw">y</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">h</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
    <span class="kw">for</span> <span class="kw">x</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">.</span><span class="kw">w</span><span class="ot">-</span><span class="dv">1</span> <span class="kw">do</span>
       setpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">,</span> darken<span class="ot">(</span>getpixel<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)))</span>
@@ -368,7 +368,7 @@
 <span class="kw">end</span>
 
 <span class="co">--the above has the same effect as:</span>
-convert<span class="ot">(</span><span class="kw">bmp</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">,</span> <span class="kw">darken</span><span class="ot">)</span></code></pre>
+<span class="kw">bitmap</span><span class="ot">.</span>convert<span class="ot">(</span><span class="kw">bmp</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">,</span> <span class="kw">darken</span><span class="ot">)</span></code></pre>
 <h2 id="dithering">Dithering</h2>
 <h2 id="bitmap.dither.fsbmp-rbits-gbits-bbits-abits"><code>bitmap.dither.fs(bmp, rbits, gbits, bbits, abits)</code></h2>
 <p>Dither a bitmap using the <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering">Floyd-Steinberg dithering</a> algorithm. <code>*bits</code> specify the number of bits of color to keep for each channel (eg. <code>bitmap.dither.fs(bmp, 5, 6, 5, 0)</code> dithers a bitmap so that its colors fit into the <code>rgb565</code> format). Only implemented for 4-channel colortypes.</p>
