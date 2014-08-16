@@ -344,18 +344,21 @@
 <p>Create a bitmap object. If <code>stride_aligned</code> is <code>true</code> and no specific <code>stride</code> is given, the stride will be a multiple of 4 bytes.</p>
 <h2 id="bitmap.copybmp-format-bottom_up-stride_aligned-stride---new_bmp"><code>bitmap.copy(bmp, [format], [bottom_up], [stride_aligned], [stride]) -&gt; new_bmp</code></h2>
 <p>Copy a bitmap, optionally to a new format, orientation and stride. If <code>format</code> is not specified, stride and orientation default to those of source bitmap's, otherwise they default to top-down, minimum stride.</p>
-<h2 id="bitmap.convertsource_bmp-dest_bmp-convert_pixel---dest_bmp"><code>bitmap.convert(source_bmp, dest_bmp[, convert_pixel]) -&gt; dest_bmp</code></h2>
-<p>Convert a source bitmap into a destination bitmap of the same width and height.</p>
+<h2 id="bitmap.paintsource_bmp-dest_bmp-convert_pixel---dest_bmp"><code>bitmap.paint(source_bmp, dest_bmp[, convert_pixel]) -&gt; dest_bmp</code></h2>
+<p>Paint a source bitmap into a destination bitmap of the same width and height, with all the necessary pixel and colortype conversions.</p>
 <p>The optional <code>convert_pixel</code> is a pixel conversion function to be called for each pixel as <code>convert_pixel(a, b, c, ...) -&gt; x, y, z, ...</code>. It receives the channel values of the source bitmap according to its colortype and must return the converted channel values for the destination bitmap according to its colortype.</p>
-<p>In some cases, the destination bitmap is allowed to have the same data buffer as the source bitmap. Specifically, the dest. bitmap must not have a different orientation, larger stride or larger pixel size. In particular, the dest. bitmap can always be the source bitmap itself, which is useful for performing custom transformations via the <code>convert_pixel</code> callback.</p>
+<p>In some cases, the destination bitmap is allowed to have the same data buffer as the source bitmap. Specifically, it must have the same orientation, smaller or equal stride and smaller or equal pixel size. The destination bitmap can also be the source bitmap itself, which is useful for performing custom transformations via the <code>convert_pixel</code> callback.</p>
 <h2 id="bitmap.subbmp-x-y-w-h---sub_bmp"><code>bitmap.sub(bmp, [x], [y], [w], [h]) -&gt; sub_bmp</code></h2>
 <p>Crop a bitmap without copying the pixels (the <code>data</code> field of the sub-bitmap is a pointer into the <code>data</code> buffer of the parent bitmap). The parent bitmap is pinned in the <code>parent</code> field of the sub-bitmap to prevent garbage collection of the data buffer. Other than that, the sub-bitmap behaves exactly like a normal bitmap (it can be further sub'ed for instance). The coordinates default to <code>0, 0, bmp.w, bmp.h</code> respectively. The coordinates are adjusted to fit the parent bitmap. If they result in zero width or height, nothing is returned.</p>
-<p>To get real cropping, just copy the bitmap, specifying the format and orientation to reset the stride: <code>sub = bitmap.copy(sub, sub.format, sub.bottom_up)</code></p>
-<p><em>Limitation:</em> For 1, 2, 4 bpp formats, the coordinates must be such that the data pointer points to the beginning of a byte (that is, is not fractional). For a non-fractional stride, this means the <code>x</code> coordinate must be a multiple of 8, 4, 2 respectively. For fractional strides don't even bother.</p>
+<p>To get real cropping, just copy the bitmap, specifying the format and orientation to reset the stride:</p>
+<pre><code>sub = bitmap.copy(sub, sub.format, sub.bottom_up)</code></pre>
+<blockquote>
+<p>NOTE: For 1, 2, 4 bpp formats, the coordinates must be such that the data pointer points to the beginning of a byte (that is, is not fractional). For a non-fractional stride, this means the <code>x</code> coordinate must be a multiple of 8, 4, 2 respectively. For fractional strides don't even bother.</p>
+</blockquote>
 <h2 id="pixel-interface">Pixel interface</h2>
 <h2 id="bitmap.pixel_interfacebitmap-colortype---getpixel-setpixel"><code>bitmap.pixel_interface(bitmap[, colortype]) -&gt; getpixel, setpixel</code></h2>
 <p>Return an API for getting and setting individual pixels of a bitmap object: * <code>getpixel(x, y) -&gt; a, b, c, ...</code> * <code>setpixel(x, y, a, b, c, ...)</code> where a, b, c are the individual color channels, converted to the specified colortype or in the colortype of the bitmap (i.e. r, g, b, a for the 'rgba' colortype, etc.).</p>
-<h3 id="example">Example:</h3>
+<h4 id="example">Example:</h4>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">function</span> darken<span class="ot">(</span><span class="kw">r</span><span class="ot">,</span> <span class="kw">g</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">a</span><span class="ot">)</span>
    <span class="kw">return</span> <span class="kw">r</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">g</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">a</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">)</span> <span class="co">--make 2x darker</span>
 <span class="kw">end</span>
@@ -388,11 +391,23 @@
 <p>Blend <code>source_bmp</code> into <code>dest_bmp</code> using a blending operator at <code>x,y</code> coordinates in the target bitmap (default is <code>0,0</code>). Operators are in the <code>bitmap.blend_op</code> table for inspection.</p>
 <h2 id="utilities">Utilities</h2>
 <h2 id="bitmap.fitbmp-x-y-w-h---x1-y1-w1-h1"><code>bitmap.fit(bmp, [x], [y], [w], [h]) -&gt; x1, y1, w1, h1</code></h2>
-<p>Adjust a box to fit into a bitmap. Use this to range-check input coordinates before writing into the bitmap data buffer, to guard against buffer overflow. Check for zero width or height before trying to create a bitmap with the fitted coordinates.</p>
+<p>Adjust a rectangle to fit inside a bitmap. Use this to range-check input coordinates before writing into the bitmap data buffer, to guard against buffer overflow. Check for zero width or height before trying to create a bitmap with the fitted coordinates.</p>
+<h4 id="example-1">Example:</h4>
+<p>Painting a bitmap onto another at specific coordinates, based on bitmap.fit and sub-bitmaps:</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">function</span> paint_at_xy<span class="ot">(</span><span class="kw">src</span><span class="ot">,</span> <span class="kw">dst</span><span class="ot">,</span> <span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">,</span> <span class="kw">w</span><span class="ot">,</span> <span class="kw">h</span> <span class="ot">=</span> <span class="kw">bitmap</span><span class="ot">.</span>fit<span class="ot">(</span><span class="kw">dst</span><span class="ot">,</span> <span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">,</span> <span class="kw">src</span><span class="ot">.</span><span class="kw">w</span><span class="ot">,</span> <span class="kw">src</span><span class="ot">.</span><span class="kw">h</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">src</span> <span class="ot">=</span> <span class="kw">bitmap</span><span class="ot">.</span>sub<span class="ot">(</span><span class="kw">src</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="kw">w</span><span class="ot">,</span> <span class="kw">h</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">dst</span> <span class="ot">=</span> <span class="kw">bitmap</span><span class="ot">.</span>sub<span class="ot">(</span><span class="kw">dst</span><span class="ot">,</span> <span class="kw">x</span><span class="ot">,</span> <span class="kw">y</span><span class="ot">,</span> <span class="kw">w</span><span class="ot">,</span> <span class="kw">h</span><span class="ot">)</span>
+   <span class="kw">if</span> <span class="kw">src</span> <span class="kw">and</span> <span class="kw">dst</span> <span class="kw">then</span>
+      <span class="kw">bitmap</span><span class="ot">.</span>paint<span class="ot">(</span><span class="kw">src</span><span class="ot">,</span> <span class="kw">dst</span><span class="ot">)</span>
+   <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
 <h2 id="bitmap.min_strideformat-width---min_stride"><code>bitmap.min_stride(format, width) -&gt; min_stride</code></h2>
 <p>Return the minimum stride in bytes given a format and width. A bitmap data buffer should never be smaller than <code>min_stride * height</code>.</p>
 <h2 id="bitmap.aligned_stridestride---aligned_stride"><code>bitmap.aligned_stride(stride) -&gt; aligned_stride</code></h2>
 <p>Given a stride, return the smallest stride that is a multiple of 4 bytes.</p>
+<h2 id="bitmap.row_sizebmp---size"><code>bitmap.row_size(bmp) -&gt; size</code></h2>
+<p>Bitmap's row size, in bytes, i.e. bitmap's minimum stride.</p>
 <h2 id="introspection">Introspection</h2>
 <h2 id="bitmap.conversionssource_format---iter---name-def"><code>bitmap.conversions(source_format) -&gt; iter() -&gt; name, def</code></h2>
 <p>Given a source bitmap format, iterate through all the formats that the source format can be converted to. <code>name</code> is the format name and <code>def</code> is the format definition which is a table with the fields <code>bpp</code>, <code>ctype</code>, <code>colortype</code>, <code>read</code>, <code>write</code>.</p>
@@ -419,10 +434,9 @@
 <li><code>bpc</code> - bits/channel - same meaning as <code>max</code> but in bits.</li>
 </ul>
 <h2 id="extending">Extending</h2>
-<p>Extending the <code>bitmap</code> module with new colortypes, formats, conversions and module functions is easy. Look at the <code>bitmap_rgbaf</code> sub-module for an example on how to do that. For the submodule to be loaded automatically though, you need to reference it in the <code>bitmap</code> module too in a few key spots (look at how <code>rgbaf</code> does it, it's very easy).</p>
+<p>Extending the <code>bitmap</code> module with new colortypes, formats, conversions and module functions is easy. Look at the <code>bitmap_rgbaf</code> sub-module for an example on how to do that. For the submodule to be loaded automatically though, you need to reference it in the <code>bitmap</code> module too in a few key spots (again, look at how <code>rgbaf</code> does it).</p>
 <h2 id="todo">TODO</h2>
 <ul>
-<li>fill with a single color using row-by-row memfill (in fact, add a <code>convert_row</code> callback arg. in <code>convert()</code> analog to <code>convert_pixel</code>)</li>
 <li>premuliply / unpremultiply alpha</li>
 </ul>
 				</section>
