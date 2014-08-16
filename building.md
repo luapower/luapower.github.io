@@ -20,7 +20,7 @@ tagline:  building the C libraries
 
 ## Building on Windows 32bit for Windows 32bit
 
-Use `build-mingw32.sh`.
+Use `build-mingw32.sh` (that is `sh build-mingw32.sh` from the command line).
 These scripts assume that both MSys and MinGW bin dirs (in this order) are in your PATH.
 Below is the exact list of MinGW packages used to build the current luapower stack:
 
@@ -60,7 +60,7 @@ Additional tools needed by a few special packages (use them for building for 64b
 
 ## Building on Windows 64bit for Windows 64bit
 
-Use `build-mingw64.sh`.
+Use `sh build-mingw64.sh`.
 These scripts assume that both MSys and MinGW-w64 bin dirs (in this order) are in your PATH.
 Here's the exact MinGW-w64 package used to build the current luapower stack:
 
