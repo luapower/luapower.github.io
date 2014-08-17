@@ -9,7 +9,7 @@ tagline: quick Lua cheat sheet
 __logic__
 `not a == not b`                            both or none
 __numbers__
-math.min(math.max(x, min), max)             clamp x
+math.min(math.max(x, min), max)             clamp x (upper limit takes precedence)
 `x ~= x`                                    number is NaN
 `1/0`                                       inf
 `-1/0`                                      -inf
