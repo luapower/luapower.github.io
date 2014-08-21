@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> winapi   - windows &amp; widgets </title>
+		<title> winapi   - win32 windows &amp; controls </title>
 		<script src="jquery.js"></script>
 		<script src="jquery-cookie.js"></script>
 		<script src="jquery-tablesorter.js"></script>
@@ -34,7 +34,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> winapi </h1>
-							<h2> windows &amp; widgets </h2>
+							<h2> win32 windows &amp; controls </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -71,15 +71,15 @@
 <p>Windows, common controls and dialogs, message loop, support APIs, OpenGL and cairo integration.</p>
 <h2 id="features">Features</h2>
 <ul>
-<li>accepts (and returns) utf-8 encoded Lua strings throughout (accepts wide char buffers too)</li>
-<li>winapi calls are error-checked so you don't have to</li>
-<li>objects are automatically tied to the garbage collector when not owned by other winapi objects</li>
-<li>flags can be passed as <code>'FLAG1 | FLAG2'</code></li>
+<li>accepting and returning UTF8 Lua strings (also accepting wide char buffers)</li>
+<li>out-of-band error signaling with Lua errors</li>
+<li>automatic memory management (ownership management, allocation of in/out buffers)</li>
+<li>flags can be passed as <code>'FLAG1 FLAG2'</code></li>
 <li>counting from 1 everywhere</li>
 <li>object system with virtual properties (eg. <code>window.w = 500</code> changes a window's width)</li>
 <li>Delphi-style anchor-based layout model for all controls</li>
 <li><a href="winapi_binding.html">binding infrastructure</a> tailored to winapi conventions, facilitating the binding of more APIs</li>
-<li>cairo, opengl and openvg panel widgets</li>
+<li>cairo, OpenGL and OpenVG panel widgets.</li>
 </ul>
 <h2 id="modules">Modules</h2>
 <table>
@@ -90,59 +90,43 @@
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/init.lua">winapi.init</a></td>
-<td align="left">load the namespace + ffi tools + wintypes</td>
+<td align="left">load the namespace + ffi tools + types</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/namespace.lua">winapi.namespace</a></td>
-<td align="left">the namespace table for the entire API</td>
+<td align="left">the namespace table</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/ffi.lua">winapi.ffi</a></td>
-<td align="left">load the ffi and bit libs and check the platform</td>
-</tr>
-<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/util.lua">winapi.util</a></td>
 <td align="left">wrapping and conversion functions</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/types.lua">winapi.types</a></td>
-<td align="left">ctype wrapper/memoizer</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/struct.lua">winapi.struct</a></td>
 <td align="left">struct ctype wrapper</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/arrays.lua">winapi.arrays</a></td>
-<td align="left">variable length array (VLA) wrapper/memoizer</td>
-</tr>
-<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/bitmask.lua">winapi.bitmask</a></td>
 <td align="left">bitmask encoding and decoding</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/wcs.lua">winapi.wcs</a></td>
 <td align="left">utf8 to wide character string and back</td>
 </tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/debug.lua">winapi.debug</a></td>
-<td align="left">strict mode and some debug tools. entirely optional module</td>
-</tr>
 <tr class="even">
+<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/debug.lua">winapi.debug</a></td>
+<td align="left">strict mode and debug tools. entirely optional module</td>
+</tr>
+<tr class="odd">
 <td align="left"><strong>types</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/wintypes.lua">winapi.wintypes</a></td>
-<td align="left">basic windows types and macros from multiple headers</td>
-</tr>
 <tr class="even">
+<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/types.lua">winapi.types</a></td>
+<td align="left">windows types and macros from multiple headers</td>
+</tr>
+<tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/winuser.lua">winapi.winuser</a></td>
 <td align="left">winuser types and macros from multiple headers</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/winusertypes.lua">winapi.winusertypes</a></td>
-<td align="left">winuser types that we keep separate for use by external libs</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/logfonttype.lua">winapi.logfonttype</a></td>
@@ -154,7 +138,7 @@
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/window.lua">winapi.window</a></td>
-<td align="left">common API for windows and standard controls</td>
+<td align="left">windows and standard controls</td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>standard controls</strong></td>
@@ -162,7 +146,7 @@
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/comctl.lua">winapi.comctl</a></td>
-<td align="left">common controls API</td>
+<td align="left">common controls</td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/messagebox.lua">winapi.messagebox</a></td>
@@ -198,7 +182,7 @@
 </tr>
 <tr class="odd">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/accelerator.lua">winapi.accelerator</a></td>
-<td align="left">accelerator tables</td>
+<td align="left">accelerators</td>
 </tr>
 <tr class="even">
 <td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/richedit.lua">winapi.richedit</a></td>
@@ -329,7 +313,7 @@
 <td align="left">don't know the scope of this yet</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/multimon.lua">winapi.multimon</a></td>
+<td align="left"><a href="https://github.com/luapower/winapi/blob/master/winapi/monitor.lua">winapi.monitor</a></td>
 <td align="left">multi-monitor API</td>
 </tr>
 <tr class="odd">
@@ -514,9 +498,6 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>There is also an unfinished <a href="windesigner.html">designer</a> app that could serve as feature showcase, live testing environment, and ultimately as a GUI designer. I have no plans to continue working on that though.</p>
-</blockquote>
 <h2 id="usage">Usage</h2>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">winapi</span> <span class="ot">=</span> require<span class="st">&#39;winapi&#39;</span>
 require<span class="st">&#39;winapi.windowclass&#39;</span>
@@ -529,10 +510,10 @@ require<span class="st">&#39;winapi.windowclass&#39;</span>
 
 <span class="fu">os.exit</span><span class="ot">(</span><span class="kw">winapi</span><span class="ot">.</span>MessageLoop<span class="ot">())</span></code></pre>
 <blockquote>
-<p><strong>NOTE:</strong> The oo modules can also be run as standalone scripts, for showcasing the module's functionality.</p>
+<p><strong>Tip:</strong> The oo modules can be run as standalone scripts, which will showcase the module's functionality.</p>
 </blockquote>
 <h2 id="documentation">Documentation</h2>
-<p>There's no method-by-method documentation, but there's a <a href="winapi_design.html">tech doc</a>, <a href="winapi_binding.html">dev doc</a>, and a <a href="winapi_history.html">narrative</a> which should give you more context. Also, oo modules have a small runnable demo at the bottom of the file which showcases the module's functionality. Run the module as a standalone script to check it out.</p>
+<p>There's no method-by-method documentation, but there's a <a href="winapi_design.html">tech doc</a>, a <a href="winapi_binding.html">dev doc</a>, and a <a href="winapi_history.html">narrative</a> which should give you more context. The code is also well documented IMHO, including API quirks and empirical knowledge. Also, oo modules have a small runnable demo at the bottom of the file which showcases the module's functionality. Run the module as a standalone script to check it out.</p>
 				</section>
 			</div>
 			<div class="container">

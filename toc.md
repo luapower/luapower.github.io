@@ -38,7 +38,6 @@
 	* [winapi_design]
 	* [winapi_binding]
 	* [winapi_history]
-	* [windesigner]
    * [objc]
 * 2D Graphics
 	* [path]

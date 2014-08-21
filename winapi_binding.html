@@ -68,27 +68,63 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="how-to-use-the-binding-infrastructure">How to use the binding infrastructure</h2>
-<p>Wrap winapi calls in <code>callnz</code>, <code>callh</code> and friends according to what constitutes an error in the result: you get automatic error handling and clear code.</p>
+<p>Pass the result of winapi calls to <code>checknz</code>, <code>checkh</code> and friends according to what constitutes an error in the result: you get automatic error handling and clear code.</p>
 <p>Use <code>own(object, finalizer)</code> on all newly created objects but call <code>disown(object)</code> right after any successful api call that assigns that object an owner responsible for freeing it, and use <code>own()</code> again every time a call leaves an object without an owner. Doing this consistently will complicate the implementation sometimes but it prevents leaks and you get automatic object lifetime management (for what is worth, given the non-deterministic nature of the gc).</p>
-<p>Avoid surfacing ABI boilerplate like buffers, buffer sizes and internal data structures. Sometimes you may want to reuse a buffer to avoid heap trashing especially on a function you know it could be called repeatedly many times. In this case add the buffer as an optional trailing argument - if given it will be used, if not an internal buffer will be created. If there's a need to pass state around beyond this, make a class (that is, do it in the object layer).</p>
-<p>Use <code>wcs(arg)</code> on all string args: if arg is a lua string, it's assumed to be an utf8 encoded string and it's converted to wcs, otherwise it's assumed a wcs and passed through as is. This makes the api accept both lua strings and wcs strings coming from winapi transparently.</p>
-<p>Use <code>flags(arg)</code> on all flag args so that you can pass a string of the form <code>'FLAG1 | FLAG2 | ...'</code> as an alternative to <code>bit.bor(FLAG1, FLAG2, ...)</code>. It also changes nil into 0 to allow for optional flag args to be passed where winapi expects an int.</p>
+<p>Avoid surfacing ABI boilerplate like buffers, buffer sizes and internal data structures. Sometimes you may want to reuse a buffer to avoid heap trashing especially on a function you know it could be called repeatedly many times. In this case add the buffer as an optional trailing argument - if given it will be used, if not, an internal buffer will be created. If there's a need to pass state around beyond this, make a class (that is, do it in the object layer).</p>
+<p>Use <code>wcs(arg)</code> on all string args: if arg is a Lua string, it's assumed to be an utf8 encoded string and it's converted to wcs, otherwise it's assumed a wcs and passed through as is. This makes the API accept both Lua strings and wcs strings transparently.</p>
+<p>Use <code>flags(arg)</code> on all flag args so that you can pass a string of the form <code>'FLAG1 FLAG2 ...'</code> as an alternative to <code>bit.bor(FLAG1, FLAG2, ...)</code>. It also changes nil into 0 to allow for optional flag args to be passed where winapi expects an int.</p>
 <p>Count from 1! Use <code>countfrom0</code> on all positional args: this will decrement the arg but only if it's strictly &gt; 0 so that negative numbers are passed through as they are since we want to preserve values with special meaning like -1.</p>
+<h3 id="simple-type-constructors">Simple type constructors</h3>
+<p>Use <code>arg = types.FOO(arg)</code> instead of <code>arg = ffi.new('FOO', arg)</code>. This allows passing a pre-allocated FOO as argument. Publish common types in the winapi namespace: <code>FOO = types.FOO</code> and then use <code>FOO</code> instead of <code>types.FOO</code>.</p>
+<h3 id="array-constructors">Array constructors</h3>
+<p>Use <code>arg = arrays.FOO(arg)</code> instead of <code>arg = ffi.new('FOO[?]', #arg, arg)</code>. This allows passing in a pre-allocated array as argument, and when passing in a table, the array size will be #arg.</p>
 <h3 id="struct-constructors">Struct constructors</h3>
-<p>Create struct definitions with <code>struct()</code> and later apply the struct constructor to all struct args. This allows you to pass in a table where a struct cdata is expected in which case a cdata will be created and its fields initialized with the values from the table. As with <code>wcs</code>, other types are passed through as they are so you can pass in a previously created cdata.</p>
-<p>There are other advantages to using struct constructors:</p>
+<p>Don't allocate structs with ffi.new('FOO', arg). Instead, make a struct constructor FOO = struct{...}, and pass all FOO args through it: arg = FOO(arg).</p>
+<p>This can enable some magic, depending on how much you add to your definition:</p>
 <ul>
-<li>a size field will be set to sizeof(cdata) upon creation if specified in the struct definition.</li>
-<li>fields will be initialized with default values according to the struct definition.</li>
-</ul>
-<p>The struct constructor also sets a metatable on the ctype (using ffi.metatype) which adds virtual fields to all cdata of that ctype per your struct definition. The virtual fields will be available alongside the cdata fields for indexing and setting. Working with a struct through the virtual fields instead of the typedef'ed fields allows for some magic:</p>
+<li>the user can pass in a pre-allocated FOO which will be passed through.</li>
+<li>if passing in a table, as it's usually the case,
 <ul>
-<li>the struct's mask field, if any, will be set based on which fields are set, provided the bitmasks are specified in the struct's definition.</li>
-<li>a cast function will be applied to the field value if specified in the struct's definition (eg. wcs, countfrom0, another struct constructor, etc).</li>
-<li>individual bits of bitmask fields can be read and set provided you define the data field and the mask field (and the prefix for the mask constants) in the struct definition.</li>
+<li>the size (usually cbSize) field (if any) can be set automatically.</li>
+<li>the struct's mask field (if any) can be set automatically to reflect that only certain fields (those present in the table) need to be set.</li>
+<li>default values (eg. a version field) can be set automatically.</li>
+</ul></li>
+<li>virtual fields with a getter and setter can be added which will be available alongside the cdata fields for all cdata of that type.</li>
 </ul>
-<p>All in all this is a real time saver and results in self-documenting code.</p>
-<p>Btw, use the lowercase-with-underscores naming convention for virtual field names. Use names like caption, x, y, w, h, pos, parent, etc. consistently throughout.</p>
+<h4 id="virtual-fields">Virtual fields</h4>
+<p>Making a struct definition sets a metatable on the underlying ctype (using ffi.metatype()), making any virtual fields available to all cdata of that ctype. Accessing a struct through the virtual fields instead of the C fields has some advantages:</p>
+<ul>
+<li><p>the struct's mask field, if any, will be set based on which fields are set, provided a bitmask is specified in the struct's definition of that field. Setting a masked field to nil will clear its bitmask in the mask field. Getting the value of a field with its mask cleared returns nil, regardless of its data type.</p></li>
+<li><p>bits of masked bitfields can be read and set individually, provided you define the data field, the mask field, and the prefix for the mask constants in the struct definition.</p></li>
+<li><p>output (an in/out) buffers can be allocated and anchored to the struct automatically: you can add those in an <code>init</code> function.</p></li>
+</ul>
+<h4 id="example">Example:</h4>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">FOO</span> <span class="ot">=</span> struct<span class="ot">{</span>
+   <span class="kw">ctype</span> <span class="ot">=</span> <span class="st">&#39;FOO&#39;</span><span class="ot">,</span>    <span class="co">--the C struct that is to be created.</span>
+   <span class="kw">size</span> <span class="ot">=</span> <span class="st">&#39;cbSize&#39;</span><span class="ot">,</span>  <span class="co">--the field that must be set to sizeof(FOO), if any.</span>
+   <span class="kw">mask</span> <span class="ot">=</span> <span class="st">&#39;fMask&#39;</span><span class="ot">,</span>   <span class="co">--the field that masks other fields, if any.</span>
+   <span class="kw">defaults</span> <span class="ot">=</span> <span class="ot">{</span>
+      <span class="kw">nVersion</span> <span class="ot">=</span> <span class="dv">1</span><span class="ot">,</span>  <span class="co">--set on creation.</span>
+      <span class="ot">...</span>
+   <span class="ot">},</span>
+   <span class="kw">fields</span> <span class="ot">=</span> mfields<span class="ot">{</span> <span class="co">--mfields is the field def constructor for masked fields.</span>
+      <span class="st">&#39;bar_field&#39;</span><span class="ot">,</span>    <span class="st">&#39;barField&#39;</span><span class="ot">,</span>    <span class="kw">MASK_BAR</span><span class="ot">,</span> <span class="kw">setter</span><span class="ot">,</span> <span class="kw">getter</span><span class="ot">,</span>
+      <span class="st">&#39;baz_field&#39;</span><span class="ot">,</span>    <span class="st">&#39;bazField&#39;</span><span class="ot">,</span>    <span class="kw">MASK_BAZ</span><span class="ot">,</span> <span class="kw">pass</span><span class="ot">,</span>   <span class="kw">pass</span><span class="ot">,</span>     <span class="co">-- setting baz_field sets MASK_BAZ in fMask.</span>
+      <span class="st">&#39;zup_field&#39;</span><span class="ot">,</span>    <span class="st">&#39;zupField&#39;</span><span class="ot">,</span>    <span class="kw">MASK_ZUP</span><span class="ot">,</span> <span class="kw">wcs</span><span class="ot">,</span>    <span class="kw">mbs</span><span class="ot">,</span>      <span class="co">-- zup_field works with Lua strings.</span>
+      <span class="ot">...</span>
+      <span class="st">&#39;__state&#39;</span><span class="ot">,</span>      <span class="st">&#39;stateField&#39;</span><span class="ot">,</span>     <span class="kw">MASK_STATE</span><span class="ot">,</span> <span class="kw">pass</span><span class="ot">,</span> <span class="kw">pass</span><span class="ot">,</span>  <span class="co">-- bitfield, see below</span>
+      <span class="st">&#39;__stateMask&#39;</span><span class="ot">,</span>  <span class="st">&#39;stateMaskField&#39;</span><span class="ot">,</span> <span class="kw">MASK_STATE</span><span class="ot">,</span> <span class="kw">pass</span><span class="ot">,</span> <span class="kw">pass</span><span class="ot">,</span>
+   <span class="ot">},</span>
+   <span class="kw">bitfields</span> <span class="ot">=</span> <span class="ot">{</span>
+      <span class="co">-- setting state_FOO sets or clears the mask PREFIX_FOO in __state,</span>
+      <span class="co">-- and sets PREFIX_FOO to __stateMask (and sets MASK_STATE in fMask).</span>
+      <span class="co">-- getting state_FOO checks the mask PREFIX_FOO in __stateMask,</span>
+      <span class="co">-- and if set, checks the mask PREFIX_FOO in __state.</span>
+      <span class="kw">state</span> <span class="ot">=</span> <span class="ot">{</span><span class="st">&#39;__state&#39;</span><span class="ot">,</span> <span class="st">&#39;__stateMask&#39;</span><span class="ot">,</span> <span class="st">&#39;PREFIX&#39;</span><span class="ot">},</span>
+   <span class="ot">},</span>
+<span class="ot">}</span></code></pre>
+<h4 id="naming-virtual-fields">Naming virtual fields</h4>
+<p>Use the &quot;lowercase with underscores&quot; naming convention for virtual field names. Use names like caption, x, y, w, h, pos, parent, etc. consistently throughout.</p>
 <h2 id="how-to-use-the-oo-system">How to use the OO system</h2>
 <p>The easiest way to bind a new control is to use the code of an existing control as a template. Basically, you subclass from <code>Control</code> (or a specific control, if your control is a refinement of a standard control) after you define the style bitmasks, default values, and event name mappings, if any. You override the constructor and/or any methods and define any new properties by way of getters and setters.</p>
 				</section>
