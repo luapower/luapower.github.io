@@ -68,7 +68,7 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="local-objc-requireobjc"><code>local objc = require'objc'</code></h2>
-<p>Jump To: <a href="#features">Features</a> | <a href="#quick-tutorial">Quick Tutorial</a> | <a href="#main-api">Main API</a> | <a href="#reflection-api">Reflection API</a> | <a href="#debug-api">Debug API</a></p>
+<p>Jump To: <a href="#features">Features</a> | <a href="#quick-tutorial">Quick Tutorial</a> | <a href="#memory-management">Memory Management</a> | <a href="#main-api">Main API</a> | <a href="#reflection-api">Reflection API</a> | <a href="#debug-api">Debug API</a></p>
 <h2 id="features">Features</h2>
 <ul>
 <li>Coverage
@@ -127,7 +127,7 @@
 <li>can't access the vararg part of the function, for variadic functions/methods</li>
 <li>can't access the pass-by-value struct args or any arg after the first pass-by-value struct arg</li>
 <li>can't return structs by value</li>
-<li><strong>UPDATE</strong>: you can use <a href="cbframe.html">cbframe</a> as a workaround until better days. Enable it with <code>objc.debug.cbframe = true</code>; now all the problem methods and blocks will receive a single arg: a pointer to a <a href="https://github.com/luapower/cbframe/blob/master/cbframe_x86_h.lua">D_CPUSTATE</a> struct that you have to pick up args from and set return value into (note: self isn't passed, the cpu state is the only arg).</li>
+<li><strong>UPDATE</strong>: you can use <a href="cbframe.html">cbframe</a> as a workaround. Enable it with <code>objc.debug.cbframe = true</code>; now all the problem methods and blocks will receive a single arg: a pointer to a <a href="https://github.com/luapower/cbframe/blob/master/cbframe_x86_h.lua">D_CPUSTATE</a> struct that you have to pick up args from and set return value into (note: self isn't passed, the cpu state is the only arg).</li>
 </ul></li>
 </ul>
 <h2 id="quick-tutorial">Quick Tutorial</h2>
@@ -235,16 +235,25 @@
 <pre><code>   ./luajit objc_test.lua inspect_class PAFootprint</code></pre>
 <h3 id="even-more-goodies">Even more goodies</h3>
 <p>Check out the unit test script, it also contains a few demos, not just tests.<br />Check out the undocumented <code>objc_inspect</code> module, it has a simple cmdline inspection API.</p>
-<h3 id="gotchas">Gotchas</h3>
-<h4 id="callback-arguments-are-weak">1. Callback arguments are weak</h4>
-<p>Object arguments passed to overriden methods (even self), blocks and function pointers, are weak references, not tied to Lua's garbage collector. If you want to keep them around outside the scope of the callback, you need to retain them:</p>
+<h2 id="memory-management">Memory management</h2>
+<p>Memory management in objc is automatic. Cocoa's reference counting system is tied to the Lua's garbage collector so that you don't have to worry about retain/release. The integration is not air-tight though, so you need to know how it's put together to avoid some tricky situations.</p>
+<h3 id="strong-and-weak-references">Strong and weak references</h3>
+<p>Ref. counting systems are fragile: they require that retain() and release() calls on an object be perfectly balanced. If they're not, you're toast. Thinking of object relationships in in terms of weak and strong references can help a lot with that.</p>
+<p>A strong reference is a retained reference, guaranteed to be available until released. A weak reference is not retained and its availability depends on context.</p>
+<p>A strong reference has a finalizer that calls release() when collected. A weak reference doesn't have a finalizer.</p>
+<p>Calling release() on a strong reference releases the reference, and removes the finalizer, turning it into a weak reference. You should not call release() on a weak reference.</p>
+<h3 id="return-values-are-strong">Return values are strong</h3>
+<p>Cocoa's rules say that if you alloc an object, you get a strong (retained) reference on that object. Other method calls that return an object return a weak (non-retained) reference to that object. Lua retains all object return values so you always get a strong reference. This is required for the alloc():init() sequence to work, and it's generally convenient.</p>
+<h3 id="callback-arguments-are-weak">Callback arguments are weak</h3>
+<p>Object arguments passed to overriden methods (including the self argument), blocks and function pointers, are weak references, not tied to Lua's garbage collector. If you want to keep them around outside the scope of the callback, you need to retain them:</p>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">strong_ref</span>
 <span class="kw">function</span> <span class="kw">MySubClass</span>:overridenMethod<span class="ot">()</span>
    <span class="kw">strong_ref</span> <span class="ot">=</span> <span class="kw">self</span>:retain<span class="ot">()</span> <span class="co">--self is a weak ref. it needs to be retained.</span>
 <span class="kw">end</span></code></pre>
-<h4 id="confusion-about-weak-and-strong-references">2. Confusion about weak and strong references</h4>
-<p>Ref. counting systems are fragile: they require that retain() and release() calls on an object be perfectly balanced. If they're not, you're toast. Thinking of object relationships in in terms of weak and strong references can help a lot with that.</p>
-<p>Cocoa's rules say that if you alloc an object, you get a strong ref to that object. Other method calls that return an object return a weak ref to that object. But if you create a <code>NSWindow</code>, you get a weak ref to the window, because if the user closes the window, the window gets released. The binding doesn't know about that and on gc it calls release again, giving you a crash at an unpredictable time (<code>export NSZombieEnabled=YES</code> can help here). To fix that you can either tell Cocoa that the ref is strong by calling <code>win:setReleasedWhenClosed(false)</code>, or tell the ffi that the ref is weak by calling <code>ffi.gc(win, nil)</code>.</p>
+<h3 id="luavars-and-object-ownership">Luavars and object ownership</h3>
+<p>You should only use luavars on objects that you own. Luavars go away when the last strong reference to an object goes away. Setting Lua vars on an object with only weak references will leak those vars! Even worse, those vars might show up as vars of other objects!</p>
+<h3 id="strongweak-ambiguities">Strong/weak ambiguities</h3>
+<p>If you create a <code>NSWindow</code>, you don't get an <em>unconditionally</em> retained reference to that window, contrary to Cocoa's rules, because if the user closes the window, it is your reference that gets released. The binding doesn't know about that and on gc it calls release again, giving you a crash at an unpredictable time (<code>export NSZombieEnabled=YES</code> can help here). To fix that you can either tell Cocoa that your ref is strong by calling <code>win:setReleasedWhenClosed(false)</code>, or tell the gc that your ref is weak by calling <code>ffi.gc(win, nil)</code>. If you chose the latter, remember that you can't use luavars on that window!</p>
 <h2 id="main-api">Main API</h2>
 <table>
 <col width="49%" />
@@ -663,7 +672,6 @@
 </blockquote>
 <h3 id="bridging">Bridging</h3>
 <ul>
-<li>toarg() for C functions (only works for methods)</li>
 <li>function-pointer args on function-pointer args (recorded but not used - need use cases)</li>
 <li>test for overriding a method that takes a function-pointer (not a block) arg and invoking that arg from the callback</li>
 <li>auto-coercion of types for functions/methods with format strings, eg. NSLog

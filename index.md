@@ -26,7 +26,7 @@ tagline:  Lua, JIT, batteries
   * __MODULAR__: each module is a separate git project
   * __ON GITHUB__: fork/pull-request-based collaboration
   * __NO DIRECTORIES__: all modules in a single directory
-  * __BINARIES__: get code running in minutes
+  * __BINARIES__ for all platforms: get code running in minutes
   * __SOURCES & BUILD SCRIPTS__: upgrade it yourself, don't wait for others
   * __PACKAGE DATABASE__: self-maintaining, auto-generated
   * __DOCUMENTED__: online browsing or offline grepping; powered by pandoc
@@ -38,12 +38,14 @@ tagline:  Lua, JIT, batteries
 
   1. download [luajit]
   2. choose/download wanted packages along with their listed dependencies
-  3. unzip all _over a single directory_
+  3. unzip all _over the same directory_
   4. (optional) [rebuild][building] binaries
   5. run a demo: `luajit ..._demo.lua`
 
 This will give you an instantly **portable luajit distro** that will work reagardless of where you run it from.
-The luajit binary is in `bin/<your-platform>/` (cmd and sh wrappers are in the root dir).
+The luajit binary is in `bin/<your-platform>/` (cross-platform shell wrappers are in the root dir).
+
+## Get Started / Git Way
 
 Alternatively you can go the git way with [luapower-git] which allows you to:
 

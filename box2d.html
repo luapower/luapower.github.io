@@ -145,6 +145,22 @@
 <td align="left"><code>box.snapped_edges(d, x1, y1, w1, h1, x2, y2, w2, h2[, opaque])</code><br /><code>-&gt; snapped, left, top, right, bottom</code></td>
 <td align="left">check if two boxes are snapped and on which edges.</td>
 </tr>
+<tr class="odd">
+<td align="left"><strong>overlapping test</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.overlapping(x1, y1, w1, h1, x2, y2, w2, h2) -&gt; true | false</code></td>
+<td align="left">check if two boxes overlap.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>clipping</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>box.clip(x, y, w, h, x0, y0, w0, h0) -&gt; x1, y1, w1, h1</code></td>
+<td align="left">clip box (x, y, w, h) to fit inside box (x0, y0, w0, h0)</td>
+</tr>
 </tbody>
 </table>
 <h2 id="oop-api">OOP API</h2>
@@ -210,6 +226,14 @@
 <tr class="odd">
 <td align="left"><code>box:snap_pos(d, boxes) -&gt; box</code></td>
 <td align="left">snap the position</td>
+</tr>
+<tr class="even">
+<td align="left"><code>box:overlapping(box) -&gt; true | false</code></td>
+<td align="left">overlapping test</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>box:clip(box) -&gt; box</code></td>
+<td align="left">clip box to fit inside another box</td>
 </tr>
 </tbody>
 </table>
