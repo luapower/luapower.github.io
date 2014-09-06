@@ -15,6 +15,7 @@
 * Basic OS
 	* [lanes]
 	* [socket]
+	* [socketloop]
 	* [lfs]
 * Hashing & Compression
 	* [md5]

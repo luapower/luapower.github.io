@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title> socketloop   - TCP sockets with coroutines </title>
+		<script src="jquery.js"></script>
+		<script src="jquery-cookie.js"></script>
+		<script src="jquery-tablesorter.js"></script>
+		<script src="strftime.js"></script>
+		<script src="config.js"></script>
+		<script src="main.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+		<link rel="stylesheet" type="text/css" id="lights_css" />
+		<script>
+			var DOCNAME = 'socketloop'
+			var PROJECT = 'socketloop'
+			//set the lights before rendering starts
+			set_lights()
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="btn-container btn-lights-container">
+					<a href="#" class="btn btn-lights" id="lights">lights</a>
+				</div>
+				
+				<div class="btn-container btn-home-container">
+					<a href="/" class="btn btn-home">luapower</a>
+				</div>
+				
+				<table id="header_table">
+					<tr>
+						<td style="vertical-align: middle;" width="100%">
+							<h1> socketloop </h1>
+							<h2> TCP sockets with coroutines </h2>
+						</td>
+						<td style="vertical-align: middle;" align="right" style="height: 150px">
+																						<table><tr><td>
+								<div class="doc" id="package_info_container">
+									<div id="package_info">&nbsp;</div>
+									<div id="commit_log">&nbsp;</div>
+								</div>
+								<a href="https://github.com/luapower/socketloop" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/socketloop/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+								</td></tr><tr><td>
+								<a href="https://github.com/luapower/socketloop/zipball/master" class="btn btn-rightside">Download as .zip</a>
+								</td></tr></table>
+																				</td>
+					</tr>
+				</table>
+												<div class="btn-container btn-discuss-container">
+					<a href="https://github.com/luapower/socketloop/issues/new" target="_blank"
+						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+				</div>
+											</div>
+		</header>
+		<div class="bg-container">
+			<div class="bg-center-container">
+									<div class="bg bg-socketloop" style="background-image: url('bg/socketloop.png');"></div>
+							</div>
+		</div>
+		<div class="under-header">
+			<div class="container">
+				<div id="toc_container" class="toc_container doc"></div>
+				<section class="doc">
+					<span id="module_info"></span>
+					<h2 id="local-socketloop-requiresocketloop"><code>local socketloop = require'socketloop'</code></h2>
+<p>A socket loop enables coroutine-based asynchronous I/O programming model for <a href="http://w3.impa.br/~diego/software/luasocket/tcp.html">TCP sockets</a>. The concept is similar to <a href="http://keplerproject.github.com/copas/">Copas</a>, the API and the implementation are different. Supports both symmetric and asymmetric coroutines.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>basic</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>socketloop([coro]) -&gt; loop</code></td>
+<td align="left">make a socket loop</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>loop.wrap(socket) -&gt; asocket</code></td>
+<td align="left">wrap a TCP socket to an async socket</td>
+</tr>
+<tr class="even">
+<td align="left"><code>loop.connect(addr,port) -&gt; asocket</code></td>
+<td align="left">make an async TCP connection</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>loop.newthread(handler, ...)</code></td>
+<td align="left">create a thread for one connection</td>
+</tr>
+<tr class="even">
+<td align="left"><code>loop.newserver(host, port, handler)</code></td>
+<td align="left">dispatch inbound connections to a function</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>loop.start([timeout])</code></td>
+<td align="left">start the loop</td>
+</tr>
+<tr class="even">
+<td align="left"><code>loop.stop()</code></td>
+<td align="left">stop the loop (if started)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>loop.dispatch([timeout]) -&gt; true|false</code></td>
+<td align="left">dispatch pending reads and writes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="socketloopcoro---loop"><code>socketloop([coro]) -&gt; loop</code></h2>
+<p>Make a new socket loop object. Since we're using select(), it only makes sense to have one loop per CPU thread / Lua state. The coro arg is the <a href="coro.html">coro</a> module. If given, the created loop dispatches to <a href="coro.html">symmetric coroutines</a> instead of Lua coroutines.</p>
+<h2 id="loop.wrapsocket---asocket"><code>loop.wrap(socket) -&gt; asocket</code></h2>
+<p>Wrap a <a href="http://w3.impa.br/~diego/software/luasocket/tcp.html">TCP socket</a> into an asynchronous socket with the same API as the original, which btw is kept as <code>asocket.socket</code>.</p>
+<p>Being asynchronous means that if each socket is used from its own coroutine, different sockets won't block each other waiting for reads and writes, as long as the loop is doing the dispatching. The asynchronous methods are: <code>connect()</code>, <code>accept()</code>, <code>receive()</code>, <code>send()</code>, <code>close()</code>.</p>
+<p>An async socket should only be used inside a loop thread.</p>
+<h2 id="loop.connectaddress-port-local_address-local_port---asocket"><code>loop.connect(address, port [,local_address] [,local_port]) -&gt; asocket</code></h2>
+<p>Make a TCP connection and return an async socket.</p>
+<h2 id="loop.newthreadhandler-args"><code>loop.newthread(handler, args)</code></h2>
+<p>Create and resume a coroutine (or coro thread, depending on how the loop was created).</p>
+<h2 id="loop.newserverhost-port-handler"><code>loop.newserver(host, port, handler)</code></h2>
+<p>Create a TCP socket and start accepting connections on it, and call <code>handler(client_skt)</code> on a separate coroutine for each accepted connection.</p>
+<h2 id="loop.starttimeout"><code>loop.start([timeout])</code></h2>
+<p>Start dispatching reads and writes continuously in a loop. The loop should be started only if there's at least one thread suspended in an async socket call.</p>
+<h2 id="loop.stop"><code>loop.stop()</code></h2>
+<p>Stop the dispatch loop (if started).</p>
+<h2 id="loop.dispatchtimeout---truefalse"><code>loop.dispatch([timeout]) -&gt; true|false</code></h2>
+<p>Dispatch currently pending reads and writes to their respective coroutines.</p>
+				</section>
+			</div>
+			<div class="container">
+				<footer>
+					<div id="disqus_thread"></div>
+					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>
+

@@ -87,7 +87,8 @@
 <li>note that <code>windowBits</code> is always in the positive range 8..15.</li>
 </ul></li>
 </ul>
-<p>Compress a data stream using the DEFLATE algorithm. The data is read from the <code>read</code> function which should return the next string or <code>cdata, size</code> pair every time it is called, until EOF when it should return <code>nil</code>. The compressed data is written in chunks using the <code>write</code> function.</p>
+<p>Compress a data stream using the DEFLATE algorithm. The data is read from the <code>read</code> function which should return the next string or <code>cdata, size</code> pair every time it is called, until EOF when it should return <code>nil</code> or nothing. The compressed data is written in chunks using the <code>write</code> function.</p>
+<p>For convenience, <code>read</code> can also be a string or a list of strings, and <code>write</code> can be a list to which to add the output chunks, or the empty string, in which case the output is returned as a string.</p>
 <h2 id="zlib.inflateread-write-bufsize-format-windowbits"><code>zlib.inflate(read, write[, bufsize][, format][, windowBits])</code></h2>
 <p>Uncompress a data stream that was compressed using the DEFLATE algorithm. The arguments have the same meaning as for <code>deflate</code>.</p>
 <h2 id="zlib.compresss-size-level---s"><code>zlib.compress(s, [size][, level]) -&gt; s</code></h2>
