@@ -67,18 +67,10 @@
 				<div id="toc_container" class="toc_container doc"></div>
 				<section class="doc">
 					<span id="module_info"></span>
-					<h2 id="local-socketloop-requiresocketloop"><code>local socketloop = require'socketloop'</code></h2>
+					<h2 id="local-loop-requiresocketloop"><code>local loop = require'socketloop'</code></h2>
 <p>A socket loop enables coroutine-based asynchronous I/O programming model for <a href="http://w3.impa.br/~diego/software/luasocket/tcp.html">TCP sockets</a>. The concept is similar to <a href="http://keplerproject.github.com/copas/">Copas</a>, the API and the implementation are different. Supports both symmetric and asymmetric coroutines.</p>
 <table>
 <tbody>
-<tr class="odd">
-<td align="left"><strong>basic</strong></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>socketloop([coro]) -&gt; loop</code></td>
-<td align="left">make a socket loop</td>
-</tr>
 <tr class="odd">
 <td align="left"><code>loop.wrap(socket) -&gt; asocket</code></td>
 <td align="left">wrap a TCP socket to an async socket</td>
@@ -107,10 +99,12 @@
 <td align="left"><code>loop.dispatch([timeout]) -&gt; true|false</code></td>
 <td align="left">dispatch pending reads and writes</td>
 </tr>
+<tr class="even">
+<td align="left"><code>loop.coro -&gt; loop</code></td>
+<td align="left"><a href="coro.html">coro</a>-based loop</td>
+</tr>
 </tbody>
 </table>
-<h2 id="socketloopcoro---loop"><code>socketloop([coro]) -&gt; loop</code></h2>
-<p>Make a new socket loop object. Since we're using select(), it only makes sense to have one loop per CPU thread / Lua state. The coro arg is the <a href="coro.html">coro</a> module. If given, the created loop dispatches to <a href="coro.html">symmetric coroutines</a> instead of Lua coroutines.</p>
 <h2 id="loop.wrapsocket---asocket"><code>loop.wrap(socket) -&gt; asocket</code></h2>
 <p>Wrap a <a href="http://w3.impa.br/~diego/software/luasocket/tcp.html">TCP socket</a> into an asynchronous socket with the same API as the original, which btw is kept as <code>asocket.socket</code>.</p>
 <p>Being asynchronous means that if each socket is used from its own coroutine, different sockets won't block each other waiting for reads and writes, as long as the loop is doing the dispatching. The asynchronous methods are: <code>connect()</code>, <code>accept()</code>, <code>receive()</code>, <code>send()</code>, <code>close()</code>.</p>
@@ -118,7 +112,7 @@
 <h2 id="loop.connectaddress-port-local_address-local_port---asocket"><code>loop.connect(address, port [,local_address] [,local_port]) -&gt; asocket</code></h2>
 <p>Make a TCP connection and return an async socket.</p>
 <h2 id="loop.newthreadhandler-args"><code>loop.newthread(handler, args)</code></h2>
-<p>Create and resume a coroutine (or coro thread, depending on how the loop was created).</p>
+<p>Create and resume a coroutine (or coro thread, if it's a coro-based loop).</p>
 <h2 id="loop.newserverhost-port-handler"><code>loop.newserver(host, port, handler)</code></h2>
 <p>Create a TCP socket and start accepting connections on it, and call <code>handler(client_skt)</code> on a separate coroutine for each accepted connection.</p>
 <h2 id="loop.starttimeout"><code>loop.start([timeout])</code></h2>
@@ -127,6 +121,31 @@
 <p>Stop the dispatch loop (if started).</p>
 <h2 id="loop.dispatchtimeout---truefalse"><code>loop.dispatch([timeout]) -&gt; true|false</code></h2>
 <p>Dispatch currently pending reads and writes to their respective coroutines.</p>
+<h2 id="loop-requiresocketloop.coro"><code>loop = require'socketloop'.coro</code></h2>
+<p>An alternative loop that dispatches to <a href="coro.html">symmetric coroutines</a> instead of Lua coroutines.</p>
+<h2 id="example">Example</h2>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">loop</span> <span class="ot">=</span> require<span class="st">&#39;socketloop&#39;</span>
+<span class="kw">local</span> <span class="kw">http</span> <span class="ot">=</span> require<span class="st">&#39;socket.http&#39;</span>
+
+<span class="kw">local</span> <span class="kw">function</span> getpage<span class="ot">(</span><span class="kw">url</span><span class="ot">)</span>
+   <span class="kw">local</span> <span class="kw">t</span> <span class="ot">=</span> <span class="ot">{}</span>
+   <span class="kw">local</span> <span class="kw">ok</span><span class="ot">,</span> <span class="kw">code</span><span class="ot">,</span> <span class="kw">headers</span> <span class="ot">=</span> <span class="kw">http</span><span class="ot">.</span>request<span class="ot">{</span>
+      <span class="kw">url</span> <span class="ot">=</span> <span class="kw">url</span><span class="ot">,</span>
+      <span class="kw">sink</span> <span class="ot">=</span> <span class="kw">ltn12</span><span class="ot">.</span><span class="kw">sink</span><span class="ot">.</span>table<span class="ot">(</span><span class="kw">t</span><span class="ot">),</span>
+      <span class="kw">create</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">()</span>
+         <span class="kw">return</span> <span class="kw">loop</span><span class="ot">.</span>wrap<span class="ot">(</span><span class="kw">socket</span><span class="ot">.</span>try<span class="ot">(</span><span class="kw">socket</span><span class="ot">.</span>tcp<span class="ot">()))</span>
+      <span class="kw">end</span><span class="ot">,</span>
+   <span class="ot">}</span>
+   <span class="fu">assert</span><span class="ot">(</span><span class="kw">ok</span><span class="ot">,</span> <span class="kw">code</span><span class="ot">)</span>
+   <span class="kw">return</span> <span class="fu">table.concat</span><span class="ot">(</span><span class="kw">t</span><span class="ot">),</span> <span class="kw">headers</span><span class="ot">,</span> <span class="kw">code</span>
+<span class="kw">end</span>
+
+<span class="kw">loop</span><span class="ot">.</span>newthread<span class="ot">(</span><span class="kw">function</span><span class="ot">()</span>
+   <span class="kw">local</span> <span class="kw">body</span> <span class="ot">=</span> getpage<span class="st">&#39;http://google.com/&#39;</span>
+   <span class="fu">print</span><span class="ot">(</span><span class="st">&#39;got &#39;</span> <span class="ot">..</span> <span class="ot">#</span><span class="kw">body</span> <span class="ot">..</span> <span class="st">&#39; bytes&#39;</span><span class="ot">)</span>
+<span class="kw">end</span><span class="ot">)</span>
+
+<span class="kw">loop</span><span class="ot">.</span>start<span class="ot">()</span></code></pre>
 				</section>
 			</div>
 			<div class="container">
