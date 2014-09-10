@@ -232,286 +232,290 @@
 <td align="left">prepare a query for multiple executions</td>
 </tr>
 <tr class="even">
+<td align="left"><code>stmt:param_count() -&gt; n</code></td>
+<td align="left">number of params</td>
+</tr>
+<tr class="odd">
 <td align="left"><code>stmt:exec()</code></td>
 <td align="left">execute a prepared statement</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:store_result()</code></td>
 <td align="left">store all the resulted rows to the client</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:fetch() -&gt; true | false | true, 'truncated'</code></td>
 <td align="left">fetch the next row</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:free_result()</code></td>
 <td align="left">free the current result buffers</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:close()</code></td>
 <td align="left">close the statement</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:next_result()</code></td>
 <td align="left">skip to the next result set</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:row_count() -&gt; n</code></td>
 <td align="left">number of rows in the result, if the result was stored</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:affected_rows() -&gt; n</code></td>
 <td align="left">number of affected rows after execution</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:insert_id() -&gt; n</code></td>
 <td align="left">the id of the autoincrement column after execution</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:field_count() -&gt; n</code></td>
 <td align="left">number of fields in the result after execution</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:errno() -&gt; n</code></td>
 <td align="left">mysql error code, if any, from the executed statement</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:sqlstate() -&gt; s</code></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:result_metadata() -&gt; result</code></td>
 <td align="left">get a result for accessing the field info</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:fields() -&gt; iterator() -&gt; i, info_t</code></td>
 <td align="left">iterate the result fields info</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:reset()</code></td>
 <td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-reset.html">manual</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:seek(row_number)</code></td>
 <td align="left">seek to row number</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:tell() -&gt; bookmark</code></td>
 <td align="left">get a bookmark in the current result</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:seek(bookmark)</code></td>
 <td align="left">seek to a row bookmark in the current result</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong><a href="#prepared-statements-io">Prepared statements I/O</a></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:bind_params(type1, ... | types_t) -&gt; params</code></td>
 <td align="left">bind query parameters based on type definitions</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>params:set(i, number | int64_t | uint64_t | true | false)</code></td>
 <td align="left">set an integer, float or bit param</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>params:set(i, s[, size])</code></td>
 <td align="left">set a variable sized param</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>params:set(i, cdata, size)</code></td>
 <td align="left">set a variable sized param</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>params:set(i, {year=, month=, ...})</code></td>
 <td align="left">set a time/date param</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>params:set_date(i, [year], [month], [day], [hour], [min], [sec], [frac])</code></td>
 <td align="left">set a time/date param</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:write(param_number, data[, size])</code></td>
 <td align="left">send a long param in chunks</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:bind_result([type1, ... | types_t | maxsize]) -&gt; fields</code></td>
 <td align="left">bind query result fields based on type definitions</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>fields:get(i) -&gt; value</code></td>
 <td align="left">get the current row value of a field</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>fields:get_datetime(i) -&gt; year, month, day, hour, min, sec, frac</code></td>
 <td align="left">get the value of a date/time field directly</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>fields:is_null(i) -&gt; true | false</code></td>
 <td align="left">is field null?</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>fields:is_truncated(i) -&gt; true | false</code></td>
 <td align="left">was field value truncated?</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong><a href="#prepared-statements-settings">Prepared statements settings</a></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:update_max_length() -&gt; true | false</code></td>
 <td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:set_update_max_length(true | false)</code></td>
 <td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:cursor_type() -&gt; mysql.C.MYSQL_CURSOR_TYPE_*</code></td>
 <td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:set_cursor_type('CURSOR_TYPE_...')</code></td>
 <td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:set_cursor_type(mysql.C.MYSQL_CURSOR_TYPE_...)</code></td>
 <td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>stmt:prefetch_rows() -&gt; n</code></td>
 <td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>stmt:set_prefetch_rows(stmt, n)</code></td>
 <td align="left">see <a href="http://dev.mysql.com/doc/refman/5.7/en/mysql-stmt-attr-set.html">manual</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong><a href="#connection-info">Connection info</a></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:set_charset(charset)</code></td>
 <td align="left">change the current charset</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:select_db(dbname)</code></td>
 <td align="left">change the current database</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:change_user(user, [pass], [db])</code></td>
 <td align="left">change the current user (and database)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:set_multiple_statements(true | false)</code></td>
 <td align="left">enable/disable support for multiple statements</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:charset() -&gt; s</code></td>
 <td align="left">get current charset's name</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:charset_info() -&gt; info_t</code></td>
 <td align="left">get info about the current charset</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:ping() -&gt; true | false</code></td>
 <td align="left">check if the connection is still alive</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:thread_id() -&gt; id</code></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:stat() -&gt; s</code></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:server_info() -&gt; s</code></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:host_info() -&gt; s</code></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:server_version() -&gt; n</code></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:proto_info() -&gt; n</code></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:ssl_cipher() -&gt; s</code></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong><a href="#transactions">Transactions</a></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:commit()</code></td>
 <td align="left">commit the current transaction</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:rollback()</code></td>
 <td align="left">rollback the current transaction</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:set_autocommit([true | false])</code></td>
 <td align="left">enable/disable autocommit on the current connection</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong><a href="#reflection">Reflection</a></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:list_dbs([wildcard]) -&gt; result</code></td>
 <td align="left">return info about databases as a result object</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:list_tables([wildcard]) -&gt; result</code></td>
 <td align="left">return info about tables as a result object</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:list_processes() -&gt; result</code></td>
 <td align="left">return info about processes as a result object</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong><a href="#remote-control">Remote control</a></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:kill(pid)</code></td>
 <td align="left">kill a connection based on process id</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:shutdown([level])</code></td>
 <td align="left">shutdown the server</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>conn:refresh(options)</code></td>
 <td align="left">flush tables or caches</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>conn:dump_debug_info()</code></td>
 <td align="left">dump debug info in the log file</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong><a href="#client-library-info">Client library info</a></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>mysql.thread_safe() -&gt; true | false</code></td>
 <td align="left">was the client library compiled as thread-safe?</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>mysql.client_info() -&gt; s</code></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>mysql.client_version() -&gt; n</code></td>
 <td align="left"></td>
 </tr>
@@ -670,6 +674,8 @@ print_help<span class="st">&#39;CONCAT%&#39;</span></code></pre>
 </ul>
 <h2 id="connpreparequery---stmt-params"><code>conn:prepare(query) -&gt; stmt, params</code></h2>
 <p>Prepare a query for multiple execution and return a statement object.</p>
+<h2 id="stmtparam_count---n"><code>stmt:param_count() -&gt; n</code></h2>
+<p>Number of parameters.</p>
 <h2 id="stmtexec"><code>stmt:exec()</code></h2>
 <p>Execute a prepared statement.</p>
 <h2 id="stmtstore_result"><code>stmt:store_result()</code></h2>

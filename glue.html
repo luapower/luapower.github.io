@@ -167,7 +167,7 @@
 <td align="left"><a href="#fileexists">check if a file exists and it's readable</a></td>
 </tr>
 <tr class="odd">
-<td align="left">glue.readfile(file[,format]) -&gt; s</td>
+<td align="left">glue.readfile(file[,format]) -&gt; s | nil, err</td>
 <td align="left"><a href="#readfile">read the contents of a file into a string</a></td>
 </tr>
 <tr class="even">
@@ -451,7 +451,7 @@ hour  8</code></pre>
 <p>Checks whether a file exists and it's available for reading.</p>
 <p>See also: <a href="#readfile">glue.readfile</a>.</p>
 <hr />
-<h2 id="glue.readfilefileformat---s"><code id="readfile">glue.readfile(file[,format]) -&gt; s</code></h2>
+<h2 id="glue.readfilefileformat---s-nil-err"><code id="readfile">glue.readfile(file[,format]) -&gt; s | nil, err</code></h2>
 <p>Read the contents of a file into a string.</p>
 <ul>
 <li><code>format</code> can be <code>t</code> in which case the file will be read in text mode (default is binary mode).</li>
