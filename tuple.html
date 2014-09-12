@@ -69,22 +69,55 @@
 					<span id="module_info"></span>
 					<h2 id="local-tuple-requiretuple"><code>local tuple = require'tuple'</code></h2>
 <p>Tuples are immutable lists that can be used as table keys because they have value semantics, that is, the tuple constructor returns the same identity for the exact same list of identities. If you don't need this property, <a href="vararg.html#pack">vararg.pack</a> is a more memory efficient way to store small lists of values.</p>
-<h2 id="tuplee1...---t"><code>tuple(e1,...) -&gt; t</code></h2>
-<p>Create or find a tuple given a list of elements. Elements can be anything, including nil and NaN.</p>
-<h2 id="t---e1..."><code>t() -&gt; e1,...</code></h2>
-<p>Access the elements of a tuple.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code>tuple(e1,...) -&gt; t</code></td>
+<td align="left">create/find a tuple</td>
+</tr>
+<tr class="even">
+<td align="left"><code>t([i[, j]) -&gt; e1,...</code></td>
+<td align="left">unpack elements</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>t[i] -&gt; ei</code></td>
+<td align="left">access elements</td>
+</tr>
+<tr class="even">
+<td align="left"><code>t.n</code></td>
+<td align="left">number of elements</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>tostring(t) -&gt; s</code></td>
+<td align="left">string representation</td>
+</tr>
+<tr class="even">
+<td align="left"><code>pp.format(t) -&gt; s</code></td>
+<td align="left">serialization with <a href="pp.html">pp</a></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>tuple.space([weak]) -&gt; tuple</code></td>
+<td align="left">create a new (weak or strong) tuple space</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>NOTE:</strong> Tuple elements can be anything, including <code>nil</code> and <code>NaN</code>.</p>
+</blockquote>
 <h3 id="example">Example</h3>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">tuple</span> <span class="ot">=</span> require<span class="st">&#39;tuple&#39;</span>
 
-<span class="kw">local</span> <span class="kw">tup</span> <span class="ot">=</span> tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span><span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="kw">nil</span><span class="ot">)</span>
-<span class="kw">local</span> <span class="kw">t</span> <span class="ot">=</span> <span class="ot">{[</span><span class="kw">tup</span><span class="ot">]</span> <span class="ot">=</span> <span class="st">&#39;here&#39;</span><span class="ot">}</span>
-<span class="fu">assert</span><span class="ot">(</span><span class="kw">t</span><span class="ot">[</span>tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span><span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="kw">nil</span><span class="ot">)]</span> <span class="ot">==</span> <span class="st">&#39;here&#39;</span><span class="ot">)</span>
-<span class="fu">assert</span><span class="ot">(</span><span class="kw">t</span><span class="ot">[</span>tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span><span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span><span class="dv">2</span><span class="ot">)]</span> <span class="ot">==</span> <span class="kw">nil</span><span class="ot">)</span>
-<span class="fu">print</span><span class="ot">(</span>tup<span class="ot">())</span>
+<span class="kw">local</span> <span class="kw">T</span> <span class="ot">=</span> tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">nil</span><span class="ot">)</span>
+<span class="kw">local</span> <span class="kw">t</span> <span class="ot">=</span> <span class="ot">{}</span>
+<span class="kw">t</span><span class="ot">[</span><span class="kw">T</span><span class="ot">]</span> <span class="ot">=</span> <span class="st">&#39;here&#39;</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">t</span><span class="ot">[</span>tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">nil</span><span class="ot">)]</span> <span class="ot">==</span> <span class="st">&#39;here&#39;</span><span class="ot">)</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">t</span><span class="ot">[</span>tuple<span class="ot">(</span><span class="st">&#39;a&#39;</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">/</span><span class="dv">0</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">)]</span> <span class="ot">==</span> <span class="kw">nil</span><span class="ot">)</span>
+<span class="fu">print</span><span class="ot">(</span>T<span class="ot">())</span>
 <span class="ot">&gt;</span> <span class="kw">a</span>   <span class="kw">nan</span>   <span class="dv">2</span>  <span class="kw">nil</span></code></pre>
 <blockquote>
 <p><strong>NOTE:</strong> all the tuple elements of all the tuples created with this function are indexed internally with a global weak hash tree. This means that creating a tuple takes N hash lookups and M table creations, where N+M is the number of elements of the tuple. Lookup time depends on how dense the tree is on the search path, which depends on how many existing tuples share a first sequence of elements with the tuple being created. In particular, creating tuples out of all permutations of a certain set of values hits the worst case for hash lookup time, but creates the minimum amount of tables relative to the number of tuples.</p>
 </blockquote>
+<p><strong>TIP:</strong> Create tuple spaces that don't use weak tables for better gc performance. When no longer needed, release the tuple space to free all the dead tuples and associated index tables.</p>
 				</section>
 			</div>
 			<div class="container">
