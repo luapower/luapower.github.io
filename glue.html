@@ -222,6 +222,22 @@
 <td align="left">glue.cpath(path[, index])</td>
 <td align="left"><a href="#cpath">insert a path in package.cpath</a></td>
 </tr>
+<tr class="odd">
+<td align="left"><strong>malloc</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">glue.malloc([ctype, ]size) -&gt; cdata</td>
+<td align="left"><a href="#malloc-array">allocate an array using system's malloc</a></td>
+</tr>
+<tr class="odd">
+<td align="left">glue.malloc(ctype) -&gt; cdata</td>
+<td align="left"><a href="#malloc-ctype">allocate a C type using system's malloc</a></td>
+</tr>
+<tr class="even">
+<td align="left">glue.free(cdata)</td>
+<td align="left"><a href="#free">free malloc'ed memory</a></td>
+</tr>
 </tbody>
 </table>
 <h2 id="glue.indext---dt"><code id="index">glue.index(t) -&gt; dt</code></h2>
@@ -551,6 +567,33 @@ hour  8</code></pre>
 <span class="kw">glue</span><span class="ot">.</span>cpath<span class="ot">(</span><span class="kw">glue</span><span class="ot">.</span><span class="kw">bin</span><span class="ot">)</span>
 
 require<span class="st">&#39;foo&#39;</span> <span class="co">--looking for `foo` in the same directory as the running script first</span></code></pre>
+<hr />
+<h2 id="glue.mallocctype-size---cdata"><code id="malloc-array">glue.malloc([ctype, ]size) -&gt; cdata</code></h2>
+<p>Allocate a <code>ctype[size]</code> array with system's malloc. Useful for allocating larger chunks of memory without hitting the default allocator's 2GB limit.</p>
+<ul>
+<li>the returned cdata has the type <code>ctype(&amp;)[size]</code> so ffi.sizeof(cdata) returns the correct size.</li>
+<li><code>ctype</code> defaults to <code>char</code>.</li>
+<li>failure to allocate results in error.</li>
+<li>the memory is freed when the cdata gets collected or with <code>glue.free()</code>.</li>
+</ul>
+<p><strong>REMEMBER!</strong> Just like with <code>ffi.new</code>, casting the result cdata further will get you <em>weak references</em> to the allocated memory. To transfer ownership of the memory, use <code>ffi.gc(original, nil); ffi.gc(pointer, glue.free)</code>.</p>
+<h2 id="glue.mallocctype---cdata"><code id="malloc-ctype">glue.malloc(ctype) -&gt; cdata</code></h2>
+<p>Allocate a <code>ctype</code> with system's malloc. The result has the type <code>ctype&amp;</code>.</p>
+<h2 id="glue.freecdata"><code id="free">glue.free(cdata)</code></h2>
+<p>Free malloc'ed memory.</p>
+<h3 id="example-5">Example</h3>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">data</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>malloc<span class="ot">(</span><span class="dv">100</span><span class="ot">)</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">ffi</span><span class="ot">.</span>sizeof<span class="ot">(</span><span class="kw">data</span><span class="ot">)</span> <span class="ot">==</span> <span class="dv">100</span><span class="ot">)</span>
+<span class="kw">glue</span><span class="ot">.</span>free<span class="ot">(</span><span class="kw">data</span><span class="ot">)</span>
+
+<span class="kw">local</span> <span class="kw">data</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>malloc<span class="ot">(</span><span class="st">&#39;int&#39;</span><span class="ot">,</span> <span class="dv">100</span><span class="ot">)</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">ffi</span><span class="ot">.</span>sizeof<span class="ot">(</span><span class="kw">data</span><span class="ot">)</span> <span class="ot">==</span> <span class="dv">100</span> <span class="ot">*</span> <span class="kw">ffi</span><span class="ot">.</span>sizeof<span class="st">&#39;int&#39;</span><span class="ot">)</span>
+<span class="kw">glue</span><span class="ot">.</span>free<span class="ot">(</span><span class="kw">data</span><span class="ot">)</span>
+
+<span class="kw">local</span> <span class="kw">data</span> <span class="ot">=</span> <span class="kw">glue</span><span class="ot">.</span>malloc<span class="ot">(</span><span class="st">&#39;struct S&#39;</span><span class="ot">)</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">ffi</span><span class="ot">.</span>typeof<span class="ot">(</span><span class="kw">data</span><span class="ot">)</span> <span class="ot">==</span>
+<span class="fu">assert</span><span class="ot">(</span><span class="kw">ffi</span><span class="ot">.</span>sizeof<span class="ot">(</span><span class="kw">data</span><span class="ot">)</span> <span class="ot">==</span> <span class="kw">ffi</span><span class="ot">.</span>sizeof<span class="st">&#39;struct S&#39;</span><span class="ot">)</span>
+<span class="kw">glue</span><span class="ot">.</span>free<span class="ot">(</span><span class="kw">data</span><span class="ot">)</span></code></pre>
 <hr />
 <h2 id="tips">Tips</h2>
 <p>String functions are also in the <code>glue.string</code> table. You can extend the Lua <code>string</code> namespace:</p>

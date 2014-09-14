@@ -339,6 +339,111 @@
 </tr>
 </tbody>
 </table>
+<h2 id="quick-api-reference">Quick API Reference</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>format conversion</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.new(w, h, ...) -&gt; dst</code></td>
+<td align="left">create a bitmap</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bitmap.copy(src[, format], ...) -&gt; dst</code></td>
+<td align="left">copy and convert a bitmap</td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.paint(src, dst, ...) -&gt; dst</code></td>
+<td align="left">paint a bitmap</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>cropping</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.sub(src, x, y, w, h) -&gt; dst</code></td>
+<td align="left">make a sub-bitmap</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>pixel access</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.pixel_interface(src) -&gt; getpixel, setpixel</code></td>
+<td align="left">get a pixel interface</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bitmap.channel_interface(bmp, n) -&gt; getval, setval</code></td>
+<td align="left">get a channel interface</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>dithering</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bitmap.dither.fs|ordered(bmp, rN, gN, bN, aN)</code></td>
+<td align="left">apply dithering</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>effects</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bitmap.invert(bmp)</code></td>
+<td align="left">invert colors</td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.grayscale(bmp)</code></td>
+<td align="left">desaturate</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bitmap.convolve(src, kernel, [edge]) -&gt; dst</code></td>
+<td align="left">convolve</td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.sharpen(src[, threshold]) -&gt; dst</code></td>
+<td align="left">sharpen</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>alpha blending</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.blend(src, dst, [operator], [x], [y])</code></td>
+<td align="left">blend source into dest bitmap</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>resizing</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.resize.nearest|bilinear(src, w, h) -&gt; dst</code></td>
+<td align="left">resize to new</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bitmap.resize.nearest|bilinear(src, dst) -&gt; dst</code></td>
+<td align="left">resize to dest</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>utilities</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bitmap.min_stride(format, width) -&gt; min_stride</code></td>
+<td align="left">minimum stride for width</td>
+</tr>
+<tr class="even">
+<td align="left"><code>bitmap.aligned_stride(stride) -&gt; aligned_stride</code></td>
+<td align="left">minimum stride that is aligned</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>bitmap.row_size(bmp) -&gt; size</code></td>
+<td align="left">row size in bytes</td>
+</tr>
+</tbody>
+</table>
 <h2 id="bitmap-operations">Bitmap operations</h2>
 <h2 id="bitmap.neww-h-format-bottom_up-stride_aligned-stride---new_bmp"><code>bitmap.new(w, h, format, [bottom_up], [stride_aligned], [stride]) -&gt; new_bmp</code></h2>
 <p>Create a bitmap object. If <code>stride_aligned</code> is <code>true</code> and no specific <code>stride</code> is given, the stride will be a multiple of 4 bytes.</p>
@@ -357,7 +462,12 @@
 </blockquote>
 <h2 id="pixel-interface">Pixel interface</h2>
 <h2 id="bitmap.pixel_interfacebitmap-colortype---getpixel-setpixel"><code>bitmap.pixel_interface(bitmap[, colortype]) -&gt; getpixel, setpixel</code></h2>
-<p>Return an API for getting and setting individual pixels of a bitmap object: * <code>getpixel(x, y) -&gt; a, b, c, ...</code> * <code>setpixel(x, y, a, b, c, ...)</code> where a, b, c are the individual color channels, converted to the specified colortype or in the colortype of the bitmap (i.e. r, g, b, a for the 'rgba' colortype, etc.).</p>
+<p>Return an API for getting and setting individual pixels of a bitmap object:</p>
+<ul>
+<li><code>getpixel(x, y) -&gt; a, b, c, ...</code></li>
+<li><code>setpixel(x, y, a, b, c, ...)</code></li>
+</ul>
+<p>where a, b, c are the individual color channels, converted to the specified colortype or in the colortype of the bitmap (i.e. r, g, b, a for the 'rgba' colortype, etc.).</p>
 <h4 id="example">Example:</h4>
 <pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">function</span> darken<span class="ot">(</span><span class="kw">r</span><span class="ot">,</span> <span class="kw">g</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">a</span><span class="ot">)</span>
    <span class="kw">return</span> <span class="kw">r</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">g</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">b</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">,</span> <span class="kw">a</span> <span class="ot">/</span> <span class="dv">2</span><span class="ot">)</span> <span class="co">--make 2x darker</span>
@@ -372,6 +482,13 @@
 
 <span class="co">--the above has the same effect as:</span>
 <span class="kw">bitmap</span><span class="ot">.</span>convert<span class="ot">(</span><span class="kw">bmp</span><span class="ot">,</span> <span class="kw">bmp</span><span class="ot">,</span> <span class="kw">darken</span><span class="ot">)</span></code></pre>
+<h2 id="channel-interface">Channel interface</h2>
+<h2 id="bitmap.channel_interfacebitmap-channel---getvalue-setvalue"><code>bitmap.channel_interface(bitmap, channel) -&gt; getvalue, setvalue</code></h2>
+<p>Return an API for getting and setting values from a single color channel:</p>
+<ul>
+<li><code>getvalue(x, y) -&gt; v</code></li>
+<li><code>setvalue(x, y, v)</code></li>
+</ul>
 <h2 id="dithering">Dithering</h2>
 <h2 id="bitmap.dither.fsbmp-rbits-gbits-bbits-abits"><code>bitmap.dither.fs(bmp, rbits, gbits, bbits, abits)</code></h2>
 <p>Dither a bitmap using the <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering">Floyd-Steinberg dithering</a> algorithm. <code>*bits</code> specify the number of bits of color to keep for each channel (eg. <code>bitmap.dither.fs(bmp, 5, 6, 5, 0)</code> dithers a bitmap so that its colors fit into the <code>rgb565</code> format). Only implemented for 4-channel colortypes.</p>
@@ -382,11 +499,11 @@
 <p>Invert colors.</p>
 <h2 id="bitmap.grayscalebmp"><code>bitmap.grayscale(bmp)</code></h2>
 <p>Convert pixels to grayscale, without changing the format.</p>
-<h2 id="bitmap.convolvebmp-kernel-edge"><code>bitmap.convolve(bmp, kernel, [edge])</code></h2>
+<h2 id="bitmap.convolvebmp-kernel-edge---new_bmp"><code>bitmap.convolve(bmp, kernel, [edge]) -&gt; new_bmp</code></h2>
 <p>Convolve a bitmap using a kernel matrix (a Lua array of arrays of the same length). <code>edge</code> can be <code>crop</code>, <code>wrap</code> or <code>extend</code> (default is <code>extend</code>).</p>
-<h2 id="bitmap.sharpenbmp-threshold"><code>bitmap.sharpen(bmp[, threshold])</code></h2>
+<h2 id="bitmap.sharpenbmp-threshold---new_bmp"><code>bitmap.sharpen(bmp[, threshold]) -&gt; new_bmp</code></h2>
 <p>Sharpen a bitmap.</p>
-<h2 id="blending">Blending</h2>
+<h2 id="alpha-blending">Alpha Blending</h2>
 <h2 id="bitmap.blendsource_bmp-dest_bmp-operator-x-y"><code>bitmap.blend(source_bmp, dest_bmp, [operator], [x], [y])</code></h2>
 <p>Blend <code>source_bmp</code> into <code>dest_bmp</code> using a blending operator at <code>x,y</code> coordinates in the target bitmap (default is <code>0,0</code>). Operators are in the <code>bitmap.blend_op</code> table for inspection.</p>
 <h4 id="example-1">Example:</h4>
@@ -401,6 +518,11 @@
       <span class="kw">bitmap</span><span class="ot">.</span>paint<span class="ot">(</span><span class="kw">src</span><span class="ot">,</span> <span class="kw">dst</span><span class="ot">)</span>
    <span class="kw">end</span>
 <span class="kw">end</span></code></pre>
+<h2 id="resizing">Resizing</h2>
+<h2 id="bitmap.resize.methodbmp-w-h---new_bmp"><code>bitmap.resize.&lt;method&gt;(bmp, w, h) -&gt; new_bmp</code></h2>
+<h2 id="bitmap.resize.methodsource_bmp-dest_bmp---dest_bmp"><code>bitmap.resize.&lt;method&gt;(source_bmp, dest_bmp) -&gt; dest_bmp</code></h2>
+<p>Resize a bitmap. The method can be <code>nearest</code> or <code>bilinear</code>.</p>
+<h2 id="utilities">Utilities</h2>
 <h2 id="bitmap.min_strideformat-width---min_stride"><code>bitmap.min_stride(format, width) -&gt; min_stride</code></h2>
 <p>Return the minimum stride in bytes given a format and width. A bitmap data buffer should never be smaller than <code>min_stride * height</code>.</p>
 <h2 id="bitmap.aligned_stridestride---aligned_stride"><code>bitmap.aligned_stride(stride) -&gt; aligned_stride</code></h2>
