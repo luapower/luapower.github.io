@@ -112,19 +112,20 @@
 <p><strong>NOTE</strong>: Not all conversions are possible with libjpeg-turbo, so always check the image's <code>format</code> field to get the actual format. Use <a href="bitmap.html">bitmap</a> to further convert the image if necessary.</p>
 </blockquote>
 <p>For more info on the decoding process and options read the <a href="http://sourceforge.net/p/libjpeg-turbo/code/HEAD/tree/trunk/libjpeg.txt">libjpeg-turbo doc</a>.</p>
-<h3 id="the-returned-image">3. The returned image:</h3>
+<h3 id="the-return-value">3. The return value:</h3>
+<p>The return value is a <a href="bitmap.html">bitmap</a> with extra fields:</p>
 <ul>
-<li><code>file</code>: a table describing file attributes:
+<li><code>file</code>: a table describing the source file, with the following attributes:
 <ul>
 <li><code>w</code>, <code>h</code>, <code>format</code>, <code>progressive</code>, <code>jfif</code>, <code>adobe</code>.</li>
-<li>note: <code>format</code> is missing for unknown formats.</li>
-</ul></li>
-<li><code>format</code>, <code>bottom_up</code>, <code>stride</code>, <code>data</code>, <code>size</code>, <code>w</code>, <code>h</code>: output image format, dimensions and pixel data.
-<ul>
-<li>the number of bits per channel is always 8.</li>
-<li>these fields are not present with the <code>headers_only</code> option.</li>
 </ul></li>
 <li><code>partial</code>: true if the image was found to be truncated and it was partially loaded.</li>
+</ul>
+<p>NOTE:</p>
+<ul>
+<li>the number of bits per channel in the output bitmap is always 8.</li>
+<li>the bitmap fields are not present with the <code>header_only</code> option.</li>
+<li>unknown JPEG formats are loaded but the <code>format</code> field is missing.</li>
 </ul>
 <h2 id="libjpeg.saveoptions_t---string-chunks_t-nil"><code>libjpeg.save(options_t) -&gt; string | chunks_t | nil</code></h2>
 <p>Save a <a href="bitmap.html">bitmap</a> as JPEG. <code>options_t</code> is a table containing at least the source bitmap and destination, and possibly other options.</p>
