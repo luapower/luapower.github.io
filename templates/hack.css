@@ -279,8 +279,13 @@ header h2 { /* tagline */
 .doc ol li {
 	list-style: decimal;
 	margin-left: 2em;
+	padding-left: 0em;
 	overflow: visible;
    position: relative;
+}
+
+.doc ol li:before {
+	content: none;
 }
 
 .doc blockquote {
