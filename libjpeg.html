@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> libjpeg   - JPEG reader </title>
+		<title> libjpeg   - JPEG encoding &amp; decoding </title>
 		<script src="jquery.js"></script>
 		<script src="jquery-cookie.js"></script>
 		<script src="jquery-tablesorter.js"></script>
@@ -34,7 +34,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> libjpeg </h1>
-							<h2> JPEG reader </h2>
+							<h2> JPEG encoding &amp; decoding </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																						<table><tr><td>
@@ -68,7 +68,7 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="local-libjpeg-requirelibjpeg"><code>local libjpeg = require'libjpeg'</code></h2>
-<p>A ffi binding for <a href="http://www.libjpeg-turbo.org/">libjpeg-turbo</a>, a fast and complete JPEG codec.</p>
+<p>A ffi binding for the <a href="http://libjpeg.sourceforge.net/">libjpeg</a> 6.2 API. Comes with <a href="http://www.libjpeg-turbo.org/">libjpeg-turbo</a> binaries.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>progressive loading</li>
@@ -153,10 +153,9 @@
 </ul>
 <h2 id="limitations">Limitations</h2>
 <ul>
-<li>loading one scan line at a time (easy).</li>
-<li>saving one scan line at a time (easy).</li>
+<li>no support for loading and saving huge images, i.e. working with a few scanlines at a time (easy).</li>
 <li>jit is turned off because we can't call error() from a ffi callback called from C; and yet libjpeg says that we must not return control to C on errors, and the only way to do that is to call error().</li>
-<li>the read callback cannot yield since it is called from C code. This means that reading data with coroutine-based socket schedulers is not an option. Is there a way around it that doesn't involve threads?</li>
+<li>the read callback cannot yield since it is called from C code. This means that reading data with coroutine-based socket schedulers is not an option. The workaround is to either bind the suspended I/O mode of libjpeg (easy), or to use threads and locking.</li>
 </ul>
 <hr />
 <p>See also: <a href="nanojpeg.html">nanojpeg</a></p>
