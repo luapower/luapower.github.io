@@ -5,7 +5,7 @@
 	* [pp]
 	* [oo]
 	* [struct]
-	* [lpeg], [lpeg2]
+	* [lpeg]
 	* [vararg]
 	* [dlist]
 * FFI tools
