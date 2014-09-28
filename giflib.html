@@ -72,7 +72,7 @@
 <h2 id="giflib.loadpath-t---gif"><code>giflib.load(path | t) -&gt; gif</code></h2>
 <p>Read and decode a GIF image.</p>
 <ul>
-<li><code>t</code> is a table specifying where to read the data from and other loading options:
+<li><code>t</code> is a table specifying where to read the data from and other options:
 <ul>
 <li><code>path</code>: read data from a file given its filename</li>
 <li><code>string:</code> read data from a string</li>
@@ -88,14 +88,12 @@
 <ul>
 <li><code>format</code>, <code>stride</code>, <code>data</code>, <code>size</code>, <code>w</code>, <code>h</code>: image format, dimensions and pixel data.
 <ul>
-<li>the frames are always in top-down <code>rgba8</code> format (that is 32bit RGBA); use <a href="bitmap.html">bitmap</a> to convert them to other formats.</li>
+<li>the frames are always in top-down <code>bgra8</code> format; use <a href="bitmap.html">bitmap</a> to convert them to other formats.</li>
 </ul></li>
 <li><code>delay_ms</code>: gif frame delay in milliseconds, for animated gifs.</li>
-<li><code>x</code>, <code>y</code>: frame position relative to the top-left corner of the virtual canvas into which to paint the frame<br /> (in theory, gif frames can have different sizes and different positions than (0,0) but this feature is almost never used).</li>
+<li><code>x</code>, <code>y</code>: frame position relative to the top-left corner of the virtual canvas into which to paint the frame. gif frames can have different sizes and different positions than (0,0) but this feature is almost never used.</li>
 </ul></li>
 </ul>
-<hr />
-<p>See also: <a href="imagefile.html">imagefile</a></p>
 				</section>
 			</div>
 			<div class="container">

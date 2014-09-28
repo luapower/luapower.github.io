@@ -35,18 +35,18 @@ return {
 			'expat.html'
 		},
 		platforms={
-			linux64=true,
+			mingw32=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='MIT',
+		name='expat',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='expat',
+		c_license='MIT',
 		c_link={
 			'expat 2.1.0',
 			'http://sourceforge.net/projects/expat/files/expat/'
@@ -63,32 +63,32 @@ return {
 		},
 		platforms={
 			linux32=true,
-			mingw32=true,
+			linux64=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			linux64=true
+			mingw32=true
 		},
-		name='luajit',
+		c_license='MIT',
 		type='Lua',
 		git_tag='2.0.3-aug5',
-		c_license='MIT',
+		name='luajit',
 		c_link={
 			'luajit 2.0.3-aug5',
 			'http://luajit.org/download.html'
 		}
 	},
 	glue={
-		type='Lua+ffi',
+		category='01. Basic tools',
 		link={
 			'glue',
 			'glue.html'
 		},
 		platforms={
 		},
-		git_tag='r6',
-		category='01. Basic tools',
 		tagline='everyday Lua functions',
+		type='Lua+ffi',
+		git_tag='r6',
 		name='glue',
 		modules={
 			glue={
@@ -112,16 +112,16 @@ return {
 		}
 	},
 	oo={
-		category='01. Basic tools',
+		type='Lua',
 		link={
 			'oo',
 			'oo.html'
 		},
 		platforms={
 		},
-		tagline='fancy object system',
-		type='Lua',
 		git_tag='r3',
+		category='01. Basic tools',
+		tagline='fancy object system',
 		name='oo',
 		modules={
 			oo={
@@ -164,18 +164,18 @@ return {
 			'libexif.html'
 		},
 		platforms={
-			mingw32=true,
+			linux64=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			linux64=true
+			mingw32=true
 		},
-		c_license='LGPL',
+		name='libexif',
 		type='Lua+ffi',
 		git_tag='dev',
-		name='libexif',
+		c_license='LGPL',
 		c_link={
 			'libexif 0.6.21',
 			'http://libexif.sourceforge.net/'
@@ -262,16 +262,16 @@ return {
 		},
 		platforms={
 			linux32=true,
-			mingw32=true,
+			linux64=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			linux64=true
+			mingw32=true
 		},
-		name='libjpeg',
+		c_license='BSD',
 		type='Lua+ffi',
 		git_tag='r1',
-		c_license='BSD',
+		name='libjpeg',
 		c_link={
 			'libjpeg-turbo 1.3.0',
 			'http://downloads.sourceforge.net/project/libjpeg-turbo/'
@@ -298,32 +298,32 @@ return {
 		},
 		platforms={
 			linux32=true,
-			linux64=true,
+			mingw32=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='MIT',
+		name='struct',
 		type='Lua/C',
 		git_tag='r3',
-		name='struct',
+		c_license='MIT',
 		c_link={
 			'struct 0.2',
 			'http://www.inf.puc-rio.br/~roberto/struct/'
 		}
 	},
 	murmurhash3={
-		type='Lua+ffi',
+		category='05. Hashing & Compression',
 		link={
 			'murmurhash3',
 			'murmurhash3.html'
 		},
 		platforms={
 		},
-		git_tag='r1',
-		category='05. Hashing & Compression',
 		tagline='murmurhash3 in Lua',
+		type='Lua+ffi',
+		git_tag='r1',
 		name='murmurhash3',
 		modules={
 			murmurhash3={
@@ -374,18 +374,18 @@ return {
 			'pmurhash.html'
 		},
 		platforms={
-			linux64=true,
+			mingw32=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='MIT',
+		name='pmurhash',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='pmurhash',
+		c_license='MIT',
 		c_link={
 			'pmurhash r146',
 			'http://code.google.com/p/smhasher/'
@@ -408,16 +408,16 @@ return {
 		},
 		platforms={
 			linux32=true,
-			linux64=true,
+			mingw32=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='MIT',
+		name='cjson',
 		type='Lua/C',
 		git_tag='r3',
-		name='cjson',
+		c_license='MIT',
 		c_link={
 			'lua-cjson 2.1.0',
 			'http://www.kyne.com.au/~mark/software/lua-cjson.php'
@@ -451,31 +451,42 @@ return {
 			'sha2.html'
 		},
 		platforms={
-			mingw32=true,
+			linux64=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			linux64=true
+			mingw32=true
 		},
-		c_license='BSD',
+		name='sha2',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='sha2',
+		c_license='BSD',
 		c_link={
 			'sha2 1.0.1',
 			'http://www.aarongifford.com/computers/sha.html'
 		}
 	},
-	hunspell={
-		category='17. Text Processing',
-		tagline='spell checking',
+	objc={
+		type='Lua+ffi',
+		link={
+			'objc',
+			'objc.html'
+		},
+		platforms={
+			osx32=true,
+			osx64=true
+		},
+		git_tag='r6',
+		category='Other',
+		tagline='Obj-C & Cocoa bridge',
+		name='objc',
 		modules={
-			hunspell={
+			objc={
 				source_link={
 					'source',
-					'https://github.com/luapower/hunspell/blob/master/hunspell.lua'
+					'https://github.com/luapower/objc/blob/master/objc.lua'
 				},
 				pdep_links={
 				},
@@ -484,29 +495,12 @@ return {
 						'ffi',
 						'http://luajit.org/ext_ffi.html'
 					}
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/objc/blob/master/objc_test.lua'
 				}
 			}
-		},
-		link={
-			'hunspell',
-			'hunspell.html'
-		},
-		platforms={
-			mingw32=true,
-			linux32=true,
-			['mingw64-from-win32']=true,
-			mingw64=true,
-			osx64=true,
-			osx32=true,
-			linux64=true
-		},
-		c_license='MPL',
-		type='Lua+ffi',
-		git_tag='r2',
-		name='hunspell',
-		c_link={
-			'hunspell 1.3.2',
-			'http://hunspell.sourceforge.net/'
 		}
 	},
 	npapi={
@@ -564,29 +558,30 @@ return {
 			mingw64=true,
 			mingw32=true
 		},
-		c_license='PD',
+		name='npapi',
 		type='Lua+ffi',
 		git_tag='dev',
-		name='npapi',
+		c_license='PD',
 		c_link={
 			'npcplayer dev',
 			'http://luapower.com/npapi'
 		}
 	},
 	socketloop={
-		type='Lua',
-		link={
-			'socketloop',
-			'socketloop.html'
-		},
-		platforms={
-		},
-		git_tag='r1',
 		category='05. Basic OS',
 		tagline='TCP sockets with coroutines',
-		name='socketloop',
 		modules={
 			socketloop={
+				mdep_links={
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'socket',
+						'socket.html'
+					}
+				},
 				source_link={
 					'source',
 					'https://github.com/luapower/socketloop/blob/master/socketloop.lua'
@@ -601,83 +596,104 @@ return {
 						'socket.html'
 					}
 				},
-				mdep_links={
-					{
-						'glue',
-						'glue.html'
-					},
-					{
-						'socket',
-						'socket.html'
-					}
-				},
 				test_link={
 					'test',
 					'https://github.com/luapower/socketloop/blob/master/socketloop_test.lua'
 				}
 			}
-		}
+		},
+		link={
+			'socketloop',
+			'socketloop.html'
+		},
+		platforms={
+		},
+		name='socketloop',
+		type='Lua+ffi',
+		git_tag='r2'
 	},
-	fribidi={
-		category='17. Text Processing',
-		tagline='unicode BiDi algorithm',
+	obj_parser={
+		category='21. 3D Graphics',
+		link={
+			'obj_parser',
+			'obj_parser.html'
+		},
+		platforms={
+		},
+		tagline='wavefront OBJ parser',
+		type='Lua+ffi',
+		git_tag='r1',
+		name='obj_parser',
 		modules={
-			fribidi={
+			obj_parser={
 				source_link={
 					'source',
-					'https://github.com/luapower/fribidi/blob/master/fribidi.lua'
+					'https://github.com/luapower/obj_parser/blob/master/obj_parser.lua'
 				},
 				pdep_links={
+					{
+						'glue',
+						'glue.html'
+					}
 				},
 				mdep_links={
 					{
-						'bit',
-						'http://luajit.org/extensions.html'
+						'glue',
+						'glue.html'
+					}
+				}
+			},
+			obj_loader={
+				source_link={
+					'source',
+					'https://github.com/luapower/obj_parser/blob/master/obj_loader.lua'
+				},
+				pdep_links={
+					{
+						'glue',
+						'glue.html'
 					},
+					{
+						'stdc',
+						'https://github.com/luapower/stdc'
+					},
+					{
+						'tuple',
+						'tuple.html'
+					}
+				},
+				mdep_links={
 					{
 						'ffi',
 						'http://luajit.org/ext_ffi.html'
+					},
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'stdio',
+						'https://github.com/luapower/stdc/blob/master/stdio.lua'
+					},
+					{
+						'tuple',
+						'tuple.html'
 					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/fribidi/blob/master/fribidi_test.lua'
 				}
 			}
-		},
-		link={
-			'fribidi',
-			'fribidi.html'
-		},
-		platforms={
-			linux64=true,
-			linux32=true,
-			['mingw64-from-win32']=true,
-			mingw64=true,
-			osx64=true,
-			osx32=true,
-			mingw32=true
-		},
-		c_license='LGPL',
-		type='Lua+ffi',
-		git_tag='dev',
-		name='fribidi',
-		c_link={
-			'FriBiDi HEAD-2013-06-08',
-			'git://anongit.freedesktop.org/fribidi/fribidi'
 		}
 	},
 	affine2d={
-		type='Lua',
+		category='15. 2D Graphics',
 		link={
 			'affine2d',
 			'affine2d.html'
 		},
 		platforms={
 		},
-		git_tag='r1',
-		category='15. 2D Graphics',
 		tagline='2D affine transforms',
+		type='Lua',
+		git_tag='r1',
 		name='affine2d',
 		modules={
 			affine2d={
@@ -755,34 +771,34 @@ return {
 			'libpng.html'
 		},
 		platforms={
-			linux64=true,
+			mingw32=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='LIBPNG',
+		name='libpng',
 		type='Lua+ffi',
 		git_tag='dev',
-		name='libpng',
+		c_license='LIBPNG',
 		c_link={
 			'libpng 1.5.14',
 			'http://libpng.org/'
 		}
 	},
 	opengl={
-		type='Lua+ffi',
+		category='21. 3D Graphics',
 		link={
 			'opengl',
 			'opengl.html'
 		},
 		platforms={
 		},
-		git_tag='r1',
-		category='21. 3D Graphics',
 		tagline='OpenGL C API',
+		type='Lua+ffi',
+		git_tag='r1',
 		name='opengl',
 		modules={
 		}
@@ -811,18 +827,18 @@ return {
 			'ucdn.html'
 		},
 		platforms={
-			mingw32=true,
+			linux64=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			linux64=true
+			mingw32=true
 		},
-		c_license='MIT',
+		name='ucdn',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='ucdn',
+		c_license='MIT',
 		c_link={
 			'ucdn 0.9.25',
 			'http://www.freedesktop.org/software/harfbuzz/release/'
@@ -837,13 +853,13 @@ return {
 			'https://github.com/luapower/blur'
 		},
 		platforms={
-			linux64=true,
+			mingw32=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			mingw32=true
+			linux64=true
 		},
 		name='blur',
 		type='Lua+ffi',
@@ -855,16 +871,16 @@ return {
 		}
 	},
 	eq={
-		type='Lua',
+		category='35. Math',
 		link={
 			'eq',
 			'eq.html'
 		},
 		platforms={
 		},
-		git_tag='r1',
-		category='35. Math',
 		tagline='3rd degree equation solver',
+		type='Lua',
+		git_tag='r1',
 		name='eq',
 		modules={
 			eq={
@@ -884,45 +900,31 @@ return {
 		}
 	},
 	codedit={
-		type='Lua',
+		category='27. Code Editing',
 		link={
 			'codedit',
 			'codedit.html'
 		},
 		platforms={
 		},
-		git_tag='dev',
-		category='27. Code Editing',
 		tagline='code editor engine in Lua',
+		type='Lua',
+		git_tag='dev',
 		name='codedit',
 		modules={
-			codedit_selection={
+			codedit={
 				source_link={
 					'source',
-					'https://github.com/luapower/codedit/blob/master/codedit_selection.lua'
+					'https://github.com/luapower/codedit/blob/master/codedit.lua'
 				},
 				pdep_links={
 					{
 						'glue',
 						'glue.html'
-					}
-				},
-				mdep_links={
+					},
 					{
-						'glue',
-						'glue.html'
-					}
-				}
-			},
-			codedit_cursor={
-				source_link={
-					'source',
-					'https://github.com/luapower/codedit/blob/master/codedit_cursor.lua'
-				},
-				pdep_links={
-					{
-						'glue',
-						'glue.html'
+						'lexer',
+						'lexer.html'
 					},
 					{
 						'utf8',
@@ -935,15 +937,57 @@ return {
 						'glue.html'
 					},
 					{
+						'lexer',
+						'lexer.html'
+					},
+					{
 						'utf8',
 						'utf8.html'
 					}
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/codedit/blob/master/codedit_demo.lua'
 				}
 			},
 			codedit_view={
 				source_link={
 					'source',
 					'https://github.com/luapower/codedit/blob/master/codedit_view.lua'
+				},
+				pdep_links={
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'lexer',
+						'lexer.html'
+					},
+					{
+						'utf8',
+						'utf8.html'
+					}
+				},
+				mdep_links={
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'lexer',
+						'lexer.html'
+					},
+					{
+						'utf8',
+						'utf8.html'
+					}
+				}
+			},
+			codedit_editor={
+				source_link={
+					'source',
+					'https://github.com/luapower/codedit/blob/master/codedit_editor.lua'
 				},
 				pdep_links={
 					{
@@ -1000,19 +1044,15 @@ return {
 					}
 				}
 			},
-			codedit_editor={
+			codedit_cursor={
 				source_link={
 					'source',
-					'https://github.com/luapower/codedit/blob/master/codedit_editor.lua'
+					'https://github.com/luapower/codedit/blob/master/codedit_cursor.lua'
 				},
 				pdep_links={
 					{
 						'glue',
 						'glue.html'
-					},
-					{
-						'lexer',
-						'lexer.html'
 					},
 					{
 						'utf8',
@@ -1023,10 +1063,6 @@ return {
 					{
 						'glue',
 						'glue.html'
-					},
-					{
-						'lexer',
-						'lexer.html'
 					},
 					{
 						'utf8',
@@ -1034,97 +1070,60 @@ return {
 					}
 				}
 			},
-			codedit={
+			codedit_selection={
 				source_link={
 					'source',
-					'https://github.com/luapower/codedit/blob/master/codedit.lua'
+					'https://github.com/luapower/codedit/blob/master/codedit_selection.lua'
 				},
 				pdep_links={
 					{
 						'glue',
 						'glue.html'
-					},
-					{
-						'lexer',
-						'lexer.html'
-					},
-					{
-						'utf8',
-						'utf8.html'
 					}
 				},
 				mdep_links={
 					{
 						'glue',
 						'glue.html'
-					},
-					{
-						'lexer',
-						'lexer.html'
-					},
-					{
-						'utf8',
-						'utf8.html'
 					}
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/codedit/blob/master/codedit_demo.lua'
 				}
 			}
 		}
 	},
-	giflib={
-		category='25. Images',
-		tagline='GIF reader',
+	vararg={
+		category='01. Basic tools',
+		tagline='vararg manipulation',
 		modules={
-			giflib={
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					},
-					{
-						'glue',
-						'glue.html'
-					}
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/giflib/blob/master/giflib_demo.lua'
-				},
-				source_link={
-					'source',
-					'https://github.com/luapower/giflib/blob/master/giflib.lua'
-				},
+			vararg={
 				pdep_links={
-					{
-						'glue',
-						'glue.html'
-					}
+				},
+				mdep_links={
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/vararg/blob/master/vararg_test.lua'
 				}
 			}
 		},
 		link={
-			'giflib',
-			'giflib.html'
+			'vararg',
+			'vararg.html'
 		},
 		platforms={
-			mingw32=true,
 			linux32=true,
-			['mingw64-from-win32']=true,
+			linux64=true,
 			mingw64=true,
-			osx32=true,
 			osx64=true,
-			linux64=true
+			osx32=true,
+			mingw32=true
 		},
-		name='giflib',
-		type='Lua+ffi',
+		name='vararg',
+		type='Lua/C',
 		git_tag='r3',
 		c_license='MIT',
 		c_link={
-			'giflib 5.0',
-			'http://sourceforge.net/projects/giflib/'
+			'vararg 1.0.1',
+			'http://www.tecgraf.puc-rio.br/~maia/lua/vararg/'
 		}
 	},
 	zlib={
@@ -1155,18 +1154,18 @@ return {
 			'zlib.html'
 		},
 		platforms={
-			mingw32=true,
+			linux64=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx32=true,
 			osx64=true,
-			linux64=true
+			mingw32=true
 		},
-		c_license='ZLIB',
+		name='zlib',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='zlib',
+		c_license='ZLIB',
 		c_link={
 			'zlib 1.2.7',
 			'http://zlib.org/'
@@ -1200,34 +1199,34 @@ return {
 			'md5.html'
 		},
 		platforms={
-			mingw32=true,
+			linux64=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			linux64=true
+			mingw32=true
 		},
-		c_license='PD',
+		name='md5',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='md5',
+		c_license='PD',
 		c_link={
 			'md5 1.0',
 			'http://openwall.info/wiki/people/solar/software/public-domain-source-code/md5'
 		}
 	},
 	crc32={
-		type='Lua+ffi',
+		category='05. Hashing & Compression',
 		link={
 			'crc32',
 			'crc32.html'
 		},
 		platforms={
 		},
-		git_tag='r1',
-		category='05. Hashing & Compression',
 		tagline='CRC-32 in Lua',
+		type='Lua+ffi',
+		git_tag='r1',
 		name='crc32',
 		modules={
 			crc32={
@@ -1283,52 +1282,61 @@ return {
 		},
 		platforms={
 			mingw64=true,
-			['mingw64-from-win32']=true,
-			mingw32=true
+			mingw32=true,
+			['mingw64-from-win32']=true
 		},
-		c_license='MIT',
+		name='glut',
 		type='Lua+ffi',
 		git_tag='r1',
-		name='glut',
+		c_license='MIT',
 		c_link={
 			'freeglut 2.8.1',
 			'http://freeglut.sourceforge.net/'
 		}
 	},
-	socket={
-		category='03. Basic OS',
-		tagline='networking support',
+	libb64={
+		category='07. Internet Formats',
+		tagline='base64 encoding & decoding',
 		modules={
-			socket={
+			libb64={
 				source_link={
 					'source',
-					'https://github.com/luapower/socket/blob/master/socket.lua'
+					'https://github.com/luapower/libb64/blob/master/libb64.lua'
 				},
 				pdep_links={
 				},
 				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					}
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/libb64/blob/master/libb64_test.lua'
 				}
 			}
 		},
 		link={
-			'socket',
-			'socket.html'
+			'libb64',
+			'libb64.html'
 		},
 		platforms={
+			mingw32=true,
 			linux32=true,
-			linux64=true,
+			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='MIT',
-		type='Lua/C',
-		git_tag='r4',
-		name='socket',
+		name='libb64',
+		type='Lua+ffi',
+		git_tag='r2',
+		c_license='PD',
 		c_link={
-			'LuaSocket 3.0-rc1',
-			'https://github.com/diegonehab/luasocket'
+			'libb64 1.2',
+			'http://libb64.sourceforge.net/'
 		}
 	},
 	libmariadb={
@@ -1342,21 +1350,21 @@ return {
 		},
 		platforms={
 			mingw64=true,
-			linux64=true,
+			mingw32=true,
 			linux32=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='LGPL',
+		name='libmariadb',
 		type='C',
 		git_tag='r1',
-		name='libmariadb',
+		c_license='LGPL',
 		c_link={
 			'MariaDB-Client 1.0.0',
 			'https://downloads.mariadb.org/client-native/'
 		}
 	},
 	nw={
-		type='Lua+ffi',
+		category='Other',
 		link={
 			'nw',
 			'nw.html'
@@ -1365,9 +1373,9 @@ return {
 			mingw64=true,
 			mingw32=true
 		},
-		git_tag='dev',
-		category='Other',
 		tagline='native widgets',
+		type='Lua+ffi',
+		git_tag='dev',
 		name='nw',
 		modules={
 			nw={
@@ -1407,16 +1415,16 @@ return {
 		}
 	},
 	bitmap={
-		category='25. Images',
+		type='Lua+ffi',
 		link={
 			'bitmap',
 			'bitmap.html'
 		},
 		platforms={
 		},
-		tagline='in-memory bitmaps',
-		type='Lua+ffi',
 		git_tag='r3',
+		category='25. Images',
+		tagline='in-memory bitmaps',
 		name='bitmap',
 		modules={
 			bitmap={
@@ -1499,34 +1507,34 @@ return {
 			'genx.html'
 		},
 		platforms={
-			linux64=true,
+			mingw32=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='MIT',
+		name='genx',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='genx',
+		c_license='MIT',
 		c_link={
 			'genx beta5',
 			'http://www.tbray.org/ongoing/When/200x/2004/02/20/GenxStatus'
 		}
 	},
 	tuple={
-		category='01. Basic tools',
+		type='Lua',
 		link={
 			'tuple',
 			'tuple.html'
 		},
 		platforms={
 		},
-		tagline='real tuples',
-		type='Lua',
 		git_tag='r2',
+		category='01. Basic tools',
+		tagline='real tuples',
 		name='tuple',
 		modules={
 			tuple={
@@ -1545,60 +1553,33 @@ return {
 			}
 		}
 	},
-	cairo={
-		category='15. 2D Graphics',
-		tagline='cairo graphics engine',
-		modules={
-			cairo={
-				source_link={
-					'source',
-					'https://github.com/luapower/cairo/blob/master/cairo.lua'
-				},
-				pdep_links={
-					{
-						'freetype',
-						'freetype.html'
-					},
-					{
-						'libpng',
-						'libpng.html'
-					},
-					{
-						'pixman',
-						'pixman.html'
-					},
-					{
-						'zlib',
-						'zlib.html'
-					}
-				},
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					}
-				}
-			}
-		},
+	coro={
+		category='01. Basic tools',
 		link={
-			'cairo',
-			'cairo.html'
+			'coro',
+			'coro.html'
 		},
 		platforms={
-			linux32=true,
-			mingw32=true,
-			mingw64=true,
-			osx32=true,
-			osx64=true,
-			linux64=true
 		},
-		c_license='LGPL',
-		type='Lua+ffi',
-		git_tag='r2',
-		name='cairo',
-		c_link={
-			'cairo 1.12.16',
-			'http://cairographics.org/releases/'
+		tagline='symmetric coroutines',
+		type='Lua',
+		git_tag='r1',
+		name='coro',
+		modules={
+			coro={
+				source_link={
+					'source',
+					'https://github.com/luapower/coro/blob/master/coro.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/coro/blob/master/coro_test.lua'
+				}
+			}
 		}
 	},
 	lfs={
@@ -1622,23 +1603,23 @@ return {
 		},
 		platforms={
 			linux32=true,
-			linux64=true,
+			mingw32=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='MIT',
+		name='lfs',
 		type='Lua/C',
 		git_tag='r3',
-		name='lfs',
+		c_license='MIT',
 		c_link={
 			'LuaFileSystem 1.6.2',
 			'https://github.com/keplerproject/luafilesystem.git'
 		}
 	},
 	winapi={
-		type='Lua+ffi',
+		category='Other',
 		link={
 			'winapi',
 			'winapi.html'
@@ -1646,9 +1627,9 @@ return {
 		platforms={
 			mingw32=true
 		},
-		git_tag='r2',
-		category='Other',
 		tagline='windows & widgets',
+		type='Lua+ffi',
+		git_tag='r2',
 		name='winapi',
 		modules={
 			winapi={
@@ -1711,34 +1692,34 @@ return {
 			'hpdf.html'
 		},
 		platforms={
-			mingw32=true,
+			linux64=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			linux64=true
+			mingw32=true
 		},
-		c_license='ZLIB/LIBPNG',
+		name='hpdf',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='hpdf',
+		c_license='ZLIB/LIBPNG',
 		c_link={
 			'libharu 2.3.0RC3',
 			'http://libharu.org/'
 		}
 	},
 	box2d={
-		category='29. GUI',
+		type='Lua',
 		link={
 			'box2d',
 			'box2d.html'
 		},
 		platforms={
 		},
-		tagline='rectangle math',
-		type='Lua',
 		git_tag='r2',
+		category='29. GUI',
+		tagline='rectangle math',
 		name='box2d',
 		modules={
 			box2d={
@@ -1763,25 +1744,25 @@ return {
 			'pixman.html'
 		},
 		platforms={
-			linux64=true,
+			mingw32=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			mingw32=true
+			linux64=true
 		},
-		c_license='MIT',
+		name='pixman',
 		type='C',
 		git_tag='r2',
-		name='pixman',
+		c_license='MIT',
 		c_link={
 			'pixman 0.32.4',
 			'http://cairographics.org/releases/'
 		}
 	},
 	cplayer={
-		type='Lua+ffi',
+		category='25. GUI',
 		link={
 			'cplayer',
 			'cplayer.html'
@@ -1789,9 +1770,9 @@ return {
 		platforms={
 			mingw32=true
 		},
-		git_tag='dev',
-		category='25. GUI',
 		tagline='procedural graphics & IMGUI toolkit',
+		type='Lua+ffi',
+		git_tag='dev',
 		name='cplayer',
 		modules={
 			cplayer={
@@ -1862,22 +1843,79 @@ return {
 			}
 		}
 	},
-	path2d={
+	cairo={
+		category='15. 2D Graphics',
+		tagline='cairo graphics engine',
+		modules={
+			cairo={
+				source_link={
+					'source',
+					'https://github.com/luapower/cairo/blob/master/cairo.lua'
+				},
+				pdep_links={
+					{
+						'freetype',
+						'freetype.html'
+					},
+					{
+						'libpng',
+						'libpng.html'
+					},
+					{
+						'pixman',
+						'pixman.html'
+					},
+					{
+						'zlib',
+						'zlib.html'
+					}
+				},
+				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					}
+				}
+			}
+		},
 		link={
-			'path2d',
-			'https://github.com/luapower/path2d'
+			'cairo',
+			'cairo.html'
+		},
+		platforms={
+			linux32=true,
+			linux64=true,
+			mingw64=true,
+			osx32=true,
+			osx64=true,
+			mingw32=true
+		},
+		name='cairo',
+		type='Lua+ffi',
+		git_tag='r2',
+		c_license='LGPL',
+		c_link={
+			'cairo 1.12.16',
+			'http://cairographics.org/releases/'
+		}
+	},
+	utf8={
+		category='17. Text Processing',
+		link={
+			'utf8',
+			'utf8.html'
 		},
 		platforms={
 		},
+		tagline='UTF-8 in Lua',
 		type='Lua',
-		category='Other',
 		git_tag='dev',
-		name='path2d',
+		name='utf8',
 		modules={
-			path_bezier3={
+			utf8={
 				source_link={
 					'source',
-					'https://github.com/luapower/path2d/blob/master/path_bezier3.lua'
+					'https://github.com/luapower/utf8/blob/master/utf8.lua'
 				},
 				pdep_links={
 					{
@@ -1891,9 +1929,797 @@ return {
 						'glue.html'
 					}
 				},
+				test_link={
+					'test',
+					'https://github.com/luapower/utf8/blob/master/utf8_test.lua'
+				}
+			}
+		}
+	},
+	chipmunk={
+		category='33. Motion',
+		tagline='chipmunk physics engine',
+		modules={
+			chipmunk={
+				source_link={
+					'source',
+					'https://github.com/luapower/chipmunk/blob/master/chipmunk.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					}
+				},
 				demo_link={
 					'demo',
-					'https://github.com/luapower/path2d/blob/master/path_bezier3_demo.lua'
+					'https://github.com/luapower/chipmunk/blob/master/chipmunk_demo.lua'
+				}
+			}
+		},
+		link={
+			'chipmunk',
+			'chipmunk.html'
+		},
+		platforms={
+			linux64=true,
+			linux32=true,
+			['mingw64-from-win32']=true,
+			mingw64=true,
+			osx32=true,
+			osx64=true,
+			mingw32=true
+		},
+		name='chipmunk',
+		type='Lua+ffi',
+		git_tag='dev',
+		c_license='MIT',
+		c_link={
+			'chipmunk2D 6.2.1',
+			'http://chipmunk-physics.net/'
+		}
+	},
+	wluajit={
+		category='37. Support Packages',
+		tagline='luajit no-console wrapper',
+		modules={
+		},
+		link={
+			'wluajit',
+			'wluajit.html'
+		},
+		platforms={
+			mingw64=true,
+			mingw32=true
+		},
+		name='wluajit',
+		type='C',
+		git_tag='r2',
+		c_license='MIT',
+		c_link={
+			'wluajit 1.0',
+			'https://github.com/LuaDist/luajit'
+		}
+	},
+	stdc={
+		link={
+			'stdc',
+			'https://github.com/luapower/stdc'
+		},
+		platforms={
+		},
+		category='Other',
+		type='Lua+ffi',
+		git_tag='r1',
+		name='stdc',
+		modules={
+		}
+	},
+	svg_parser={
+		category='15. 2D Graphics',
+		link={
+			'svg_parser',
+			'svg_parser.html'
+		},
+		platforms={
+		},
+		tagline='SVG parser',
+		type='Lua+ffi',
+		git_tag='dev',
+		name='svg_parser',
+		modules={
+			svg_parser={
+				source_link={
+					'source',
+					'https://github.com/luapower/svg_parser/blob/master/svg_parser.lua'
+				},
+				pdep_links={
+					{
+						'expat',
+						'expat.html'
+					},
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'lpeg',
+						'lpeg.html'
+					}
+				},
+				mdep_links={
+					{
+						'expat',
+						'expat.html'
+					},
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'lpeg.re',
+						'https://github.com/luapower/lpeg/blob/master/lpeg/re.lua'
+					}
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/svg_parser/blob/master/svg_parser_test.lua'
+				}
+			}
+		}
+	},
+	libvlc={
+		category='33. Motion',
+		tagline='VLC media player',
+		modules={
+		},
+		link={
+			'libvlc',
+			'libvlc.html'
+		},
+		platforms={
+		},
+		name='libvlc',
+		type='Lua+ffi',
+		git_tag='dev',
+		c_license='LGPL',
+		c_link={
+			'libvlc 2.0.5',
+			'http://www.videolan.org/vlc/libvlc.html'
+		}
+	},
+	color={
+		category='31. Colors',
+		link={
+			'color',
+			'color.html'
+		},
+		platforms={
+		},
+		tagline='color computation',
+		type='Lua',
+		git_tag='r1',
+		name='color',
+		modules={
+			color={
+				source_link={
+					'source',
+					'https://github.com/luapower/color/blob/master/color.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/color/blob/master/color_demo.lua'
+				}
+			}
+		}
+	},
+	lanes={
+		category='03. Basic OS',
+		tagline='threads support',
+		modules={
+			lanes={
+				source_link={
+					'source',
+					'https://github.com/luapower/lanes/blob/master/lanes.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+				}
+			}
+		},
+		link={
+			'lanes',
+			'lanes.html'
+		},
+		platforms={
+			linux32=true,
+			linux64=true,
+			mingw64=true,
+			osx32=true,
+			osx64=true,
+			mingw32=true
+		},
+		name='lanes',
+		type='Lua/C',
+		git_tag='r4',
+		c_license='MIT',
+		c_link={
+			'LuaLanes 3.9.3',
+			'https://github.com/LuaLanes/lanes'
+		}
+	},
+	lpeg2={
+		category='Other',
+		tagline='parsing expression grammars',
+		modules={
+			lpeg2={
+				pdep_links={
+				},
+				mdep_links={
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/lpeg2/blob/master/lpeg2_test.lua'
+				}
+			}
+		},
+		link={
+			'lpeg2',
+			'lpeg2.html'
+		},
+		platforms={
+			linux32=true,
+			mingw32=true,
+			mingw64=true,
+			osx64=true,
+			osx32=true,
+			linux64=true
+		},
+		name='lpeg2',
+		type='Lua/C',
+		git_tag='r1',
+		c_license='MIT',
+		c_link={
+			'lpeg 0.12',
+			'http://www.inf.puc-rio.br/~roberto/lpeg/'
+		}
+	},
+	harfbuzz={
+		category='17. Text Processing',
+		tagline='complex text shaping',
+		modules={
+			harfbuzz={
+				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					},
+					{
+						'freetype_h',
+						'https://github.com/luapower/freetype/blob/master/freetype_h.lua'
+					}
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/harfbuzz/blob/master/harfbuzz_demo.lua'
+				},
+				source_link={
+					'source',
+					'https://github.com/luapower/harfbuzz/blob/master/harfbuzz.lua'
+				},
+				pdep_links={
+					{
+						'freetype',
+						'freetype.html'
+					},
+					{
+						'ucdn',
+						'ucdn.html'
+					}
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/harfbuzz/blob/master/harfbuzz_test.lua'
+				}
+			}
+		},
+		link={
+			'harfbuzz',
+			'harfbuzz.html'
+		},
+		platforms={
+			linux64=true,
+			linux32=true,
+			['mingw64-from-win32']=true,
+			mingw64=true,
+			osx64=true,
+			osx32=true,
+			mingw32=true
+		},
+		name='harfbuzz',
+		type='Lua+ffi',
+		git_tag='r2',
+		c_license='MIT',
+		c_link={
+			'harfbuzz 0.9.25',
+			'http://www.freedesktop.org/software/harfbuzz/release/'
+		}
+	},
+	lexer={
+		category='33. Code Editing',
+		tagline='scintillua lexer',
+		modules={
+			lexer={
+				source_link={
+					'source',
+					'https://github.com/luapower/lexer/blob/master/lexer.lua'
+				},
+				pdep_links={
+					{
+						'lpeg',
+						'lpeg.html'
+					}
+				},
+				mdep_links={
+					{
+						'lpeg',
+						'lpeg.html'
+					}
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/lexer/blob/master/lexer_test.lua'
+				}
+			}
+		},
+		link={
+			'lexer',
+			'lexer.html'
+		},
+		platforms={
+		},
+		name='lexer',
+		type='Lua',
+		git_tag='r1',
+		c_license='MIT',
+		c_link={
+			'scintillua 3.5.0-1',
+			'http://foicica.com/scintillua/download'
+		}
+	},
+	minizip={
+		category='05. Hashing & Compression',
+		tagline='ZIP reader & writer',
+		modules={
+			minizip={
+				source_link={
+					'source',
+					'https://github.com/luapower/minizip/blob/master/minizip.lua'
+				},
+				pdep_links={
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'zlib',
+						'zlib.html'
+					}
+				},
+				mdep_links={
+					{
+						'bit',
+						'http://luajit.org/extensions.html'
+					},
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					},
+					{
+						'glue',
+						'glue.html'
+					}
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/minizip/blob/master/minizip_test.lua'
+				}
+			}
+		},
+		link={
+			'minizip',
+			'minizip.html'
+		},
+		platforms={
+			mingw32=true,
+			linux32=true,
+			['mingw64-from-win32']=true,
+			mingw64=true,
+			osx32=true,
+			osx64=true,
+			linux64=true
+		},
+		name='minizip',
+		type='Lua+ffi',
+		git_tag='r2',
+		c_license='MIT',
+		c_link={
+			'minizip 1.1',
+			'http://www.winimage.com/zLibDll/minizip.html'
+		}
+	},
+	giflib={
+		category='25. Images',
+		tagline='GIF reader',
+		modules={
+			giflib={
+				source_link={
+					'source',
+					'https://github.com/luapower/giflib/blob/master/giflib.lua'
+				},
+				pdep_links={
+					{
+						'glue',
+						'glue.html'
+					}
+				},
+				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					},
+					{
+						'glue',
+						'glue.html'
+					}
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/giflib/blob/master/giflib_demo.lua'
+				}
+			}
+		},
+		link={
+			'giflib',
+			'giflib.html'
+		},
+		platforms={
+			linux64=true,
+			linux32=true,
+			['mingw64-from-win32']=true,
+			mingw64=true,
+			osx32=true,
+			osx64=true,
+			mingw32=true
+		},
+		c_license='MIT',
+		type='Lua+ffi',
+		git_tag='r3',
+		name='giflib',
+		c_link={
+			'giflib 5.0',
+			'http://sourceforge.net/projects/giflib/'
+		}
+	},
+	libunibreak={
+		category='17. Text Processing',
+		tagline='unicode line breaking',
+		modules={
+			libunibreak={
+				source_link={
+					'source',
+					'https://github.com/luapower/libunibreak/blob/master/libunibreak.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					}
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/libunibreak/blob/master/libunibreak_demo.lua'
+				}
+			}
+		},
+		link={
+			'libunibreak',
+			'libunibreak.html'
+		},
+		platforms={
+			mingw32=true,
+			linux32=true,
+			['mingw64-from-win32']=true,
+			mingw64=true,
+			osx32=true,
+			osx64=true,
+			linux64=true
+		},
+		name='libunibreak',
+		type='Lua+ffi',
+		git_tag='r2',
+		c_license='ZLIB/LIBPNG',
+		c_link={
+			'libunibreak 1.0',
+			'http://vimgadgets.sourceforge.net/libunibreak/'
+		}
+	},
+	dynasm={
+		category='01. Basic tools',
+		tagline='DynASM with Lua mode',
+		modules={
+			dynasm={
+				source_link={
+					'source',
+					'https://github.com/luapower/dynasm/blob/master/dynasm.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/dynasm/blob/master/dynasm_demo.lua'
+				}
+			}
+		},
+		link={
+			'dynasm',
+			'dynasm.html'
+		},
+		platforms={
+			mingw32=true,
+			linux32=true,
+			['mingw64-from-win32']=true,
+			mingw64=true,
+			osx64=true,
+			osx32=true,
+			linux64=true
+		},
+		c_license='MIT',
+		type='Lua+ffi',
+		git_tag='beta1',
+		name='dynasm',
+		c_link={
+			'DynASM 1.3.0',
+			'http://luajit.org/dynasm.html'
+		}
+	},
+	unit={
+		link={
+			'unit',
+			'https://github.com/luapower/unit'
+		},
+		platforms={
+		},
+		category='Other',
+		type='Lua+ffi',
+		git_tag='dev',
+		name='unit',
+		modules={
+		}
+	},
+	fbclient={
+		category='09. Databases',
+		link={
+			'fbclient',
+			'fbclient.html'
+		},
+		platforms={
+		},
+		tagline='firebird database client',
+		type='Lua+ffi',
+		git_tag='dev',
+		name='fbclient',
+		modules={
+			fbclient={
+				source_link={
+					'source',
+					'https://github.com/luapower/fbclient/blob/master/fbclient.lua'
+				},
+				pdep_links={
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'struct',
+						'struct.html'
+					}
+				},
+				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					},
+					{
+						'glue',
+						'glue.html'
+					},
+					{
+						'struct',
+						'struct.html'
+					}
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/fbclient/blob/master/fbclient_test.lua'
+				}
+			}
+		}
+	},
+	easing={
+		category='33. Motion',
+		link={
+			'easing',
+			'easing.html'
+		},
+		platforms={
+		},
+		tagline='easing functions',
+		type='Lua',
+		git_tag='r1',
+		name='easing',
+		modules={
+			easing={
+				source_link={
+					'source',
+					'https://github.com/luapower/easing/blob/master/easing.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/easing/blob/master/easing_demo.lua'
+				}
+			}
+		}
+	},
+	socket={
+		category='03. Basic OS',
+		tagline='networking support',
+		modules={
+			socket={
+				source_link={
+					'source',
+					'https://github.com/luapower/socket/blob/master/socket.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+				}
+			}
+		},
+		link={
+			'socket',
+			'socket.html'
+		},
+		platforms={
+			linux32=true,
+			mingw32=true,
+			mingw64=true,
+			osx64=true,
+			osx32=true,
+			linux64=true
+		},
+		name='socket',
+		type='Lua/C',
+		git_tag='r4',
+		c_license='MIT',
+		c_link={
+			'LuaSocket 3.0-rc1',
+			'https://github.com/diegonehab/luasocket'
+		}
+	},
+	clipper={
+		category='15. 2D Graphics',
+		tagline='polygon clipping',
+		modules={
+			clipper={
+				source_link={
+					'source',
+					'https://github.com/luapower/clipper/blob/master/clipper.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					}
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/clipper/blob/master/clipper_demo.lua'
+				}
+			}
+		},
+		link={
+			'clipper',
+			'clipper.html'
+		},
+		platforms={
+			linux64=true,
+			linux32=true,
+			['mingw64-from-win32']=true,
+			mingw64=true,
+			osx32=true,
+			osx64=true,
+			mingw32=true
+		},
+		name='clipper',
+		type='Lua+ffi',
+		git_tag='r2',
+		c_license='Boost',
+		c_link={
+			'Clipper HEAD-2013-05-22',
+			'http://sourceforge.net/p/polyclipping/code/HEAD/tree/trunk/cpp/'
+		}
+	},
+	dlist={
+		category='01. Basic tools',
+		link={
+			'dlist',
+			'dlist.html'
+		},
+		platforms={
+		},
+		tagline='doubly linked lists',
+		type='Lua',
+		git_tag='r1',
+		name='dlist',
+		modules={
+			dlist={
+				source_link={
+					'source',
+					'https://github.com/luapower/dlist/blob/master/dlist.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/dlist/blob/master/dlist_test.lua'
+				}
+			}
+		}
+	},
+	path2d={
+		link={
+			'path2d',
+			'https://github.com/luapower/path2d'
+		},
+		platforms={
+		},
+		category='Other',
+		type='Lua',
+		git_tag='dev',
+		name='path2d',
+		modules={
+			path_shapes={
+				source_link={
+					'source',
+					'https://github.com/luapower/path2d/blob/master/path_shapes.lua'
+				},
+				pdep_links={
+				},
+				mdep_links={
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/path2d/blob/master/path_shapes_demo.lua'
 				}
 			},
 			path_arc={
@@ -2000,18 +2826,26 @@ return {
 					'https://github.com/luapower/path2d/blob/master/path_line_demo.lua'
 				}
 			},
-			path_shapes={
+			path_bezier3={
 				source_link={
 					'source',
-					'https://github.com/luapower/path2d/blob/master/path_shapes.lua'
+					'https://github.com/luapower/path2d/blob/master/path_bezier3.lua'
 				},
 				pdep_links={
+					{
+						'glue',
+						'glue.html'
+					}
 				},
 				mdep_links={
+					{
+						'glue',
+						'glue.html'
+					}
 				},
 				demo_link={
 					'demo',
-					'https://github.com/luapower/path2d/blob/master/path_shapes_demo.lua'
+					'https://github.com/luapower/path2d/blob/master/path_bezier3_demo.lua'
 				}
 			},
 			path={
@@ -2077,16 +2911,16 @@ return {
 		}
 	},
 	pp={
-		type='Lua',
+		category='01. Basic tools',
 		link={
 			'pp',
 			'pp.html'
 		},
 		platforms={
 		},
-		git_tag='r2',
-		category='01. Basic tools',
 		tagline='table serialization',
+		type='Lua',
+		git_tag='r2',
 		name='pp',
 		modules={
 			pp={
@@ -2105,82 +2939,17 @@ return {
 			}
 		}
 	},
-	dlist={
-		type='Lua',
-		link={
-			'dlist',
-			'dlist.html'
-		},
-		platforms={
-		},
-		git_tag='r1',
-		category='01. Basic tools',
-		tagline='doubly linked lists',
-		name='dlist',
-		modules={
-			dlist={
-				source_link={
-					'source',
-					'https://github.com/luapower/dlist/blob/master/dlist.lua'
-				},
-				pdep_links={
-				},
-				mdep_links={
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/dlist/blob/master/dlist_test.lua'
-				}
-			}
-		}
-	},
-	wluajit={
-		category='37. Support Packages',
-		tagline='luajit no-console wrapper',
-		modules={
-		},
-		link={
-			'wluajit',
-			'wluajit.html'
-		},
-		platforms={
-			mingw64=true,
-			mingw32=true
-		},
-		c_license='MIT',
-		type='C',
-		git_tag='r2',
-		name='wluajit',
-		c_link={
-			'wluajit 1.0',
-			'https://github.com/LuaDist/luajit'
-		}
-	},
-	stdc={
-		link={
-			'stdc',
-			'https://github.com/luapower/stdc'
-		},
-		platforms={
-		},
-		type='Lua+ffi',
-		category='Other',
-		git_tag='r1',
-		name='stdc',
-		modules={
-		}
-	},
 	hmac={
-		type='Lua+ffi',
+		category='05. Hashing & Compression',
 		link={
 			'hmac',
 			'hmac.html'
 		},
 		platforms={
 		},
-		git_tag='r1',
-		category='05. Hashing & Compression',
 		tagline='HMAC hashing',
+		type='Lua+ffi',
+		git_tag='r1',
 		name='hmac',
 		modules={
 			hmac={
@@ -2211,6 +2980,42 @@ return {
 			}
 		}
 	},
+	lpeg={
+		category='01. Basic tools',
+		tagline='parsing expression grammars',
+		modules={
+			lpeg={
+				pdep_links={
+				},
+				mdep_links={
+				},
+				test_link={
+					'test',
+					'https://github.com/luapower/lpeg/blob/master/lpeg_test.lua'
+				}
+			}
+		},
+		link={
+			'lpeg',
+			'lpeg.html'
+		},
+		platforms={
+			linux32=true,
+			mingw32=true,
+			mingw64=true,
+			osx64=true,
+			osx32=true,
+			linux64=true
+		},
+		name='lpeg',
+		type='Lua/C',
+		git_tag='r1',
+		c_license='MIT',
+		c_link={
+			'lpeg 0.12',
+			'http://www.inf.puc-rio.br/~roberto/lpeg/lpeg-0.12.tar.gz'
+		}
+	},
 	['lua-headers']={
 		category='37. Support Packages',
 		tagline='Lua C API headers',
@@ -2222,74 +3027,40 @@ return {
 		},
 		platforms={
 		},
-		c_license='MIT',
+		name='lua-headers',
 		type='C',
 		git_tag='r1',
-		name='lua-headers',
+		c_license='MIT',
 		c_link={
 			'lua-headers 5.1.5',
 			'http://www.lua.org/'
 		}
 	},
-	lpeg2={
-		category='Other',
-		tagline='parsing expression grammars',
-		modules={
-			lpeg2={
-				pdep_links={
-				},
-				mdep_links={
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/lpeg2/blob/master/lpeg2_test.lua'
-				}
-			}
-		},
+	mysql={
+		category='11. Databases',
 		link={
-			'lpeg2',
-			'lpeg2.html'
+			'mysql',
+			'mysql.html'
 		},
 		platforms={
-			linux32=true,
-			linux64=true,
-			mingw64=true,
-			osx64=true,
-			osx32=true,
-			mingw32=true
 		},
-		c_license='MIT',
-		type='Lua/C',
-		git_tag='r1',
-		name='lpeg2',
-		c_link={
-			'lpeg 0.12',
-			'http://www.inf.puc-rio.br/~roberto/lpeg/'
-		}
-	},
-	objc={
-		category='Other',
-		link={
-			'objc',
-			'objc.html'
-		},
-		platforms={
-			osx64=true,
-			osx32=true
-		},
-		tagline='Obj-C & Cocoa bridge',
+		tagline='mysql database client',
 		type='Lua+ffi',
-		git_tag='r6',
-		name='objc',
+		git_tag='r2',
+		name='mysql',
 		modules={
-			objc={
+			mysql={
 				source_link={
 					'source',
-					'https://github.com/luapower/objc/blob/master/objc.lua'
+					'https://github.com/luapower/mysql/blob/master/mysql.lua'
 				},
 				pdep_links={
 				},
 				mdep_links={
+					{
+						'bit',
+						'http://luajit.org/extensions.html'
+					},
 					{
 						'ffi',
 						'http://luajit.org/ext_ffi.html'
@@ -2297,217 +3068,94 @@ return {
 				},
 				test_link={
 					'test',
-					'https://github.com/luapower/objc/blob/master/objc_test.lua'
+					'https://github.com/luapower/mysql/blob/master/mysql_test.lua'
 				}
 			}
 		}
 	},
-	color={
-		type='Lua',
-		link={
-			'color',
-			'color.html'
-		},
-		platforms={
-		},
-		git_tag='r1',
-		category='31. Colors',
-		tagline='color computation',
-		name='color',
+	fribidi={
+		category='17. Text Processing',
+		tagline='unicode BiDi algorithm',
 		modules={
-			color={
+			fribidi={
 				source_link={
 					'source',
-					'https://github.com/luapower/color/blob/master/color.lua'
+					'https://github.com/luapower/fribidi/blob/master/fribidi.lua'
 				},
 				pdep_links={
 				},
 				mdep_links={
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/color/blob/master/color_demo.lua'
-				}
-			}
-		}
-	},
-	lexer={
-		category='33. Code Editing',
-		tagline='scintillua lexer',
-		modules={
-			lexer={
-				source_link={
-					'source',
-					'https://github.com/luapower/lexer/blob/master/lexer.lua'
-				},
-				pdep_links={
 					{
-						'lpeg',
-						'lpeg.html'
-					}
-				},
-				mdep_links={
-					{
-						'lpeg',
-						'lpeg.html'
-					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/lexer/blob/master/lexer_test.lua'
-				}
-			}
-		},
-		link={
-			'lexer',
-			'lexer.html'
-		},
-		platforms={
-		},
-		c_license='MIT',
-		type='Lua',
-		git_tag='r1',
-		name='lexer',
-		c_link={
-			'scintillua 3.5.0-1',
-			'http://foicica.com/scintillua/download'
-		}
-	},
-	obj_parser={
-		type='Lua+ffi',
-		link={
-			'obj_parser',
-			'obj_parser.html'
-		},
-		platforms={
-		},
-		git_tag='r1',
-		category='21. 3D Graphics',
-		tagline='wavefront OBJ parser',
-		name='obj_parser',
-		modules={
-			obj_parser={
-				source_link={
-					'source',
-					'https://github.com/luapower/obj_parser/blob/master/obj_parser.lua'
-				},
-				pdep_links={
-					{
-						'glue',
-						'glue.html'
-					}
-				},
-				mdep_links={
-					{
-						'glue',
-						'glue.html'
-					}
-				}
-			},
-			obj_loader={
-				source_link={
-					'source',
-					'https://github.com/luapower/obj_parser/blob/master/obj_loader.lua'
-				},
-				pdep_links={
-					{
-						'glue',
-						'glue.html'
+						'bit',
+						'http://luajit.org/extensions.html'
 					},
-					{
-						'stdc',
-						'https://github.com/luapower/stdc'
-					},
-					{
-						'tuple',
-						'tuple.html'
-					}
-				},
-				mdep_links={
 					{
 						'ffi',
 						'http://luajit.org/ext_ffi.html'
-					},
-					{
-						'glue',
-						'glue.html'
-					},
-					{
-						'stdio',
-						'https://github.com/luapower/stdc/blob/master/stdio.lua'
-					},
-					{
-						'tuple',
-						'tuple.html'
 					}
-				}
-			}
-		}
-	},
-	libvlc={
-		category='33. Motion',
-		tagline='VLC media player',
-		modules={
-		},
-		link={
-			'libvlc',
-			'libvlc.html'
-		},
-		platforms={
-		},
-		c_license='LGPL',
-		type='Lua+ffi',
-		git_tag='dev',
-		name='libvlc',
-		c_link={
-			'libvlc 2.0.5',
-			'http://www.videolan.org/vlc/libvlc.html'
-		}
-	},
-	vararg={
-		category='01. Basic tools',
-		tagline='vararg manipulation',
-		modules={
-			vararg={
-				pdep_links={
-				},
-				mdep_links={
 				},
 				test_link={
 					'test',
-					'https://github.com/luapower/vararg/blob/master/vararg_test.lua'
+					'https://github.com/luapower/fribidi/blob/master/fribidi_test.lua'
 				}
 			}
 		},
 		link={
-			'vararg',
-			'vararg.html'
+			'fribidi',
+			'fribidi.html'
 		},
 		platforms={
-			linux32=true,
 			mingw32=true,
+			linux32=true,
+			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
 			linux64=true
 		},
-		c_license='MIT',
-		type='Lua/C',
-		git_tag='r3',
-		name='vararg',
+		name='fribidi',
+		type='Lua+ffi',
+		git_tag='dev',
+		c_license='LGPL',
 		c_link={
-			'vararg 1.0.1',
-			'http://www.tecgraf.puc-rio.br/~maia/lua/vararg/'
+			'FriBiDi HEAD-2013-06-08',
+			'git://anongit.freedesktop.org/fribidi/fribidi'
 		}
 	},
-	libunibreak={
-		category='17. Text Processing',
-		tagline='unicode line breaking',
+	libmysql={
+		category='Other',
+		tagline='MySQL client library',
 		modules={
-			libunibreak={
+		},
+		link={
+			'libmysql',
+			'libmysql.html'
+		},
+		platforms={
+			linux32=true,
+			linux64=true,
+			mingw64=true,
+			osx64=true,
+			osx32=true,
+			mingw32=true
+		},
+		name='libmysql',
+		type='C',
+		git_tag='r1',
+		c_license='GPL',
+		c_link={
+			'libmysql 6.1.1',
+			'http://downloads.mysql.com/archives/c-c/'
+		}
+	},
+	hunspell={
+		category='17. Text Processing',
+		tagline='spell checking',
+		modules={
+			hunspell={
 				source_link={
 					'source',
-					'https://github.com/luapower/libunibreak/blob/master/libunibreak.lua'
+					'https://github.com/luapower/hunspell/blob/master/hunspell.lua'
 				},
 				pdep_links={
 				},
@@ -2516,87 +3164,91 @@ return {
 						'ffi',
 						'http://luajit.org/ext_ffi.html'
 					}
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/libunibreak/blob/master/libunibreak_demo.lua'
 				}
 			}
 		},
 		link={
-			'libunibreak',
-			'libunibreak.html'
+			'hunspell',
+			'hunspell.html'
 		},
 		platforms={
 			linux64=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
-			osx32=true,
 			osx64=true,
+			osx32=true,
 			mingw32=true
 		},
-		c_license='ZLIB/LIBPNG',
+		name='hunspell',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='libunibreak',
+		c_license='MPL',
 		c_link={
-			'libunibreak 1.0',
-			'http://vimgadgets.sourceforge.net/libunibreak/'
+			'hunspell 1.3.2',
+			'http://hunspell.sourceforge.net/'
 		}
 	},
-	dynasm={
-		category='01. Basic tools',
-		tagline='DynASM with Lua mode',
+	freetype={
+		category='19. Text Rasterization',
+		tagline='freetype font engine',
 		modules={
-			dynasm={
+			freetype={
+				mdep_links={
+					{
+						'ffi',
+						'http://luajit.org/ext_ffi.html'
+					}
+				},
+				demo_link={
+					'demo',
+					'https://github.com/luapower/freetype/blob/master/freetype_demo.lua'
+				},
 				source_link={
 					'source',
-					'https://github.com/luapower/dynasm/blob/master/dynasm.lua'
+					'https://github.com/luapower/freetype/blob/master/freetype.lua'
 				},
 				pdep_links={
 				},
-				mdep_links={
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/dynasm/blob/master/dynasm_demo.lua'
+				test_link={
+					'test',
+					'https://github.com/luapower/freetype/blob/master/freetype_test.lua'
 				}
 			}
 		},
 		link={
-			'dynasm',
-			'dynasm.html'
+			'freetype',
+			'freetype.html'
 		},
 		platforms={
-			linux64=true,
+			mingw32=true,
 			linux32=true,
 			['mingw64-from-win32']=true,
 			mingw64=true,
 			osx64=true,
 			osx32=true,
-			mingw32=true
+			linux64=true
 		},
-		name='dynasm',
+		name='freetype',
 		type='Lua+ffi',
-		git_tag='beta1',
-		c_license='MIT',
+		git_tag='r2',
+		c_license='FTL/BSD',
 		c_link={
-			'DynASM 1.3.0',
-			'http://luajit.org/dynasm.html'
+			'freetype 2.5.0.1',
+			'http://download.savannah.gnu.org/releases/freetype/'
 		}
 	},
 	cbframe={
-		category='03. FFI tools',
+		type='Lua+ffi',
 		link={
 			'cbframe',
 			'cbframe.html'
 		},
 		platforms={
 		},
-		tagline='callback frames for luajit',
-		type='Lua+ffi',
 		git_tag='dev',
+		category='03. FFI tools',
+		tagline='callback frames for luajit',
 		name='cbframe',
 		modules={
 			cbframe={
@@ -2639,206 +3291,6 @@ return {
 			}
 		}
 	},
-	fbclient={
-		type='Lua+ffi',
-		link={
-			'fbclient',
-			'fbclient.html'
-		},
-		platforms={
-		},
-		git_tag='dev',
-		category='09. Databases',
-		tagline='firebird database client',
-		name='fbclient',
-		modules={
-			fbclient={
-				source_link={
-					'source',
-					'https://github.com/luapower/fbclient/blob/master/fbclient.lua'
-				},
-				pdep_links={
-					{
-						'glue',
-						'glue.html'
-					},
-					{
-						'struct',
-						'struct.html'
-					}
-				},
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					},
-					{
-						'glue',
-						'glue.html'
-					},
-					{
-						'struct',
-						'struct.html'
-					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/fbclient/blob/master/fbclient_test.lua'
-				}
-			}
-		}
-	},
-	nanojpeg={
-		category='23. Images',
-		tagline='JPEG reader',
-		modules={
-			nanojpeg={
-				source_link={
-					'source',
-					'https://github.com/luapower/nanojpeg/blob/master/nanojpeg.lua'
-				},
-				pdep_links={
-					{
-						'glue',
-						'glue.html'
-					},
-					{
-						'stdc',
-						'https://github.com/luapower/stdc'
-					}
-				},
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					},
-					{
-						'glue',
-						'glue.html'
-					},
-					{
-						'stdio',
-						'https://github.com/luapower/stdc/blob/master/stdio.lua'
-					}
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/nanojpeg/blob/master/nanojpeg_demo.lua'
-				}
-			}
-		},
-		link={
-			'nanojpeg',
-			'nanojpeg.html'
-		},
-		platforms={
-			linux64=true,
-			linux32=true,
-			['mingw64-from-win32']=true,
-			mingw64=true,
-			osx64=true,
-			osx32=true,
-			mingw32=true
-		},
-		c_license='BSD',
-		type='Lua+ffi',
-		git_tag='r2',
-		name='nanojpeg',
-		c_link={
-			'nanojpeg 1.3',
-			'http://keyj.emphy.de/nanojpeg/'
-		}
-	},
-	libb64={
-		category='07. Internet Formats',
-		tagline='base64 encoding & decoding',
-		modules={
-			libb64={
-				source_link={
-					'source',
-					'https://github.com/luapower/libb64/blob/master/libb64.lua'
-				},
-				pdep_links={
-				},
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/libb64/blob/master/libb64_test.lua'
-				}
-			}
-		},
-		link={
-			'libb64',
-			'libb64.html'
-		},
-		platforms={
-			linux64=true,
-			linux32=true,
-			['mingw64-from-win32']=true,
-			mingw64=true,
-			osx64=true,
-			osx32=true,
-			mingw32=true
-		},
-		c_license='PD',
-		type='Lua+ffi',
-		git_tag='r2',
-		name='libb64',
-		c_link={
-			'libb64 1.2',
-			'http://libb64.sourceforge.net/'
-		}
-	},
-	clipper={
-		category='15. 2D Graphics',
-		tagline='polygon clipping',
-		modules={
-			clipper={
-				source_link={
-					'source',
-					'https://github.com/luapower/clipper/blob/master/clipper.lua'
-				},
-				pdep_links={
-				},
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					}
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/clipper/blob/master/clipper_demo.lua'
-				}
-			}
-		},
-		link={
-			'clipper',
-			'clipper.html'
-		},
-		platforms={
-			mingw32=true,
-			linux32=true,
-			['mingw64-from-win32']=true,
-			mingw64=true,
-			osx32=true,
-			osx64=true,
-			linux64=true
-		},
-		c_license='Boost',
-		type='Lua+ffi',
-		git_tag='r2',
-		name='clipper',
-		c_link={
-			'Clipper HEAD-2013-05-22',
-			'http://sourceforge.net/p/polyclipping/code/HEAD/tree/trunk/cpp/'
-		}
-	},
 	sg={
 		link={
 			'sg',
@@ -2846,8 +3298,8 @@ return {
 		},
 		platforms={
 		},
-		type='Lua+ffi',
 		category='Other',
+		type='Lua+ffi',
 		git_tag='dev',
 		name='sg',
 		modules={
@@ -3059,122 +3511,14 @@ return {
 			}
 		}
 	},
-	coro={
-		type='Lua',
-		link={
-			'coro',
-			'coro.html'
-		},
-		platforms={
-		},
-		git_tag='r1',
-		category='01. Basic tools',
-		tagline='symmetric coroutines',
-		name='coro',
+	nanojpeg={
+		category='23. Images',
+		tagline='JPEG reader',
 		modules={
-			coro={
+			nanojpeg={
 				source_link={
 					'source',
-					'https://github.com/luapower/coro/blob/master/coro.lua'
-				},
-				pdep_links={
-				},
-				mdep_links={
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/coro/blob/master/coro_test.lua'
-				}
-			}
-		}
-	},
-	easing={
-		type='Lua',
-		link={
-			'easing',
-			'easing.html'
-		},
-		platforms={
-		},
-		git_tag='r1',
-		category='33. Motion',
-		tagline='easing functions',
-		name='easing',
-		modules={
-			easing={
-				source_link={
-					'source',
-					'https://github.com/luapower/easing/blob/master/easing.lua'
-				},
-				pdep_links={
-				},
-				mdep_links={
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/easing/blob/master/easing_demo.lua'
-				}
-			}
-		}
-	},
-	unit={
-		link={
-			'unit',
-			'https://github.com/luapower/unit'
-		},
-		platforms={
-		},
-		type='Lua+ffi',
-		category='Other',
-		git_tag='dev',
-		name='unit',
-		modules={
-		}
-	},
-	lpeg={
-		category='01. Basic tools',
-		tagline='parsing expression grammars',
-		modules={
-			lpeg={
-				pdep_links={
-				},
-				mdep_links={
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/lpeg/blob/master/lpeg_test.lua'
-				}
-			}
-		},
-		link={
-			'lpeg',
-			'lpeg.html'
-		},
-		platforms={
-			linux32=true,
-			linux64=true,
-			mingw64=true,
-			osx64=true,
-			osx32=true,
-			mingw32=true
-		},
-		c_license='MIT',
-		type='Lua/C',
-		git_tag='r1',
-		name='lpeg',
-		c_link={
-			'lpeg 0.12',
-			'http://www.inf.puc-rio.br/~roberto/lpeg/lpeg-0.12.tar.gz'
-		}
-	},
-	minizip={
-		category='05. Hashing & Compression',
-		tagline='ZIP reader & writer',
-		modules={
-			minizip={
-				source_link={
-					'source',
-					'https://github.com/luapower/minizip/blob/master/minizip.lua'
+					'https://github.com/luapower/nanojpeg/blob/master/nanojpeg.lua'
 				},
 				pdep_links={
 					{
@@ -3182,15 +3526,11 @@ return {
 						'glue.html'
 					},
 					{
-						'zlib',
-						'zlib.html'
+						'stdc',
+						'https://github.com/luapower/stdc'
 					}
 				},
 				mdep_links={
-					{
-						'bit',
-						'http://luajit.org/extensions.html'
-					},
 					{
 						'ffi',
 						'http://luajit.org/ext_ffi.html'
@@ -3198,115 +3538,21 @@ return {
 					{
 						'glue',
 						'glue.html'
-					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/minizip/blob/master/minizip_test.lua'
-				}
-			}
-		},
-		link={
-			'minizip',
-			'minizip.html'
-		},
-		platforms={
-			linux64=true,
-			linux32=true,
-			['mingw64-from-win32']=true,
-			mingw64=true,
-			osx32=true,
-			osx64=true,
-			mingw32=true
-		},
-		c_license='MIT',
-		type='Lua+ffi',
-		git_tag='r2',
-		name='minizip',
-		c_link={
-			'minizip 1.1',
-			'http://www.winimage.com/zLibDll/minizip.html'
-		}
-	},
-	mysql={
-		type='Lua+ffi',
-		link={
-			'mysql',
-			'mysql.html'
-		},
-		platforms={
-		},
-		git_tag='r2',
-		category='11. Databases',
-		tagline='mysql database client',
-		name='mysql',
-		modules={
-			mysql={
-				source_link={
-					'source',
-					'https://github.com/luapower/mysql/blob/master/mysql.lua'
-				},
-				pdep_links={
-				},
-				mdep_links={
-					{
-						'bit',
-						'http://luajit.org/extensions.html'
 					},
 					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/mysql/blob/master/mysql_test.lua'
-				}
-			}
-		}
-	},
-	harfbuzz={
-		category='17. Text Processing',
-		tagline='complex text shaping',
-		modules={
-			harfbuzz={
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					},
-					{
-						'freetype_h',
-						'https://github.com/luapower/freetype/blob/master/freetype_h.lua'
+						'stdio',
+						'https://github.com/luapower/stdc/blob/master/stdio.lua'
 					}
 				},
 				demo_link={
 					'demo',
-					'https://github.com/luapower/harfbuzz/blob/master/harfbuzz_demo.lua'
-				},
-				source_link={
-					'source',
-					'https://github.com/luapower/harfbuzz/blob/master/harfbuzz.lua'
-				},
-				pdep_links={
-					{
-						'freetype',
-						'freetype.html'
-					},
-					{
-						'ucdn',
-						'ucdn.html'
-					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/harfbuzz/blob/master/harfbuzz_test.lua'
+					'https://github.com/luapower/nanojpeg/blob/master/nanojpeg_demo.lua'
 				}
 			}
 		},
 		link={
-			'harfbuzz',
-			'harfbuzz.html'
+			'nanojpeg',
+			'nanojpeg.html'
 		},
 		platforms={
 			mingw32=true,
@@ -3317,272 +3563,26 @@ return {
 			osx32=true,
 			linux64=true
 		},
-		c_license='MIT',
+		name='nanojpeg',
 		type='Lua+ffi',
 		git_tag='r2',
-		name='harfbuzz',
+		c_license='BSD',
 		c_link={
-			'harfbuzz 0.9.25',
-			'http://www.freedesktop.org/software/harfbuzz/release/'
-		}
-	},
-	libmysql={
-		category='Other',
-		tagline='MySQL client library',
-		modules={
-		},
-		link={
-			'libmysql',
-			'libmysql.html'
-		},
-		platforms={
-			linux32=true,
-			mingw32=true,
-			mingw64=true,
-			osx64=true,
-			osx32=true,
-			linux64=true
-		},
-		c_license='GPL',
-		type='C',
-		git_tag='r1',
-		name='libmysql',
-		c_link={
-			'libmysql 6.1.1',
-			'http://downloads.mysql.com/archives/c-c/'
-		}
-	},
-	lanes={
-		category='03. Basic OS',
-		tagline='threads support',
-		modules={
-			lanes={
-				source_link={
-					'source',
-					'https://github.com/luapower/lanes/blob/master/lanes.lua'
-				},
-				pdep_links={
-				},
-				mdep_links={
-				}
-			}
-		},
-		link={
-			'lanes',
-			'lanes.html'
-		},
-		platforms={
-			linux32=true,
-			mingw32=true,
-			mingw64=true,
-			osx32=true,
-			osx64=true,
-			linux64=true
-		},
-		c_license='MIT',
-		type='Lua/C',
-		git_tag='r4',
-		name='lanes',
-		c_link={
-			'LuaLanes 3.9.3',
-			'https://github.com/LuaLanes/lanes'
-		}
-	},
-	freetype={
-		category='19. Text Rasterization',
-		tagline='freetype font engine',
-		modules={
-			freetype={
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					}
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/freetype/blob/master/freetype_demo.lua'
-				},
-				source_link={
-					'source',
-					'https://github.com/luapower/freetype/blob/master/freetype.lua'
-				},
-				pdep_links={
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/freetype/blob/master/freetype_test.lua'
-				}
-			}
-		},
-		link={
-			'freetype',
-			'freetype.html'
-		},
-		platforms={
-			linux64=true,
-			linux32=true,
-			['mingw64-from-win32']=true,
-			mingw64=true,
-			osx64=true,
-			osx32=true,
-			mingw32=true
-		},
-		c_license='FTL/BSD',
-		type='Lua+ffi',
-		git_tag='r2',
-		name='freetype',
-		c_link={
-			'freetype 2.5.0.1',
-			'http://download.savannah.gnu.org/releases/freetype/'
-		}
-	},
-	svg_parser={
-		type='Lua+ffi',
-		link={
-			'svg_parser',
-			'svg_parser.html'
-		},
-		platforms={
-		},
-		git_tag='dev',
-		category='15. 2D Graphics',
-		tagline='SVG parser',
-		name='svg_parser',
-		modules={
-			svg_parser={
-				source_link={
-					'source',
-					'https://github.com/luapower/svg_parser/blob/master/svg_parser.lua'
-				},
-				pdep_links={
-					{
-						'expat',
-						'expat.html'
-					},
-					{
-						'glue',
-						'glue.html'
-					},
-					{
-						'lpeg',
-						'lpeg.html'
-					}
-				},
-				mdep_links={
-					{
-						'expat',
-						'expat.html'
-					},
-					{
-						'glue',
-						'glue.html'
-					},
-					{
-						'lpeg.re',
-						'https://github.com/luapower/lpeg/blob/master/lpeg/re.lua'
-					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/svg_parser/blob/master/svg_parser_test.lua'
-				}
-			}
-		}
-	},
-	chipmunk={
-		category='33. Motion',
-		tagline='chipmunk physics engine',
-		modules={
-			chipmunk={
-				source_link={
-					'source',
-					'https://github.com/luapower/chipmunk/blob/master/chipmunk.lua'
-				},
-				pdep_links={
-				},
-				mdep_links={
-					{
-						'ffi',
-						'http://luajit.org/ext_ffi.html'
-					}
-				},
-				demo_link={
-					'demo',
-					'https://github.com/luapower/chipmunk/blob/master/chipmunk_demo.lua'
-				}
-			}
-		},
-		link={
-			'chipmunk',
-			'chipmunk.html'
-		},
-		platforms={
-			mingw32=true,
-			linux32=true,
-			['mingw64-from-win32']=true,
-			mingw64=true,
-			osx32=true,
-			osx64=true,
-			linux64=true
-		},
-		c_license='MIT',
-		type='Lua+ffi',
-		git_tag='dev',
-		name='chipmunk',
-		c_link={
-			'chipmunk2D 6.2.1',
-			'http://chipmunk-physics.net/'
-		}
-	},
-	utf8={
-		type='Lua',
-		link={
-			'utf8',
-			'utf8.html'
-		},
-		platforms={
-		},
-		git_tag='dev',
-		category='17. Text Processing',
-		tagline='UTF-8 in Lua',
-		name='utf8',
-		modules={
-			utf8={
-				source_link={
-					'source',
-					'https://github.com/luapower/utf8/blob/master/utf8.lua'
-				},
-				pdep_links={
-					{
-						'glue',
-						'glue.html'
-					}
-				},
-				mdep_links={
-					{
-						'glue',
-						'glue.html'
-					}
-				},
-				test_link={
-					'test',
-					'https://github.com/luapower/utf8/blob/master/utf8_test.lua'
-				}
-			}
+			'nanojpeg 1.3',
+			'http://keyj.emphy.de/nanojpeg/'
 		}
 	},
 	openvg={
-		type='Lua+ffi',
+		category='15. 2D Graphics',
 		link={
 			'openvg',
 			'openvg.html'
 		},
 		platforms={
 		},
-		git_tag='dev',
-		category='15. 2D Graphics',
 		tagline='OpenVG C API',
+		type='Lua+ffi',
+		git_tag='dev',
 		name='openvg',
 		modules={
 			openvg={

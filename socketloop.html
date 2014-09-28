@@ -68,7 +68,7 @@
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="local-loop-requiresocketloop"><code>local loop = require'socketloop'</code></h2>
-<p>A socket loop enables coroutine-based asynchronous I/O programming model for <a href="http://w3.impa.br/~diego/software/luasocket/tcp.html">TCP sockets</a>. The concept is similar to <a href="http://keplerproject.github.com/copas/">Copas</a>, the API and the implementation are different. Supports both symmetric and asymmetric coroutines.</p>
+<p>A socket loop enables coroutine-based asynchronous I/O programming model for <a href="http://w3.impa.br/~diego/software/luasocket/tcp.html">TCP sockets</a>. The concept is similar to <a href="http://keplerproject.github.com/copas/">Copas</a>, the API and the implementation are different in that: 1) it supports both symmetric and asymmetric coroutines, and 2) connect() is asynchronous too, and 3) it provides a mechanism for suspending and resuming threads.</p>
 <table>
 <tbody>
 <tr class="odd">
@@ -80,26 +80,38 @@
 <td align="left">make an async TCP connection</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>loop.newthread(handler, ...)</code></td>
+<td align="left"><code>loop.newthread(handler, arg)</code></td>
 <td align="left">create a thread for one connection</td>
 </tr>
 <tr class="even">
+<td align="left"><code>loop.current() -&gt; thread</code></td>
+<td align="left">current thread</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>loop.suspend()</code></td>
+<td align="left">suspend current thread</td>
+</tr>
+<tr class="even">
+<td align="left"><code>loop.resume(thread, arg)</code></td>
+<td align="left">resume a suspended thread</td>
+</tr>
+<tr class="odd">
 <td align="left"><code>loop.newserver(host, port, handler)</code></td>
 <td align="left">dispatch inbound connections to a function</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>loop.start([timeout])</code></td>
 <td align="left">start the loop</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>loop.stop()</code></td>
 <td align="left">stop the loop (if started)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>loop.dispatch([timeout]) -&gt; true|false</code></td>
 <td align="left">dispatch pending reads and writes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>loop.coro -&gt; loop</code></td>
 <td align="left"><a href="coro.html">coro</a>-based loop</td>
 </tr>
@@ -111,8 +123,19 @@
 <p>An async socket should only be used inside a loop thread.</p>
 <h2 id="loop.connectaddress-port-local_address-local_port---asocket"><code>loop.connect(address, port [,local_address] [,local_port]) -&gt; asocket</code></h2>
 <p>Make a TCP connection and return an async socket.</p>
-<h2 id="loop.newthreadhandler-args"><code>loop.newthread(handler, args)</code></h2>
-<p>Create and resume a coroutine (or coro thread, if it's a coro-based loop).</p>
+<h2 id="loop.newthreadhandler-arg---thread"><code>loop.newthread(handler, arg) -&gt; thread</code></h2>
+<p>Create and resume a thead (either a coroutine or a coro thread). The thread is suspended and control returns to the caller as soon as:</p>
+<ul>
+<li>an async socket method is called,</li>
+<li><code>loop.suspend()</code> is called,</li>
+<li>the thread finishes.</li>
+</ul>
+<h2 id="loop.current---thread"><code>loop.current() -&gt; thread</code></h2>
+<p>Return the current thread (either a coroutine or a coro thread).</p>
+<h2 id="loop.suspend"><code>loop.suspend()</code></h2>
+<p>Suspend the current thread. To resume a suspended thread, call <code>loop.resume()</code> from another thread.</p>
+<h2 id="loop.resumethread-arg"><code>loop.resume(thread, arg)</code></h2>
+<p>Resume a previously suspended thread. Only resume threads that were previously suspended by calling <code>loop.suspend()</code>. Resuming a thread that is suspended in an async call is undefined behavior.</p>
 <h2 id="loop.newserverhost-port-handler"><code>loop.newserver(host, port, handler)</code></h2>
 <p>Create a TCP socket and start accepting connections on it, and call <code>handler(client_skt)</code> on a separate coroutine for each accepted connection.</p>
 <h2 id="loop.starttimeout"><code>loop.start([timeout])</code></h2>

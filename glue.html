@@ -159,82 +159,86 @@
 <td align="left"><a href="#inherit">set or clear inheritance</a></td>
 </tr>
 <tr class="odd">
+<td align="left">glue.autotable([t]) -&gt; t</td>
+<td align="left"><a href="#autotable">autotable pattern</a></td>
+</tr>
+<tr class="even">
 <td align="left"><strong>i/o</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.fileexists(file) -&gt; true | false</td>
 <td align="left"><a href="#fileexists">check if a file exists and it's readable</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.readfile(file[,format]) -&gt; s | nil, err</td>
 <td align="left"><a href="#readfile">read the contents of a file into a string</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.writefile(file,s[,format])</td>
 <td align="left"><a href="#writefile">write a string to a file</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>errors</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.assert(v,[message[,args...]]) -&gt; args</td>
 <td align="left"><a href="#assert">assert with error message formatting</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.unprotect(ok,result,...) -&gt; result,... | nil,result,...</td>
 <td align="left"><a href="#unprotect">unprotect a protected call</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.pcall(f,...) -&gt; true,... | false,traceback</td>
 <td align="left"><a href="#pcall">pcall with traceback</a> <em>(not for Lua 5.1)</em></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.fpcall(f,...) -&gt; result | nil,traceback</td>
 <td align="left"><a href="#fpcall">coding with finally and except</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.fcall(f,...) -&gt; result</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>modules</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.autoload(t, submodule) -&gt; t</td>
 <td align="left"><a href="#autoload">autoload table keys from submodules</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.autoload(t, key, module|loader) -&gt; t</td>
 <td align="left"><a href="#autoload">autoload table keys from submodules</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.bin</td>
 <td align="left"><a href="#bin">get the script's directory</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.luapath(path[, index[, ext]])</td>
 <td align="left"><a href="#luapath">insert a path in package.path</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.cpath(path[, index])</td>
 <td align="left"><a href="#cpath">insert a path in package.cpath</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>malloc</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.malloc([ctype, ]size) -&gt; cdata</td>
 <td align="left"><a href="#malloc-array">allocate an array using system's malloc</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">glue.malloc(ctype) -&gt; cdata</td>
 <td align="left"><a href="#malloc-ctype">allocate a C type using system's malloc</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">glue.free(cdata)</td>
 <td align="left"><a href="#free">free malloc'ed memory</a></td>
 </tr>
@@ -462,6 +466,12 @@ hour  8</code></pre>
 <h3 id="design-notes-3">Design notes</h3>
 <p><code>t = setmetatable({},{__index=parent})</code> is not much longer and it's idiomatic, but doesn't shout inheritance at you (you have to process the indirection, like with functional idioms) and you can't use it to change the parent (a minor quibble nevertheless).</p>
 <p>Overriding of methods needs an easy way to access the &quot;parent&quot; or to invoke a method on the parent. A top-level class could provide this simply by defining <code>function Object:parent() return getmetatable(self).__index end</code>.</p>
+<hr />
+<h2 id="glue.autotablet---t"><code id="autotable">glue.autotable([t]) -&gt; t</code></h2>
+<p>Set a table to create/return missing keys as autotables.</p>
+<p>In the example below, <code>t.a</code>, <code>t.a.b</code>, <code>t.a.b.c</code> are created automatically as autotables.</p>
+<pre class="sourceCode lua"><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">t</span> <span class="ot">=</span> autotable<span class="ot">()</span>
+<span class="kw">t</span><span class="ot">.</span><span class="kw">a</span><span class="ot">.</span><span class="kw">b</span><span class="ot">.</span><span class="kw">c</span><span class="ot">.</span><span class="kw">d</span> <span class="ot">=</span> <span class="st">&#39;hello&#39;</span></code></pre>
 <hr />
 <h2 id="glue.fileexistsfile---true-false"><code id="fileexists">glue.fileexists(file) -&gt; true | false</code></h2>
 <p>Checks whether a file exists and it's available for reading.</p>
