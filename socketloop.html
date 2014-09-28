@@ -108,7 +108,7 @@
 <td align="left">stop the loop (if started)</td>
 </tr>
 <tr class="even">
-<td align="left"><code>loop.dispatch([timeout]) -&gt; true|false</code></td>
+<td align="left"><code>loop.step([timeout]) -&gt; true|false</code></td>
 <td align="left">dispatch pending reads and writes</td>
 </tr>
 <tr class="odd">
@@ -142,8 +142,8 @@
 <p>Start dispatching reads and writes continuously in a loop. The loop should be started only if there's at least one thread suspended in an async socket call.</p>
 <h2 id="loop.stop"><code>loop.stop()</code></h2>
 <p>Stop the dispatch loop (if started).</p>
-<h2 id="loop.dispatchtimeout---truefalse"><code>loop.dispatch([timeout]) -&gt; true|false</code></h2>
-<p>Dispatch currently pending reads and writes to their respective coroutines.</p>
+<h2 id="loop.steptimeout---truefalse"><code>loop.step([timeout]) -&gt; true|false</code></h2>
+<p>Dispatch currently pending reads and writes to their respective threads.</p>
 <h2 id="loop-requiresocketloop.coro"><code>loop = require'socketloop'.coro</code></h2>
 <p>An alternative loop that dispatches to <a href="coro.html">symmetric coroutines</a> instead of Lua coroutines.</p>
 <h2 id="example">Example</h2>
