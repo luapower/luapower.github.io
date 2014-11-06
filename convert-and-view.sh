@@ -12,6 +12,8 @@ out_file="$("$(dirname "$0")/convert.sh" "$@")"
 # to enable ajax on file:/// urls use:
 chrome="C:\Program Files\Google\Chrome\Application\chrome.exe"
 [ -f "$chrome" ] || chrome="$USERPROFILE\Local Settings\Application Data\Google\Chrome\Application\chrome.exe"
+[ -f "$chrome" ] || chrome="C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+
 "$chrome" \
 	--use-spdy=off \
 	--disable-application-cache \

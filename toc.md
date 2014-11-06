@@ -107,6 +107,7 @@
 	* [eq]
 * Support Packages
 	* [luajit]
+	* [bundle]
 	* [wluajit]
 	* [lua-headers]
 	* [pixman]

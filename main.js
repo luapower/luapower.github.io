@@ -289,7 +289,7 @@ function load_package_db() {
 // -----------------------------------------------------------------------------------------------------------------------
 
 function set_toc_tree() {
-	// find list items representing TOC items and style them accordingly.
+	// find items representing TOC items and style them accordingly.
 	// also, turn them into links that can expand/collapse the tree leaf.
 	$('#toc_container li > ul').each(function(i) {
 

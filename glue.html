@@ -510,9 +510,11 @@ hour  8</code></pre>
   <span class="kw">end</span><span class="ot">))</span>
 <span class="kw">end</span></code></pre>
 <hr />
-<p><strong>Note: Lua 5.2 and LuaJIT 2 only.</strong></p>
 <h2 id="glue.pcallf...---true...-falseerror..n..traceback"><code id="pcall">glue.pcall(f,...) -&gt; true,... | false,error..'\n'..traceback</code></h2>
-<p>With Lua's pcall() you lose the stack trace, and with usual uses of pcall() you don't want that, thus this variant that appends the traceback to the error message.</p>
+<p>With Lua's pcall() you lose the stack trace, and with usual uses of pcall() you don't want that. This variant appends the traceback to the error message.</p>
+<blockquote>
+<p><strong>NOTE</strong>: Lua 5.2 and LuaJIT only.</p>
+</blockquote>
 <hr />
 <h2 id="glue.fpcallf...---result-nilerror..n..traceback"><code id="fpcall">glue.fpcall(f,...) -&gt; result | nil,error..'\n'..traceback</code></h2>
 <h2 id="glue.fcallf...---result"><code>glue.fcall(f,...) -&gt; result</code></h2>
@@ -579,7 +581,7 @@ hour  8</code></pre>
 require<span class="st">&#39;foo&#39;</span> <span class="co">--looking for `foo` in the same directory as the running script first</span></code></pre>
 <hr />
 <h2 id="glue.mallocctype-size---cdata"><code id="malloc-array">glue.malloc([ctype, ]size) -&gt; cdata</code></h2>
-<p>Allocate a <code>ctype[size]</code> array with system's malloc. Useful for allocating larger chunks of memory without hitting the default allocator's 2GB limit.</p>
+<p>Allocate a <code>ctype[size]</code> array with system's malloc. Useful for allocating larger chunks of memory without hitting the default allocator's 2 GB limit.</p>
 <ul>
 <li>the returned cdata has the type <code>ctype(&amp;)[size]</code> so ffi.sizeof(cdata) returns the correct size.</li>
 <li><code>ctype</code> defaults to <code>char</code>.</li>
@@ -587,6 +589,9 @@ require<span class="st">&#39;foo&#39;</span> <span class="co">--looking for `foo
 <li>the memory is freed when the cdata gets collected or with <code>glue.free()</code>.</li>
 </ul>
 <p><strong>REMEMBER!</strong> Just like with <code>ffi.new</code>, casting the result cdata further will get you <em>weak references</em> to the allocated memory. To transfer ownership of the memory, use <code>ffi.gc(original, nil); ffi.gc(pointer, glue.free)</code>.</p>
+<blockquote>
+<p><strong>NOTE</strong>: LuaJIT only.</p>
+</blockquote>
 <h2 id="glue.mallocctype---cdata"><code id="malloc-ctype">glue.malloc(ctype) -&gt; cdata</code></h2>
 <p>Allocate a <code>ctype</code> with system's malloc. The result has the type <code>ctype&amp;</code>.</p>
 <h2 id="glue.freecdata"><code id="free">glue.free(cdata)</code></h2>
