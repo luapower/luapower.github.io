@@ -35,11 +35,9 @@
 	* [mysql]
 	* [fbclient]
 * Platform APIs
-   * [winapi]
 	* [winapi_design]
 	* [winapi_binding]
 	* [winapi_history]
-   * [objc]
 * 2D Graphics
 	* [path]
 		* [path_point]
@@ -85,8 +83,7 @@
 	* [libpng]
 	* [libexif]
 * GUI
-   * [nw]
-		* [nw_api]
+	* [nw_api]
 		* [nw_keys]
 	* [cplayer]
 	* [box2d]
@@ -113,9 +110,6 @@
 	* [pixman]
 * Experiments
 	* [npapi]
-
-----
-
 * Notes
 	* [lua tricks][lua-tricks]
 	* [luajit notes][luajit-notes]
@@ -124,4 +118,3 @@
 	* [luapower-git]
 	* [building luapower][building]
 	* [get involved][get-involved]
-   * [problem-solution]
