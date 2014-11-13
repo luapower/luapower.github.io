@@ -16,7 +16,7 @@ There are 5 types of luapower packages:
   * __C module__: binary dependency or support library for other module; source and binary included
   * __other__: none of the above: media/support files, etc.
 
-### The Layout
+### Directory Layout
 
   * main module: `foo.lua`
   * submodule: `foo_bar.lua` but `foo/bar.lua` is fine too
@@ -38,7 +38,7 @@ There are 5 types of luapower packages:
 > These conventions allow packages to be safely unzipped over a common directory and the result look sane,
 and it makes it possible to extract package information and build the package database.
 
-### The Docs
+### Docs
 
 In order to appear on the website, docs should start with a yaml header:
 
@@ -90,74 +90,104 @@ Example:
 
 ### The Code
 
-  * adding at least a small comment on the first line of every Lua file with a short tagline (what the module does),
-  author and license can be a huge barrier-remover towards approaching your code (adding a full-screen of legal
+  * adding at least a small comment on the first line of every Lua file with
+  a short tagline (what the module does), author and license can be a huge
+  barrier-remover towards approaching your code (adding a full screen of legal
   crap on the other hand is just bad taste - IMHO).
-  * adding a comment on top of the `foo_h.lua` file describing the origin (which files? which version?)
-  and process (cpp? by hand?) used for generating the file adds confidence that the C API is complete and updated.
-  * calling `ffi.load()` without paths, custom names or version numbers keeps the module away from any decision regarding
-  how and where the library is to be found, which in turn this allows for more freedom on how to deploy libraries.
-  * the reason for putting cdefs in a separate file is because they may contain types that other packages might need.
-  If this is an unlikely scenario and the API is small, you can embed the cdefs in the main module file directly.
-  * (subjective) I don't use `module()` to keep _G clean. For big modules with a shared namespace I make
-  a "namespace" module and use `setfenv(1, require'foo.ns')` as the first line of every submodule (see [winapi]).
-  * (subjective) my code is indented with tabs, and alignment inside the line is done with spaces,
-  because I think that a fixed tabsize should not be enforced on people (plus very few editors can jump
-  through space indentation).
-  * (subjective) I use Lua's naming conventions `foo_bar` and `foobar` instead of FooBar or fooBar.
+  * adding a comment on top of the `foo_h.lua` file describing the origin
+  (which files? which version?) and process (cpp? by hand?) used for
+  generating the file adds confidence that the C API is complete and updated.
+  * calling `ffi.load()` without paths, custom names or version numbers keeps
+  the module away from any decision regarding how and where the library is
+  to be found, which in turn this allows for more freedom on how to deploy
+  libraries.
+  * the reason for putting cdefs in a separate file is because they may
+  contain types that other packages might need.   If this is an unlikely
+  scenario and the API is small, you can embed the cdefs in the main module
+  file directly.
+  * (subjective) I don't use `module()` to keep _G clean. For big modules
+  with a shared namespace I make a "namespace" module and use
+  `setfenv(1, require'foo.ns')` as the first line of every submodule
+  (see [winapi]).
+  * (subjective) my code is indented with tabs, and alignment inside the line
+  is done with spaces, because I think that a fixed tabsize should not be
+  enforced on people (plus very few editors can jump through space
+  indentation).
+  * (subjective) I use Lua's naming conventions `foo_bar` and `foobar`
+  instead of FooBar or fooBar.
 
 
-### The Build Scripts
+### Build Scripts
 
-Write a build script for each supported platform. Ideally, your build script is a gcc (or g++) one-liner
-like most build scripts around here. Writing gcc one-liners is easy for most C libraries. You only have to remember
-a few important gcc switches:
+Write a build script for each supported platform, based on the
+[luapower toolchain](building.html) (do not introduce additional tool
+requirements if you can avoid it). Building with gcc is a 2-step
+process, compilation and linking, becuase we want to build both static
+and dynamic versions the libraries.
+
+Here's a quick gcc cheat list:
+
+#### Compiling with gcc/g++:
+
+	gcc -c options... files...
+	g++ -c options... files...
+
+  * `-c`								   : compile only (don't link; produce .o files)
+  * `-O2`								: enable code optimizations
+  * `-I<dir>`							: search path for headers (eg. `-I../lua`)
+  * `-D<name>`							: set a `#define`
+  * `-D<name>=<value>`				: set a `#define`
+  * `-U<name>`							: unset `#define`
+  * `-fpic` or `-fPIC`				: generate position-independent code (required for linux64)
+  * `-DWINVER=0x501`             : set Windows API level to Windows XP
+  * `-DWINVER=0x502`             : set Windows API level to Windows XP SP2
+  * `-arch i386`                 : OSX: create 32bit x86 binaries
+  * `-arch x86_64`               : OSX: create 64bit x86 binaries
+
+#### Dynamic linking with gcc:
+
+	gcc -shared options... files...
 
   * `-shared`							: create a shared library
+  * `-s`									: strip debug symbols (not for OSX)
   * `-o <output-file>`				: output file path (eg. `-o ../../bin/mingw32/z.dll`)
-  * `-I<dir>`							: search path for headers (eg. `-I../lua`)
   * `-L<dir>`							: search path for library dependencies (eg. `-L../../bin/mingw32`)
-  * `-l<libname>`						: dynamic library dependency (eg. `-lz` looks for `z.dll`, `libz.so` or `libz.dylib` depending on platform)
-  * `-O2`								: enable code optimizations
-  * `-s`									: strip debug symbols (makes the binaries smaller and debuggers useless; not for OSX)
+  * `-l<libname>`						: library dependency (eg. `-lz` looks for`z.dll`, `libz.so` or `libz.dylib`
+  depending on platform)
   * `-static-libstdc++`				: static linking of the C++ standard library (for g++; not for OSX)
   * `-static-libgcc`					: static linking of the GCC library (for gcc and g++; not for OSX)
   * `-static`							: static linking of the winpthread library (for g++ mingw64)
-  * `-D<name>`							: set a `#define`
-  * `-D<name>=<value>`				: set a `#define`
   * `-pthread`							: enable pthread support (not for Windows)
-  * `-fpic`								: PIC mode (required for 64bit targets)
-  * `-DWINVER=0x501`             : set windows.h API level to Windows XP
-  * `-DWINVER=0x502`             : set windows.h API level to Windows XP SP2
-  * `-undefined dynamic_lookup`  : required for Lua/C modules on OSX (don't link them to luajit!)
   * `-arch i386`                 : OSX: create 32bit x86 binaries
   * `-arch x86_64`               : OSX: create 64bit x86 binaries
+  * `-undefined dynamic_lookup`  : required for Lua/C modules on OSX (don't link them to luajit!)
   * `-mmacosx-version-min=10.6`  : for C++ modules on OSX: link to libstdc++.6 instead of the newer libc++.1
+  * `-install_name @loader_path/<libname>.dylib` : for OSX, for libs that are binary dependencies to other libs
+
+#### Static linking with ar:
+
+	ar rcs ../../bin/<platform>/static/<libname>.a *.o
 
 > __IMPORTANT__: place the `-L` and `-l` switches ___after___ the input files!
 
-#### Example (compile lpeg 0.10 for linux32):
+#### Example: compile and link lpeg 0.10 for linux32:
 
-	gcc -O2 -s -static-libgcc lpeg.c -shared -o ../../bin/linux32/clib/lpeg.so -I. -I../lua
+	gcc -c -O2 lpeg.c -I. -I../lua
+	gcc -shared -s -static-libgcc -o ../../bin/linux32/clib/lpeg.so
+	ar rcs ../../bin/linux32/static/liblpeg.so
 
 In some cases it's going to be more complicated than that.
 
-  * sometimes you won't get away with `*.c` -- some libraries rely on the makefile to choose the C files
-  that need to be compiled for a specific platform or set of options (eg. [socket])
-  * some libraries actually use one or two of the myriad of defines generated by the `./configure` script
-  -- you might have to grep for those and add more `-D` switches to the command line.
-  * some libraries have parts written in assembler or other language, in which case you will have to
-  do compilation and linking in separate steps. At that point, a (simple) makefile becomes a good alternative.
-  If the package has a good makefile that doesn't add more dependencies to the toolchain, use that.
-
-Bigger and more configurable libraries will need more options for sure, and some libraries rely on the
-build system to make decisions for them. But even large libraries like [cairo] can be build with simple
-shell scripts without compromising on clarity or flexibility.
-
-### Binaries
-
-Ideally, you would build and test your build scripts against the standard luapower [building] environments.
-Do not introduce additional tool requirements if you can avoid it.
+  * sometimes you won't get away with compiling `*.c` -- some libraries rely
+  on the makefile to choose the C files that need to be compiled for a
+  specific platform or set of options (eg. [socket])
+  * some libraries actually do use one or two of the myriad of defines
+  generated by the `./configure` script -- you might have to grep for those
+  and add appropriate `-D` switches to the command line.
+  * some libraries have parts written in assembler or other language.
+  At that point, maybe a simple makefile is a better alternative.
+  * if the package has a clean and simple makefile that doesn't add more
+  dependencies to the toolchain, use that.
 
 ## Publishing
 
