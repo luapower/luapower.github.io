@@ -118,5 +118,5 @@
 ----
 * [luapower with git][luapower-git]
 * [building binaries][building]
-* [luapower packages][get-involved]
+* [making new packages][get-involved]
 * [about me][cosmin]
