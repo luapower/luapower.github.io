@@ -119,4 +119,4 @@
 * [luapower with git][luapower-git]
 * [building binaries][building]
 * [making new packages][get-involved]
-* [about me][cosmin]
+* [about][cosmin]
