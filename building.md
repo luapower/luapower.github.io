@@ -1,6 +1,6 @@
 ---
 title:    building
-tagline:  building binaries
+tagline:  how to build binaries
 ---
 
 ## What you need to know first
