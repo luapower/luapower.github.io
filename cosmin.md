@@ -13,7 +13,7 @@ I learned to program in 5^th^ grade on a Z80, and later on on a 486 and
 never stopped since. I got my first paying job at 17 when I wrote an online
 shop in php.
 
-I write my code in Lua when I can, and in Python and JavaScript when I can't.
+I write my code in Lua when I can, and in Python and Javascript when I can't.
 I will also program in Java, C++, C# and ObjC under some types of threats
 or extreme poverty. I still have a thing for relational databases. I will try
 to make a DSL when I can. Sometimes I meet people who use C for everything,
