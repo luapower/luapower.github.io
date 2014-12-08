@@ -1,6 +1,6 @@
 ---
 title:    get involved
-tagline:  I want YOU for LUA POWER
+tagline:  creating luapower packages
 ---
 
 > NOTE: This page is all about rules, so necessarily you will have issues with it.
@@ -16,7 +16,7 @@ There are 5 types of luapower packages:
   * __C module__: binary dependency or support library for other module; source and binary included
   * __other__: none of the above: media/support files, etc.
 
-### Directory Layout
+### Directory layout
 
   * main module: `foo.lua`
   * submodule: `foo_bar.lua` but `foo/bar.lua` is fine too
@@ -38,7 +38,7 @@ There are 5 types of luapower packages:
 > These conventions allow packages to be safely unzipped over a common directory and the result look sane,
 and it makes it possible to extract package information and build the package database.
 
-### Docs
+### The docs
 
 In order to appear on the website, docs should start with a yaml header:
 
@@ -88,7 +88,7 @@ Example:
 
 > NOTE: Double-asterisk patterns are Git 1.8.2+.
 
-### The Code
+### The code
 
   * adding at least a small comment on the first line of every Lua file with
   a short tagline (what the module does), author and license can be a huge
@@ -117,7 +117,7 @@ Example:
   instead of FooBar or fooBar.
 
 
-### Build Scripts
+### The build scripts
 
 Write a build script for each supported platform, based on the
 [luapower toolchain](building.html) (do not introduce additional tool

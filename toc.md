@@ -114,7 +114,9 @@
 	* [lua tricks][lua-tricks]
 	* [luajit notes][luajit-notes]
 	* [design of glue][glue_design]
-* Meta
-	* [luapower-git]
-	* [building luapower][building]
-	* [get involved][get-involved]
+
+----
+* [luapower with git][luapower-git]
+* [building binaries][building]
+* [luapower packages][get-involved]
+* [about me][cosmin]

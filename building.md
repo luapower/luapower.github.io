@@ -1,6 +1,6 @@
 ---
-title:    building luapower
-tagline:  building the C libraries
+title:    building
+tagline:  building binaries
 ---
 
 ## What you need to know first

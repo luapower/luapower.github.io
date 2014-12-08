@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset='utf-8'>
-		<title> get involved   - I want YOU for LUA POWER </title>
+		<title> get involved   - creating luapower packages </title>
 		<script src="jquery.js"></script>
 		<script src="jquery-cookie.js"></script>
 		<script src="jquery-tablesorter.js"></script>
@@ -34,7 +34,7 @@
 					<tr>
 						<td style="vertical-align: middle;" width="100%">
 							<h1> get involved </h1>
-							<h2> I want YOU for LUA POWER </h2>
+							<h2> creating luapower packages </h2>
 						</td>
 						<td style="vertical-align: middle;" align="right" style="height: 150px">
 																											</td>
@@ -64,7 +64,7 @@
 <li><strong>C module</strong>: binary dependency or support library for other module; source and binary included</li>
 <li><strong>other</strong>: none of the above: media/support files, etc.</li>
 </ul>
-<h3 id="directory-layout">Directory Layout</h3>
+<h3 id="directory-layout">Directory layout</h3>
 <ul>
 <li>main module: <code>foo.lua</code></li>
 <li>submodule: <code>foo_bar.lua</code> but <code>foo/bar.lua</code> is fine too</li>
@@ -92,7 +92,7 @@
 <blockquote>
 <p>These conventions allow packages to be safely unzipped over a common directory and the result look sane, and it makes it possible to extract package information and build the package database.</p>
 </blockquote>
-<h3 id="docs">Docs</h3>
+<h3 id="the-docs">The docs</h3>
 <p>In order to appear on the website, docs should start with a yaml header:</p>
 <pre><code>---
 project: cairo
@@ -127,7 +127,7 @@ requires: pixman, freetype, zlib, libpng</code></pre>
 <blockquote>
 <p>NOTE: Double-asterisk patterns are Git 1.8.2+.</p>
 </blockquote>
-<h3 id="the-code">The Code</h3>
+<h3 id="the-code">The code</h3>
 <ul>
 <li>adding at least a small comment on the first line of every Lua file with a short tagline (what the module does), author and license can be a huge barrier-remover towards approaching your code (adding a full screen of legal crap on the other hand is just bad taste - IMHO).</li>
 <li>adding a comment on top of the <code>foo_h.lua</code> file describing the origin (which files? which version?) and process (cpp? by hand?) used for generating the file adds confidence that the C API is complete and updated.</li>
@@ -137,7 +137,7 @@ requires: pixman, freetype, zlib, libpng</code></pre>
 <li>(subjective) my code is indented with tabs, and alignment inside the line is done with spaces, because I think that a fixed tabsize should not be enforced on people (plus very few editors can jump through space indentation).</li>
 <li>(subjective) I use Lua's naming conventions <code>foo_bar</code> and <code>foobar</code> instead of FooBar or fooBar.</li>
 </ul>
-<h3 id="build-scripts">Build Scripts</h3>
+<h3 id="the-build-scripts">The build scripts</h3>
 <p>Write a build script for each supported platform, based on the <a href="building.html">luapower toolchain</a> (do not introduce additional tool requirements if you can avoid it). Building with gcc is a 2-step process, compilation and linking, becuase we want to build both static and dynamic versions the libraries.</p>
 <p>Here's a quick gcc cheat list:</p>
 <h4 id="compiling-with-gccg">Compiling with gcc/g++:</h4>
