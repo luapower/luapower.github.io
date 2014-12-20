@@ -7,6 +7,8 @@ tagline:  Cosmin Apreutesei
 <br>
 <b>Cosmin Apreutesei</b>
 <br>
+<a href="mailto:cosmin.apreutesei@gmail.com">cosmin.apreutesei@gmail.com</a>
+<br>
 Bucharest, RO
 
 I learned to program in 5^th^ grade on a Z80, and later on on a 486 and
