@@ -164,5 +164,4 @@ listed and must be figured by the run-check-error cycle or by looking at the cod
 top of the file for require calls though). Maybe a Lua parser could help here, not sure.
 
 
-[against ip]:  http://mises.org/document/3582
-
+[against ip]:  http://www.stephankinsella.com/publications/#againstip
