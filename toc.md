@@ -35,6 +35,7 @@
 	* [mysql]
 	* [fbclient]
 * Platform APIs
+	* [winapi]
 	* [winapi_design]
 	* [winapi_binding]
 	* [winapi_history]
