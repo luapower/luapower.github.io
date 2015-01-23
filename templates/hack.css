@@ -214,7 +214,12 @@ header h2 { /* tagline */
 	padding-right: 4px;
 }
 
-/* Document */
+.tab_button {
+	color: white;
+	border: 1px solid white;
+}
+
+/* document --------------------------------------------------------------- */
 
 .doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6,
 .doc hr, .doc table, .doc pre, .doc blockquote,

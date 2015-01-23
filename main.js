@@ -53,6 +53,22 @@ function link(link, attrs) {
 	return ahref(link[1], link[0], attrs)
 }
 
+// rendering -----------------------------------------------------------------
+
+function template_object(name) {
+	return $('#' + name + '_template')
+}
+function load_partial_(name) {
+	return template_object(name).html()
+}
+function render(template_name, data, dst) {
+	var t = template_object(template_name).html()
+	var s = Mustache.render(t, data || {}, load_partial_)
+	if (dst)
+		$(dst).html(s)
+	return s
+}
+
 // lights
 // -----------------------------------------------------------------------------------------------------------------------
 
@@ -270,6 +286,29 @@ function set_module_info(packages) {
 	$('#module_info').html(tt.join(' | '))
 }
 
+function set_package_tab(packages) {
+	if (!$('#tab2_container').length) return
+	var pkg = current_package(packages)
+	if (!pkg) return
+
+	$('#tab2_container').hide()
+
+	pkg.module_array = []
+	for (m in pkg.modules)
+		pkg.module_array.push(pkg.modules[m])
+	render('info_tab', pkg, '#tab2_container')
+
+	$('#tab1_button').click(function() {
+		$('#tab2_container').hide()
+		$('#tab1_container').show()
+	})
+
+	$('#tab2_button').click(function() {
+		$('#tab1_container').hide()
+		$('#tab2_container').show()
+	})
+}
+
 function load_package_db() {
 	if ($('#package_table,#package_info,#module_info').length == 0) {
 		package_db_loaded()
@@ -279,6 +318,7 @@ function load_package_db() {
 	$.getJSON('packages.json', function(packages) {
 		set_package_table(packages)
 		set_package_info(packages)
+		set_package_tab(packages)
 		set_module_info(packages)
 		load_github_events(packages)
 		package_db_loaded()
@@ -336,8 +376,7 @@ function load_toc_file() {
 	})
 }
 
-// doc-ready
-// -----------------------------------------------------------------------------------------------------------------------
+// doc-ready -----------------------------------------------------------------
 
 // make extenral links open in new window
 function fix_external_links() {

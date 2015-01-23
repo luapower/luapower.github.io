@@ -85,6 +85,7 @@
 	* [libpng]
 	* [libexif]
 * GUI
+	* [nw]
 	* [nw_api]
 		* [nw_keys]
 	* [cplayer]
@@ -95,6 +96,7 @@
 		* [codedit_selection]
 		* [codedit_cursor]
 		* [codedit_view]
+		* [codedit_editor]
 	* [lexer]
 * Colors
 	* [color]

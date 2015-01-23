@@ -1,70 +1,77 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset='utf-8'>
-		<title> glue   - everyday Lua functions </title>
-		<script src="jquery.js"></script>
-		<script src="jquery-cookie.js"></script>
-		<script src="jquery-tablesorter.js"></script>
-		<script src="strftime.js"></script>
-		<script src="config.js"></script>
-		<script src="main.js"></script>
-		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
-		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
-		<link rel="stylesheet" type="text/css" id="lights_css" />
-		<script>
-			var DOCNAME = 'glue'
-			var PROJECT = 'glue'
-			//set the lights before rendering starts
-			set_lights()
-		</script>
-	</head>
-	<body>
-		<header>
-			<div class="container">
-				<div class="btn-container btn-lights-container">
-					<a href="#" class="btn btn-lights" id="lights">lights</a>
-				</div>
-				
-				<div class="btn-container btn-home-container">
-					<a href="/" class="btn btn-home">luapower</a>
-				</div>
-				
-				<table id="header_table">
-					<tr>
-						<td style="vertical-align: middle;" width="100%">
-							<h1> glue </h1>
-							<h2> everyday Lua functions </h2>
-						</td>
-						<td style="vertical-align: middle;" align="right" style="height: 150px">
-																						<table><tr><td>
-								<div class="doc" id="package_info_container">
-									<div id="package_info">&nbsp;</div>
-									<div id="commit_log">&nbsp;</div>
-								</div>
-								<a href="https://github.com/luapower/glue" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr><td>
-								<a href="https://github.com/luapower/glue/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
-								</td></tr><tr><td>
-								<a href="https://github.com/luapower/glue/zipball/master" class="btn btn-rightside">Download as .zip</a>
-								</td></tr></table>
-																				</td>
-					</tr>
-				</table>
-												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/glue/issues/new" target="_blank"
-						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
-				</div>
-											</div>
-		</header>
-		<div class="bg-container">
-			<div class="bg-center-container">
-									<div class="bg bg-glue" style="background-image: url('bg/glue.png');"></div>
-							</div>
+<head>
+<meta charset='utf-8'>
+<title> glue   - everyday Lua functions </title>
+<script src="jquery.js"></script>
+<script src="jquery-cookie.js"></script>
+<script src="jquery-tablesorter.js"></script>
+<script src="strftime.js"></script>
+<script src="mustache.js"></script>
+<script src="config.js"></script>
+<script src="main.js"></script>
+<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+<link rel="stylesheet" type="text/css" id="lights_css" />
+<script>
+	var DOCNAME = 'glue'
+	var PROJECT = 'glue'
+	//set the lights before rendering starts
+	set_lights()
+</script>
+</head>
+<body>
+
+<header>
+	<div class="container">
+		<div class="btn-container btn-lights-container">
+			<a href="#" class="btn btn-lights" id="lights">lights</a>
 		</div>
-		<div class="under-header">
-			<div class="container">
-				<div id="toc_container" class="toc_container doc"></div>
+		
+		<div class="btn-container btn-home-container">
+			<a href="/" class="btn btn-home">luapower</a>
+		</div>
+		
+		<table id="header_table">
+			<tr>
+				<td style="vertical-align: middle;" width="100%">
+					<h1> glue </h1>
+					<h2> everyday Lua functions </h2>
+				</td>
+				<td style="vertical-align: middle;" align="right" style="height: 150px">
+																<table><tr><td>
+						<div class="doc" id="package_info_container">
+							<div id="package_info">&nbsp;</div>
+							<div id="commit_log">&nbsp;</div>
+						</div>
+						<a href="https://github.com/luapower/glue" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+						</td></tr><tr><td>
+						<a href="https://github.com/luapower/glue/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+						</td></tr><tr><td>
+						<a href="https://github.com/luapower/glue/zipball/master" class="btn btn-rightside">Download as .zip</a>
+						</td></tr></table>
+														</td>
+			</tr>
+		</table>
+						<div class="btn-container btn-discuss-container">
+			<a href="https://github.com/luapower/glue/issues/new" target="_blank"
+				class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+		</div>
+					</div>
+</header>
+
+<div class="bg-container">
+	<div class="bg-center-container">
+					<div class="bg bg-glue" style="background-image: url('bg/glue.png');"></div>
+			</div>
+</div>
+<div class="under-header">
+	<div class="container">
+		<div id="toc_container" class="toc_container doc"></div>
+		<button id=tab1_button class=tab_button>Documentation</button>
+		<button id=tab2_button class=tab_button>Package Info</button>
+		<div id="tabs_cointainer">
+			<div id="tab1_container">
 				<section class="doc">
 					<span id="module_info"></span>
 					<h2 id="local-glue-requireglue"><code>local glue = require'glue'</code></h2>
@@ -592,6 +599,9 @@ require<span class="st">&#39;foo&#39;</span> <span class="co">--looking for `foo
 <blockquote>
 <p><strong>NOTE</strong>: LuaJIT only.</p>
 </blockquote>
+<blockquote>
+<p><strong>CAVEAT</strong>: For primitive types, you must specify a size, or glue.free() will not work!</p>
+</blockquote>
 <h2 id="glue.mallocctype---cdata"><code id="malloc-ctype">glue.malloc(ctype) -&gt; cdata</code></h2>
 <p>Allocate a <code>ctype</code> with system's malloc. The result has the type <code>ctype&amp;</code>.</p>
 <h2 id="glue.freecdata"><code id="free">glue.free(cdata)</code></h2>
@@ -622,13 +632,26 @@ require<span class="st">&#39;foo&#39;</span> <span class="co">--looking for `foo
 <p><a href="glue_design.html">glue_design</a></p>
 				</section>
 			</div>
-			<div class="container">
-				<footer>
-					<div id="disqus_thread"></div>
-					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-				</footer>
-			</div>
+			<div id="tab2_container" class="doc"></div>
 		</div>
-	</body>
+	</div>
+	<div class="container">
+		<footer>
+			<div id="disqus_thread"></div>
+			<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+		</footer>
+	</div>
+</div>
+
+<script type="text/x-mustache" id=info_tab_template>
+	<h3>Modules</h3>
+	<ul>
+	{{#module_array}}
+		<li>{{name}}</li>
+	{{/module_array}}
+	</ul>
+</script>
+
+</body>
 </html>
 

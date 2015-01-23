@@ -1,70 +1,77 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset='utf-8'>
-		<title> winapi_history   - how it came about </title>
-		<script src="jquery.js"></script>
-		<script src="jquery-cookie.js"></script>
-		<script src="jquery-tablesorter.js"></script>
-		<script src="strftime.js"></script>
-		<script src="config.js"></script>
-		<script src="main.js"></script>
-		<link rel="stylesheet" type="text/css" href="templates/reset.css" />
-		<link rel="stylesheet" type="text/css" href="templates/hack.css" />
-		<link rel="stylesheet" type="text/css" id="lights_css" />
-		<script>
-			var DOCNAME = 'winapi_history'
-			var PROJECT = 'winapi'
-			//set the lights before rendering starts
-			set_lights()
-		</script>
-	</head>
-	<body>
-		<header>
-			<div class="container">
-				<div class="btn-container btn-lights-container">
-					<a href="#" class="btn btn-lights" id="lights">lights</a>
-				</div>
-				
-				<div class="btn-container btn-home-container">
-					<a href="/" class="btn btn-home">luapower</a>
-				</div>
-				
-				<table id="header_table">
-					<tr>
-						<td style="vertical-align: middle;" width="100%">
-							<h1> winapi_history </h1>
-							<h2> how it came about </h2>
-						</td>
-						<td style="vertical-align: middle;" align="right" style="height: 150px">
-																						<table><tr><td>
-								<div class="doc" id="package_info_container">
-									<div id="package_info">&nbsp;</div>
-									<div id="commit_log">&nbsp;</div>
-								</div>
-								<a href="https://github.com/luapower/winapi" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
-								</td></tr><tr><td>
-								<a href="https://github.com/luapower/winapi/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
-								</td></tr><tr><td>
-								<a href="https://github.com/luapower/winapi/zipball/master" class="btn btn-rightside">Download as .zip</a>
-								</td></tr></table>
-																				</td>
-					</tr>
-				</table>
-												<div class="btn-container btn-discuss-container">
-					<a href="https://github.com/luapower/winapi/issues/new" target="_blank"
-						class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
-				</div>
-											</div>
-		</header>
-		<div class="bg-container">
-			<div class="bg-center-container">
-									<div class="bg bg-winapi" style="background-image: url('bg/winapi.png');"></div>
-							</div>
+<head>
+<meta charset='utf-8'>
+<title> winapi_history   - how it came about </title>
+<script src="jquery.js"></script>
+<script src="jquery-cookie.js"></script>
+<script src="jquery-tablesorter.js"></script>
+<script src="strftime.js"></script>
+<script src="mustache.js"></script>
+<script src="config.js"></script>
+<script src="main.js"></script>
+<link rel="stylesheet" type="text/css" href="templates/reset.css" />
+<link rel="stylesheet" type="text/css" href="templates/hack.css" />
+<link rel="stylesheet" type="text/css" id="lights_css" />
+<script>
+	var DOCNAME = 'winapi_history'
+	var PROJECT = 'winapi'
+	//set the lights before rendering starts
+	set_lights()
+</script>
+</head>
+<body>
+
+<header>
+	<div class="container">
+		<div class="btn-container btn-lights-container">
+			<a href="#" class="btn btn-lights" id="lights">lights</a>
 		</div>
-		<div class="under-header">
-			<div class="container">
-				<div id="toc_container" class="toc_container doc"></div>
+		
+		<div class="btn-container btn-home-container">
+			<a href="/" class="btn btn-home">luapower</a>
+		</div>
+		
+		<table id="header_table">
+			<tr>
+				<td style="vertical-align: middle;" width="100%">
+					<h1> winapi_history </h1>
+					<h2> how it came about </h2>
+				</td>
+				<td style="vertical-align: middle;" align="right" style="height: 150px">
+																<table><tr><td>
+						<div class="doc" id="package_info_container">
+							<div id="package_info">&nbsp;</div>
+							<div id="commit_log">&nbsp;</div>
+						</div>
+						<a href="https://github.com/luapower/winapi" class="btn btn-rightside btn-github"><span class="icon"></span>View on GitHub</a>
+						</td></tr><tr><td>
+						<a href="https://github.com/luapower/winapi/tarball/master" class="btn btn-rightside">Download as .tar.gz</a>
+						</td></tr><tr><td>
+						<a href="https://github.com/luapower/winapi/zipball/master" class="btn btn-rightside">Download as .zip</a>
+						</td></tr></table>
+														</td>
+			</tr>
+		</table>
+						<div class="btn-container btn-discuss-container">
+			<a href="https://github.com/luapower/winapi/issues/new" target="_blank"
+				class="btn btn-rightside btn-discuss"><span class="icon"></span>Discuss</a>
+		</div>
+					</div>
+</header>
+
+<div class="bg-container">
+	<div class="bg-center-container">
+					<div class="bg bg-winapi" style="background-image: url('bg/winapi.png');"></div>
+			</div>
+</div>
+<div class="under-header">
+	<div class="container">
+		<div id="toc_container" class="toc_container doc"></div>
+		<button id=tab1_button class=tab_button>Documentation</button>
+		<button id=tab2_button class=tab_button>Package Info</button>
+		<div id="tabs_cointainer">
+			<div id="tab1_container">
 				<section class="doc">
 					<span id="module_info"></span>
 					<p>Here's how the process of binding a subset of winapi for the purpose of writing a humble Win32 GUI could lead you to write this library in the end.</p>
@@ -72,7 +79,7 @@
 <p>Soon you realize some facts about winapi that draw more and more attention to the binding than to the actual application that you want to write.</p>
 <p>Most functions can result in an error but there's different ways in which they report that (some by a zero result, others with null, others with -1 and so on). When that happens you have to call <code>GetLastResult</code> and <code>FormatMessageA</code> every time if you want to get a clue of what happened. And so you start wrapping the calls.</p>
 <p>Windows and most controls must be initialized with good defaults even if you don't care for them, or your controls will refuse to get created or you'll get strange display bugs.</p>
-<p>You can set multiple properties of existing controls at once via &quot;setinfo&quot; commands, but you have to specify which properties you want to set values for using a bitmask field - another artifact of a statically-typed language which has no place in Lua.</p>
+<p>You can set multiple properties of existing controls at once via &quot;setinfo&quot; commands, but you have to specify which properties you want to set values for using a bitmask field - another artifact of a statically-typed language and old times when RAM was scarce.</p>
 <p>The various &quot;state&quot; fields are bit fields and so they too have a bitmask that you have to set according to which bits you want to set.</p>
 <p>Also some structs have a &quot;cbSize&quot; field that you have to set to the sizeof the struct every time you create a new one. Other times there's a &quot;version&quot; field for similar purpose. If you forget this, nothing will be set and you won't even get an error.</p>
 <p>You want to feed the GUI unicode strings. To use string constants from your source file (which is probably in utf8) you have to bind <code>MultiByteToWideChar</code> and call it on all your string constants and other utf8 strings coming from different places.</p>
@@ -85,13 +92,26 @@
 <p>This is more/less where the winapi binding is right now, and this is the process that got it here. There are still a lot of missing pieces of this huge API, but there's an infrastructure of utilities and conventions and code organization in place (which is outlined in the <a href="winapi_binding.html">dev doc</a>) that makes further work on the library relatively painless and opens it up for collaboration.</p>
 				</section>
 			</div>
-			<div class="container">
-				<footer>
-					<div id="disqus_thread"></div>
-					<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
-				</footer>
-			</div>
+			<div id="tab2_container" class="doc"></div>
 		</div>
-	</body>
+	</div>
+	<div class="container">
+		<footer>
+			<div id="disqus_thread"></div>
+			<div class="faint">cosmin.apreutesei@gmail.com | <a href="http://unlicense.org/">public domain</a></div>
+		</footer>
+	</div>
+</div>
+
+<script type="text/x-mustache" id=info_tab_template>
+	<h3>Modules</h3>
+	<ul>
+	{{#module_array}}
+		<li>{{name}}</li>
+	{{/module_array}}
+	</ul>
+</script>
+
+</body>
 </html>
 
